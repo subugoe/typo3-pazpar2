@@ -1,0 +1,50 @@
+<div id="pazpar2">
+	<form class="pz2-searchForm" name="search">
+	 	<input id="query" type="text" size="50"/>
+	 	<input id="button" type="submit" value="<f:translate key='Find'/>"/>
+	</form>
+
+	<div id="pz2-recordView">
+		<div class="pz2-ranking">
+  			<form name="select">
+				<f:translate key="Sort by"/>
+				<select name="sort" class="pz2-sort">
+		 			<!-- <option value="relevance" selected="selected">relevance</option> -->
+		 			<option value="date:0,author:1,title:1" selected="selected"><f:translate key="Age"/></option>
+					<option value="author:1,date:0,title:1"><f:translate key="Author"/></option>
+					<option value="title:1,author:1,date:0"><f:translate key="Title"/></option>
+					<!-- <option value="date:1">oldest</option> -->
+				</select>
+				<select name="perpage" class="pz2-perPage">
+					<option value="10">10</option>
+					<option value="20" >20</option>
+					<option value="50">50</option>
+					<option value="100"selected="selected">100</option>
+				</select>
+			</form>
+		</div>
+
+		<div class="pz2-pager">
+			<div class="pz2-progressIndicator"></div>
+		</div>
+
+		<div id="pz2-navi"></div>
+		<div id="pz2-termLists"></div>
+		<div id="pz2-results"></div>
+		<div id="pz2-stat"></div>
+	</div> <!-- #pz2-recordView -->
+  
+
+	<div id="pz2-targetView" style="display: none">
+		<div id="pz2-byTarget">
+			<f:translate key="No information available yet."/>
+		</div>
+	</div> <!-- #pz2-targetView -->
+
+
+	<div id="pz2-switchMenu">
+		[<a href="#" onclick="switchView('pz2-recordView')"><f:translate key="Results"/></a>,
+	 	<a href="#" onclick="switchView('pz2-targetView')"><f:translate key="Status"/></a>]
+	</div> <!-- #pz2-switchMenu -->
+
+</div> <!-- #pazpar2 -->

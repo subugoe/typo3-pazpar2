@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for the pazpar2 extension</description>
+	</meta>
+
+
+	<data type="array">
+
+		<languageKey index="default" type="array">
+			<label index="Find">Finden</label>
+			<label index="Sort by">Sortieren nach</label>
+			<label index="Age">Alter</label>
+			<label index="Author">Autor</label>
+			<label index="Title">Titel</label>
+			<label index="No information avaialble yet.">Noch keine Informationen verfügbar.</label>
+			<label index="Results">Ergebnisse</label>
+			<label index="Status">Status</label>
+		</languageKey>
+
+		<languageKey index="en" type="array">
+			<label index="Find">Find</label>
+			<label index="Sort by">Sort by</label>
+			<label index="Age">Age</label>
+			<label index="Author">Author</label>
+			<label index="Title">Title</label>
+			<label index="No information avaialble yet.">No information available yet.</label>
+			<label index="Results">Results</label>
+			<label index="Status">Status</label>
+		</languageKey>
+
+	</data>
+</T3locallang>

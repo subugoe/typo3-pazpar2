@@ -1,29 +1,29 @@
 <div id="pazpar2">
-	<form class="pz2-searchForm" name="search">
-	 	<input id="query" type="text" size="50"/>
-	 	<input id="button" type="submit" value="<f:translate key='Find'/>"/>
-	</form>
 
-	<div id="pz2-recordView">
-		<div class="pz2-ranking">
-  			<form name="select">
-				<f:translate key="Sort by"/>
-				<select name="sort" class="pz2-sort">
-		 			<!-- <option value="relevance" selected="selected">relevance</option> -->
-		 			<option value="date:0,author:1,title:1" selected="selected"><f:translate key="Age"/></option>
-					<option value="author:1,date:0,title:1"><f:translate key="Author"/></option>
-					<option value="title:1,author:1,date:0"><f:translate key="Title"/></option>
-					<!-- <option value="date:1">oldest</option> -->
-				</select>
-				<select name="perpage" class="pz2-perPage">
-					<option value="10">10</option>
-					<option value="20" >20</option>
-					<option value="50">50</option>
-					<option value="100"selected="selected">100</option>
-				</select>
-			</form>
+	<f:form name="search" class="pz2-searchForm">
+		<div class="pz2-mainForm">
+			<f:form.textbox class="pz2-searchField" name="query" />
+			<f:form.submit name="button" value="<f:translate key='Find'/>" />
 		</div>
 
+		<div class="pz2-ranking">
+			<f:translate key="Sort by"/>
+
+			<f:form.select name="sort" class="pz2-sort"
+					options="{  date-d--author-a--title-a: '{f:translate(key:\'Age\')}',
+								author-a--date-d--title-a: '{f:translate(key:\'Author\')}',
+								title-a--author-a--date-d: '{f:translate(key:\'Title\')}'   }"
+					value="date-d--author-a--title-a" />
+
+			<f:form.select name="perpage" class="pz2-perPage"
+					options="{10:10, 20:20, 50:50, 100:100}"
+					value="100" />				
+		</div>
+	</f:form>
+
+
+
+	<div id="pz2-recordView">
 		<div class="pz2-pager">
 			<div class="pz2-progressIndicator"></div>
 		</div>

@@ -15,7 +15,7 @@
 			<label index="Age">Alter</label>
 			<label index="Author">Autor</label>
 			<label index="Title">Titel</label>
-			<label index="No information avaialble yet.">Noch keine Informationen verfügbar.</label>
+			<label index="No information available yet.">Noch keine Informationen verfügbar.</label>
 			<label index="Results">Ergebnisse</label>
 			<label index="Status">Status</label>
 		</languageKey>
@@ -26,7 +26,7 @@
 			<label index="Age">Age</label>
 			<label index="Author">Author</label>
 			<label index="Title">Title</label>
-			<label index="No information avaialble yet.">No information available yet.</label>
+			<label index="No information available yet.">No information available yet.</label>
 			<label index="Results">Results</label>
 			<label index="Status">Status</label>
 		</languageKey>

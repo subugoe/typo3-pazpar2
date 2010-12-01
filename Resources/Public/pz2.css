@@ -1,0 +1,261 @@
+#pazpar2 {
+	margin: 1em 0em;
+}
+
+#pazpar2 a {
+	text-decoration:none;
+}
+
+.pz2-mainForm input {
+	font-size: 133%;
+}
+
+.pz2-searchField {
+	width: 20em;
+}
+
+.pz2-ranking, .pz2-mainForm {
+	display: inline;
+}
+
+.pz2-ranking .pz2-perPage {
+	display: none;
+}
+
+#pz2-navi {
+	margin-bottom: 1em;
+}
+
+.pz2-recordLink {
+	display: block;
+}
+
+#pz2-results {
+	margin-right: 17em;
+}
+
+#pz2-results ol {
+	padding-left: 3em;
+	float: left; /* required so we don't clear the sidebar/faceting when clearing our <li>s */
+}
+
+#pz2-results ol li {
+	margin-bottom: 0.5em;
+	clear: right; /* required to clear the right floated Google Books element */
+}
+
+#pz2-stat {
+	clear: both;
+}
+
+
+
+/* facets
+*/
+#pz2-termLists {
+	float:right;
+	width: 15em;
+	font-family: Optima, Tahoma, sans-serif;
+	font-size: 88%;
+}
+
+#pz2-termLists h4 {
+	display: none;
+}
+
+.pz2-termList h5 {
+	text-transform: uppercase;
+	margin-bottom: 0.25em;
+}
+
+.pz2-termList ol {
+	list-style-type: none;
+	margin-bottom: 1em;
+}
+
+.pz2-termList li a {
+	position: relative;
+	display: block;
+	padding-left: 1em;
+	text-indent: -1em;
+}
+
+.pz2-termList-author ol {
+	text-transform: capitalize;
+}
+
+.pz2-facetCount {
+	color: #999;
+	font-size: 81%;
+	font-style: italic;
+	margin-left: 0.3em;
+}
+
+.pz2-activeFacet {
+	font-weight: bold;
+}
+
+.pz2-facetCancel {
+	color: #f00;
+	padding-left: 0.3em;
+}
+
+.pz2-termList span {
+	position: relative;
+}
+
+
+
+/* progress indicator
+*/
+.pz2-progressIndicator {
+	position: absolute;
+	display: block;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	background: #f6f3ff;
+}
+
+
+
+/* pager
+*/
+.pz2-pager {
+	position: relative;
+	text-align: center;
+}
+
+.pz2-pager ol {
+	position: relative;
+	list-style-type: none;
+	display: inline;
+}
+
+.pz2-next, .pz2-prev {
+	position: relative;
+}
+
+.pz2-pager li {
+	display: inline;
+}
+
+.pz2-pager a {
+	padding: 0.3em;
+}
+
+.pz2-pager .currentPage {
+	font-weight: bold;
+	padding: 0.3em;
+}
+
+.pz2-recordCount {
+	position: relative;
+	float: right;
+}
+
+
+
+
+/* item records
+*/
+.pz2-title-main {
+	font-weight: bold;
+}
+
+.pz2-item-multivolume-title {
+	font-style: italic;
+}
+
+.pz2-item-responsibility {
+	font-style: italic;
+}
+
+.pz2-details {
+	font-size: 71%;
+}
+
+.pz2-details dt {
+	text-align: right;
+	font-weight: bold;
+	width: 10em;
+	float: left;
+	clear: right;
+}
+
+.pz2-details dd {
+	margin-left: 10.3em;
+}
+
+.pz2-detail-availability td a {
+	margin-bottom: 2px;
+}
+
+.pz2-detail-catalogueLink {
+	display: block;
+	font-size: 122%;
+}
+
+.pz2-details ul {
+	padding-left: 2em;
+}
+
+#pz2-results .pz2-details ul li {
+	margin: 0;
+}
+
+
+
+
+/* ZDB Info 
+*/
+.pz2-ZDBLibraryName {
+	display: block;
+	font-style: italic;
+	color: #666;
+}
+
+a.pz2-ZDBGeneralInfo {
+	display:block;
+}
+
+dd div {
+	position: relative;
+}
+
+dd div h4 {
+	position: absolute;
+	right: 100%;
+	padding-right: 4px;
+	text-align: right;
+	font-family: Georgia, Times, "Times New Roman", serif;
+	color: #666;
+}
+
+
+
+
+/* Google Books 
+*/
+.googleBooks {
+	clear
+	display: block;
+	float: right;
+}
+
+.googleBooks .bookCover {
+	margin-left: 6px;
+}
+
+#googlePreviewContainer {
+	position: absolute;
+	left: 2em;
+	right: 2em;
+	top: 2em;
+	bottom: 2em;
+}
+
+#googlePreview {
+	height: 550px;
+}
+

@@ -69,7 +69,7 @@ var localisations = {
 
 
 /*	localise
-	Return localised term using the passed dictionary 
+	Return localised term using the passed dictionary
 		or the one stored in localisations variable.
 	The localisation dictionary has two-letter language codes as keys.
 		For each of them there is a dictionary with translations to that language.
@@ -115,7 +115,7 @@ my_paz = new pz2( {	"onshow": my_onshow,
 					"showResponseType": showResponseType,
 					"onrecord": my_onrecord,
 					"serviceId": my_serviceID,
-					"errorhandler": my_errorHandler, 
+					"errorhandler": my_errorHandler,
 } );
 
 
@@ -130,8 +130,8 @@ var curSort = [];
 var curFilter = null;
 var facetData = {}; // stores faceting information as sent by pazpar2
 var filterArray = {};
-var displaySort =  [{'fieldName': 'date', 'direction': 'descending'}, 
-						{'fieldName': 'author', 'direction': 'ascending'}, 
+var displaySort =  [{'fieldName': 'date', 'direction': 'descending'},
+						{'fieldName': 'author', 'direction': 'ascending'},
 						{'fieldName': 'title', 'direction': 'ascending'}];
 var displayFilter = undefined;
 var hitList = []; // local storage for the records sent from pazpar2
@@ -173,7 +173,7 @@ var appendInfoToContainer = function (info, container) {
 
 
 /*	fieldContentInRecord
-	Returns a record's md-fieldName field. 
+	Returns a record's md-fieldName field.
 		* Concatenated when several instances of the field are present.
 	input:	fieldName - name of the field to use
 			record - pazpar2 record
@@ -601,9 +601,9 @@ function display () {
 				// add record count information
 				var recordCountDiv = document.createElement('div');
 				recordCountDiv.setAttribute('class', 'pz2-recordCount');
-				var infoString = String(firstIndex + 1) + '-' 
-									+ String(firstIndex + numberOfRecordsOnPage) 
-									+ ' ' + localise('von') + ' ' 
+				var infoString = String(firstIndex + 1) + '-'
+									+ String(firstIndex + numberOfRecordsOnPage)
+									+ ' ' + localise('von') + ' '
 									+ String(displayHitList.length);
 				if (displayFilter) {
 					infoString += ' ' + localise('gefiltert');
@@ -704,8 +704,8 @@ function my_onstat(data) {
 	Creates DOM elements for the facet list of the requested type.
 		Uses facet information stored in facetData.
 	input:	type - string giving the facet type
-			preferOriginalFacets (optional) - boolean that triggers using 
-				the facet information sent by pazpar2 
+			preferOriginalFacets (optional) - boolean that triggers using
+				the facet information sent by pazpar2
 	output:	DOM elements for displaying the list of faces
 */
 function facetListForType (type, preferOriginalFacets) {
@@ -828,7 +828,7 @@ function facetListForType (type, preferOriginalFacets) {
 		var link = document.createElement('a');
 		item.appendChild(link);
 		link.setAttribute('href', '#');
-		link.setAttribute('onclick', 
+		link.setAttribute('onclick',
 			'limitResults("' + type + '","' + facetName + '");return false;');
 
 		// 'Progress bar'
@@ -865,7 +865,7 @@ function facetListForType (type, preferOriginalFacets) {
 					item.appendChild(cancelLink);
 					cancelLink.setAttribute('href', '#');
 					cancelLink.setAttribute('class', 'pz2-facetCancel');
-					cancelLink.setAttribute('onclick', 
+					cancelLink.setAttribute('onclick',
 						'delimitResults("' + type + '","' + facetName + '"); return false;');
 					cancelLink.appendChild(document.createTextNode(localise('Filter aufheben')));
 					break;
@@ -1040,7 +1040,7 @@ function triggerSearchForForm (form) {
 
 
 /*	setSortCriteriaFromString
-	Takes the passed sort value string with sort criteria separated by -- 
+	Takes the passed sort value string with sort criteria separated by --
 		and labels and value inside the criteria separated by -,
 			[this strange format is owed to escaping problems when creating a Flow3 template for the form]
 		parses them and sets the displaySort and curSort variables accordingly.
@@ -1059,7 +1059,7 @@ function setSortCriteriaFromString (curSortString) {
 			var direction = criterionParts[1];
 			displaySort.push({'fieldName': fieldName,
 								'direction': ((direction == 'd') ? 'descending' : 'ascending')});
-			curSortArray.push(fieldName + ':' + ((direction == 'd') ? '0' : '1') ); 
+			curSortArray.push(fieldName + ':' + ((direction == 'd') ? '0' : '1') );
 		}
 	}
 
@@ -1223,14 +1223,14 @@ function toggleDetails (prefixRecId) {
 
 /*	renderDetails
 	Create DIV with details information about the record passed.
-		Inserts details information and handles retrieval of external data 
+		Inserts details information and handles retrieval of external data
 			such as ZDB info and Google Books button.
 	input:	recordID - string containing the key of the record to display details for
 	output:	DIV DOM element containing the details to be displayed
 */
 function renderDetails(recordID) {
 	/*	deduplicate
-		Removes duplicate entries from an array. 
+		Removes duplicate entries from an array.
 		The first occurrence of any item is kept, later ones are removed.
 		This function works in place and alters the original array.
 		input:	information - array to remove duplicate entries from.
@@ -1320,7 +1320,7 @@ function renderDetails(recordID) {
 					var acronymElement = document.createElement('acronym');
 					acronymElement.setAttribute('title', localise(acronymKey));
 					acronymElement.appendChild(labelNode);
-					labelNode = acronymElement; 
+					labelNode = acronymElement;
 				}
 				rowTitle.appendChild(labelNode);
 
@@ -1349,7 +1349,7 @@ function renderDetails(recordID) {
 		}
 
 		return result;
-	} 
+	}
 
 
 	
@@ -1660,7 +1660,7 @@ function renderDetails(recordID) {
 		
 
 		// Query Google Books for the ISBN/OCLC numbers in question.
-		var googleBooksURL = 'http://books.google.com/books?bibkeys=' + searchTerms 
+		var googleBooksURL = 'http://books.google.com/books?bibkeys=' + searchTerms
 					+ '&jscmd=viewapi&callback=?';
 		$.getJSON(googleBooksURL,
 			function(data) {
@@ -1672,7 +1672,7 @@ function renderDetails(recordID) {
 					Usually the first item in the list is also the newest one.
 				*/
 				var selectedBook;
-				$.each(data, 
+				$.each(data,
 					function(bookNumber, book) {
 						if (book.preview === 'full') {
 							selectedBook = book;
@@ -1735,12 +1735,12 @@ function renderDetails(recordID) {
 				var titleBarDiv = document.createElement('div');
 				titleBarDiv.setAttribute('class', 'titleBar');
 				previewContainerDiv.appendChild(titleBarDiv);
-				$(titleBarDiv).css({height:'20px', width:'100%', 
+				$(titleBarDiv).css({height:'20px', width:'100%',
 									position:'absolute', top:'-20px', background:'#eee'});
 
 				var closeBoxLink = document.createElement('a');
 				titleBarDiv.appendChild(closeBoxLink);
-				$(closeBoxLink).css({display:'block', height:'16px', width:'16px', 
+				$(closeBoxLink).css({display:'block', height:'16px', width:'16px',
 									position:'absolute', right:'2px', top:'2px', background:'#666'})
 				closeBoxLink.setAttribute('href', '#');
 				closeBoxLink.setAttribute('onclick', 'javascript:$("#' + previewContainerDivName + '").hide(200);return false;');
@@ -1796,7 +1796,7 @@ function renderDetails(recordID) {
 			var infoSpan;
 			if ( fieldContent !== undefined ) {
 				infoSpan = document.createElement('span');
-				infoSpan.setAttribute('class', 'pz2-info'); 
+				infoSpan.setAttribute('class', 'pz2-info');
 				if ( labelName !== undefined ) {
 					var infoLabel = document.createElement('span');
 					infoSpan.appendChild(infoLabel);
@@ -1860,7 +1860,7 @@ function renderDetails(recordID) {
 			}
 
 
-			/*	pickISBN 
+			/*	pickISBN
 				input: 2 ISBN number strings without dashes
 				output: if both are 'the same': the longer one (ISBN-13)
 				        if they aren't 'the same': undefined
@@ -1923,7 +1923,7 @@ function renderDetails(recordID) {
 					var linkURL = URLInfo;
 	
 					if (typeof(URLInfo) === 'object' && URLInfo['#text'] !== undefined) {
-						// URLInfo is not just an URL but an array also containing the link name 
+						// URLInfo is not just an URL but an array also containing the link name
 						if (URLInfo['@name'] !== undefined) {
 							linkText = '[' + URLInfo['@name'] + ']';
 						}
@@ -2076,7 +2076,7 @@ function recordIDForHTMLID (HTMLID) {
 
 
 
-/* Localised Media Types 
+/* Localised Media Types
 */
 var mediaNames = {
 	'de': {
@@ -2105,13 +2105,13 @@ var mediaNames = {
 		'other': 'Other',
 		'recording': 'Recording',
 		'website': 'Website',
-	} 
+	}
 };
 
 
 
 
-/* Localised Language Codes 
+/* Localised Language Codes
 */
 
 var languageNames = {
@@ -2251,8 +2251,8 @@ var languageNames = {
 		'fre': 'Französisch',
 		'fur': 'Friaulisch',
 		'fri': 'Friesisch', // deprecated
-		'frr': 'Nordfriesisch', 
-		'frs': 'Ostfriesisch', 
+		'frr': 'Nordfriesisch',
+		'frs': 'Ostfriesisch',
 		'ful': 'Ful',
 		'gaa': 'Ga',
 		'qgd': 'Gade',

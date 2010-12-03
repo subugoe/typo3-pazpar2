@@ -141,7 +141,7 @@ var hitList = []; // local storage for the records sent from pazpar2
 var displayHitList = []; // filtered and sorted list used for display
 var submitted = false;
 var useGoogleBooks = false;
-
+var useZDB = false;
 
 
 //
@@ -2078,7 +2078,9 @@ function renderDetails(recordID) {
 		appendInfoToContainer( detailLineAuto('doi'), detailsTable );
 		appendInfoToContainer( locationDetails(), detailsTable );
 		appendInfoToContainer( extraLinks(), detailsTable );
-		addZDBInfoIntoElement( detailsTable );
+		if ( useZDB == true ) {
+			addZDBInfoIntoElement( detailsTable );
+		}
 	}
 
 	return detailsDiv;

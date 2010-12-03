@@ -41,6 +41,7 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 			'pz2JSPath' => t3lib_extMgm::siteRelPath('pazpar2') . 'Resources/Public/pz2.js',
 			'pz2-clientJSPath' => t3lib_extMgm::siteRelPath('pazpar2') . 'Resources/Public/pz2-client.js',
 			'useGoogleBooks' => '1',
+			'useZDB' => '1',
 		);
 
 		foreach ( $defaults as $key => $value ) {
@@ -103,6 +104,14 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		$scriptTag->forceClosingTag(true);
 		$this->response->addAdditionalHeaderData( $scriptTag->render() );
 
+		// Add settings for pz2-client.js to <head>.
+		$jsCommand = 'useGoogleBooks = ' . (($this->conf['useGoogleBooks']) ? 'true' : 'false') . '; ';
+		$jsCommand .= 'useZDB = ' . (($this->conf['useZDB']) ? 'true' : 'false') . ';';
+		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
+		$scriptTag->addAttribute('type', 'text/javascript');
+		$scriptTag->setContent($jsCommand);
+		$this->response->addAdditionalHeaderData( $scriptTag->render() );
+
 		// Make jQuery initialise pazpar2 when the DOM is ready.
 		$jsCommand = 'jQuery(document).ready(domReady);';
 		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
@@ -119,7 +128,7 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 			$scriptTag->forceClosingTag(true);
 			$this->response->addAdditionalHeaderData( $scriptTag->render() );
 			
-			$jsCommand = 'useGoogleBooks = true;google.load("books", "0");';
+			$jsCommand = 'google.load("books", "0");';
 			$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
 			$scriptTag->addAttribute('type', 'text/javascript');
 			$scriptTag->setContent($jsCommand);

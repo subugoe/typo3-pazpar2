@@ -44,13 +44,13 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		);
 
 		foreach ( $defaults as $key => $value ) {
-			if( $this->settings[$key] ) {
+			// If a setting is present and non-empty, use it. Otherwise use the default value.
+			if( $this->settings[$key] !== undefined && $this->settings[$key] !== '' ) {
 				$this->conf[$key] = $this->settings[$key];
 			} else {
 				$this->conf[$key] = $value;
 			}
 		}
-
 	}
 
 
@@ -119,9 +119,10 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 			$scriptTag->forceClosingTag(true);
 			$this->response->addAdditionalHeaderData( $scriptTag->render() );
 			
+			$jsCommand = 'useGoogleBooks = true;google.load("books", "0");';
 			$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
 			$scriptTag->addAttribute('type', 'text/javascript');
-			$scriptTag->setContent( 'google.load("books", "0")' );
+			$scriptTag->setContent($jsCommand);
 			$this->response->addAdditionalHeaderData( $scriptTag->render() );
 		}
 

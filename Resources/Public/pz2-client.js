@@ -46,7 +46,10 @@ var germanTerms = {
 	'detail-label-series-title': 'Reihe',
 	'detail-label-issn': 'ISSN',
 	'detail-label-acronym-issn': 'Internationale Standardseriennummer',
-	'detail-label-isbn': 'ISBN',
+	'detail-label-eissn': 'eISSN',
+	'detail-label-acronym-eissn': 'Internationale Standardseriennummer für digitale Serien',
+	'detail-label-pissn': 'pISSN',
+	'detail-label-acronym-pissn': 'Internationale Standardseriennummer für gedruckte Serien',	
 	'detail-label-acronym-isbn': 'Internationale Standardbuchnummer',
 	'detail-label-doi': 'DOI',
 	'detail-label-acronym-doi': 'Document Object Identifier: Mit dem Link zu dieser Nummer kann das Dokument im Netz gefunden werden.',
@@ -1410,16 +1413,21 @@ function renderDetails(recordID) {
 		input:	element - DOM element that the resulting information is inserted into.
 	*/
 	var addZDBInfoIntoElement = function (element) {
-		var ISSNs = data['md-issn'];
-
 		// Do nothing if there are no ISSNs.
-		if (ISSNs === undefined) { return; }
+		var ISSN = (data['md-issn']) ? data['md-issn'] : data['md-pissn'];
+		var eISSN = data['md-eissn'];
+		
+		if ( !(ISSN || eISSN) ) { return; }
 
 		var serviceID = 'sub:vlib';
 		var parameters = 'sid=' + serviceID + '&genre=article';
 
-		for (ISSNNumber in ISSNs) {
-			parameters += '&issn=' + ISSNs[ISSNNumber];
+		if ( ISSN ) {
+			parameters += '&issn=' + ISSN;
+		}
+		
+		if ( eISSN ) {
+			parameters += '&eissn=' + eISSN;
 		}
 
 		var year = data['md-date'];
@@ -1427,6 +1435,29 @@ function renderDetails(recordID) {
 			var yearNumber = parseInt(year[0], 10);
 			parameters += '&date=' + yearNumber;
 		}
+
+		var volume = data['md-journal-volume'];
+		if (volume) {
+			var volumeNumber = parseInt(volume, 10);
+			parameters += '&volume=' + volumeNumber;
+		}
+
+		var issue = data['md-journal-issue'];
+		if (issue) {
+			var issueNumber = parseInt(issue, 10);
+			parameters += '&issue=' + issueNumber;
+		}
+
+		var pages = data['md-journal-pages'];
+		if (pages) {
+			parameters += '&pages=' + pages;
+		}
+
+		var title = data['md-title'];
+		if (title) {
+			parameters += '&atitle=' + encodeURI(title);
+		}
+
 
 		var ZDBURL = '/zdb/full.xml?' + parameters;
 
@@ -2041,6 +2072,8 @@ function renderDetails(recordID) {
 	 	appendInfoToContainer( detailLineAuto('medium'), detailsTable );
 		appendInfoToContainer( detailLineAuto('series-title'), detailsTable );
 		appendInfoToContainer( detailLineAuto('issn'), detailsTable );
+		appendInfoToContainer( detailLineAuto('pissn'), detailsTable );
+		appendInfoToContainer( detailLineAuto('eissn'), detailsTable );
 		appendInfoToContainer( detailLineAuto('doi'), detailsTable );
 		appendInfoToContainer( locationDetails(), detailsTable );
 		appendInfoToContainer( extraLinks(), detailsTable );

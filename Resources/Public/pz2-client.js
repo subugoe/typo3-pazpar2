@@ -2003,11 +2003,10 @@ function renderDetails(recordID) {
 			var catalogueURL;			
 			if (targetURL.search(/gso.gbv.de\/sru/) != -1) {
 				catalogueURL = targetURL.replace(/(gso.gbv.de\/sru\/)(DB=[\.0-9]*)/,
-										'http://gso.gbv.de/$2/CMD?ACT=SRCHA&IKT=1016');
-				catalogueURL += '&TRM=ppn+' + PPN;
+										'http://gso.gbv.de/$2/PPNSET?PPN=' + PPN);
 			}
 			else if (targetURL.search(/z3950.gbv.de:20012\/subgoe_opc/) != -1) {
-				catalogueURL = 'http://gso.gbv.de/DB=2.1/CMD?ACT=SRCHA&IKT=1016&TRM=ppn+' + PPN;
+				catalogueURL = 'http://gso.gbv.de/DB=2.1/PPNSET?PPN=' + PPN;
 			}
 
 			if (catalogueURL) {

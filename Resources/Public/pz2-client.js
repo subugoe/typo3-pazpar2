@@ -2341,7 +2341,7 @@ var languageNames = {
 		'iku': 'Inuktitut',
 		'ipk': 'Inupiaq',
 		'ira': 'Iranische Sprachen (andere)',
-		'gle': 'Irisch (alter Sprachcode)', // deprecated
+		'iri': 'Irisch (alter Sprachcode)', // deprecated
 		'gle': 'Irisch',
 		'iro': 'Irokesische Sprachen',
 		'ice': 'Isländisch',
@@ -2587,7 +2587,7 @@ var languageNames = {
 		'sux': 'Sumerisch',
 		'sun': 'Sundanesisch',
 		'sus': 'Susu',
-		'ssw': 'Swazi (alter Sprachcode)', // deprecated
+		'swz': 'Swazi (alter Sprachcode)', // deprecated
 		'ssw': 'Swazi',
 		'syr': 'Syrisch',
 		'taj': 'Tadschikisch (alter Sprachcode)', // deprecated

@@ -1430,6 +1430,7 @@ function renderDetails(recordID) {
 			parameters += '&eissn=' + eISSN;
 		}
 
+		// Add additional information to request to get more precise result and better display.
 		var year = data['md-date'];
 		if (year) {
 			var yearNumber = parseInt(year[0], 10);
@@ -1459,6 +1460,7 @@ function renderDetails(recordID) {
 		}
 
 
+		// Run the ZDB query.
 		var ZDBURL = '/zdb/full.xml?' + parameters;
 
 		$.get(ZDBURL,

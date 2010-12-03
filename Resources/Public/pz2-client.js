@@ -137,7 +137,7 @@ var displayFilter = undefined;
 var hitList = []; // local storage for the records sent from pazpar2
 var displayHitList = []; // filtered and sorted list used for display
 var submitted = false;
-
+var useGoogleBooks = false;
 
 
 
@@ -1773,8 +1773,11 @@ function renderDetails(recordID) {
 
 		var dataElement = document.createElement('dd');
 		dataElement.setAttribute('class', 'pz2-extraLinks');
-		dataElement.appendChild(googleBooksElement());
-
+		
+		if (useGoogleBooks) {
+			dataElement.appendChild(googleBooksElement());
+		}
+		
 		return [titleElement, dataElement];
 	}
 

@@ -1,0 +1,62 @@
+<T3DataStructure>
+	<meta>
+		<langDisable>1</langDisable>
+	</meta>
+
+	<ROOT>
+		<type>array</type>
+		<el>
+
+			<settings.serviceID>
+				<TCEforms>
+					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang.xml:settings.serviceID</label>
+					<config>
+						<type>input</type>
+						<size>40</size>
+					</config>
+				</TCEforms>
+			</settings.serviceID>
+
+			<settings.useGoogleBooks>
+				<TCEforms>
+					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang.xml:settings.useGoogleBooks</label>
+					<config>
+						<type>check</type>
+						<default>1</default>
+					</config>
+				</TCEforms>
+			</settings.useGoogleBooks>
+
+			<settings.CSSPath>
+				<TCEforms>
+					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang.xml:settings.CSSPath</label>
+					<config>
+						<type>input</type>
+						<size>40</size>
+					</config>
+				</TCEforms>
+			</settings.CSSPath>
+
+			<settings.pz2JSPath>
+				<TCEforms>
+					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang.xml:settings.pz2JSPath</label>
+					<config>
+						<type>input</type>
+						<size>40</size>
+					</config>
+				</TCEforms>
+			</settings.pz2JSPath>
+
+			<settings.pz2-clientJSPath>
+				<TCEforms>
+					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang.xml:settings.pz2-clientJSPath</label>
+					<config>
+						<type>input</type>
+						<size>40</size>
+					</config>
+				</TCEforms>
+			</settings.pz2-clientJSPath>
+
+		</el>
+	</ROOT>
+</T3DataStructure>

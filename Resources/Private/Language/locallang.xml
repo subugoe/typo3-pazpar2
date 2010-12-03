@@ -18,7 +18,14 @@
 			<label index="No information available yet.">Noch keine Informationen verfügbar.</label>
 			<label index="Results">Ergebnisse</label>
 			<label index="Status">Status</label>
+
+			<label index="settings.serviceID">pazpar2 service ID (leer, falls im Server nur ein unbenannter Service konfiguriert ist)</label>
+			<label index="settings.useGoogleBooks">Google Books nutzen</label>
+			<label index="settings.CSSPath">Pfad zum eigenem Stylesheet (ersetzt das eingebaute)</label>
+			<label index="settings.pz2JSPath">Pfad zu eigenem pz2.js (ersetzt das aus dem pazpar2 Paket)</label>
+			<label index="settings.pz2-clientJSPath">Pfad zu eigenem pz2-client.js, das eine domReady()-Funktion zur Verfügung stellt (ersetzt das eingebaute)</label>
 		</languageKey>
+
 
 		<languageKey index="en" type="array">
 			<label index="Find">Find</label>
@@ -29,6 +36,12 @@
 			<label index="No information available yet.">No information available yet.</label>
 			<label index="Results">Results</label>
 			<label index="Status">Status</label>
+
+			<label index="settings.serviceID">pazpar2 service ID</label>
+			<label index="settings.useGoogleBooks">use Google Books</label>
+			<label index="settings.CSSPath">Path to stylesheet (replaces built-in stylesheet)</label>
+			<label index="settings.pz2JSPath">Path to pz2.js (replaces the built-in one from pazpar2 distribution)</label>
+			<label index="settings.pz2-clientJSPath">Path to pz2-client.js which provides a domReady() function (replaces built-in script)</label>
 		</languageKey>
 
 	</data>

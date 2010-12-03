@@ -1,20 +1,29 @@
 <?php
+/********************************************************************
+ *  Copyright notice
+ *
+ *  © 2010 Sven-S. Porst, SUB Göttingen <porst@sub.uni-goettingen.de>
+ *  All rights reserved
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script.
+ ********************************************************************/
 if (!defined ('TYPO3_MODE')) die ('Access denied.');
 
-/**
- * Configure the Plugin to call the
- * right combination of Controller and Action according to
- * the user input (default settings, FlexForm, URL etc.)
- */
-Tx_Extbase_Utility_Extension::configurePlugin(
-	$_EXTKEY,			// The extension name (in UpperCamelCase) or the extension key (in lower_underscore)
-	'Pi1',				// A unique name of the plugin in UpperCamelCase
-	array(				// An array holding the controller-action-combinations that are accessible 
-		'Pazpar2' => 'index',	// The first controller and its first action will be the default 
+
+
+// Configure plug-in
+Tx_Extbase_Utility_Extension::configurePlugin (
+	$_EXTKEY,
+	// Need to pass 'Pi1' here (despite other comments mentioning a unique ID).
+	'Pi1',
+	// Array holding the controller-action-combinations that are accessible
+	array(
+		// The first controller and its first action will be the default
+		'Pazpar2' => 'index',
 	)
 );
-
-
-
 ?>
-

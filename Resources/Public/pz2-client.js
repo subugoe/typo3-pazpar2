@@ -217,7 +217,14 @@ function fieldContentsInRecord (fieldName, record) {
 		for ( var locationNumber in record.location) {
 			var date = record.location[locationNumber]['md-date'];
 			if (date) {
-				result.push(date);
+				if (typeof(date) === 'string') {
+					result.push(date);
+				}
+				else if (typeof(date) === 'object') {
+					for (var datenumber in date) {
+						result.push(date[datenumber]);
+					}
+				}
 			}
 		}		
 	}

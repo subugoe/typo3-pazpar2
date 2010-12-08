@@ -2015,6 +2015,14 @@ function renderDetails(recordID) {
 			else if (targetURL.search(/z3950.gbv.de:20012\/subgoe_opc/) != -1) {
 				catalogueURL = 'http://gso.gbv.de/DB=2.1/PPNSET?PPN=' + PPN;
 			}
+			else if (targetURL.search('134.76.176.48:2020/jfm') != -1) {
+				catalogueURL = 'http://www.emis.de/cgi-bin/jfmen/MATH/JFM/quick.html?first=1&maxdocs=1&type=html&format=complete&an=' + PPN;
+			}
+			else if (targetURL.search('134.76.176.48:2021/arxiv') != -1) {
+				if (location['md-electronic-url']) {
+					catalogueURL = location['md-electronic-url'][0];
+				}
+			}
 
 			if (catalogueURL) {
 				var linkElement = document.createElement('a');

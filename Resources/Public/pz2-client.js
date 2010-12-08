@@ -1691,7 +1691,7 @@ function renderDetails(recordID) {
 			for (var matchNumber in matches) {
 				searchTerms.push('ISBN:' + matches[matchNumber]);
 			}
-			numberField = String(data.location[locationNumber]['md-oclc']);
+			numberField = String(data.location[locationNumber]['md-oclc-number']);
 			matches = numberField.match(/[0-9]{4,}/g);
 			for (var matchNumber in matches) {
 				searchTerms.push('OCLC:' + matches[matchNumber]);

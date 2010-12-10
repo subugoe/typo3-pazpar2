@@ -2063,6 +2063,8 @@ function renderDetails(recordID) {
 			appendInfoToContainer( detailInfoItem('isbn'), detailsData );
 			appendInfoToContainer( electronicURLs(), detailsData);
 			appendInfoToContainer( catalogueLink(), detailsData);
+
+			if (detailsData.childNodes.length == 0) { locationDetails = []; }
 		}
 
 		return locationDetails;

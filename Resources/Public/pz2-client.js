@@ -2040,12 +2040,9 @@ function renderDetails(recordID) {
 		}
 
 
-
 		var locationDetails = [];
 
 		for ( var locationNumber in data.location ) {
-			var localInfoItems = []
-
 			var location = data.location[locationNumber];
 			var localURL = location['@id'];
 			var localName = location['@name'];

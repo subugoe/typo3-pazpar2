@@ -46,7 +46,7 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 
 		foreach ( $defaults as $key => $value ) {
 			// If a setting is present and non-empty, use it. Otherwise use the default value.
-			if( $this->settings[$key] !== undefined && $this->settings[$key] !== '' ) {
+			if( $this->settings[$key] !== null && $this->settings[$key] !== '' ) {
 				$this->conf[$key] = $this->settings[$key];
 			} else {
 				$this->conf[$key] = $value;

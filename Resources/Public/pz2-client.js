@@ -816,69 +816,72 @@ function facetListForType (type, preferOriginalFacets) {
 	// Create container and heading.
 	var container = document.createElement('div');
 	container.setAttribute('class', 'pz2-termList pz2-termList-' + type);
-	var heading = document.createElement('h5')
-	container.appendChild(heading);
-	var headingText = localise('facet-title-'+type);
-	if (isFilteredForType(type)) {
-		headingText += ' [' + localise('gefiltert') + ']';
-	}
-	heading.appendChild(document.createTextNode(headingText));
-	var list = document.createElement('ol');
-	container.appendChild(list);
 
-	// Loop through list of terms for the type and create an item with link for each one.
 	var terms = facetInformationForType(type);
-	for (var i = 0; i < terms.length && i < termListMax[type]; i++) {
-		var facetName = terms[i].name;
-
-		var item = document.createElement('li');
-		list.appendChild(item);
-
-		// Link
-		var link = document.createElement('a');
-		item.appendChild(link);
-		link.setAttribute('href', '#');
-		link.setAttribute('onclick',
-			'limitResults("' + type + '","' + facetName + '");return false;');
-
-		// 'Progress bar'
-		var progressBar = document.createElement('div');
-		link.appendChild(progressBar);
-		var progress = terms[i].freq / terms['maximumNumber'] * 100;
-		progressBar.setAttribute('style', 'width:' + progress + '%;');
-		progressBar.setAttribute('class', 'pz2-progressIndicator');
-
-		// Facet Display Name
-		var facetDisplayName = facetName;
-		if (type === 'language') {
-			facetDisplayName = localise(facetName, languageNames);
-		}
-		else if (type === 'medium') {
-			facetDisplayName = localise(facetName, mediaNames);			
-		}
-		var textSpan = document.createElement('span');
-		link.appendChild(textSpan);
-		textSpan.appendChild(document.createTextNode(facetDisplayName));
-
-		// Hit Count
-		var count = document.createElement('span');
-		link.appendChild(count);
-		count.setAttribute('class', 'pz2-facetCount');
-			count.appendChild(document.createTextNode(terms[i].freq));
-
-		// Mark facets which are currently active and add button to remove faceting.
+	if (terms.length > 0) {
+		var heading = document.createElement('h5')
+		container.appendChild(heading);
+		var headingText = localise('facet-title-'+type);
 		if (isFilteredForType(type)) {
-			for (var filterIndex in filterArray[type]) {
-				if (facetName === filterArray[type][filterIndex]) {
-					item.setAttribute('class', 'pz2-activeFacet');
-					var cancelLink = document.createElement('a');
-					item.appendChild(cancelLink);
-					cancelLink.setAttribute('href', '#');
-					cancelLink.setAttribute('class', 'pz2-facetCancel');
-					cancelLink.setAttribute('onclick',
-						'delimitResults("' + type + '","' + facetName + '"); return false;');
-					cancelLink.appendChild(document.createTextNode(localise('Filter aufheben')));
-					break;
+			headingText += ' [' + localise('gefiltert') + ']';
+		}
+		heading.appendChild(document.createTextNode(headingText));
+		var list = document.createElement('ol');
+		container.appendChild(list);
+
+		// Loop through list of terms for the type and create an item with link for each one.
+		for (var i = 0; i < terms.length && i < termListMax[type]; i++) {
+			var facetName = terms[i].name;
+
+			var item = document.createElement('li');
+			list.appendChild(item);
+
+			// Link
+			var link = document.createElement('a');
+			item.appendChild(link);
+			link.setAttribute('href', '#');
+			link.setAttribute('onclick',
+				'limitResults("' + type + '","' + facetName + '");return false;');
+
+			// 'Progress bar'
+			var progressBar = document.createElement('div');
+			link.appendChild(progressBar);
+			var progress = terms[i].freq / terms['maximumNumber'] * 100;
+			progressBar.setAttribute('style', 'width:' + progress + '%;');
+			progressBar.setAttribute('class', 'pz2-progressIndicator');
+
+			// Facet Display Name
+			var facetDisplayName = facetName;
+			if (type === 'language') {
+				facetDisplayName = localise(facetName, languageNames);
+			}
+			else if (type === 'medium') {
+				facetDisplayName = localise(facetName, mediaNames);
+			}
+			var textSpan = document.createElement('span');
+			link.appendChild(textSpan);
+			textSpan.appendChild(document.createTextNode(facetDisplayName));
+
+			// Hit Count
+			var count = document.createElement('span');
+			link.appendChild(count);
+			count.setAttribute('class', 'pz2-facetCount');
+				count.appendChild(document.createTextNode(terms[i].freq));
+
+			// Mark facets which are currently active and add button to remove faceting.
+			if (isFilteredForType(type)) {
+				for (var filterIndex in filterArray[type]) {
+					if (facetName === filterArray[type][filterIndex]) {
+						item.setAttribute('class', 'pz2-activeFacet');
+						var cancelLink = document.createElement('a');
+						item.appendChild(cancelLink);
+						cancelLink.setAttribute('href', '#');
+						cancelLink.setAttribute('class', 'pz2-facetCancel');
+						cancelLink.setAttribute('onclick',
+							'delimitResults("' + type + '","' + facetName + '"); return false;');
+						cancelLink.appendChild(document.createTextNode(localise('Filter aufheben')));
+						break;
+					}
 				}
 			}
 		}

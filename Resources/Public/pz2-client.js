@@ -1031,7 +1031,7 @@ function resetPage() {
 	hitList = [];
 	displayHitList = [];
 	filterArray = {};
-	display();
+	updateAndDisplay();
 }
 
 

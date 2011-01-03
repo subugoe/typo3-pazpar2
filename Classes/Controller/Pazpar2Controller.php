@@ -1,16 +1,16 @@
 <?php
-/********************************************************************
+/*************************************************************************
  *  Copyright notice
  *
- *  © 2010 Sven-S. Porst, SUB Göttingen <porst@sub.uni-goettingen.de>
- *  All rights reserved
+ *  © 2010-2011 Sven-S. Porst, SUB Göttingen <porst@sub.uni-goettingen.de>
+ *  All rigs reserved
  *
  *  This script is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
  *  This copyright notice MUST APPEAR in all copies of the script.
- ********************************************************************/
+ *************************************************************************/
 
 
 /**
@@ -35,14 +35,7 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 	 * @return void
 	 */
 	public function initializeAction () {
-		$defaults = array(
-			'serviceID' => '',
-			'CSSPath' => t3lib_extMgm::siteRelPath('pazpar2') . 'Resources/Public/pz2.css',
-			'pz2JSPath' => t3lib_extMgm::siteRelPath('pazpar2') . 'Resources/Public/pz2.js',
-			'pz2-clientJSPath' => t3lib_extMgm::siteRelPath('pazpar2') . 'Resources/Public/pz2-client.js',
-			'useGoogleBooks' => '1',
-			'useZDB' => '1',
-		);
+		$defaults = $this->defaultSettings();
 
 		foreach ( $defaults as $key => $value ) {
 			// If a setting is present and non-empty, use it. Otherwise use the default value.
@@ -53,6 +46,26 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 			}
 		}
 	}
+
+
+	/**
+	 * defaultSettings: Return array with default settings.
+	 *
+	 * @return array
+	 */
+	protected function defaultSettings () {
+		$defaults = array(
+			'serviceID' => '',
+			'CSSPath' => t3lib_extMgm::siteRelPath('pazpar2') . 'Resources/Public/pz2.css',
+			'pz2JSPath' => t3lib_extMgm::siteRelPath('pazpar2') . 'Resources/Public/pz2.js',
+			'pz2-clientJSPath' => t3lib_extMgm::siteRelPath('pazpar2') . 'Resources/Public/pz2-client.js',
+			'useGoogleBooks' => '1',
+			'useZDB' => '1',
+		);
+
+		return $defaults;
+	}
+
 
 
 

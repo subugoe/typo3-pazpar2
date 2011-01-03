@@ -86,7 +86,7 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 	 *
 	 * @return void
 	 */
-	private function addResourcesToHead () {
+	protected function addResourcesToHead () {
 		// Add pazpar2.css to <head>.
 		$cssTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('link');
 		$cssTag->addAttribute('rel', 'stylesheet');

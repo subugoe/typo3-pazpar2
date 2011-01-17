@@ -46,7 +46,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 
 
 	/**
-	 * @param string $newQuery
+	 * @param string $newQueryString
 	 * @return void
 	 */
 	public function setQueryString ($newQueryString) {
@@ -103,7 +103,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 
 	private function pazpar2InitURL () {
 		$URL = $this->pazpar2URL . '?command=init';
-		if ($this->serviceName() != Null) {
+		if ($this->getServiceName() != Null) {
 			$URL .= '&service=' . $this->serviceName();
 		}
 

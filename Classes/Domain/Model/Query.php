@@ -96,8 +96,12 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	 * @return string
 	 */
 	private function pazpar2BaseURL () {
-		return 'http://localhost/pazpar2/search.pz2';
+		$URL = 'http://vlib.sub.uni-goettingen.de/pazpar2/search.pz2';
+		// $URL = 'http://localhost/pazpar2/search.pz2';
+
+		return $URL;
 	}
+
 
 	private function pazpar2InitURL () {
 		$URL = $this->pazpar2BaseURL() . '?command=init';

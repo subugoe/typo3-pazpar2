@@ -82,7 +82,7 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 	 */
 	public function indexAction () {
 		debugster("indexAction");
-debugster($this->query);
+		debugster($this->query->getQueryString());
 		$this->view->assign('query', $this->query);
 
 		$this->addResourcesToHead();
@@ -92,13 +92,13 @@ debugster($this->query);
 	/*
 	 * @param Tx_Pazpar2_Domain_Model_Query $query
 	 */
-	public function findAction (Tx_Pazpar2_Domain_Model_Query $query) {
+	public function findAction () {
 
 		try{
-		debugster($query);
-		$query->run();
+		debugster($this->query);
+		$this->query->run();
 
-		$this->view->assign('results', $query->getResults());
+		$this->view->assign('results', $this->query->getResults());
 
 		$this->addResourcesToHead();
 		}

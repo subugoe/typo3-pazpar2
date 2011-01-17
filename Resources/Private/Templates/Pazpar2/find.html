@@ -1,9 +1,9 @@
 <div id="pazpar2">
 	Find template
-	<f:form name="search" action="find" class="pz2-searchForm" object="">
+	<f:form class="pz2-searchForm" action="find" objectName="query">
 		<div class="pz2-mainForm">
-			<f:form.textbox class="pz2-searchField" name="query" />
-			<f:form.submit name="button" value="<f:translate key='Find'/>" />
+			<f:form.textbox class="pz2-searchField" property="queryString"/>
+			<f:form.submit name="button" value="<f:translate key='Find'/>"/>
 		</div>
 
 		<div class="pz2-ranking">

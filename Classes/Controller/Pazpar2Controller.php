@@ -50,6 +50,7 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		}
 
 		$this->query = t3lib_div::makeInstance('Tx_Pazpar2_Domain_Model_Query');
+		$this->query->setServiceName($this->conf['serviceID']);
 	}
 
 

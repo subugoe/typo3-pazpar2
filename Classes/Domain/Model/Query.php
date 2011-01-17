@@ -115,7 +115,6 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 
 	private function pazpar2SearchURL () {
 		$URL = $this->pazpar2BaseURL() . '?command=search';
-		$URL = $this->pazpar2URL . '?command=search';
 		$URL .= '&session=' . $this->pazpar2SessionID;
 		$URL .= '&query=' . $this->getQueryString();
 
@@ -124,6 +123,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 
 
 	private function pazpar2StatURL () {
+		$URL = $this->pazpar2BaseURL() . '?command=stat';
 		$URL .= '&session=' . $this->pazpar2SessionID;
 
 		return $URL;
@@ -132,7 +132,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 
 
 	private function pazpar2ShowURL () {
-		$URL = $this->pazpar2URL . '?command=show';
+		$URL = $this->pazpar2BaseURL() . '?command=show';
 		$URL .= '&session=' . $this->pazpar2SessionID;
 		$URL .= '&query=' . $this->getQueryString();
 		$URL .= '&start=0&num=1000';
@@ -146,7 +146,6 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	protected function initialiseSession () {
 		debugster('initialiseSession');
 		$this->queryStartTime = time();
-
 		$initReplyString = file_get_contents($this->pazpar2InitURL());
 		$initReply = simplexml_load_string($initReplyString);
 

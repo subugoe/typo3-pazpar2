@@ -151,10 +151,10 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 
 		if ($initReply) {
 			$status = $initReply->xpath('/init/status');
-			if ($status == 'OK') {
+			if ($status[0] == 'OK') {
 				$sessionID = $initReply->xpath('/init/session');
-				if ($sessionID) {
-					$this->pazpar2SessionID = $sessionID;
+				if ($sessionID && count($sessionID) > 0) {
+					$this->pazpar2SessionID = (string)$sessionID[0];
 				}
 				else {
 					debugster('did not receive pazpar2 session ID');
@@ -176,12 +176,14 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 		$this->initialiseSession();
 
 		if ($this->pazpar2SessionID) {
+			debugster($this->pazpar2SearchURL());
 			$searchReplyString = file_get_contents($this->pazpar2SearchURL());
 			$searchReply = simplexml_load_string($searchReplyString);
-
+				debugster($searchReply);
+debugster($searchReplyString);
 			if ($searchReply) {
 				$status = $searchReply->xpath('/search/status');
-				if ($status == 'OK') {
+				if ($status[0] == 'OK') {
 					$this->queryIsRunning = True;
 				}
 			}
@@ -203,8 +205,9 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 
 		if ($statReply) {
 			$activeCount = $statReply->xpath('/stat/activeclients');
-			if ($activeCount == 0) {
-				$count = $statReply->xpath('/stat/records');
+			if ($activeCount[0] == 0) {
+				$countReply = $statReply->xpath('/stat/records');
+				$count = $countReply[0];
 				$result = True;
 			}
 		}
@@ -224,7 +227,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 
 		if ($showReply) {
 			$status = $showReply->xpath('/show/status');
-			if ($status == 'OK') {
+			if ($status[0] == 'OK') {
 				$this->queryIsRunning = False;
 
 				$hits = $showReply->xpath('/show/hit');

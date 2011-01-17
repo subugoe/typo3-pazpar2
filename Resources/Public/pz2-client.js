@@ -35,7 +35,6 @@ var germanTerms = {
 	'facet-title-subject': 'Themengebiete',
 	'facet-title-date': 'Jahre',
 	'detail-label-title': 'Titel',
-	'detail-label-series-title': 'Serie',
 	'detail-label-author': 'Autor',
 	'detail-label-author-plural': 'Autoren',
 	'detail-label-other-person': 'Person',
@@ -61,12 +60,12 @@ var germanTerms = {
 	'link': '[Link]',
 	'Kataloge': 'Kataloge',
 	'Google Books Vorschau': 'Google Books Vorschau',
-	'Umschlagbild': 'Umschlagbild',
+	'Umschlagbild': 'Umschlagbild'
 }
 
 
 var localisations = {
-	'de': germanTerms,
+	'de': germanTerms
 };
 
 
@@ -118,7 +117,7 @@ my_paz = new pz2( {	"onshow": my_onshow,
 					"showResponseType": showResponseType,
 					"onrecord": my_onrecord,
 					"serviceId": my_serviceID,
-					"errorhandler": my_errorHandler,
+					"errorhandler": my_errorHandler
 } );
 
 
@@ -208,13 +207,13 @@ function fieldContentsInRecord (fieldName, record) {
 	
 	if ( fieldName === 'xtargets' ) {
 		// special case xtargets: gather server names from location info for this
-		for ( var locationNumber in record.location) {
+		for (var locationNumber in record.location) {
 			result.push(record.location[locationNumber]['@name']);
 		}
 	}
 	else if ( fieldName === 'date' ) {
 		// special case for dates: go through locations and collect date for each edition
-		for ( var locationNumber in record.location) {
+		for (var locationNumber in record.location) {
 			var date = record.location[locationNumber]['md-date'];
 			if (date) {
 				if (typeof(date) === 'string') {
@@ -317,8 +316,8 @@ function displayList (list) {
 			if (dateArray) {
 				var dateString = record['md-date'][0];
 				if (dateString) {
-					var dateArray = dateString.split('-');
-					var date = new Date(dateArray[dateArray.length - 1]);
+					var yearsArray = dateString.split('-');
+					var date = new Date(yearsArray[yearsArray.length - 1]);
 				}
 			}
 
@@ -1650,16 +1649,16 @@ function renderDetails(recordID) {
 					}
 
 					if (electronicInfos) {
-						var heading = document.createElement('h4');
-						container.appendChild(heading);
-						heading.appendChild(document.createTextNode(localise('elektronisch')));
+						var electronicHeading = document.createElement('h4');
+						container.appendChild(electronicHeading);
+						electronicHeading.appendChild(document.createTextNode(localise('elektronisch')));
 						container.appendChild(electronicInfos);
 					}
 
 					if (printInfos) {
-						var heading = document.createElement('h4');
-						container.appendChild(heading);
-						heading.appendChild(document.createTextNode(localise('gedruckt')));
+						var printHeading = document.createElement('h4');
+						container.appendChild(printHeading);
+						printHeading.appendChild(document.createTextNode(localise('gedruckt')));
 						container.appendChild(printInfos);
 					}
 
@@ -1691,13 +1690,13 @@ function renderDetails(recordID) {
 		for (locationNumber in data.location) {
 			var numberField = String(data.location[locationNumber]['md-isbn']);
 			var matches = numberField.replace(/-/g,'').match(/[0-9]{9,12}[0-9xX]/g);
-			for (var matchNumber in matches) {
-				searchTerms.push('ISBN:' + matches[matchNumber]);
+			for (var ISBNMatchNumber in matches) {
+				searchTerms.push('ISBN:' + matches[ISBNMatchNumber]);
 			}
 			numberField = String(data.location[locationNumber]['md-oclc-number']);
 			matches = numberField.match(/[0-9]{4,}/g);
-			for (var matchNumber in matches) {
-				searchTerms.push('OCLC:' + matches[matchNumber]);
+			for (var OCLCMatchNumber in matches) {
+				searchTerms.push('OCLC:' + matches[OCLCMatchNumber]);
 			}
 		}
 		
@@ -1788,7 +1787,7 @@ function renderDetails(recordID) {
 				closeBoxLink.setAttribute('href', '#');
 				closeBoxLink.setAttribute('onclick', 'javascript:$("#' + previewContainerDivName + '").hide(200);return false;');
 
-				var previewDiv = document.createElement('div');
+				previewDiv = document.createElement('div');
 				previewDiv.setAttribute('id', previewDivName);
 				previewContainerDiv.appendChild(previewDiv);
 			}
@@ -2117,9 +2116,13 @@ function renderDetails(recordID) {
 			(replacing spaces by dashes)
 */
 function HTMLIDForRecordData (recordData) {
+	var result = undefined;
+
 	if (recordData.recid[0] !== undefined) {
-		return recordData.recid[0].replace(/ /g,'-pd-');
+		result = recordData.recid[0].replace(/ /g,'-pd-');
 	}
+
+	return result;
 }
 
 
@@ -2150,7 +2153,7 @@ var mediaNames = {
 		'music-score': 'Noten',
 		'other': 'Andere',
 		'recording': 'Aufnahme',
-		'website': 'Website',
+		'website': 'Website'
 	},
 	
 	'en': {
@@ -2164,7 +2167,7 @@ var mediaNames = {
 		'music-score': 'Music score',
 		'other': 'Other',
 		'recording': 'Recording',
-		'website': 'Website',
+		'website': 'Website'
 	}
 };
 
@@ -2190,7 +2193,6 @@ var languageNames = {
 		'alb': 'Albanisch',
 		'ale': 'Aleut, Atka',
 		'alg': 'Algonkin-Sprachen',
-		'gez': 'Altäthiopisch',
 		'tut': 'Altaische Sprachen (andere)',
 		'chu': 'Altbulgarisch, Altslawisch, Kirchenslawisch',
 		'ang': 'Altenglisch (ca. 450-1100)',

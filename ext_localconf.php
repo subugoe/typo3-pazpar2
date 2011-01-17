@@ -18,12 +18,22 @@ if (!defined ('TYPO3_MODE')) die ('Access denied.');
 // Configure plug-in
 Tx_Extbase_Utility_Extension::configurePlugin (
 	$_EXTKEY,
+
 	// Need to pass 'Pi1' here (despite other comments mentioning a unique ID).
 	'Pi1',
+
 	// Array holding the controller-action-combinations that are accessible
 	array(
 		// The first controller and its first action will be the default
-		'Pazpar2' => 'index',
+		'Pazpar2' => 'index,find'
+	),
+
+	// Array holding non-cachable controller-action-combinations
+	array(
+
 	)
+
 );
+
+
 ?>

@@ -94,9 +94,7 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 	 * @param Tx_Pazpar2_Domain_Model_Query $query
 	 */
 	public function findAction () {
-
 		try{
-		debugster($this->query);
 		$this->query->run();
 
 		$this->view->assign('results', $this->query->getResults());

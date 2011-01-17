@@ -80,6 +80,16 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 	}
 
 
+	public function findAction(Tx_Pazpar2_Domain_Model_Query $newQuery) {
+		debugster($newQuery);
+		$newQuery->run();
+
+		$this->view->assign('results', $newQuery->getResults());
+
+		$this->addResourcesToHead();
+	}
+
+
 
 	/**
 	 * Helper: Inserts pazpar2 headers into page.

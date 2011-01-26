@@ -137,24 +137,23 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 		$URL .= '&query=' . $this->getQueryString();
 		$URL .= '&start=0&num=1000';
 		$URL .= '&sort=date%3A0%2Cauthor%3A1%2Ctitle%3A1';
-		$URL .= '&block=1'; // unclear whether this is advantagous but the JS client adds it
+		$URL .= '&block=1'; // unclear how this is advantagous but the JS client adds it
 
 		return $URL;
 	}
 
 
 	protected function initialiseSession () {
-		debugster('initialiseSession');
 		$this->queryStartTime = time();
 		$initReplyString = file_get_contents($this->pazpar2InitURL());
-		$initReply = simplexml_load_string($initReplyString);
+		$initReply = t3lib_div::xml2array($initReplyString);
 
 		if ($initReply) {
-			$status = $initReply->xpath('/init/status');
-			if ($status[0] == 'OK') {
-				$sessionID = $initReply->xpath('/init/session');
-				if ($sessionID && count($sessionID) > 0) {
-					$this->pazpar2SessionID = (string)$sessionID[0];
+			$status = $initReply['status'];
+			if ($status == 'OK') {
+				$sessionID = $initReply['session'];
+				if ($sessionID) {
+					$this->pazpar2SessionID = $sessionID;
 				}
 				else {
 					debugster('did not receive pazpar2 session ID');
@@ -165,7 +164,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 			}
 		}
 		else {
-			debugster('could not read pazpar2 init reply');
+			debugster('could not parse pazpar2 init reply');
 		}
 	}
 
@@ -178,16 +177,19 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 		if ($this->pazpar2SessionID) {
 			debugster($this->pazpar2SearchURL());
 			$searchReplyString = file_get_contents($this->pazpar2SearchURL());
-			$searchReply = simplexml_load_string($searchReplyString);
-debugster($searchReplyString);
+			$searchReply = t3lib_div::xml2array($searchReplyString);
+
 			if ($searchReply) {
-				$status = $searchReply->xpath('/search/status');
-				if ($status[0] == 'OK') {
+				$status = $searchReply['status'];
+				if ($status == 'OK') {
 					$this->queryIsRunning = True;
+				}
+				else {
+					debugster('pazpar2 search command status is not "OK" but ' . $status);
 				}
 			}
 			else {
-				debugster('could not read pazpar2 search reply');
+				debugster('could not parse pazpar2 search reply');
 			}
 
 		}
@@ -200,13 +202,12 @@ debugster($searchReplyString);
 		$result = False;
 
 		$statReplyString = file_get_contents($this->pazpar2StatURL());
-		$statReply = simplexml_load_string($statReplyString);
+		$statReply = t3lib_div::xml2array($statReplyString);
 
 		if ($statReply) {
-			$progress = $statReply->xpath('/stat/progress');
-			if ($progress[0] == 1) {
-				$countReply = $statReply->xpath('/stat/records');
-				$count = (int)$countReply[0];
+			$progress = $statReply['progress'];
+			if ($progress == 1) {
+				$count = (int)$statReply['records'];
 				$result = True;
 			}
 		}
@@ -218,30 +219,35 @@ debugster($searchReplyString);
 	}
 
 
+	/*
+	 *
+	 */
 	protected function fetchResults () {
 		$result = Null;
 
 		$showReplyString = file_get_contents($this->pazpar2ShowURL());
-		$showReply = simplexml_load_string($showReplyString);
+		// need xml2tree here as xml2array fails when dealing with arrays of tags with the same name
+		$showReplyTree = t3lib_div::xml2tree($showReplyString);
+		$showReply = $showReplyTree['show'][0]['ch'];
 
 		if ($showReply) {
-			$status = $showReply->xpath('/show/status');
-			if ($status[0] == 'OK') {
+			$status = $showReply['status'][0]['values'][0];
+			if ($status == 'OK') {
 				$this->queryIsRunning = False;
+				$hits = $showReply['hit'];
 
-				$hits = $showReply->xpath('/show/hit');
 				foreach ($hits as $hit) {
-				debugster($hit);
-					$key = $hit['recid'];
-					$this->results[$key] = $hit;
+					$myHit = $hit['ch'];
+					$key = $myHit['recid'][0]['values'][0];
+					$this->results[$key] = $myHit;
 				}
 			}
 			else {
-				debugster('pazpar2 show reply with non-"OK" status');
+				debugster('pazpar2 show reply status is not "OK" but ' . $status);
 			}
 		}
 		else {
-			debugster('could not read pazpar2 search reply');
+			debugster('could not parse pazpar2 search reply');
 		}
 	}
 
@@ -253,7 +259,6 @@ debugster($searchReplyString);
 
 		while (($this->queryIsRunning) && (time() - $this->queryStartTime < 60)) {
 			sleep(2);
-			debugster("running");
 
 			if ($this->queryIsDoneWithResultCount($resultCount)) {
 				$this->fetchResults();

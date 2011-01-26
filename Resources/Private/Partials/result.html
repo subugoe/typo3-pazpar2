@@ -1,10 +1,9 @@
 <li>
 	<span class="pz2-title-complete">
-
 		<span class="pz2-title-main">
 			<f:if condition="{record.md-title}">
 				<span class="pz2-title">
-					{record.md-title}
+					{record.md-title.0.values.0}
 				</span>
 			</f:if>
 
@@ -17,23 +16,22 @@
 
 		<f:if condition="{record.md-title-remainder}">
 			<span class="pz2-title-remainder">
-				{record.md-title-remainder}
+				{record.md-title-remainder.0.values.0}
 			</span>
 		</f:if>
 
 		<f:if condition="{record.md-number-section}">
 			<span class="pz2-number-section">
-				{record.md-number-section}
+				{record.md-number-section.0.values.0}
 			</span>
 		</f:if>
-		.
-		<!-- spacing ! -->
+		-
 	</span>
 
 	<f:if condition="{record.md-title-responsibility}">
 		<f:then>
 			<span class="pz2-item-responsibility">
-				{record.md-title-responsibility}.
+				{record.md-title-responsibility.0.values.0}.
 				<!-- double full stop ? -->
 			</span>
 		</f:then>
@@ -42,14 +40,35 @@
 				<span class="pz2-item-responsibility">
 					<f:for each="{record.md-author}" as="author" key="authorIndex">
 						<f:if condition="{authorIndex} != 0">, </f:if>
-						{author}
+						{author.values.0}
 					</f:for>.
-					<!-- double full stop ? -->
 				</span>
 			</f:if>
 		</f:else>
 	</f:if>
 
-
+	<f:if condition="{record.md-medium.0.values} == {0: 'article'}">
+		<f:then>
+			<span class="pz2-journal">
+				<f:translate key="In"/>:
+				<f:if condition="{record.md-journal-subpart}">
+					<f:then>
+						{record.md-journal-title.0.values.0}
+						<span class="pz2-journal-subpart">
+							- {record.md-journal-subpart.0.values.0}.
+						</span>
+					</f:then>
+					<f:else>
+						{record.md-journal-title.0.values.0}.
+					</f:else>
+				</f:if>
+			</span>
+		</f:then>
+		<f:else>
+			<f:if condition="{record.md-date}">
+				<span class="pz2-date">{record.md-date.0.values.0}.</span>
+			</f:if>
+		</f:else>
+	</f:if>
 
 </li>

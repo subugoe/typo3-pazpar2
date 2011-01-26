@@ -6,6 +6,10 @@
 	text-decoration:none;
 }
 
+#pazpar2 ol {
+	margin: 0px;
+}
+
 .pz2-mainForm input {
 	font-size: 133%;
 }
@@ -31,7 +35,7 @@
 }
 
 #pz2-results {
-	margin-right: 17em;
+	margin-right: 15em;
 }
 
 #pz2-results ol {

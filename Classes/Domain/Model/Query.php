@@ -179,7 +179,6 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 			debugster($this->pazpar2SearchURL());
 			$searchReplyString = file_get_contents($this->pazpar2SearchURL());
 			$searchReply = simplexml_load_string($searchReplyString);
-				debugster($searchReply);
 debugster($searchReplyString);
 			if ($searchReply) {
 				$status = $searchReply->xpath('/search/status');
@@ -204,10 +203,10 @@ debugster($searchReplyString);
 		$statReply = simplexml_load_string($statReplyString);
 
 		if ($statReply) {
-			$activeCount = $statReply->xpath('/stat/activeclients');
-			if ($activeCount[0] == 0) {
+			$progress = $statReply->xpath('/stat/progress');
+			if ($progress[0] == 1) {
 				$countReply = $statReply->xpath('/stat/records');
-				$count = $countReply[0];
+				$count = (int)$countReply[0];
 				$result = True;
 			}
 		}
@@ -232,6 +231,7 @@ debugster($searchReplyString);
 
 				$hits = $showReply->xpath('/show/hit');
 				foreach ($hits as $hit) {
+				debugster($hit);
 					$key = $hit['recid'];
 					$this->results[$key] = $hit;
 				}
@@ -249,11 +249,12 @@ debugster($searchReplyString);
 
 	public function run () {
 		$this->startQuery();
+		$resultCount = Null;
 
 		while (($this->queryIsRunning) && (time() - $this->queryStartTime < 60)) {
 			sleep(2);
+			debugster("running");
 
-			$resultCount = Null;
 			if ($this->queryIsDoneWithResultCount($resultCount)) {
 				$this->fetchResults();
 			}

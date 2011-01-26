@@ -1,25 +1,7 @@
 <div id="pazpar2">
 	Find template
-	<f:form class="pz2-searchForm" action="find">
-		<div class="pz2-mainForm">
-			<f:form.textbox class="pz2-searchField" name="queryString"/>
-			<f:form.submit name="button" value="<f:translate key='Find'/>"/>
-		</div>
+	<f:render partial="form"/>
 
-		<div class="pz2-ranking">
-			<f:translate key="Sort by"/>
-
-			<f:form.select name="sort" class="pz2-sort"
-					options="{  date-d--author-a--title-a: '{f:translate(key:\'Age\')}',
-								author-a--date-d--title-a: '{f:translate(key:\'Author\')}',
-								title-a--author-a--date-d: '{f:translate(key:\'Title\')}'   }"
-					value="date-d--author-a--title-a" />
-
-			<f:form.select name="perpage" class="pz2-perPage"
-					options="{10:10, 20:20, 50:50, 100:100}"
-					value="100" />				
-		</div>
-	</f:form>
 
 	<div id="pz2-recordView">
 		<div class="pz2-pager">
@@ -29,9 +11,11 @@
 		<div id="pz2-navi"></div>
 		<div id="pz2-termLists"></div>
 		<div id="pz2-results">
-			<f:for each="{results}" as="result">
-				<f:render partial="result" arguments="{result: 'result'}"/>
-			</f:for>
+			<ol>
+				<f:for each="{results}" as="result">
+					<f:render partial="result" arguments="{record: result}"/>
+				</f:for>
+			</ol>
 		</div>
 		<div id="pz2-stat"></div>
 	</div> <!-- #pz2-recordView -->

@@ -57,15 +57,57 @@ var germanTerms = {
 	'elektronisch': 'digital',
 	'gedruckt': 'gedruckt',
 	'detail-label-id': 'PPN',
-	'link': '[Link]',
+	'link': 'Link',
 	'Kataloge': 'Kataloge',
+	'Ausgabe': 'Ausgabe',
 	'Google Books Vorschau': 'Google Books Vorschau',
 	'Umschlagbild': 'Umschlagbild'
-}
+};
+
+
+var englishTerms = {
+	'facet-title-xtargets': 'Catalogues',
+	'facet-title-medium': 'Type',
+	'facet-title-author': 'Authors',
+	'facet-title-language': 'Languages',
+	'facet-title-subject': 'Subjects',
+	'facet-title-date': 'Years',
+	'detail-label-title': 'Title',
+	'detail-label-author': 'Author',
+	'detail-label-author-plural': 'Authors',
+	'detail-label-other-person': 'Person',
+	'detail-label-other-person-plural': 'People',
+	'detail-label-medium': 'Type',
+	'detail-label-description': 'Information',
+	'detail-label-description-plural': 'Information',
+	'detail-label-series-title': 'Series',
+	'detail-label-issn': 'ISSN',
+	'detail-label-acronym-issn': 'International Standard Series Number',
+	'detail-label-eissn': 'eISSN',
+	'detail-label-acronym-eissn': 'International Standard Series Number for electronic series',
+	'detail-label-pissn': 'pISSN',
+	'detail-label-acronym-pissn': 'International Standard Series Number for printed series',
+	'detail-label-acronym-isbn': 'International Standard Book Number',
+	'detail-label-doi': 'DOI',
+	'detail-label-acronym-doi': 'Document Object Identifier: Use the link to load the document.',
+	'detail-label-doi-plural': 'DOIs',
+	'detail-label-verfügbarkeit': 'Availability',
+	'elektronisch': 'electronic',
+	'gedruckt': 'printed',
+	'detail-label-id': 'PPN',
+	'link': 'link',
+	'Kataloge': 'Catalogues',
+	'Ausgabe': 'Edition',
+	'Google Books Vorschau': 'Google Books Preview',
+	'Umschlagbild': 'Book Cover'
+};
+
+
 
 
 var localisations = {
-	'de': germanTerms
+	'de': germanTerms,
+	'en': englishTerms
 };
 
 

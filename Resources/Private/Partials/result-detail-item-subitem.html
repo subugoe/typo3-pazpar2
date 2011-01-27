@@ -1,0 +1,12 @@
+<f:if condition="{value}">
+	<f:if condition="{f:translate(key:'detail-label-'value)}">
+		<span class="pz2-label">
+			<f:translate key="label-{name}"/>
+		</span>
+	</f:if>
+
+	<f:for each="{value}" as="item" key="index">
+		<f:if condition="{index} != 0">, </f:if>
+		{item.values.0}
+	</f:for>;
+</f:if>

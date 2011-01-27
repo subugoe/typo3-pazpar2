@@ -71,4 +71,22 @@
 		</f:else>
 	</f:if>
 
+
+	<div class="pz2-details">
+		<dl>
+			<f:render partial="result-detail-item" arguments="{value:record.md-author, name:'author'}"/>
+			<f:render partial="result-detail-item" arguments="{value:record.md-other-person, name:'other-person'}"/>
+			<f:render partial="result-detail-item" arguments="{value:record.md-description, name:'description'}"/>
+			<f:render partial="result-detail-item" arguments="{value:record.md-medium, name:'medium'}"/>
+			<f:render partial="result-detail-item" arguments="{value:record.md-series-title, name:'series-title'}"/>
+			<f:render partial="result-detail-item" arguments="{value:record.md-issn, name:'issn'}"/>
+			<f:render partial="result-detail-item" arguments="{value:record.md-pissn, name:'pissn'}"/>
+			<f:render partial="result-detail-item" arguments="{value:record.md-eissn, name:'eissn'}"/>
+			<f:render partial="result-detail-item" arguments="{value:record.md-doi, name:'doi'}"/>
+			
+			<f:render partial="result-detail-locations-item" arguments="{locations:record.location}"/>
+
+		</dl>
+	</div>
+
 </li>

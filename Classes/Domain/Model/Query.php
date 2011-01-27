@@ -256,14 +256,19 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	public function run () {
 		$this->startQuery();
 		$resultCount = Null;
+		$maximumTime = 120;
 
-		while (($this->queryIsRunning) && (time() - $this->queryStartTime < 60)) {
+		set_time_limit($maximumTime + 5);
+		
+		while (($this->queryIsRunning) && (time() - $this->queryStartTime < $maximumTime)) {
 			sleep(2);
 
 			if ($this->queryIsDoneWithResultCount($resultCount)) {
-				$this->fetchResults();
+				break;
 			}
 		}
+
+		$this->fetchResults();
 	}
 
 

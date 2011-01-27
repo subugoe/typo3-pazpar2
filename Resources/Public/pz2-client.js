@@ -2126,22 +2126,22 @@ function renderDetails(recordID) {
 		detailsDiv.setAttribute('class', 'pz2-details');
 		detailsDiv.setAttribute('id', 'det_' + HTMLIDForRecordData(data));
 
-		var detailsTable = document.createElement('dl');
+		var detailsList = document.createElement('dl');
 		detailsDiv.appendChild(detailsTable);
 
-		appendInfoToContainer( detailLineAuto('author'), detailsTable );
-		appendInfoToContainer( detailLineAuto('other-person'), detailsTable )
-		appendInfoToContainer( detailLineAuto('description'), detailsTable );
-	 	appendInfoToContainer( detailLineAuto('medium'), detailsTable );
-		appendInfoToContainer( detailLineAuto('series-title'), detailsTable );
-		appendInfoToContainer( detailLineAuto('issn'), detailsTable );
-		appendInfoToContainer( detailLineAuto('pissn'), detailsTable );
-		appendInfoToContainer( detailLineAuto('eissn'), detailsTable );
-		appendInfoToContainer( detailLineAuto('doi'), detailsTable );
-		appendInfoToContainer( locationDetails(), detailsTable );
-		appendInfoToContainer( extraLinks(), detailsTable );
+		appendInfoToContainer( detailLineAuto('author'), detailsList );
+		appendInfoToContainer( detailLineAuto('other-person'), detailsList )
+		appendInfoToContainer( detailLineAuto('description'), detailsList );
+	 	appendInfoToContainer( detailLineAuto('medium'), detailsList );
+		appendInfoToContainer( detailLineAuto('series-title'), detailsList );
+		appendInfoToContainer( detailLineAuto('issn'), detailsList );
+		appendInfoToContainer( detailLineAuto('pissn'), detailsList );
+		appendInfoToContainer( detailLineAuto('eissn'), detailsList );
+		appendInfoToContainer( detailLineAuto('doi'), detailsList );
+		appendInfoToContainer( locationDetails(), detailsList );
+		appendInfoToContainer( extraLinks(), detailsList );
 		if ( useZDB == true ) {
-			addZDBInfoIntoElement( detailsTable );
+			addZDBInfoIntoElement( detailsList );
 		}
 	}
 

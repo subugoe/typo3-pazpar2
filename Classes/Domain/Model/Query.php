@@ -145,7 +145,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 
 	protected function initialiseSession () {
 		$this->queryStartTime = time();
-		$initReplyString = file_get_contents($this->pazpar2InitURL());
+		$initReplyString = t3lib_div::getURL($this->pazpar2InitURL());
 		$initReply = t3lib_div::xml2array($initReplyString);
 
 		if ($initReply) {
@@ -176,7 +176,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 
 		if ($this->pazpar2SessionID) {
 			debugster($this->pazpar2SearchURL());
-			$searchReplyString = file_get_contents($this->pazpar2SearchURL());
+			$searchReplyString = t3lib_div::getURL($this->pazpar2SearchURL());
 			$searchReply = t3lib_div::xml2array($searchReplyString);
 
 			if ($searchReply) {
@@ -201,7 +201,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	protected function queryIsDoneWithResultCount (&$count) {
 		$result = False;
 
-		$statReplyString = file_get_contents($this->pazpar2StatURL());
+		$statReplyString = t3lib_div::getURL($this->pazpar2StatURL());
 		$statReply = t3lib_div::xml2array($statReplyString);
 
 		if ($statReply) {
@@ -225,7 +225,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	protected function fetchResults () {
 		$result = Null;
 
-		$showReplyString = file_get_contents($this->pazpar2ShowURL());
+		$showReplyString = t3lib_div::getURL($this->pazpar2ShowURL());
 		// need xml2tree here as xml2array fails when dealing with arrays of tags with the same name
 		$showReplyTree = t3lib_div::xml2tree($showReplyString);
 		$showReply = $showReplyTree['show'][0]['ch'];

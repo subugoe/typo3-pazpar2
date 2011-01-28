@@ -467,7 +467,7 @@ function my_onshow (data) {
 function display () {
 
 	/*	markupForField
-		Creates DOM element and content for a field name; Appends it to given container.
+		Creates span DOM element and content for a field name; Appends it to the given container.
 		input:	fieldName - string with key for a field stored in hit
 				container (optional)- the DOM element we created is appended here
 				prepend (optional) - string inserted before the DOM element with the field data
@@ -475,21 +475,21 @@ function display () {
 		output: the DOM SPAN element that was appended
 	*/
 	var markupForField = function (fieldName, container, prepend, append) {
-		var theHit = hit['md-' + fieldName];
+		var fieldContent = hit['md-' + fieldName];
 
-		if (theHit !== undefined && container) {
+		if (fieldContent !== undefined && container) {
 			var span = document.createElement('span');
 			span.setAttribute('class', 'pz2-' + fieldName);
-			span.appendChild(document.createTextNode(theHit));
+			span.appendChild(document.createTextNode(fieldContent));
 		
-			if (container) {
-				if (prepend) {
-					container.appendChild(document.createTextNode(prepend));
-				}
-				container.appendChild(span);
-				if (append) {
-					container.appendChild(document.createTextNode(append));
-				}
+			if (prepend) {
+				container.appendChild(document.createTextNode(prepend));
+			}
+
+			container.appendChild(span);
+
+			if (append) {
+				container.appendChild(document.createTextNode(append));
 			}
 		}
 

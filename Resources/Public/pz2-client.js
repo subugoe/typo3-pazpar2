@@ -2127,7 +2127,7 @@ function renderDetails(recordID) {
 		detailsDiv.setAttribute('id', 'det_' + HTMLIDForRecordData(data));
 
 		var detailsList = document.createElement('dl');
-		detailsDiv.appendChild(detailsTable);
+		detailsDiv.appendChild(detailsList);
 
 		appendInfoToContainer( detailLineAuto('author'), detailsList );
 		appendInfoToContainer( detailLineAuto('other-person'), detailsList )

@@ -420,7 +420,7 @@ private function electronicURLs ($location) {
 		$URLsContainer = $this->doc->createElement('span');
 
 		foreach ($electronicURLs as $URLInfo) {
-			$linkText = '[' . Tx_Extbase_Utility_Localization::translate('Link', 'Pazpar2') . ']';
+			$linkText = '[' . Tx_Extbase_Utility_Localization::translate('link', 'Pazpar2') . ']';
 			$linkURL = $URLInfo['values'][0];
 
 			if ($URLInfo['attrs']['name']) {

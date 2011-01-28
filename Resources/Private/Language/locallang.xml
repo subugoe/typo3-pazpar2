@@ -46,7 +46,8 @@
 			<label index="detail-label-doi-plural">DOIs</label>
 			<label index="Ausgabe">Ausgabe</label>
 			<label index="link">Link</label>
-
+			<label index="In">In</label>
+			<label index="Ansehen und Ausleihen bei:">Ansehen und Ausleihen bei:</label>
 		</languageKey>
 
 
@@ -87,6 +88,8 @@
 			<label index="detail-label-doi-plural">DOIs</label>
 			<label index="Ausgabe">Ausgabe</label>
 			<label index="link">link</label>
+			<label index="In">In</label>
+			<label index="Ansehen und Ausleihen bei:">Ansehen und Ausleihen bei:</label>
 
 		</languageKey>
 

@@ -61,7 +61,8 @@ var germanTerms = {
 	'Kataloge': 'Kataloge',
 	'Ausgabe': 'Ausgabe',
 	'Google Books Vorschau': 'Google Books Vorschau',
-	'Umschlagbild': 'Umschlagbild'
+	'Umschlagbild': 'Umschlagbild',
+	'Ansehen und Ausleihen bei': 'Ansehen und Ausleihen bei'
 };
 
 
@@ -99,7 +100,8 @@ var englishTerms = {
 	'Kataloge': 'Catalogues',
 	'Ausgabe': 'Edition',
 	'Google Books Vorschau': 'Google Books Preview',
-	'Umschlagbild': 'Book Cover'
+	'Umschlagbild': 'Book Cover',
+	'Ansehen und Ausleihen bei': 'View catalogue record at'
 };
 
 

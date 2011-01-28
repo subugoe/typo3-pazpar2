@@ -1318,7 +1318,7 @@ function renderDetails(recordID) {
 		var result;
 
 		if (infoItems.length == 1) {
-			 result = infoItems[0];
+			result = infoItems[0];
 		}
 		else if (infoItems.length > 1) {
 			result = document.createElement('ul');
@@ -1874,7 +1874,7 @@ function renderDetails(recordID) {
 	var locationDetails = function () {
 
 		/*	detailInfoItemWithLabel
-			input:	fieldContent - DOM object with content to display in the field
+			input:	fieldContent - string with content to display in the field
 					labelName - string displayed as the label
 					dontTerminate - boolean:	false puts a ; after the text
 												true puts nothing after the text
@@ -1994,7 +1994,7 @@ function renderDetails(recordID) {
 
 
 		/*	electronicURLs
-			Create markup for URLs in current data.
+			Create markup for URLs in current location data.
 			output:	DOM element containing URLs as links.
 		*/
 		var electronicURLs = function() {
@@ -2032,7 +2032,7 @@ function renderDetails(recordID) {
 						URLsContainer.appendChild(link);
 						link.setAttribute('href', linkURL);
 						link.setAttribute('target', 'pz2-linktarget');
-						link.innerHTML = linkText;
+						link.appendChild(document.createTextNode(linkText));
 					}
 				}
 				URLsContainer.appendChild(document.createTextNode('; '));

@@ -570,7 +570,7 @@ function display () {
 		var output = document.createElement('span');
 		output.setAttribute('class', 'pz2-journal');
 
-		var journalTitle = markupForField('journal-title', linkElement, localise(' In') + ': ');
+		var journalTitle = markupForField('journal-title', linkElement, ' ' + localise('In') + ': ');
 		if (journalTitle) {
 			markupForField('journal-subpart', journalTitle, ', ')
 			journalTitle.appendChild(document.createTextNode('.'));

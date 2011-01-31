@@ -112,6 +112,7 @@ var englishTerms = {
 var localisations = {
 	'de': germanTerms,
 	'en': englishTerms
+
 };
 
 
@@ -3236,6 +3237,3 @@ var languageNames = {
 		'zzz': 'Without language code'
 	}
 };
-
-//EOF
- 

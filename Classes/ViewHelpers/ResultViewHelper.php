@@ -69,8 +69,6 @@ public function render ($result) {
 	// detailed information about the publication
 	$this->appendInfoToContainer($this->renderDetails($result), $li);
 	
-	echo memory_get_peak_usage();
-
 	return $this->doc->saveHTML();
 }
 

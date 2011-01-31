@@ -62,7 +62,8 @@ var germanTerms = {
 	'Ausgabe': 'Ausgabe',
 	'Google Books Vorschau': 'Google Books Vorschau',
 	'Umschlagbild': 'Umschlagbild',
-	'Ansehen und Ausleihen bei': 'Ansehen und Ausleihen bei'
+	'Ansehen und Ausleihen bei': 'Ansehen und Ausleihen bei',
+	'keine Treffer gefunden': 'keine Treffer gefunden'
 };
 
 
@@ -101,7 +102,8 @@ var englishTerms = {
 	'Ausgabe': 'Edition',
 	'Google Books Vorschau': 'Google Books Preview',
 	'Umschlagbild': 'Book Cover',
-	'Ansehen und Ausleihen bei': 'View catalogue record at'
+	'Ansehen und Ausleihen bei': 'View catalogue record at',
+	'keine Treffer gefunden': 'no matching results found'
 };
 
 
@@ -654,10 +656,17 @@ function display () {
 				// add record count information
 				var recordCountDiv = document.createElement('div');
 				recordCountDiv.setAttribute('class', 'pz2-recordCount');
-				var infoString = String(firstIndex + 1) + '-'
+				var infoString;
+				if (displayHitList.length > 0) {
+					infoString = String(firstIndex + 1) + '-'
 									+ String(firstIndex + numberOfRecordsOnPage)
 									+ ' ' + localise('von') + ' '
 									+ String(displayHitList.length);
+				}
+				else {
+					infoString = localise('keine Treffer gefunden');
+				}
+
 				if (displayFilter) {
 					infoString += ' ' + localise('gefiltert');
 				}

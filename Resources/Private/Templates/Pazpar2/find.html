@@ -14,7 +14,11 @@
 		<div id="pz2-navi"></div>
 		<div id="pz2-termLists"></div>
 		<div id="pz2-results">
-			<pz2:resultList results="{results}"/>
+			<ol>
+				<f:for each="{results}" as="result">
+					<pz2:result result="{result}"/>
+				</f:for>
+			</ol>
 		</div>
 		<div id="pz2-stat"></div>
 	</div> <!-- #pz2-recordView -->

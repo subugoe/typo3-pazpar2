@@ -1,41 +1,75 @@
 <?php
+/*************************************************************************
+ *  Copyright notice
+ *
+ *  © 2011 Sven-S. Porst, SUB Göttingen <porst@sub.uni-goettingen.de>
+ *  All rigs reserved
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script.
+ *************************************************************************/
 
-class Tx_Pazpar2_ViewHelpers_ResultListViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+
+/**
+ * ResultViewHelper.php
+ *
+ * View Helper for a single pazpar2 result as downloaded and parsed by
+ * Tx_Pazpar2_Domain_Model_Query.
+ *
+ * @author Sven-S. Porst <porst@sub-uni-goettingen.de>
+ */
 
 
+
+
+/**
+ * View Helper class.
+ */
+class Tx_Pazpar2_ViewHelpers_ResultViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+
+
+/**
+ * DOMDocument used by all functions in this class to create DOMElements.
+ *
+ * @var DOMDocument
+ */
 private $doc;
+
 
 
 /**
  * @param array $results
  * @return string
  */
-public function render ($results) {
+public function render ($result) {
 	$this->doc = DOMImplementation::createDocument();
-	$ol = $this->doc->createElement('ol');
-	$this->doc->appendChild($ol);
-	
-	foreach ($results as $result) {
-		$li = $this->doc->createElement('li');
-		$ol->appendChild($li);
-		
-		$this->appendInfoToContainer($this->titleInfo($result), $li);
-		$authors = $this->authorInfo($result);
-		$this->appendInfoToContainer($authors, $li);
-		
-		if($result['md-medium'][0][values][0] == 'article') {
-			$this->appendInfoToContainer($this->journalInfo($result), $li);
-		}
-		else {
-			$spaceBefore = ' ';
-			if ($authors) {
-				$spaceBefore = ', ';
-			}
-			$this->appendMarkupForFieldToContainer('date', $result,  $li, $spaceBefore, '.');
-		}
+	$li = $this->doc->createElement('li');
+	$this->doc->appendChild($li);
 
-		$this->appendInfoToContainer($this->renderDetails($result), $li);
+	// basic title/author information
+	$this->appendInfoToContainer($this->titleInfo($result), $li);
+	$authors = $this->authorInfo($result);
+	$this->appendInfoToContainer($authors, $li);
+
+	// year or journal + year information
+	if($result['md-medium'][0][values][0] == 'article') {
+		$this->appendInfoToContainer($this->journalInfo($result), $li);
 	}
+	else {
+		$spaceBefore = ' ';
+		if ($authors) {
+			$spaceBefore = ', ';
+		}
+		$this->appendMarkupForFieldToContainer('date', $result,  $li, $spaceBefore, '.');
+	}
+
+	// detailed information about the publication
+	$this->appendInfoToContainer($this->renderDetails($result), $li);
+	
+	echo memory_get_peak_usage();
 
 	return $this->doc->saveHTML();
 }
@@ -481,7 +515,7 @@ private function catalogueLink ($locationAll) {
 		$linkElement = $this->doc->createElement('a');
 		$linkElement->setAttribute('href', $catalogueURL);
 		$linkElement->setAttribute('target', 'pz2-linktarget');
-		$linkElement->setAttribute('class', 'pz2-detail-catalogue-link');
+		$linkElement->setAttribute('class', 'pz2-detail-catalogueLink');
 		$linkText = Tx_Extbase_Utility_Localization::translate('Ansehen und Ausleihen bei:', 'Pazpar2');
 		if ($targetName) {
 			$linkText .= ' ' . $targetName;
@@ -494,7 +528,7 @@ private function catalogueLink ($locationAll) {
 
 
 
-// Not implemented in the PHP version right now
+// Not implemented in the PHP version.
 private function addZDBInfoIntoElement ($container, $result) {
 
 }

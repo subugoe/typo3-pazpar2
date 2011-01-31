@@ -1,14 +1,21 @@
 {namespace pz2=Tx_Pazpar2_ViewHelpers}
 
-
 <div id="pazpar2">
-	Find template
 	<f:render partial="form"/>
 
 
 	<div id="pz2-recordView">
 		<div class="pz2-pager">
 			<div class="pz2-progressIndicator"></div>
+			<f:if condition="{f:count(subject: results)} > 0">
+				<div class="pz2-recordCount">
+					<f:count subject="{results}"/>
+					<f:if condition="{f:count(subject: results)} == 1">
+						<f:then><f:translate key="Result"/></f:then>
+						<f:else><f:translate key="Results"/></f:else>
+					</f:if>
+				</div>
+			</f:if>
 		</div>
 
 		<div id="pz2-navi"></div>

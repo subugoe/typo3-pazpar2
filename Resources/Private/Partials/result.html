@@ -1,0 +1,55 @@
+<li>
+	<span class="pz2-title-complete">
+
+		<span class="pz2-title-main">
+			<f:if condition="{record.md-title}">
+				<span class="pz2-title">
+					{record.md-title}
+				</span>
+			</f:if>
+
+			<f:if condition="{record.md-multivolume-title}">
+				<span class="pz2-multivolume-title">
+					{record.md-multivolume-title}
+				</span>
+			</f:if>
+		</span>
+
+		<f:if condition="{record.md-title-remainder}">
+			<span class="pz2-title-remainder">
+				{record.md-title-remainder}
+			</span>
+		</f:if>
+
+		<f:if condition="{record.md-number-section}">
+			<span class="pz2-number-section">
+				{record.md-number-section}
+			</span>
+		</f:if>
+		.
+		<!-- spacing ! -->
+	</span>
+
+	<f:if condition="{record.md-title-responsibility}">
+		<f:then>
+			<span class="pz2-item-responsibility">
+				{record.md-title-responsibility}.
+				<!-- double full stop ? -->
+			</span>
+		</f:then>
+		<f:else>
+			<f:if condition="{record.md-author}">
+				<span class="pz2-item-responsibility">
+					<f:for each="{record.md-author}" as="author" key="authorIndex">
+						<f:if condition="{authorIndex} != 0">, </f:if>
+						{author}
+					</f:for>.
+					<!-- double full stop ? -->
+				</span>
+			</f:if>
+		</f:else>
+	</f:if>
+
+
+
+</li>

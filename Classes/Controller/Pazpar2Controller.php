@@ -29,6 +29,9 @@
  */
 class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_ActionController {
 
+	public $query;
+
+
 	/**
 	 * Initialiser
 	 *
@@ -45,6 +48,9 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 				$this->conf[$key] = $value;
 			}
 		}
+
+		$this->query = t3lib_div::makeInstance('Tx_Pazpar2_Domain_Model_Query');
+		$this->query->setServiceName($this->conf['serviceID']);
 	}
 
 
@@ -76,7 +82,28 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 	 * @return void
 	 */
 	public function indexAction () {
+		debugster("indexAction");
+		debugster($this->query->getQueryString());
+		$this->view->assign('query', $this->query);
+
 		$this->addResourcesToHead();
+	}
+
+
+	/*
+	 * @param Tx_Pazpar2_Domain_Model_Query $query
+	 */
+	public function findAction () {
+		try{
+		$this->query->run();
+
+		$this->view->assign('results', $this->query->getResults());
+
+		$this->addResourcesToHead();
+		}
+		catch(Exception $e){
+			$e->getTraceAsString();
+		}
 	}
 
 

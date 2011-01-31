@@ -1,0 +1,46 @@
+<div id="pazpar2">
+	Index template
+	<f:form class="pz2-searchForm" action="find" objectName="query">
+		<div class="pz2-mainForm">
+			<f:form.textbox class="pz2-searchField" property="queryString"/>
+			<f:form.submit name="button" value="<f:translate key='Find'/>"/>
+		</div>
+
+		<div class="pz2-ranking">
+			<f:translate key="Sort by"/>
+
+			<f:form.select name="sort" class="pz2-sort"
+					options="{  date-d--author-a--title-a: '{f:translate(key:\'Age\')}',
+								author-a--date-d--title-a: '{f:translate(key:\'Author\')}',
+								title-a--author-a--date-d: '{f:translate(key:\'Title\')}'   }"
+					value="date-d--author-a--title-a"/>
+
+			<f:form.select name="perpage" class="pz2-perPage"
+					options="{10:10, 20:20, 50:50, 100:100}"
+					value="100"/>				
+		</div>
+	</f:form>
+
+	<div id="pz2-recordView">
+		<div class="pz2-pager">
+			<div class="pz2-progressIndicator"></div>
+		</div>
+
+		<div id="pz2-navi"></div>
+		<div id="pz2-termLists"></div>
+		<div id="pz2-results"></div>
+		<div id="pz2-stat"></div>
+	</div> <!-- #pz2-recordView -->
+
+	<div id="pz2-targetView" style="display: none">
+		<div id="pz2-byTarget">
+			<f:translate key="No information available yet."/>
+		</div>
+	</div> <!-- #pz2-targetView -->
+
+	<div id="pz2-switchMenu">
+		[<a href="#" onclick="switchView('pz2-recordView')"><f:translate key="Results"/></a>,
+	 	<a href="#" onclick="switchView('pz2-targetView')"><f:translate key="Status"/></a>]
+	</div> <!-- #pz2-switchMenu -->
+
+</div> <!-- #pazpar2 -->

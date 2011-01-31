@@ -30,7 +30,6 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 
 	/**
 	 * Search string.
-	 * TODO: Escape string?
 	 *
 	 * @var string
 	 */
@@ -55,7 +54,6 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 
 	/**
 	 * Service name to run the query on.
-	 * TODO: Escape the string?
 	 *
 	 * @var string|Null
 	 */
@@ -77,34 +75,91 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	}
 
 
+	
+	/**
+	 * URL of the pazpar2 service used.
+	 * 
+	 * @var string|Null
+	 */
+	protected $pazpar2BaseURL;
+
+	/**
+	 * Return URL of pazpar2 service.
+	 * If it is not set, return default URL on localhost.
+	 *
+	 * @return string
+	 */
+	public function getPazpar2BaseURL () {
+		$URL = 'http://localhost/pazpar2/search.pz2';
+		if ($this->pazpar2BaseURL) {
+			$URL = $this->pazpar2BaseURL;
+		}
+		return $URL;
+	}
+
+	/**
+	 * Setter for pazpar2BaseURL variable.
+	 * 
+	 * @param string|Null $newPazpar2BaseURL
+	 * @return void
+	 */
+	public function setPazpar2BaseURL ($newPazpar2BaseURL) {
+		$this->pazpar2BaseURL = $newPazpar2BaseURL;
+	}
+
+
+
+	/**
+	 * Array holding the search results after they are downloaded.
+	 * The array's element can be displayed by the View Helper class
+	 * Tx_Pazpar2_ViewHelpers_ResultViewHelper.
+	 *
+	 * @var array
+	 */
 	private $results = array();
 
+	/**
+	 * @return array
+	 */
 	public function getResults() {
 		return $this->results;
 	}
 
 
 
-
+	/**
+	 * VARIABLES FOR INTERNAL USE
+	 */
+	
+	/**
+	 * Stores session ID while pazpar2 is running.
+	 * @var string
+	 */
 	protected $pazpar2SessionID;
+
+	/**
+	 * Stores state of query.
+	 * @var Boolean
+	 */
 	protected $queryIsRunning;
+
+	/**
+	 * Stores time the current query was started.
+	 * @var int
+	 */
 	protected $queryStartTime;
 
 
-	/*
-	 * TODO: Make URL configurable (both here and in JS)
-	 * @return string
+
+
+	/**
+	 * Returns URL to initialise pazpar2.
+	 * If $serviceName has been set up, that service is used.
+	 *
+	 * @return sting
 	 */
-	private function pazpar2BaseURL () {
-		$URL = 'http://vlib.sub.uni-goettingen.de/pazpar2/search.pz2';
-		// $URL = 'http://localhost/pazpar2/search.pz2';
-
-		return $URL;
-	}
-
-
 	private function pazpar2InitURL () {
-		$URL = $this->pazpar2BaseURL() . '?command=init';
+		$URL = $this->getPazpar2BaseURL() . '?command=init';
 		if ($this->getServiceName() != Null) {
 			$URL .= '&service=' . $this->getServiceName();
 		}
@@ -113,8 +168,13 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	}
 
 
+
+	/**
+	 * Returns URL for starting a search with the current pazpar2 session.
+	 * @return string
+	 */
 	private function pazpar2SearchURL () {
-		$URL = $this->pazpar2BaseURL() . '?command=search';
+		$URL = $this->getPazpar2BaseURL() . '?command=search';
 		$URL .= '&session=' . $this->pazpar2SessionID;
 		$URL .= '&query=' . $this->getQueryString();
 
@@ -122,8 +182,13 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	}
 
 
+
+	/**
+	 * Returns URL for a status request of the current pazpar2 session.
+	 * @return string
+	 */
 	private function pazpar2StatURL () {
-		$URL = $this->pazpar2BaseURL() . '?command=stat';
+		$URL = $this->getPazpar2BaseURL() . '?command=stat';
 		$URL .= '&session=' . $this->pazpar2SessionID;
 
 		return $URL;
@@ -131,8 +196,17 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 
 
 
+	/**
+	 * Returns URL for downloading pazpar2’s first 1000 results.
+	 * It seems crucial to not download more results when running with 128MB RAM
+	 * for Typo3/PHP as the t3lib_div::xml2tree function used to parse the data
+	 * seems to consume a lot of memory and kills the process when increasing
+	 * the number significantly.
+	 * 
+	 * @return string 
+	 */
 	private function pazpar2ShowURL () {
-		$URL = $this->pazpar2BaseURL() . '?command=show';
+		$URL = $this->getPazpar2BaseURL() . '?command=show';
 		$URL .= '&session=' . $this->pazpar2SessionID;
 		$URL .= '&query=' . $this->getQueryString();
 		$URL .= '&start=0&num=1000';
@@ -143,6 +217,10 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	}
 
 
+
+	/**
+	 * Initialise the pazpar2 session and store the session ID in $pazpar2SessionID.
+	 */
 	protected function initialiseSession () {
 		$this->queryStartTime = time();
 		$initReplyString = t3lib_div::getURL($this->pazpar2InitURL());
@@ -169,7 +247,11 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	}
 
 
-	/*
+
+	/**
+	 * Start a pazpar2 Query.
+	 * Requires $pazpar2SessionID to be set.
+	 * 
 	 */
 	protected function startQuery () {
 		$this->initialiseSession();
@@ -191,12 +273,17 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 			else {
 				debugster('could not parse pazpar2 search reply');
 			}
-
 		}
 	}
 
 	
-	/*
+
+	/**
+	 * Checks whether the query is done.
+	 * Requires a session to be established.
+	 *
+	 * @param int $count return by reference the current number of results
+	 * @return boolean True when query has finished, False otherwise
 	 */
 	protected function queryIsDoneWithResultCount (&$count) {
 		$result = False;
@@ -219,8 +306,12 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	}
 
 
-	/*
+
+	/**
+	 * Fetches results from pazpar2.
+	 * Requires an established session.
 	 *
+	 * Stores the results in $results.
 	 */
 	protected function fetchResults () {
 		$result = Null;
@@ -253,6 +344,12 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 
 
 
+	/**
+	 * Public function to run the pazpar2 query.
+	 * The search term (and, if necessary, pazpar2 service ID) have to be set beforehand.
+	 * 
+	 * The results of the query are available via getResults() after this function returns.
+	 */
 	public function run () {
 		$this->startQuery();
 		$resultCount = Null;
@@ -270,8 +367,6 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 
 		$this->fetchResults();
 	}
-
-
 
 }
 

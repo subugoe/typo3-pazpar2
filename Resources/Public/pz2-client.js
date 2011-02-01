@@ -63,7 +63,7 @@ var germanTerms = {
 	'Google Books Vorschau': 'Google Books Vorschau',
 	'Umschlagbild': 'Umschlagbild',
 	'Ansehen und Ausleihen bei': 'Ansehen und Ausleihen bei',
-	'keine Treffer gefunden': 'keine Treffer gefunden'
+	'keine Treffer gefunden': 'keine Treffer'
 };
 
 
@@ -103,7 +103,7 @@ var englishTerms = {
 	'Google Books Vorschau': 'Google Books Preview',
 	'Umschlagbild': 'Book Cover',
 	'Ansehen und Ausleihen bei': 'View catalogue record at',
-	'keine Treffer gefunden': 'no matching results found'
+	'keine Treffer gefunden': 'no matching records'
 };
 
 
@@ -1051,6 +1051,7 @@ function domReady ()  {
 
 	$('.pz2-searchForm .pz2-searchField').val('');
 	$('.pz2-sort, .pz2-perPage').attr('onchange', 'onSelectDidChange');
+	$('#pazpar2').removeClass('pz2-noJS');
 }
 
 

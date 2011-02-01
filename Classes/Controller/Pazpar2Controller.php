@@ -76,31 +76,22 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 
 
 	/**
-	 * Index: Insert pazpar2 CSS <link> and JavaScript <script>-tags into
+	 * Index:
+	 * 1. Insert pazpar2 CSS <link> and JavaScript <script>-tags into
 	 * the page’s <head> which are required to make the search work.
+	 * 2. Get parameters and run the query. Display results if there are any.
 	 *
 	 * @return void
 	 */
 	public function indexAction () {
-		$this->view->assign('query', $this->query);
-
 		$this->addResourcesToHead();
-	}
 
-
-	/**
-	 * @return void
-	 */
-	public function findAction () {
 		$arguments = $this->request->getArguments();
-		$myQueryString = $arguments["queryString"];
+		$myQueryString = trim($arguments["queryString"]);
 		$this->query->setQueryString($myQueryString);
-
+		$this->view->assign('queryString', $myQueryString);
 		$this->query->run();
-
 		$this->view->assign('results', $this->query->getResults());
-
-		$this->addResourcesToHead();
 	}
 
 

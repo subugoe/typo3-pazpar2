@@ -48,6 +48,10 @@
 	clear: right; /* required to clear the right floated Google Books element */
 }
 
+#pazpar2 .pz2-JSNote {
+	margin-bottom: 1em;
+}
+
 #pz2-stat {
 	clear: both;
 }
@@ -242,7 +246,6 @@ dd div h4 {
 /* Google Books 
 */
 .googleBooks {
-	clear
 	display: block;
 	float: right;
 }
@@ -263,3 +266,25 @@ dd div h4 {
 	height: 550px;
 }
 
+
+
+/*
+Hide/Show elements depending on JavaScript status.
+Markup comes with a .pz2-noJS class on the #pazpar2 element.
+pz2-client.js removes this once it it loaded.
+
+                    with JS    without JS
+.pz2-JSNote         hide       show
+.pz2-switchMenu     show       hide
+*/
+#pazpar2 .pz2-JSNote {
+	display: none;
+}
+
+#pazpar2.pz2-noJS .pz2-JSNote {
+	display: block;
+}
+
+#pazpar2.pz2-noJS #pz2-switchMenu {
+	display: none;
+}

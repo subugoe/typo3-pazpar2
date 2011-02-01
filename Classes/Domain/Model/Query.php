@@ -217,7 +217,6 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	}
 
 
-
 	/**
 	 * Initialise the pazpar2 session and store the session ID in $pazpar2SessionID.
 	 */
@@ -238,7 +237,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 				}
 			}
 			else {
-				debugster('pazpar2 init status is not "OK" but ' . $status);
+				debugster('pazpar2 init status is not "OK" but "' . $status . '"');
 			}
 		}
 		else {
@@ -266,7 +265,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 					$this->queryIsRunning = True;
 				}
 				else {
-					debugster('pazpar2 search command status is not "OK" but ' . $status);
+					debugster('pazpar2 search command status is not "OK" but "' . $status . '"');
 				}
 			}
 			else {
@@ -333,7 +332,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 				}
 			}
 			else {
-				debugster('pazpar2 show reply status is not "OK" but ' . $status);
+				debugster('pazpar2 show reply status is not "OK" but "' . $status . '"');
 			}
 		}
 		else {
@@ -345,26 +344,28 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 
 	/**
 	 * Public function to run the pazpar2 query.
-	 * The search term (and, if necessary, pazpar2 service ID) have to be set beforehand.
+	 * If $queryString is empty, don't do anything.
 	 * 
 	 * The results of the query are available via getResults() after this function returns.
 	 */
 	public function run () {
-		$this->startQuery();
-		$resultCount = Null;
-		$maximumTime = 120;
+		if ($this->queryString) {
+			$this->startQuery();
+			$resultCount = Null;
+			$maximumTime = 120;
 
-		set_time_limit($maximumTime + 5);
+			set_time_limit($maximumTime + 5);
 		
-		while (($this->queryIsRunning) && (time() - $this->queryStartTime < $maximumTime)) {
-			sleep(2);
+			while (($this->queryIsRunning) && (time() - $this->queryStartTime < $maximumTime)) {
+				sleep(2);
 
-			if ($this->queryIsDoneWithResultCount($resultCount)) {
-				break;
+				if ($this->queryIsDoneWithResultCount($resultCount)) {
+					break;
+				}
 			}
-		}
 
-		$this->fetchResults();
+			$this->fetchResults();
+		}
 	}
 
 }

@@ -197,19 +197,22 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 
 
 	/**
-	 * Returns URL for downloading pazpar2’s first 1000 results.
-	 * It seems crucial to not download more results when running with 128MB RAM
-	 * for Typo3/PHP as the t3lib_div::xml2tree function used to parse the data
-	 * seems to consume a lot of memory and kills the process when increasing
-	 * the number significantly.
+	 * Returns URL for downloading pazpar2 results.
+	 * The parameters can be used to give the the start record
+	 * as well as the number of records required.
 	 * 
+	 * Typo3 typically starts running into out of memory errors when fetching
+	 * around 1000 records in one go with a 128MB memory limit for PHP.
+	 *
+	 * @param int $start index of first record to retrieve (optional, default: 0)
+	 * @param int $num number of records to retrieve (optional, default: 500)
 	 * @return string 
 	 */
-	private function pazpar2ShowURL () {
+	private function pazpar2ShowURL ($start=0, $num=500) {
 		$URL = $this->getPazpar2BaseURL() . '?command=show';
 		$URL .= '&session=' . $this->pazpar2SessionID;
 		$URL .= '&query=' . $this->getQueryString();
-		$URL .= '&start=0&num=1000';
+		$URL .= '&start=' . $start . '&num=' . $num;
 		$URL .= '&sort=date%3A0%2Cauthor%3A1%2Ctitle%3A1';
 		$URL .= '&block=1'; // unclear how this is advantagous but the JS client adds it
 
@@ -310,34 +313,50 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	 * Requires an established session.
 	 *
 	 * Stores the results in $results.
+	 *
+	 * @param int $resultCount number of results to fetch
+	 * @return int total result number
 	 */
-	protected function fetchResults () {
-		$result = Null;
+	protected function fetchResults ($resultCount) {
+		$maxResults = min(Array($resultCount, 1200)); // limit results to 1200 to avoid hitting the memory limit
+		$recordsToFetch = 500;
+		$firstRecord = 0;
+		$totalResultCount = Null;
 
-		$showReplyString = t3lib_div::getURL($this->pazpar2ShowURL());
-		// need xml2tree here as xml2array fails when dealing with arrays of tags with the same name
-		$showReplyTree = t3lib_div::xml2tree($showReplyString);
-		$showReply = $showReplyTree['show'][0]['ch'];
+		// get records in chunks of $recordsToFetch to avoid running out of memory
+		// in t3lib_div::xml2tree. We seem to typically need ~100KB per record (?).
+		while ($firstRecord < $maxResults) {
+			$recordsToFetchNow = min(Array($recordsToFetch, $maxResults - $firstRecord));
+			$showReplyString = t3lib_div::getURL($this->pazpar2ShowURL($firstRecord, $recordsToFetchNow));
+			$firstRecord += $recordsToFetchNow;
 
-		if ($showReply) {
-			$status = $showReply['status'][0]['values'][0];
-			if ($status == 'OK') {
-				$this->queryIsRunning = False;
-				$hits = $showReply['hit'];
+			// need xml2tree here as xml2array fails when dealing with arrays of tags with the same name
+			$showReplyTree = t3lib_div::xml2tree($showReplyString);
+			$showReply = $showReplyTree['show'][0]['ch'];
 
-				foreach ($hits as $hit) {
-					$myHit = $hit['ch'];
-					$key = $myHit['recid'][0]['values'][0];
-					$this->results[$key] = $myHit;
+			if ($showReply) {
+				$status = $showReply['status'][0]['values'][0];
+				$totalResultCount = $showReply['total'][0]['values'][0];
+				if ($status == 'OK') {
+					$this->queryIsRunning = False;
+					$hits = $showReply['hit'];
+
+					foreach ($hits as $hit) {
+						$myHit = $hit['ch'];
+						$key = $myHit['recid'][0]['values'][0];
+						$this->results[$key] = $myHit;
+					}
+				}
+				else {
+					debugster('pazpar2 show reply status is not "OK" but "' . $status . '"');
 				}
 			}
 			else {
-				debugster('pazpar2 show reply status is not "OK" but "' . $status . '"');
+				debugster('could not parse pazpar2 search reply');
 			}
 		}
-		else {
-			debugster('could not parse pazpar2 search reply');
-		}
+
+		return $totalResultCount;
 	}
 
 
@@ -347,11 +366,15 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	 * If $queryString is empty, don't do anything.
 	 * 
 	 * The results of the query are available via getResults() after this function returns.
+	 *
+	 * @return int number of results
 	 */
 	public function run () {
+		$totalResultCount = Null;
+
 		if ($this->queryString) {
-			$this->startQuery();
 			$resultCount = Null;
+			$this->startQuery();
 			$maximumTime = 120;
 
 			set_time_limit($maximumTime + 5);
@@ -364,8 +387,10 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 				}
 			}
 
-			$this->fetchResults();
+			$totalResultCount = $this->fetchResults($resultCount);
 		}
+
+		return $totalResultCount;
 	}
 
 }

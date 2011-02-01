@@ -51,6 +51,7 @@
 			<label index="In">In</label>
 			<label index="Ansehen und Ausleihen bei:">Ansehen und Ausleihen bei:</label>
 			<label index="Search is better with JavaScript.">Ihr Browser scheint kein JavaScript zu unterstützen. Ohne JavaScript kann es bei Anfragen mit vielen Ergebnissen eine Minute dauern, bis alle Ergebnisse verfügbar sind. Wir empfehlen daher, für die Suchfunktion JavaScript zu aktivieren.</label>
+			<label index="of">von</label>
 		</languageKey>
 
 
@@ -96,6 +97,7 @@
 			<label index="In">In</label>
 			<label index="Ansehen und Ausleihen bei:">Ansehen und Ausleihen bei:</label>
 			<label index="Search is better with JavaScript.">JavaScript seems to be unavailable in your web browser. Without JavaScript, displaying the results of a query can take up to a minute in some cases. Please be patient or turn on JavaScript for a more interactive search experience.</label>
+			<label index="of">of</label>
 		</languageKey>
 
 	</data>

@@ -257,7 +257,6 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 		$this->initialiseSession();
 
 		if ($this->pazpar2SessionID) {
-			debugster($this->pazpar2SearchURL());
 			$searchReplyString = t3lib_div::getURL($this->pazpar2SearchURL());
 			$searchReply = t3lib_div::xml2array($searchReplyString);
 

@@ -16,6 +16,8 @@
 			<label index="Author">Autor</label>
 			<label index="Title">Titel</label>
 			<label index="No information available yet.">Noch keine Informationen verfügbar.</label>
+			<label index="No Results">Es gab keine Suchergebnisse für Ihre Anfrage.</label>
+			<label index="Result">Ergebnis</label>
 			<label index="Results">Ergebnisse</label>
 			<label index="Status">Status</label>
 
@@ -25,6 +27,29 @@
 			<label index="settings.CSSPath">Pfad zum eigenem Stylesheet (ersetzt das eingebaute)</label>
 			<label index="settings.pz2JSPath">Pfad zu eigenem pz2.js (ersetzt das aus dem pazpar2 Paket)</label>
 			<label index="settings.pz2-clientJSPath">Pfad zu eigenem pz2-client.js, das eine domReady()-Funktion zur Verfügung stellt (ersetzt das eingebaute)</label>
+
+			<label index="detail-label-title">Titel</label>
+			<label index="detail-label-author">Autor</label>
+			<label index="detail-label-author-plural">Autoren</label>
+			<label index="detail-label-other-person">Person</label>
+			<label index="detail-label-other-person-plural">Personen</label>
+			<label index="detail-label-medium">Art</label>
+			<label index="detail-label-description">Information</label>
+			<label index="detail-label-description-plural">Informationen</label>
+			<label index="detail-label-series-title">Reihe</label>
+			<label index="detail-label-issn">ISSN</label>
+			<label index="detail-label-acronym-issn">Internationale Standardseriennummer</label>
+			<label index="detail-label-eissn">eISSN</label>
+			<label index="detail-label-acronym-eissn">Internationale Standardseriennummer für digitale Serien</label>
+			<label index="detail-label-pissn">pISSN</label>
+			<label index="detail-label-acronym-pissn">Internationale Standardseriennummer für gedruckte Serien</label>
+			<label index="detail-label-doi">DOI</label>
+			<label index="detail-label-acronym-doi">Document Object Identifier</label>
+			<label index="detail-label-doi-plural">DOIs</label>
+			<label index="Ausgabe">Ausgabe</label>
+			<label index="link">Link</label>
+			<label index="In">In</label>
+			<label index="Ansehen und Ausleihen bei:">Ansehen und Ausleihen bei:</label>
 		</languageKey>
 
 
@@ -35,6 +60,8 @@
 			<label index="Author">Author</label>
 			<label index="Title">Title</label>
 			<label index="No information available yet.">No information available yet.</label>
+			<label index="No Results">There were no search results for your query.</label>
+			<label index="Results">Result</label>
 			<label index="Results">Results</label>
 			<label index="Status">Status</label>
 
@@ -44,6 +71,30 @@
 			<label index="settings.CSSPath">Path to stylesheet (replaces built-in stylesheet)</label>
 			<label index="settings.pz2JSPath">Path to pz2.js (replaces the built-in one from pazpar2 distribution)</label>
 			<label index="settings.pz2-clientJSPath">Path to pz2-client.js which provides a domReady() function (replaces built-in script)</label>
+
+			<label index="detail-label-title">Title</label>
+			<label index="detail-label-author">Author</label>
+			<label index="detail-label-author-plural">Authors</label>
+			<label index="detail-label-other-person">Person</label>
+			<label index="detail-label-other-person-plural">People</label>
+			<label index="detail-label-medium">Type</label>
+			<label index="detail-label-description">Information</label>
+			<label index="detail-label-description-plural">Information</label>
+			<label index="detail-label-series-title">Series</label>
+			<label index="detail-label-issn">ISSN</label>
+			<label index="detail-label-acronym-issn">International Standard Series Number</label>
+			<label index="detail-label-eissn">eISSN</label>
+			<label index="detail-label-acronym-eissn">International Standard Series Number for electronic series</label>
+			<label index="detail-label-pissn">pISSN</label>
+			<label index="detail-label-acronym-pissn">International Standard Series Number for printed series</label>
+			<label index="detail-label-doi">DOI</label>
+			<label index="detail-label-acronym-doi">Document Object Identifier</label>
+			<label index="detail-label-doi-plural">DOIs</label>
+			<label index="Ausgabe">Ausgabe</label>
+			<label index="link">link</label>
+			<label index="In">In</label>
+			<label index="Ansehen und Ausleihen bei:">Ansehen und Ausleihen bei:</label>
+
 		</languageKey>
 
 	</data>

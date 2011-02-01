@@ -30,7 +30,6 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 
 	/**
 	 * Search string.
-	 * TODO: Escape string?
 	 *
 	 * @var string
 	 */
@@ -55,7 +54,6 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 
 	/**
 	 * Service name to run the query on.
-	 * TODO: Escape the string?
 	 *
 	 * @var string|Null
 	 */
@@ -77,34 +75,91 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	}
 
 
+	
+	/**
+	 * URL of the pazpar2 service used.
+	 * 
+	 * @var string|Null
+	 */
+	protected $pazpar2BaseURL;
+
+	/**
+	 * Return URL of pazpar2 service.
+	 * If it is not set, return default URL on localhost.
+	 *
+	 * @return string
+	 */
+	public function getPazpar2BaseURL () {
+		$URL = 'http://localhost/pazpar2/search.pz2';
+		if ($this->pazpar2BaseURL) {
+			$URL = $this->pazpar2BaseURL;
+		}
+		return $URL;
+	}
+
+	/**
+	 * Setter for pazpar2BaseURL variable.
+	 * 
+	 * @param string|Null $newPazpar2BaseURL
+	 * @return void
+	 */
+	public function setPazpar2BaseURL ($newPazpar2BaseURL) {
+		$this->pazpar2BaseURL = $newPazpar2BaseURL;
+	}
+
+
+
+	/**
+	 * Array holding the search results after they are downloaded.
+	 * The array's element can be displayed by the View Helper class
+	 * Tx_Pazpar2_ViewHelpers_ResultViewHelper.
+	 *
+	 * @var array
+	 */
 	private $results = array();
 
+	/**
+	 * @return array
+	 */
 	public function getResults() {
 		return $this->results;
 	}
 
 
 
-
+	/**
+	 * VARIABLES FOR INTERNAL USE
+	 */
+	
+	/**
+	 * Stores session ID while pazpar2 is running.
+	 * @var string
+	 */
 	protected $pazpar2SessionID;
+
+	/**
+	 * Stores state of query.
+	 * @var Boolean
+	 */
 	protected $queryIsRunning;
+
+	/**
+	 * Stores time the current query was started.
+	 * @var int
+	 */
 	protected $queryStartTime;
 
 
-	/*
-	 * TODO: Make URL configurable (both here and in JS)
-	 * @return string
+
+
+	/**
+	 * Returns URL to initialise pazpar2.
+	 * If $serviceName has been set up, that service is used.
+	 *
+	 * @return sting
 	 */
-	private function pazpar2BaseURL () {
-		$URL = 'http://vlib.sub.uni-goettingen.de/pazpar2/search.pz2';
-		// $URL = 'http://localhost/pazpar2/search.pz2';
-
-		return $URL;
-	}
-
-
 	private function pazpar2InitURL () {
-		$URL = $this->pazpar2BaseURL() . '?command=init';
+		$URL = $this->getPazpar2BaseURL() . '?command=init';
 		if ($this->getServiceName() != Null) {
 			$URL .= '&service=' . $this->getServiceName();
 		}
@@ -113,8 +168,13 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	}
 
 
+
+	/**
+	 * Returns URL for starting a search with the current pazpar2 session.
+	 * @return string
+	 */
 	private function pazpar2SearchURL () {
-		$URL = $this->pazpar2BaseURL() . '?command=search';
+		$URL = $this->getPazpar2BaseURL() . '?command=search';
 		$URL .= '&session=' . $this->pazpar2SessionID;
 		$URL .= '&query=' . $this->getQueryString();
 
@@ -122,8 +182,13 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	}
 
 
+
+	/**
+	 * Returns URL for a status request of the current pazpar2 session.
+	 * @return string
+	 */
 	private function pazpar2StatURL () {
-		$URL = $this->pazpar2BaseURL() . '?command=stat';
+		$URL = $this->getPazpar2BaseURL() . '?command=stat';
 		$URL .= '&session=' . $this->pazpar2SessionID;
 
 		return $URL;
@@ -131,30 +196,42 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 
 
 
+	/**
+	 * Returns URL for downloading pazpar2’s first 1000 results.
+	 * It seems crucial to not download more results when running with 128MB RAM
+	 * for Typo3/PHP as the t3lib_div::xml2tree function used to parse the data
+	 * seems to consume a lot of memory and kills the process when increasing
+	 * the number significantly.
+	 * 
+	 * @return string 
+	 */
 	private function pazpar2ShowURL () {
-		$URL = $this->pazpar2BaseURL() . '?command=show';
+		$URL = $this->getPazpar2BaseURL() . '?command=show';
 		$URL .= '&session=' . $this->pazpar2SessionID;
 		$URL .= '&query=' . $this->getQueryString();
 		$URL .= '&start=0&num=1000';
 		$URL .= '&sort=date%3A0%2Cauthor%3A1%2Ctitle%3A1';
-		$URL .= '&block=1'; // unclear whether this is advantagous but the JS client adds it
+		$URL .= '&block=1'; // unclear how this is advantagous but the JS client adds it
 
 		return $URL;
 	}
 
 
+
+	/**
+	 * Initialise the pazpar2 session and store the session ID in $pazpar2SessionID.
+	 */
 	protected function initialiseSession () {
-		debugster('initialiseSession');
 		$this->queryStartTime = time();
-		$initReplyString = file_get_contents($this->pazpar2InitURL());
-		$initReply = simplexml_load_string($initReplyString);
+		$initReplyString = t3lib_div::getURL($this->pazpar2InitURL());
+		$initReply = t3lib_div::xml2array($initReplyString);
 
 		if ($initReply) {
-			$status = $initReply->xpath('/init/status');
-			if ($status[0] == 'OK') {
-				$sessionID = $initReply->xpath('/init/session');
-				if ($sessionID && count($sessionID) > 0) {
-					$this->pazpar2SessionID = (string)$sessionID[0];
+			$status = $initReply['status'];
+			if ($status == 'OK') {
+				$sessionID = $initReply['session'];
+				if ($sessionID) {
+					$this->pazpar2SessionID = $sessionID;
 				}
 				else {
 					debugster('did not receive pazpar2 session ID');
@@ -165,49 +242,59 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 			}
 		}
 		else {
-			debugster('could not read pazpar2 init reply');
+			debugster('could not parse pazpar2 init reply');
 		}
 	}
 
 
-	/*
+
+	/**
+	 * Start a pazpar2 Query.
+	 * Requires $pazpar2SessionID to be set.
+	 * 
 	 */
 	protected function startQuery () {
 		$this->initialiseSession();
 
 		if ($this->pazpar2SessionID) {
 			debugster($this->pazpar2SearchURL());
-			$searchReplyString = file_get_contents($this->pazpar2SearchURL());
-			$searchReply = simplexml_load_string($searchReplyString);
-				debugster($searchReply);
-debugster($searchReplyString);
+			$searchReplyString = t3lib_div::getURL($this->pazpar2SearchURL());
+			$searchReply = t3lib_div::xml2array($searchReplyString);
+
 			if ($searchReply) {
-				$status = $searchReply->xpath('/search/status');
-				if ($status[0] == 'OK') {
+				$status = $searchReply['status'];
+				if ($status == 'OK') {
 					$this->queryIsRunning = True;
+				}
+				else {
+					debugster('pazpar2 search command status is not "OK" but ' . $status);
 				}
 			}
 			else {
-				debugster('could not read pazpar2 search reply');
+				debugster('could not parse pazpar2 search reply');
 			}
-
 		}
 	}
 
 	
-	/*
+
+	/**
+	 * Checks whether the query is done.
+	 * Requires a session to be established.
+	 *
+	 * @param int $count return by reference the current number of results
+	 * @return boolean True when query has finished, False otherwise
 	 */
 	protected function queryIsDoneWithResultCount (&$count) {
 		$result = False;
 
-		$statReplyString = file_get_contents($this->pazpar2StatURL());
-		$statReply = simplexml_load_string($statReplyString);
+		$statReplyString = t3lib_div::getURL($this->pazpar2StatURL());
+		$statReply = t3lib_div::xml2array($statReplyString);
 
 		if ($statReply) {
-			$activeCount = $statReply->xpath('/stat/activeclients');
-			if ($activeCount[0] == 0) {
-				$countReply = $statReply->xpath('/stat/records');
-				$count = $countReply[0];
+			$progress = $statReply['progress'];
+			if ($progress == 1) {
+				$count = (int)$statReply['records'];
 				$result = True;
 			}
 		}
@@ -219,48 +306,67 @@ debugster($searchReplyString);
 	}
 
 
+
+	/**
+	 * Fetches results from pazpar2.
+	 * Requires an established session.
+	 *
+	 * Stores the results in $results.
+	 */
 	protected function fetchResults () {
 		$result = Null;
 
-		$showReplyString = file_get_contents($this->pazpar2ShowURL());
-		$showReply = simplexml_load_string($showReplyString);
+		$showReplyString = t3lib_div::getURL($this->pazpar2ShowURL());
+		// need xml2tree here as xml2array fails when dealing with arrays of tags with the same name
+		$showReplyTree = t3lib_div::xml2tree($showReplyString);
+		$showReply = $showReplyTree['show'][0]['ch'];
 
 		if ($showReply) {
-			$status = $showReply->xpath('/show/status');
-			if ($status[0] == 'OK') {
+			$status = $showReply['status'][0]['values'][0];
+			if ($status == 'OK') {
 				$this->queryIsRunning = False;
+				$hits = $showReply['hit'];
 
-				$hits = $showReply->xpath('/show/hit');
 				foreach ($hits as $hit) {
-					$key = $hit['recid'];
-					$this->results[$key] = $hit;
+					$myHit = $hit['ch'];
+					$key = $myHit['recid'][0]['values'][0];
+					$this->results[$key] = $myHit;
 				}
 			}
 			else {
-				debugster('pazpar2 show reply with non-"OK" status');
+				debugster('pazpar2 show reply status is not "OK" but ' . $status);
 			}
 		}
 		else {
-			debugster('could not read pazpar2 search reply');
+			debugster('could not parse pazpar2 search reply');
 		}
 	}
 
 
 
+	/**
+	 * Public function to run the pazpar2 query.
+	 * The search term (and, if necessary, pazpar2 service ID) have to be set beforehand.
+	 * 
+	 * The results of the query are available via getResults() after this function returns.
+	 */
 	public function run () {
 		$this->startQuery();
+		$resultCount = Null;
+		$maximumTime = 120;
 
-		while (($this->queryIsRunning) && (time() - $this->queryStartTime < 60)) {
+		set_time_limit($maximumTime + 5);
+		
+		while (($this->queryIsRunning) && (time() - $this->queryStartTime < $maximumTime)) {
 			sleep(2);
 
-			$resultCount = Null;
 			if ($this->queryIsDoneWithResultCount($resultCount)) {
-				$this->fetchResults();
+				break;
 			}
 		}
+
+		$this->fetchResults();
 	}
-
-
 
 }
 

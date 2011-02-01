@@ -57,15 +57,62 @@ var germanTerms = {
 	'elektronisch': 'digital',
 	'gedruckt': 'gedruckt',
 	'detail-label-id': 'PPN',
-	'link': '[Link]',
+	'link': 'Link',
 	'Kataloge': 'Kataloge',
+	'Ausgabe': 'Ausgabe',
 	'Google Books Vorschau': 'Google Books Vorschau',
-	'Umschlagbild': 'Umschlagbild'
-}
+	'Umschlagbild': 'Umschlagbild',
+	'Ansehen und Ausleihen bei': 'Ansehen und Ausleihen bei',
+	'keine Treffer gefunden': 'keine Treffer gefunden'
+};
+
+
+var englishTerms = {
+	'facet-title-xtargets': 'Catalogues',
+	'facet-title-medium': 'Type',
+	'facet-title-author': 'Authors',
+	'facet-title-language': 'Languages',
+	'facet-title-subject': 'Subjects',
+	'facet-title-date': 'Years',
+	'detail-label-title': 'Title',
+	'detail-label-author': 'Author',
+	'detail-label-author-plural': 'Authors',
+	'detail-label-other-person': 'Person',
+	'detail-label-other-person-plural': 'People',
+	'detail-label-medium': 'Type',
+	'detail-label-description': 'Information',
+	'detail-label-description-plural': 'Information',
+	'detail-label-series-title': 'Series',
+	'detail-label-issn': 'ISSN',
+	'detail-label-acronym-issn': 'International Standard Series Number',
+	'detail-label-eissn': 'eISSN',
+	'detail-label-acronym-eissn': 'International Standard Series Number for electronic series',
+	'detail-label-pissn': 'pISSN',
+	'detail-label-acronym-pissn': 'International Standard Series Number for printed series',
+	'detail-label-acronym-isbn': 'International Standard Book Number',
+	'detail-label-doi': 'DOI',
+	'detail-label-acronym-doi': 'Document Object Identifier: Use the link to load the document.',
+	'detail-label-doi-plural': 'DOIs',
+	'detail-label-verfügbarkeit': 'Availability',
+	'elektronisch': 'electronic',
+	'gedruckt': 'printed',
+	'detail-label-id': 'PPN',
+	'link': 'link',
+	'Kataloge': 'Catalogues',
+	'Ausgabe': 'Edition',
+	'Google Books Vorschau': 'Google Books Preview',
+	'Umschlagbild': 'Book Cover',
+	'Ansehen und Ausleihen bei': 'View catalogue record at',
+	'keine Treffer gefunden': 'no matching results found'
+};
+
+
 
 
 var localisations = {
-	'de': germanTerms
+	'de': germanTerms,
+	'en': englishTerms
+
 };
 
 
@@ -425,7 +472,7 @@ function my_onshow (data) {
 function display () {
 
 	/*	markupForField
-		Creates DOM element and content for a field name; Appends it to given container.
+		Creates span DOM element and content for a field name; Appends it to the given container.
 		input:	fieldName - string with key for a field stored in hit
 				container (optional)- the DOM element we created is appended here
 				prepend (optional) - string inserted before the DOM element with the field data
@@ -433,21 +480,21 @@ function display () {
 		output: the DOM SPAN element that was appended
 	*/
 	var markupForField = function (fieldName, container, prepend, append) {
-		var theHit = hit['md-' + fieldName];
+		var fieldContent = hit['md-' + fieldName];
 
-		if (theHit !== undefined && container) {
+		if (fieldContent !== undefined && container) {
 			var span = document.createElement('span');
 			span.setAttribute('class', 'pz2-' + fieldName);
-			span.appendChild(document.createTextNode(theHit));
+			span.appendChild(document.createTextNode(fieldContent));
 		
-			if (container) {
-				if (prepend) {
-					container.appendChild(document.createTextNode(prepend));
-				}
-				container.appendChild(span);
-				if (append) {
-					container.appendChild(document.createTextNode(append));
-				}
+			if (prepend) {
+				container.appendChild(document.createTextNode(prepend));
+			}
+
+			container.appendChild(span);
+
+			if (append) {
+				container.appendChild(document.createTextNode(append));
 			}
 		}
 
@@ -528,7 +575,7 @@ function display () {
 		var output = document.createElement('span');
 		output.setAttribute('class', 'pz2-journal');
 
-		var journalTitle = markupForField('journal-title', linkElement, localise(' In') + ': ');
+		var journalTitle = markupForField('journal-title', linkElement, ' ' + localise('In') + ': ');
 		if (journalTitle) {
 			markupForField('journal-subpart', journalTitle, ', ')
 			journalTitle.appendChild(document.createTextNode('.'));
@@ -610,10 +657,17 @@ function display () {
 				// add record count information
 				var recordCountDiv = document.createElement('div');
 				recordCountDiv.setAttribute('class', 'pz2-recordCount');
-				var infoString = String(firstIndex + 1) + '-'
+				var infoString;
+				if (displayHitList.length > 0) {
+					infoString = String(firstIndex + 1) + '-'
 									+ String(firstIndex + numberOfRecordsOnPage)
 									+ ' ' + localise('von') + ' '
 									+ String(displayHitList.length);
+				}
+				else {
+					infoString = localise('keine Treffer gefunden');
+				}
+
 				if (displayFilter) {
 					infoString += ' ' + localise('gefiltert');
 				}
@@ -1276,7 +1330,7 @@ function renderDetails(recordID) {
 		var result;
 
 		if (infoItems.length == 1) {
-			 result = infoItems[0];
+			result = infoItems[0];
 		}
 		else if (infoItems.length > 1) {
 			result = document.createElement('ul');
@@ -1832,7 +1886,7 @@ function renderDetails(recordID) {
 	var locationDetails = function () {
 
 		/*	detailInfoItemWithLabel
-			input:	fieldContent - DOM object with content to display in the field
+			input:	fieldContent - string with content to display in the field
 					labelName - string displayed as the label
 					dontTerminate - boolean:	false puts a ; after the text
 												true puts nothing after the text
@@ -1952,7 +2006,7 @@ function renderDetails(recordID) {
 
 
 		/*	electronicURLs
-			Create markup for URLs in current data.
+			Create markup for URLs in current location data.
 			output:	DOM element containing URLs as links.
 		*/
 		var electronicURLs = function() {
@@ -1990,7 +2044,7 @@ function renderDetails(recordID) {
 						URLsContainer.appendChild(link);
 						link.setAttribute('href', linkURL);
 						link.setAttribute('target', 'pz2-linktarget');
-						link.innerHTML = linkText;
+						link.appendChild(document.createTextNode(linkText));
 					}
 				}
 				URLsContainer.appendChild(document.createTextNode('; '));
@@ -2084,22 +2138,22 @@ function renderDetails(recordID) {
 		detailsDiv.setAttribute('class', 'pz2-details');
 		detailsDiv.setAttribute('id', 'det_' + HTMLIDForRecordData(data));
 
-		var detailsTable = document.createElement('dl');
-		detailsDiv.appendChild(detailsTable);
+		var detailsList = document.createElement('dl');
+		detailsDiv.appendChild(detailsList);
 
-		appendInfoToContainer( detailLineAuto('author'), detailsTable );
-		appendInfoToContainer( detailLineAuto('other-person'), detailsTable )
-		appendInfoToContainer( detailLineAuto('description'), detailsTable );
-	 	appendInfoToContainer( detailLineAuto('medium'), detailsTable );
-		appendInfoToContainer( detailLineAuto('series-title'), detailsTable );
-		appendInfoToContainer( detailLineAuto('issn'), detailsTable );
-		appendInfoToContainer( detailLineAuto('pissn'), detailsTable );
-		appendInfoToContainer( detailLineAuto('eissn'), detailsTable );
-		appendInfoToContainer( detailLineAuto('doi'), detailsTable );
-		appendInfoToContainer( locationDetails(), detailsTable );
-		appendInfoToContainer( extraLinks(), detailsTable );
+		appendInfoToContainer( detailLineAuto('author'), detailsList );
+		appendInfoToContainer( detailLineAuto('other-person'), detailsList )
+		appendInfoToContainer( detailLineAuto('description'), detailsList );
+	 	appendInfoToContainer( detailLineAuto('medium'), detailsList );
+		appendInfoToContainer( detailLineAuto('series-title'), detailsList );
+		appendInfoToContainer( detailLineAuto('issn'), detailsList );
+		appendInfoToContainer( detailLineAuto('pissn'), detailsList );
+		appendInfoToContainer( detailLineAuto('eissn'), detailsList );
+		appendInfoToContainer( detailLineAuto('doi'), detailsList );
+		appendInfoToContainer( locationDetails(), detailsList );
+		appendInfoToContainer( extraLinks(), detailsList );
 		if ( useZDB == true ) {
-			addZDBInfoIntoElement( detailsTable );
+			addZDBInfoIntoElement( detailsList );
 		}
 	}
 
@@ -3183,6 +3237,3 @@ var languageNames = {
 		'zzz': 'Without language code'
 	}
 };
-
-//EOF
- 

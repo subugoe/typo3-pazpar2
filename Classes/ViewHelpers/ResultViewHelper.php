@@ -544,7 +544,7 @@ private function DOMElementForTitle ($title, $result) {
 
 	if ($result['md-' . $title]) {
 		$theData = $result['md-' . $title];
-		$theData = array_unique($theData);
+		// uniquing array elements omitted in PHP version
 
 		foreach ($theData as $value) {
 			$rawDatum = $value[values][0];

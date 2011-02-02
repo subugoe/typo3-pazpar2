@@ -178,7 +178,6 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 		$URL .= '&session=' . $this->pazpar2SessionID;
 		$URL .= '&query=' . urlencode($this->getQueryString());
 
-		debugster($URL);
 		return $URL;
 	}
 

@@ -257,8 +257,8 @@ private function detailLineAuto ($title, $result) {
 
 
 /**
- * @param  string $title
- * @param  array $informationElements
+ * @param string $title
+ * @param array $informationElements (DOM Elements)
  * @return Null|array of DT/DD DOMElements
  */
 private function detailLine ($title, $informationElements) {
@@ -325,7 +325,7 @@ private function markupInfoItems ($infoItems) {
 		foreach ($infoItems as $item) {
 			$li = $this->doc->createElement('li');
 			$result->appendChild($li);
-			$li->appendChild($this->doc->createTextNode($item));
+			$li->appendChild($item);
 		}
 	}
 

@@ -547,7 +547,7 @@ private function DOMElementForTitle ($title, $result) {
 		// uniquing array elements omitted in PHP version
 
 		foreach ($theData as $value) {
-			$rawDatum = $value[values][0];
+			$rawDatum = $value['values'][0];
 			$wrappedDatum = Null;
 			switch ($title) {
 				case 'doi':

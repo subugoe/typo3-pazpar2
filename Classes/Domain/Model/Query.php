@@ -287,7 +287,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	 * @param int $count return by reference the current number of results
 	 * @return boolean True when query has finished, False otherwise
 	 */
-	protected function queryIsDoneWithResultCount (&$count) {
+	protected function queryIsDone () {
 		$result = False;
 
 		$statReplyString = t3lib_div::getURL($this->pazpar2StatURL());
@@ -295,10 +295,6 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 
 		if ($statReply) {
 			$progress = $statReply['progress'];
-			if ($progress == 1) {
-				$count = (int)$statReply['records'];
-				$result = True;
-			}
 		}
 		else {
 			t3lib_div::devLog('could not parse pazpar2 stat reply', 'pazpar2', 3);
@@ -315,11 +311,10 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	 *
 	 * Stores the results in $results.
 	 *
-	 * @param int $resultCount number of results to fetch
 	 * @return int total result number
 	 */
-	protected function fetchResults ($resultCount) {
-		$maxResults = min(Array($resultCount, 1200)); // limit results to 1200 to avoid hitting the memory limit
+	protected function fetchResults () {
+		$maxResults = 1200; // limit results to 1200 to avoid hitting the memory limit
 		$recordsToFetch = 500;
 		$firstRecord = 0;
 		$totalResultCount = Null;
@@ -374,21 +369,19 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 		$totalResultCount = Null;
 
 		if ($this->queryString) {
-			$resultCount = Null;
 			$this->startQuery();
-			$maximumTime = 120;
-
+			// Fetching results can take a while. Increase our time limit.
+			$maximumTime = 60;
 			set_time_limit($maximumTime + 5);
-		
+
 			while (($this->queryIsRunning) && (time() - $this->queryStartTime < $maximumTime)) {
 				sleep(2);
-
-				if ($this->queryIsDoneWithResultCount($resultCount)) {
+				if ($this->queryIsDone()) {
 					break;
 				}
 			}
 
-			$totalResultCount = $this->fetchResults($resultCount);
+			$totalResultCount = $this->fetchResults();
 		}
 
 		return $totalResultCount;

@@ -236,15 +236,15 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 					$this->pazpar2SessionID = $sessionID;
 				}
 				else {
-					debugster('did not receive pazpar2 session ID');
+					t3lib_div::devLog('did not receive pazpar2 session ID', 'pazpar2', 3);
 				}
 			}
 			else {
-				debugster('pazpar2 init status is not "OK" but "' . $status . '"');
+				t3lib_div::devLog('pazpar2 init status is not "OK" but "' . $status . '"', 'pazpar2', 3);
 			}
 		}
 		else {
-			debugster('could not parse pazpar2 init reply');
+			t3lib_div::devLog('could not parse pazpar2 init reply', 'pazpar2', 3);
 		}
 	}
 
@@ -268,11 +268,11 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 					$this->queryIsRunning = True;
 				}
 				else {
-					debugster('pazpar2 search command status is not "OK" but "' . $status . '"');
+					t3lib_div::devLog('pazpar2 search command status is not "OK" but "' . $status . '"', 'pazpar2', 3);
 				}
 			}
 			else {
-				debugster('could not parse pazpar2 search reply');
+				t3lib_div::devLog('could not parse pazpar2 search reply', 'pazpar2', 3);
 			}
 		}
 	}
@@ -300,7 +300,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 			}
 		}
 		else {
-			debugster('could not parse pazpar2 stat reply');
+			t3lib_div::devLog('could not parse pazpar2 stat reply', 'pazpar2', 3);
 		}
 
 		return $result;
@@ -348,11 +348,11 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 					}
 				}
 				else {
-					debugster('pazpar2 show reply status is not "OK" but "' . $status . '"');
+					t3lib_div::devLog('pazpar2 show reply status is not "OK" but "' . $status . '"', 'pazpar2', 3);
 				}
 			}
 			else {
-				debugster('could not parse pazpar2 search reply');
+				t3lib_div::devLog('could not parse pazpar2 search reply', 'pazpar2', 3);
 			}
 		}
 

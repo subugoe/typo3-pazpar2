@@ -290,7 +290,7 @@ private function detailLine ($title, $informationElements) {
 			$line[] = $rowTitle;
 			$labelNode = $this->doc->createTextNode($headingText . ":");
 			$acronym = Tx_Extbase_Utility_Localization::translate('detail-label-acronym-' . $title, 'Pazpar2');
-			if (acronym != '') {
+			if ($acronym) {
 				$acronymElement = $this->doc->createElement('acronym');
 				$acronymElement->setAttribute('title', $acronym);
 				$acronymElement->appendChild($labelNode);

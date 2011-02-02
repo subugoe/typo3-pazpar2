@@ -161,7 +161,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	private function pazpar2InitURL () {
 		$URL = $this->getPazpar2BaseURL() . '?command=init';
 		if ($this->getServiceName() != Null) {
-			$URL .= '&service=' . $this->getServiceName();
+			$URL .= '&service=' . urlencode($this->getServiceName());
 		}
 
 		return $URL;
@@ -212,7 +212,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	private function pazpar2ShowURL ($start=0, $num=500) {
 		$URL = $this->getPazpar2BaseURL() . '?command=show';
 		$URL .= '&session=' . $this->pazpar2SessionID;
-		$URL .= '&query=' . $this->getQueryString();
+		$URL .= '&query=' . urlencode($this->getQueryString());
 		$URL .= '&start=' . $start . '&num=' . $num;
 		$URL .= '&sort=date%3A0%2Cauthor%3A1%2Ctitle%3A1';
 		$URL .= '&block=1'; // unclear how this is advantagous but the JS client adds it

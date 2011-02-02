@@ -336,7 +336,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 
 			if ($showReply) {
 				$status = $showReply['status'][0]['values'][0];
-				$totalResultCount = $showReply['total'][0]['values'][0];
+				$totalResultCount = $showReply['merged'][0]['values'][0];
 				if ($status == 'OK') {
 					$this->queryIsRunning = False;
 					$hits = $showReply['hit'];

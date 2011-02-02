@@ -487,7 +487,7 @@ private function electronicURLs ($location) {
 private function catalogueLink ($locationAll) {
 	$targetURL = $locationAll['attrs']['id'];
 	$targetName = $locationAll['attrs']['name'];
-	$PPN = preg_replace('/[a-zA-Z]*([0-9]*)/', '$1', $locationAll['ch']['md-id'][0]['values'][0]);
+	$PPN = preg_replace('/[a-zA-Z]*([0-9X]*)/', '$1', $locationAll['ch']['md-id'][0]['values'][0]);
 	$catalogueURL = Null;
 
 	if (preg_match('/gso.gbv.de\/sru/', $targetURL) > 0) {

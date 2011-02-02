@@ -176,8 +176,9 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	private function pazpar2SearchURL () {
 		$URL = $this->getPazpar2BaseURL() . '?command=search';
 		$URL .= '&session=' . $this->pazpar2SessionID;
-		$URL .= '&query=' . $this->getQueryString();
+		$URL .= '&query=' . urlencode($this->getQueryString());
 
+		debugster($URL);
 		return $URL;
 	}
 

@@ -285,6 +285,6 @@ pz2-client.js removes this once it it loaded.
 	display: block;
 }
 
-#pazpar2.pz2-noJS #pz2-switchMenu {
+#pazpar2.pz2-noJS #pz2-switchMenu, #pazpar2.pz2-noJS .pz2-ranking {
 	display: none;
 }

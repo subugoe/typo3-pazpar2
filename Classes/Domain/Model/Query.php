@@ -327,7 +327,6 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 
 			// need xml2tree here as xml2array fails when dealing with arrays of tags with the same name
 			$showReplyTree = t3lib_div::xml2tree($showReplyString);
-		debugster($this->pazpar2ShowURL($firstRecord, $recordsToFetchNow));
 			$showReply = $showReplyTree['show'][0]['ch'];
 
 			if ($showReply) {

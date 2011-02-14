@@ -25,12 +25,12 @@ Tx_Extbase_Utility_Extension::configurePlugin (
 	// Array holding the controller-action-combinations that are accessible
 	array(
 		// The first controller and its first action will be the default
-		'Pazpar2' => 'index,find'
+		'Pazpar2' => 'index'
 	),
 
 	// Array holding non-cachable controller-action-combinations
 	array(
-
+		'Pazpar2' => 'index'
 	)
 
 );

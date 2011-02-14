@@ -293,7 +293,11 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 		$statReply = t3lib_div::xml2array($statReplyString);
 
 		if ($statReply) {
-			$progress = $statReply['progress'];
+			// The progress variable is a string representing a number between
+			// 0.00 and 1.00. 
+			// Casting it to int gives 0 as long as the value is < 1.
+			$progress = (int)$statReply['progress'];
+			$result = ($progress == 1);
 		}
 		else {
 			t3lib_div::devLog('could not parse pazpar2 stat reply', 'pazpar2', 3);
@@ -323,7 +327,6 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 		while ($firstRecord < $maxResults) {
 			$recordsToFetchNow = min(Array($recordsToFetch, $maxResults - $firstRecord));
 			$showReplyString = t3lib_div::getURL($this->pazpar2ShowURL($firstRecord, $recordsToFetchNow));
-
 			$firstRecord += $recordsToFetchNow;
 
 			// need xml2tree here as xml2array fails when dealing with arrays of tags with the same name

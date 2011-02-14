@@ -323,6 +323,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 		while ($firstRecord < $maxResults) {
 			$recordsToFetchNow = min(Array($recordsToFetch, $maxResults - $firstRecord));
 			$showReplyString = t3lib_div::getURL($this->pazpar2ShowURL($firstRecord, $recordsToFetchNow));
+
 			$firstRecord += $recordsToFetchNow;
 
 			// need xml2tree here as xml2array fails when dealing with arrays of tags with the same name
@@ -332,6 +333,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 			if ($showReply) {
 				$status = $showReply['status'][0]['values'][0];
 				$totalResultCount = $showReply['merged'][0]['values'][0];
+				$maxResults = (int)$totalResultCount;
 				if ($status == 'OK') {
 					$this->queryIsRunning = False;
 					$hits = $showReply['hit'];

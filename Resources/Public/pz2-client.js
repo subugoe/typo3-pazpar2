@@ -1049,19 +1049,26 @@ function domReady ()  {
 		}
 	);
 
-	$('.pz2-searchForm .pz2-searchField').val('');
 	$('.pz2-sort, .pz2-perPage').attr('onchange', 'onSelectDidChange');
 	$('#pazpar2').removeClass('pz2-noJS');
+	if ($('.pz2-searchForm .pz2-searchField').val() != '') {
+		onFormSubmitEventHandler($('.pz2-searchForm')[0]);
+	}
+
 }
 
 
 
 /*	onFormSubmitEventHandler
-	Called when the search button is pressed. Submits the query to the pazpar2 server.
+	Called when the search button is pressed or domReady fires.
+	Submits the query to the pazpar2 server.
+	The form is passed as a parameter when called directly or
+		available as this when called by the onclick handler.
 */
-function onFormSubmitEventHandler () {
+function onFormSubmitEventHandler (form) {
 	resetPage();
-	triggerSearchForForm(this);
+	var searchForm = form ? form : this;
+	triggerSearchForForm(searchForm);
 	submitted = true;
 	return false;
 }

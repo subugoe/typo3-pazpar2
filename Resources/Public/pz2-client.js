@@ -1052,7 +1052,7 @@ function domReady ()  {
 	$('.pz2-sort, .pz2-perPage').attr('onchange', 'onSelectDidChange');
 	$('#pazpar2').removeClass('pz2-noJS');
 	if ($('.pz2-searchForm .pz2-searchField').val() != '') {
-		onFormSubmitEventHandler($('.pz2-searchForm')[0]);
+		onFormSubmitEventHandler({'target': $('.pz2-searchForm')[0]});
 	}
 
 }
@@ -1065,10 +1065,9 @@ function domReady ()  {
 	The form is passed as a parameter when called directly or
 		available as this when called by the onclick handler.
 */
-function onFormSubmitEventHandler (form) {
+function onFormSubmitEventHandler (event) {
 	resetPage();
-	var searchForm = form ? form : this;
-	triggerSearchForForm(searchForm);
+	triggerSearchForForm(event.target);
 	submitted = true;
 	return false;
 }

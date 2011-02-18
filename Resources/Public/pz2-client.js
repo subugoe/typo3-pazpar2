@@ -108,11 +108,9 @@ var englishTerms = {
 
 
 
-
 var localisations = {
 	'de': germanTerms,
 	'en': englishTerms
-
 };
 
 
@@ -142,6 +140,15 @@ function localise (term, externalDictionary) {
 }
 
 
+function my_errorHandler (error) {
+	if (error.code == 1 && this.request.status == 417) {
+		// session has expired, create a new one
+		my_paz.init(undefined, my_paz.serviceId);
+	}
+}
+
+
+
 
 my_paz = new pz2( {	"onshow": my_onshow,
 					"showtime": 1000,//each timer (show, stat, term, bytarget) can be specified this way
@@ -153,13 +160,15 @@ my_paz = new pz2( {	"onshow": my_onshow,
 					"onbytarget": my_onbytarget,
 	 				"usesessions" : usesessions,
 					"showResponseType": showResponseType,
-					"onrecord": my_onrecord,
 					"serviceId": my_serviceID,
+					"errorhandler": my_errorHandler
 } );
 
 
 
 // some state vars
+var domReadyFired = false;
+var pz2Initialised = false;
 var curPage = 1;
 var recPerPage = 100;
 var fetchRecords = 500;
@@ -167,6 +176,7 @@ var curDetRecId = '';
 var curDetRecData = null;
 var curSort = [];
 var curFilter = null;
+var curSearchTerm = null;
 var facetData = {}; // stores faceting information as sent by pazpar2
 var filterArray = {};
 var displaySort =  [{'fieldName': 'date', 'direction': 'descending'},
@@ -175,17 +185,20 @@ var displaySort =  [{'fieldName': 'date', 'direction': 'descending'},
 var displayFilter = undefined;
 var hitList = []; // local storage for the records sent from pazpar2
 var displayHitList = []; // filtered and sorted list used for display
-var submitted = false;
 var useGoogleBooks = false;
 var useZDB = false;
 
 
-//
-// pz2.js event handlers:
-//
+
+
+/*	my_oninit
+	Callback for pz2.js called when initialisation is complete.
+*/
 function my_oninit() {
 	my_paz.stat();
 	my_paz.bytarget();
+	pz2Initialised = true;
+	triggerSearchForForm(null);
 }
 
 
@@ -1032,6 +1045,8 @@ function my_onbytarget(data) {
 	Called when the page is loaded. Sets up JavaScript-based search mechanism.
 */
 function domReady ()  {
+	domReadyFired = true;
+
 	$('.pz2-searchForm').each( function(index, form) {
 			form.onsubmit = onFormSubmitEventHandler;
 			form.action = null;
@@ -1041,24 +1056,18 @@ function domReady ()  {
 
 	$('.pz2-sort, .pz2-perPage').attr('onchange', 'onSelectDidChange');
 	$('#pazpar2').removeClass('pz2-noJS');
-	if ($('.pz2-searchForm .pz2-searchField').val() != '') {
-		onFormSubmitEventHandler({'target': $('.pz2-searchForm')[0]});
-	}
 
+	triggerSearchForForm(null);
 }
 
 
 
 /*	onFormSubmitEventHandler
-	Called when the search button is pressed or domReady fires.
-	Submits the query to the pazpar2 server.
-	The form is passed as a parameter when called directly or
-		available as this when called by the onclick handler.
+	Called when the search button is pressed.
+	input:	event - of the mouse click
 */
 function onFormSubmitEventHandler (event) {
-	resetPage();
 	triggerSearchForForm(event.target);
-	submitted = true;
 	return false;
 }
 
@@ -1090,22 +1099,22 @@ function resetPage() {
 
 
 /*	triggerSearchForForm
-	Triggers search by pazpar2 middleware.
-		Called by clicking the search button.
+	Trigger pazpar2 search.
+	Called when my_paz is initialised and when the search button is clicked.
 	input:	form - DOM element of the form used to trigger the search
 */
 function triggerSearchForForm (form) {
-	var searchTerm = $('.pz2-searchField', form).val();
-	loadSelectsFromForm(form);
+	if (domReadyFired && pz2Initialised) {
+		resetPage();
 
-	// Check whether the my_paz object is ready to go.
-	// If it isn't, try initialising it.
-	// This works around certain problems in Chrome as well as timeout problems.
-	if (!my_paz.initStatusOK) {
-		my_paz.init(my_paz.sessionID, my_paz.serviceId);
+		var searchTerm = $('.pz2-searchField', form).val();
+
+		if ( searchTerm.trim() != '' && searchTerm != curSearchTerm ) {
+			loadSelectsFromForm(form);
+			my_paz.search(searchTerm, fetchRecords, curSort, curFilter);
+			curSearchTerm = searchTerm;
+		}
 	}
-
-	my_paz.search(searchTerm, fetchRecords, curSort, curFilter);
 }
 
 

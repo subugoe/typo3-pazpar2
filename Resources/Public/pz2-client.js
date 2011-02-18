@@ -142,15 +142,6 @@ function localise (term, externalDictionary) {
 }
 
 
-function my_errorHandler (error) {
-	if (error.code == 1 && this.request.status == 417) {
-		// session has expired, create a new one
-		my_paz.init(undefined, my_paz.serviceId);
-	}
-}
-
-
-
 
 my_paz = new pz2( {	"onshow": my_onshow,
 					"showtime": 1000,//each timer (show, stat, term, bytarget) can be specified this way
@@ -164,7 +155,6 @@ my_paz = new pz2( {	"onshow": my_onshow,
 					"showResponseType": showResponseType,
 					"onrecord": my_onrecord,
 					"serviceId": my_serviceID,
-					"errorhandler": my_errorHandler
 } );
 
 
@@ -1107,6 +1097,14 @@ function resetPage() {
 function triggerSearchForForm (form) {
 	var searchTerm = $('.pz2-searchField', form).val();
 	loadSelectsFromForm(form);
+
+	// Check whether the my_paz object is ready to go.
+	// If it isn't, try initialising it.
+	// This works around certain problems in Chrome as well as timeout problems.
+	if (!my_paz.initStatusOK) {
+		my_paz.init(my_paz.sessionID, my_paz.serviceId);
+	}
+
 	my_paz.search(searchTerm, fetchRecords, curSort, curFilter);
 }
 

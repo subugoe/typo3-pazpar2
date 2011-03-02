@@ -37,8 +37,12 @@ var germanTerms = {
 	'detail-label-title': 'Titel',
 	'detail-label-author': 'Autor',
 	'detail-label-author-plural': 'Autoren',
+	'detail-label-author-clean': 'Autor',
+	'detail-label-author-clean-plural': 'Autoren',
 	'detail-label-other-person': 'Person',
 	'detail-label-other-person-plural': 'Personen',
+	'detail-label-other-person-clean': 'Person',
+	'detail-label-other-person-clean-plural': 'Personen',
 	'detail-label-medium': 'Art',
 	'detail-label-description': 'Information',
 	'detail-label-description-plural': 'Informationen',
@@ -77,8 +81,12 @@ var englishTerms = {
 	'detail-label-title': 'Title',
 	'detail-label-author': 'Author',
 	'detail-label-author-plural': 'Authors',
+	'detail-label-author-clean': 'Author',
+	'detail-label-author-clean-plural': 'Authors',
 	'detail-label-other-person': 'Person',
 	'detail-label-other-person-plural': 'People',
+	'detail-label-other-person-clean': 'Person',
+	'detail-label-other-person-clean-plural': 'People',
 	'detail-label-medium': 'Type',
 	'detail-label-description': 'Information',
 	'detail-label-description-plural': 'Information',
@@ -2155,8 +2163,29 @@ function renderDetails(recordID) {
 		var detailsList = document.createElement('dl');
 		detailsDiv.appendChild(detailsList);
 
-		appendInfoToContainer( detailLineAuto('author'), detailsList );
-		appendInfoToContainer( detailLineAuto('other-person'), detailsList )
+		// create cleaned up author and other person list to avoid
+		// duplicating persons listed in title-responsiblity already.
+		data['md-author-clean'] = [];
+		for (var authorIndex in data['md-author']) {
+			var authorName = data['md-author'][authorIndex].split(',')[0].trim();
+			for (var responsibilityIndex in data['md-title-responsibility']) {
+				if (!data['md-title-responsibility'][responsibilityIndex].match(authorName)) {
+					data['md-author-clean'].push(data['md-author'][authorIndex]);
+				}
+			}
+		}
+		data['md-other-person-clean'] = [];
+		for (var personIndex in data['md-other-person']) {
+			var personName = data['md-other-person'][personIndex].split(',')[0].trim();
+			for (var responsibilityIndex in data['md-title-responsibility']) {
+				if (!data['md-title-responsibility'][responsibilityIndex].match(personName)) {
+					data['md-other-person-clean'].push(data['md-other-person'][personIndex]);
+				}
+			}
+		}
+
+		appendInfoToContainer( detailLineAuto('author-clean'), detailsList );
+		appendInfoToContainer( detailLineAuto('other-person-clean'), detailsList )
 		appendInfoToContainer( detailLineAuto('description'), detailsList );
 	 	appendInfoToContainer( detailLineAuto('medium'), detailsList );
 		appendInfoToContainer( detailLineAuto('series-title'), detailsList );

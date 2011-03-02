@@ -46,6 +46,7 @@ var germanTerms = {
 	'detail-label-medium': 'Art',
 	'detail-label-description': 'Information',
 	'detail-label-description-plural': 'Informationen',
+	'detail-label-abstract': 'Abstract',
 	'detail-label-series-title': 'Reihe',
 	'detail-label-issn': 'ISSN',
 	'detail-label-acronym-issn': 'Internationale Standardseriennummer',
@@ -90,6 +91,7 @@ var englishTerms = {
 	'detail-label-medium': 'Type',
 	'detail-label-description': 'Information',
 	'detail-label-description-plural': 'Information',
+	'detail-label-abstract': 'Abstract',
 	'detail-label-series-title': 'Series',
 	'detail-label-issn': 'ISSN',
 	'detail-label-acronym-issn': 'International Standard Series Number',
@@ -2186,6 +2188,7 @@ function renderDetails(recordID) {
 
 		appendInfoToContainer( detailLineAuto('author-clean'), detailsList );
 		appendInfoToContainer( detailLineAuto('other-person-clean'), detailsList )
+		appendInfoToContainer( detailLineAuto('abstract'), detailsList )
 		appendInfoToContainer( detailLineAuto('description'), detailsList );
 	 	appendInfoToContainer( detailLineAuto('medium'), detailsList );
 		appendInfoToContainer( detailLineAuto('series-title'), detailsList );

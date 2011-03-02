@@ -220,8 +220,31 @@ private function renderDetails ($result) {
 	$detailsList = $this->doc->createElement('dl');
 	$div->appendChild($detailsList);
 
-	$this->appendInfoToContainer( $this->detailLineAuto('author', $result), $detailsList);
-	$this->appendInfoToContainer( $this->detailLineAuto('other-person', $result), $detailsList);
+	// create cleaned up author and other person list to avoid
+	// duplicating persons listed in title-responsiblity already.
+	$result['md-author-clean'] = Array();
+	foreach ($result['md-author'] as $author) {
+		$nameParts = split(",", $author);
+		$authorName = trim($nameParts[0]);
+		foreach ($result['md-title-responsibility'] as $responsibility) {
+			if (strpos($responsibility, $authorName) === False) {
+				$result['md-author-clean'][] = $author;
+			}
+		}
+	}
+	$result['md-other-person-clean'] = Array();
+	foreach ($result['md-other-person'] as $otherPerson) {
+		$nameParts = split(",", $otherPerson);
+		$personName = trim($nameParts[0]);
+		foreach ($result['md-title-responsibility'] as $responsibility) {
+			if (strpos($responsibility, $personName) === False) {
+				$result['md-other-person-clean'][] = $otherPerson;
+			}
+		}
+	}
+
+	$this->appendInfoToContainer( $this->detailLineAuto('author-clean', $result), $detailsList);
+	$this->appendInfoToContainer( $this->detailLineAuto('other-person-clean', $result), $detailsList);
 	$this->appendInfoToContainer( $this->detailLineAuto('description', $result), $detailsList);
 	$this->appendInfoToContainer( $this->detailLineAuto('medium', $result), $detailsList);
 	$this->appendInfoToContainer( $this->detailLineAuto('series-title', $result), $detailsList);

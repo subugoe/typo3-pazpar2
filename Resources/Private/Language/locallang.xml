@@ -40,6 +40,7 @@
 			<label index="detail-label-medium">Art</label>
 			<label index="detail-label-description">Information</label>
 			<label index="detail-label-description-plural">Informationen</label>
+			<label index="detail-label-abstract">Abstract</label>
 			<label index="detail-label-series-title">Reihe</label>
 			<label index="detail-label-issn">ISSN</label>
 			<label index="detail-label-acronym-issn">Internationale Standardseriennummer</label>
@@ -90,6 +91,7 @@
 			<label index="detail-label-medium">Type</label>
 			<label index="detail-label-description">Information</label>
 			<label index="detail-label-description-plural">Information</label>
+			<label index="detail-label-abstract">Abstract</label>
 			<label index="detail-label-series-title">Series</label>
 			<label index="detail-label-issn">ISSN</label>
 			<label index="detail-label-acronym-issn">International Standard Series Number</label>

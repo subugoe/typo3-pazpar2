@@ -1507,7 +1507,7 @@ function renderDetails(recordID) {
 		if ( !(ISSN || eISSN) ) { return; }
 
 		var serviceID = 'sub:vlib';
-		var parameters = 'sid=' + serviceID + '&genre=article';
+		var parameters = 'sid=' + serviceID;
 
 		if ( ISSN ) {
 			parameters += '&issn=' + ISSN;
@@ -1517,35 +1517,46 @@ function renderDetails(recordID) {
 			parameters += '&eissn=' + eISSN;
 		}
 
-		// Add additional information to request to get more precise result and better display.
-		var year = data['md-date'];
-		if (year) {
-			var yearNumber = parseInt(year[0], 10);
-			parameters += '&date=' + yearNumber;
-		}
+		if (data['md-medium'] == 'article') {
+			parameters += '&genre=article';
 
-		var volume = data['md-journal-volume'];
-		if (volume) {
-			var volumeNumber = parseInt(volume, 10);
-			parameters += '&volume=' + volumeNumber;
-		}
+			// Add additional information to request to get more precise result and better display.
+			var year = data['md-date'];
+			if (year) {
+				var yearNumber = parseInt(year[0], 10);
+				parameters += '&date=' + yearNumber;
+			}
 
-		var issue = data['md-journal-issue'];
-		if (issue) {
-			var issueNumber = parseInt(issue, 10);
-			parameters += '&issue=' + issueNumber;
-		}
+			var volume = data['md-journal-volume'];
+			if (volume) {
+				var volumeNumber = parseInt(volume, 10);
+				parameters += '&volume=' + volumeNumber;
+			}
 
-		var pages = data['md-journal-pages'];
-		if (pages) {
-			parameters += '&pages=' + pages;
-		}
+			var issue = data['md-journal-issue'];
+			if (issue) {
+				var issueNumber = parseInt(issue, 10);
+				parameters += '&issue=' + issueNumber;
+			}
 
-		var title = data['md-title'];
-		if (title) {
-			parameters += '&atitle=' + encodeURI(title);
-		}
+			var pages = data['md-journal-pages'];
+			if (pages) {
+				parameters += '&pages=' + pages;
+			}
 
+			var title = data['md-title'];
+			if (title) {
+				parameters += '&atitle=' + encodeURI(title);
+			}
+		}
+		else { // it’s a journal
+			parameters += '&genre=journal';
+
+			var title = data['md-title'];
+			if (title) {
+				parameters += '&title=' + encodeURI(title);
+			}
+		}
 
 		// Run the ZDB query.
 		var ZDBURL = '/zdb/full.xml?' + parameters;

@@ -535,11 +535,14 @@ private function catalogueLink ($locationAll) {
 	$PPN = preg_replace('/[a-zA-Z]*([0-9X]*)/', '$1', $locationAll['ch']['md-id'][0]['values'][0]);
 	$catalogueURL = Null;
 
-	if (preg_match('/gso.gbv.de\/sru/', $targetURL) > 0) {
-		$catalogueURL = preg_replace('/(gso.gbv.de\/sru\/)(DB=[\.0-9]*)/', 'http://gso.gbv.de/$2/PPNSET?PPN=' . $PPN, $targetURL);
-	}
-	else if (preg_match('/z3950.gbv.de:20012\/subgoe_opc/', $targetURL) > 0) {
+	if (preg_match('/z3950.gbv.de:20012\/subgoe_opc/', $targetURL) > 0) {
 		$catalogueURL = 'http://gso.gbv.de/DB=2.1/PPNSET?PPN=' . $PPN;
+	}
+	else if (preg_match('/gso.gbv.de\/sru\/DB=1.5/', $targetURL) > 0) {
+			// match Nationallizenzen 1.50 and 1.55: no link
+	}
+	else if (preg_match('/gso.gbv.de\/sru\//', $targetURL) > 0) {
+		$catalogueURL = preg_replace('/(gso.gbv.de\/sru\/)(DB=[\.0-9]*)/', 'http://gso.gbv.de/$2/PPNSET?PPN=' . $PPN, $targetURL);
 	}
 	else if (preg_match('134.76.176.48:2020/jfm', $targetURL) > 0) {
 		$catalogueURL = 'http://www.emis.de/cgi-bin/jfmen/MATH/JFM/quick.html?first=1&maxdocs=1&type=html&format=complete&an=' . $PPN;

@@ -69,6 +69,14 @@ var germanTerms = {
 	'Umschlagbild': 'Umschlagbild',
 	'Ansehen und Ausleihen bei': 'Ansehen und Ausleihen bei',
 	'keine Treffer gefunden': 'keine Treffer',
+	// ZDB-JOP status labels
+	'frei verfügbar': 'frei verfügbar',
+	'teilweise frei verfügbar': 'teilweise frei verfügbar',
+	'verfügbar': 'verfügbar',
+	'teilweise verfügbar': 'teilweise verfügbar',
+	'nicht verfügbar': 'nicht verfügbar',
+	'diese Ausgabe nicht verfügbar': 'diese Ausgabe nicht verfügbar',
+	// Link tooltip
 	'Erscheint in separatem Fenster.': 'Erscheint in separatem Fenster.'
 };
 
@@ -115,6 +123,14 @@ var englishTerms = {
 	'Umschlagbild': 'Book Cover',
 	'Ansehen und Ausleihen bei': 'View catalogue record at',
 	'keine Treffer gefunden': 'no matching records',
+	// ZDB-JOP status labels
+	'frei verfügbar': 'accessible for all',
+	'teilweise frei verfügbar': 'partially accessible for all',
+	'verfügbar': 'accessible',
+	'teilweise verfügbar': 'partially accessible',
+	'nicht verfügbar': 'not accessible',
+	'diese Ausgabe nicht verfügbar': 'this issue not accessible',
+	// Link tooltip
 	'Erscheint in separatem Fenster.': 'Link opens in a new window.'
 };
 

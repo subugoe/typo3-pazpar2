@@ -68,7 +68,8 @@ var germanTerms = {
 	'Google Books Vorschau': 'Google Books Vorschau',
 	'Umschlagbild': 'Umschlagbild',
 	'Ansehen und Ausleihen bei': 'Ansehen und Ausleihen bei',
-	'keine Treffer gefunden': 'keine Treffer'
+	'keine Treffer gefunden': 'keine Treffer',
+	'Erscheint in separatem Fenster.': 'Erscheint in separatem Fenster.'
 };
 
 
@@ -113,7 +114,8 @@ var englishTerms = {
 	'Google Books Vorschau': 'Google Books Preview',
 	'Umschlagbild': 'Book Cover',
 	'Ansehen und Ausleihen bei': 'View catalogue record at',
-	'keine Treffer gefunden': 'no matching records'
+	'keine Treffer gefunden': 'no matching records',
+	'Erscheint in separatem Fenster.': 'Link opens in a new window.'
 };
 
 
@@ -250,6 +252,28 @@ function fieldContentInRecord (fieldName, record, lowerCase) {
 	}
 
 	return result;
+}
+
+
+
+/*	turnIntoNewWindowLink
+	Add a target attribute to open in our target window and add a note
+	to the title about this fact.
+	The link’s title element should be set before calling this function.
+	input:	link - DOM a element
+	output:	DOM element of the link passed in
+*/
+function turnIntoNewWindowLink (link) {
+	if (link) {
+		link.setAttribute('target', 'pz2-linkTarget');
+
+		var newTitle = localise('Erscheint in separatem Fenster.');
+		if (link.hasAttribute('title')) {
+			var oldTitle = link.getAttribute('title');
+			newTitle = oldTitle + ' (' + newTitle + ')';
+		}
+		link.setAttribute('title', newTitle);
+	}
 }
 
 
@@ -1475,7 +1499,7 @@ function renderDetails(recordID) {
 	var linkForDOI = function (DOI) {
 		var linkElement = document.createElement('a');
 		linkElement.setAttribute('href', 'http://dx.doi.org/' + DOI);
-		linkElement.setAttribute('target', 'pz2-linktarget');
+		turnIntoNewWindowLink(linkElement);
 		linkElement.appendChild(document.createTextNode(DOI));
 
 		var DOISpan = document.createElement('span');
@@ -1650,7 +1674,7 @@ function renderDetails(recordID) {
 								linkTitle = localise('Zugriff');
 							}
 							accessLink.appendChild(document.createTextNode(linkTitle));
-							accessLink.setAttribute('target', 'pz2-linktarget');
+							turnIntoNewWindowLink(accessLink);
 
 							var additionals = [];
 							var ZDBAdditionals = $('Additional', ZDBResult);
@@ -1785,8 +1809,8 @@ function renderDetails(recordID) {
 				var availabilityLabel = document.createElement('a');
 				var ZDBLinkURL = 'http://services.d-nb.de/fize-service/gvr/html-service.htm?' + parameters;
 				availabilityLabel.setAttribute('href', ZDBLinkURL);
-				availabilityLabel.setAttribute('target', 'pz2-linktarget');
 				availabilityLabel.setAttribute('title', localise('Informationen bei der Zeitschriftendatenbank'));
+				turnIntoNewWindowLink(availabilityLabel);
 				availabilityLabel.appendChild(document.createTextNode(localise('detail-label-verfügbarkeit') + ':'));
 
 				var infoBlock = ZDBInformation(resultData);
@@ -2115,7 +2139,7 @@ function renderDetails(recordID) {
 						var link = document.createElement('a');
 						URLsContainer.appendChild(link);
 						link.setAttribute('href', linkURL);
-						link.setAttribute('target', 'pz2-linktarget');
+						turnIntoNewWindowLink(link);
 						link.appendChild(document.createTextNode(linkText));
 					}
 				}
@@ -2159,7 +2183,7 @@ function renderDetails(recordID) {
 			if (catalogueURL) {
 				var linkElement = document.createElement('a');
 				linkElement.setAttribute('href', catalogueURL);
-				linkElement.setAttribute('target', 'pz2-linktarget');
+				turnIntoNewWindowLink(linkElement);
 				linkElement.setAttribute('class', 'pz2-detail-catalogueLink')
 				var linkText = localise('Ansehen und Ausleihen bei:');
 				if (targetName) {

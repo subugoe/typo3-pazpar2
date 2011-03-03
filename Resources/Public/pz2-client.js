@@ -1617,7 +1617,14 @@ function renderDetails(recordID) {
 							statusDiv.appendChild(document.createTextNode(' – '));
 							statusDiv.appendChild(accessLink);
 							accessLink.setAttribute('href', accessLinkURL[0].textContent);
-							accessLink.appendChild(document.createTextNode(localise('Zugriff')));
+							var linkTitle = $('Title', ZDBResult);
+							if (linkTitle && linkTitle.length > 0) {
+								linkTitle = linkTitle[0].textContent;
+							}
+							else {
+								linkTitle = localise('Zugriff');
+							}
+							accessLink.appendChild(document.createTextNode(linkTitle));
 							accessLink.setAttribute('target', 'pz2-linktarget');
 
 							var additionals = [];

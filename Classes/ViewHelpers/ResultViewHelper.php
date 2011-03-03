@@ -95,6 +95,27 @@ private function appendInfoToContainer ($info, $container) {
 
 
 /**
+ * Add a target attribute to open in our target window and add a note
+ * to the title about this fact.
+ * The link’s title element should be set before calling this function.
+ * @param DOMElement $link
+ */
+private function turnIntoNewWindowLink ($link) {
+	if ($link) {
+		$link->setAttribute('target', 'pz2-linkTarget');
+
+		$newTitle = Tx_Extbase_Utility_Localization::translate('Erscheint in separatem Fenster.', 'Pazpar2');
+		if ($link->hasAttribute('title')) {
+			$oldTitle = $link->getAttribute('title');
+			$newTitle = $oldTitle . ' (' . $newTitle . ')';
+		}
+		$link->setAttribute('title', $newTitle);
+	}
+}
+
+
+
+/**
  * Creates span DOM element and content for a field name; Appends it to the given container.
  * @param string $fieldName
  * @param string $result result array to look the fieldName up in
@@ -492,7 +513,7 @@ private function electronicURLs ($location) {
 			$link = $this->doc->createElement('a');
 			$URLsContainer->appendChild($link);
 			$link->setAttribute('href', $linkURL);
-			$link->setAttribute('target', 'pz2-linktarget');
+			$this->turnIntoNewWindowLink($link);
 			$link->appendChild($this->doc->createTextNode($linkText));
 		}
 		$URLsContainer->appendChild($this->doc->createTextNode('; '));
@@ -536,7 +557,7 @@ private function catalogueLink ($locationAll) {
 	if ($catalogueURL) {
 		$linkElement = $this->doc->createElement('a');
 		$linkElement->setAttribute('href', $catalogueURL);
-		$linkElement->setAttribute('target', 'pz2-linktarget');
+		$this->turnIntoNewWindowLink($linkElement);
 		$linkElement->setAttribute('class', 'pz2-detail-catalogueLink');
 		$linkText = Tx_Extbase_Utility_Localization::translate('Ansehen und Ausleihen bei:', 'Pazpar2');
 		if ($targetName) {
@@ -598,7 +619,7 @@ private function DOMElementForTitle ($title, $result) {
 private function linkForDOI($DOI) {
 	$linkElement = $this->doc->createElement('a');
 	$linkElement->setAttribute('href', 'http://dx.doi.org/' + $DOI);
-	$linkElement->setAttribute('target', 'pz2-linktarget');
+	$this->turnIntoNewWindowLink($linkElement);
 	$linkElement->appendChild($this->doc->createTextNode($DOI));
 
 	$DOISpan = $this->doc->createElement('span');

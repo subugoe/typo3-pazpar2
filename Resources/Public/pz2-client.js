@@ -1566,8 +1566,17 @@ function renderDetails(recordID) {
 	*/
 	var addZDBInfoIntoElement = function (element) {
 		// Do nothing if there are no ISSNs.
-		var ISSN = (data['md-issn']) ? data['md-issn'] : data['md-pissn'];
-		var eISSN = data['md-eissn'];
+		var ISSN;
+		if (data['md-issn'] && data['md-issn'].length > 0) {
+			ISSN = data['md-issn'][0];
+		}
+		else if (data['md-pissn'] && data['md-pissn'].length > 0) {
+			ISSN = data['md-pissn'][0];
+		}
+		var eISSN;
+		if (data['md-eissn'] && data['md-eissn'].length > 0) {
+			eISSN = data['md-eissn'][0];
+		}
 		
 		if ( !(ISSN || eISSN) ) { return; }
 

@@ -1371,6 +1371,37 @@ function renderDetails(recordID) {
 
 
 
+	/*	detailLineBasic
+		input:	titleElement - DOM element containing the title
+				dataElement - DOMElement with the information to be displayed
+				attributes - associative array if attributes added to the resulting elements (optional)
+		output: Array of DOM elements containing
+				0:	DT element with the titleElement
+				1:	DD element with the informationElement
+	*/
+	var detailLineBasic = function (titleElement, dataElement, attributes) {
+		var line;
+		if (titleElement && dataElement) {
+			var rowTitleElement = document.createElement('dt');
+			for (attributeName in attributes) {
+				rowTitleElement.setAttribute(attributeName, attributes[attributeName]);
+			}
+			rowTitleElement.appendChild(titleElement);
+
+			var rowDataElement = document.createElement('dd');
+			for (attributeName in attributes) {
+				rowDataElement.setAttribute(attributeName, attributes[attributeName]);
+			}
+			rowDataElement.appendChild(dataElement);
+			
+			line = [rowTitleElement, rowDataElement];
+		}
+		
+		return line;
+	}
+
+
+
 	/*	detailLine
 		input:	title - string with element's name
 				informationElements - array of DOM elements with the information to be displayed
@@ -1380,7 +1411,8 @@ function renderDetails(recordID) {
 						If there is more than one data item, they are wrapped in a list.
 	*/
 	var detailLine = function (title, informationElements) {
-		if (informationElements && title) {
+		var line;
+		if (title && informationElements) {
 			var headingText;	
 
 			if (informationElements.length == 1) {
@@ -1399,10 +1431,6 @@ function renderDetails(recordID) {
 			var infoItems = markupInfoItems(informationElements);
 
 			if (infoItems) { // we have information, so insert it
-				var line = [];
-
-				var rowTitle = document.createElement('dt');
-				line.push(rowTitle);
 				var labelNode = document.createTextNode(headingText + ':');
 				var acronymKey = 'detail-label-acronym-' + title;
 				if (localise(acronymKey) !== acronymKey) {
@@ -1412,11 +1440,8 @@ function renderDetails(recordID) {
 					acronymElement.appendChild(labelNode);
 					labelNode = acronymElement;
 				}
-				rowTitle.appendChild(labelNode);
 
-				var rowData = document.createElement('dd');
-				line.push(rowData);
-				rowData.appendChild(infoItems);
+				line = detailLineBasic(labelNode, infoItems);
 			}
 		}
 
@@ -1552,9 +1577,9 @@ function renderDetails(recordID) {
 		else { // it’s a journal
 			parameters += '&genre=journal';
 
-			var title = data['md-title'];
-			if (title) {
-				parameters += '&title=' + encodeURI(title);
+			var journalTitle = data['md-title'];
+			if (journalTitle) {
+				parameters += '&title=' + encodeURI(journalTitle);
 			}
 		}
 
@@ -1606,16 +1631,16 @@ function renderDetails(recordID) {
 					
 					// Only display detail information if we do have access.
 					if (statusText) {
-						var statusDiv = document.createElement('div');
-						statusDiv.setAttribute('class', 'pz2-ZDBStatusInfo');
+						var statusElement = document.createElement('span');
+						statusElement.setAttribute('class', 'pz2-ZDBStatusInfo');
 
 						var accessLinkURL = $('AccessURL', ZDBResult);
 						if (accessLinkURL.length > 0) {
 							// Having an AccessURL implies this is inside ElectronicData.
-							statusDiv.appendChild(document.createTextNode(statusText));
+							statusElement.appendChild(document.createTextNode(statusText));
 							var accessLink = document.createElement('a');
-							statusDiv.appendChild(document.createTextNode(' – '));
-							statusDiv.appendChild(accessLink);
+							statusElement.appendChild(document.createTextNode(' – '));
+							statusElement.appendChild(accessLink);
 							accessLink.setAttribute('href', accessLinkURL[0].textContent);
 							var linkTitle = $('Title', ZDBResult);
 							if (linkTitle && linkTitle.length > 0) {
@@ -1659,13 +1684,13 @@ function renderDetails(recordID) {
 							}
 
 							locationInfo.appendChild(document.createTextNode(infoText));
-							statusDiv.appendChild(locationInfo);
+							statusElement.appendChild(locationInfo);
 						}
 						else {
-							statusDiv = undefined;
+							statusElement = undefined;
 						}
 					}	
-					return statusDiv;
+					return statusElement;
 				}
 
 
@@ -1728,19 +1753,13 @@ function renderDetails(recordID) {
 									* print journal information
 				*/
 				var ZDBInformation = function (data) {
-					var container = document.createElement('div');
-					var ZDBLink = document.createElement('a');
-					container.appendChild(ZDBLink);
-					var ZDBLinkURL = 'http://services.d-nb.de/fize-service/gvr/html-service.htm?' + parameters;
-					ZDBLink.setAttribute('href', ZDBLinkURL);
-					ZDBLink.setAttribute('class', 'pz2-ZDBLink');
-					ZDBLink.setAttribute('target', 'pz2-linktarget');
-					ZDBLink.appendChild(document.createTextNode(localise('Informationen bei der Zeitschriftendatenbank')));
-					
+					var container;
+
 					var electronicInfos = ZDBInfoElement( $('ElectronicData', data) );
 					var printInfos = ZDBInfoElement( $('PrintData', data) );
 					
 					if (electronicInfos || printInfos) {
+						container = document.createElement('div');
 						appendLibraryNameFromResultDataTo(data, container);
 					}
 
@@ -1758,12 +1777,23 @@ function renderDetails(recordID) {
 						container.appendChild(printInfos);
 					}
 
-					return container
+					return container;
 				}
 
 
-				var infoBlock = [ZDBInformation(resultData)];
-				appendInfoToContainer( detailLine(localise('verfügbarkeit'), infoBlock), element);
+
+				var availabilityLabel = document.createElement('a');
+				var ZDBLinkURL = 'http://services.d-nb.de/fize-service/gvr/html-service.htm?' + parameters;
+				availabilityLabel.setAttribute('href', ZDBLinkURL);
+				availabilityLabel.setAttribute('target', 'pz2-linktarget');
+				availabilityLabel.setAttribute('title', localise('Informationen bei der Zeitschriftendatenbank'));
+				availabilityLabel.appendChild(document.createTextNode(localise('detail-label-verfügbarkeit') + ':'));
+
+				var infoBlock = ZDBInformation(resultData);
+
+				var infoLineElements = detailLineBasic(availabilityLabel, infoBlock, {'class':'pz2-ZDBInfo'});
+
+				appendInfoToContainer(infoLineElements, element);
 
 			}
 		);

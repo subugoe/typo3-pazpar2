@@ -231,13 +231,8 @@ dd div {
 	position: relative;
 }
 
-dd div h4 {
-	position: absolute;
-	right: 100%;
-	padding-right: 4px;
-	text-align: right;
-	font-family: Georgia, Times, "Times New Roman", serif;
-	color: #666;
+dl .pz2-ZDBInfo {
+	margin-top: 0.5em;
 }
 
 

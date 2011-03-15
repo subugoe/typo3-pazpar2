@@ -68,6 +68,7 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 			'pz2-clientJSPath' => t3lib_extMgm::siteRelPath('pazpar2') . 'Resources/Public/pz2-client.js',
 			'useGoogleBooks' => '1',
 			'useZDB' => '1',
+			'ZDBIP' => '0'
 		);
 
 		return $defaults;
@@ -137,7 +138,8 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 
 		// Add settings for pz2-client.js to <head>.
 		$jsCommand = 'useGoogleBooks = ' . (($this->conf['useGoogleBooks']) ? 'true' : 'false') . '; ';
-		$jsCommand .= 'useZDB = ' . (($this->conf['useZDB']) ? 'true' : 'false') . ';';
+		$jsCommand .= 'useZDB = ' . (($this->conf['useZDB']) ? 'true' : 'false') . '; ';
+		$jsCommand .= 'ZDBUseClientIP = ' . (($this->conf['ZDBIP']) ? 'true' : 'false') . ';';
 		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
 		$scriptTag->addAttribute('type', 'text/javascript');
 		$scriptTag->setContent($jsCommand);

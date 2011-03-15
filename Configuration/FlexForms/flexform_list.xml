@@ -37,6 +37,27 @@
 				</TCEforms>
 			</settings.useZDB>
 
+			<settings.ZDBIP>
+				<TCEforms>
+					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang.xml:settings.ZDBIP</label>
+					<config>
+						<type>radio</type>
+						<default>0</default>
+						<items type="array">
+							<numIndex index="0" type="array">
+								<numIndex index="0">LLL:EXT:pazpar2/Resources/Private/Language/locallang.xml:settings.ZDBIPUser</numIndex>
+								<numIndex index="1">0</numIndex>
+							</numIndex>
+							<numIndex index="1" type="array">
+								<numIndex index="0">LLL:EXT:pazpar2/Resources/Private/Language/locallang.xml:settings.ZDBIPLocal</numIndex>
+								<numIndex index="1">1</numIndex>
+							</numIndex>
+						</items>
+					</config>
+				</TCEforms>
+			</settings.ZDBIP>
+
+
 			<settings.CSSPath>
 				<TCEforms>
 					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang.xml:settings.CSSPath</label>

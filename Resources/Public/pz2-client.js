@@ -215,6 +215,7 @@ var hitList = []; // local storage for the records sent from pazpar2
 var displayHitList = []; // filtered and sorted list used for display
 var useGoogleBooks = false;
 var useZDB = false;
+var ZDBUseClientIP = true;
 
 
 
@@ -1635,7 +1636,11 @@ function renderDetails(recordID) {
 		}
 
 		// Run the ZDB query.
-		var ZDBURL = '/zdb/full.xml?' + parameters;
+		var ZDBPath = '/zdb/';
+		if (!ZDBUseClientIP) {
+			ZDBPath = '/zdb-local/';
+		}
+		var ZDBURL = ZDBPath + 'full.xml?' + parameters;
 
 		$.get(ZDBURL,
 			/*	AJAX callback

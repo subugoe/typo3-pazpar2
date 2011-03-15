@@ -24,6 +24,9 @@
 			<label index="settings.serviceID">pazpar2 service ID (leer, falls im Server nur ein unbenannter Service konfiguriert ist)</label>
 			<label index="settings.useGoogleBooks">ISBN und OCLC Nummern bei Google Books nachschlagen, um  Buchdeckel und Vorschau anzeigen zu können</label>
 			<label index="settings.useZDB">ISSN Nummern beim Journals Online &amp; Print Dienst der ZDB nachschlagen, und die Verfügbarkeit anzeigen</label>			
+			<label index="settings.ZDBIP">ZDB Proxy</label>
+			<label index="settings.ZDBIPUser">Abfrage für die IP Adresse des Nutzers machen (Proxy unter /zdb/)</label>
+			<label index="settings.ZDBIPLocal">Abfrage für die IP Adresse des Servers machen (Proxy unter /zdb-local/)</label>
 			<label index="settings.CSSPath">Pfad zum eigenem Stylesheet (ersetzt das eingebaute)</label>
 			<label index="settings.pz2JSPath">Pfad zu eigenem pz2.js (ersetzt das aus dem pazpar2 Paket)</label>
 			<label index="settings.pz2-clientJSPath">Pfad zu eigenem pz2-client.js, das eine domReady()-Funktion zur Verfügung stellt (ersetzt das eingebaute)</label>
@@ -76,6 +79,9 @@
 			<label index="settings.serviceID">pazpar2 service ID</label>
 			<label index="settings.useGoogleBooks">Send ISBN and OCLC Numbers to Google Books to show cover art and use the Preview service</label>
 			<label index="settings.useZDB">Query the ZDB Journals Online and Print Service to learn about local availability of the journals for the user (in Germany)</label>
+			<label index="settings.ZDBIP">ZDB Proxy</label>
+			<label index="settings.ZDBIPUser">Query with the user’s IP address (using service at /zdb/)</label>
+			<label index="settings.ZDBIPLocal">Query with the server’s IP address (using service at /zdb-local/)</label>
 			<label index="settings.CSSPath">Path to stylesheet (replaces built-in stylesheet)</label>
 			<label index="settings.pz2JSPath">Path to pz2.js (replaces the built-in one from pazpar2 distribution)</label>
 			<label index="settings.pz2-clientJSPath">Path to pz2-client.js which provides a domReady() function (replaces built-in script)</label>

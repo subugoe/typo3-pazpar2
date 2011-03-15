@@ -50,10 +50,6 @@ var germanTerms = {
 	'detail-label-series-title': 'Reihe',
 	'detail-label-issn': 'ISSN',
 	'detail-label-acronym-issn': 'Internationale Standardseriennummer',
-	'detail-label-eissn': 'eISSN',
-	'detail-label-acronym-eissn': 'Internationale Standardseriennummer für digitale Serien',
-	'detail-label-pissn': 'pISSN',
-	'detail-label-acronym-pissn': 'Internationale Standardseriennummer für gedruckte Serien',	
 	'detail-label-acronym-isbn': 'Internationale Standardbuchnummer',
 	'detail-label-doi': 'DOI',
 	'detail-label-acronym-doi': 'Document Object Identifier: Mit dem Link zu dieser Nummer kann das Dokument im Netz gefunden werden.',
@@ -104,10 +100,6 @@ var englishTerms = {
 	'detail-label-series-title': 'Series',
 	'detail-label-issn': 'ISSN',
 	'detail-label-acronym-issn': 'International Standard Series Number',
-	'detail-label-eissn': 'eISSN',
-	'detail-label-acronym-eissn': 'International Standard Series Number for electronic series',
-	'detail-label-pissn': 'pISSN',
-	'detail-label-acronym-pissn': 'International Standard Series Number for printed series',
 	'detail-label-acronym-isbn': 'International Standard Book Number',
 	'detail-label-doi': 'DOI',
 	'detail-label-acronym-doi': 'Document Object Identifier: Use the link to load the document.',
@@ -1560,6 +1552,53 @@ function renderDetails(recordID) {
 
 
 
+	/*	ISSNsDetailLine
+		Returns DOMElements with markup for the record’s ISSN information,
+			taking into account the issn, eissn and pissn fields.
+
+		output: Array of DOM elements containing
+				0:	DT element with the row's title ISSN or ISSNs
+				1:	DD element with a list of ISSNs
+	*/
+	var ISSNsDetailLine = function () {
+		var ISSNList = [];
+		if (data['md-issn']) {
+			ISSNList = data['md-issn'];
+		}
+		for (var pISSNIndex in data['md-pissn']) {
+			var pISSN = data['md-pissn'][pISSNIndex].substr(0,9);
+			var pISSNExists = false;
+			for (var existingISSNIndex in ISSNList) {
+				if (pISSN == ISSNList[existingISSNIndex].substr(0,9)) {
+					pISSNExists = true;
+					break;
+				}
+			}
+			if (!pISSNExists) {
+				ISSNList.push(pISSN + ' (' + localise('gedruckt') + ')');
+			}
+		}
+		for (var eISSNIndex in data['md-eissn']) {
+			var eISSN = data['md-eissn'][eISSNIndex].substr(0,9);
+			var eISSNExists = false;
+			for (var existingISSNIndex2 in ISSNList) {
+				if (eISSN == ISSNList[existingISSNIndex2].substr(0,9)) {
+					eISSNExists = true;
+					break;
+				}
+			}
+			if (!eISSNExists) {
+				ISSNList.push(eISSN + ' (' + localise('elektronisch') + ')');
+			}
+		}
+
+		var infoElements = [document.createTextNode(ISSNList.join(', '))];
+
+		return detailLine('issn', infoElements);
+	}
+
+
+
 	/*	ZDBQuery
 		Loads XML journal info from ZDB via a proxy on our own server
 			(to avoid cross-domain load problems).
@@ -2299,9 +2338,7 @@ function renderDetails(recordID) {
 		appendInfoToContainer( detailLineAuto('description'), detailsList );
 	 	appendInfoToContainer( detailLineAuto('medium'), detailsList );
 		appendInfoToContainer( detailLineAuto('series-title'), detailsList );
-		appendInfoToContainer( detailLineAuto('issn'), detailsList );
-		appendInfoToContainer( detailLineAuto('pissn'), detailsList );
-		appendInfoToContainer( detailLineAuto('eissn'), detailsList );
+		appendInfoToContainer( ISSNsDetailLine(), detailsList );
 		appendInfoToContainer( detailLineAuto('doi'), detailsList );
 		appendInfoToContainer( locationDetails(), detailsList );
 		appendInfoToContainer( extraLinks(), detailsList );

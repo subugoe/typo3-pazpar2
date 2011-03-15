@@ -270,9 +270,7 @@ private function renderDetails ($result) {
 	$this->appendInfoToContainer( $this->detailLineAuto('description', $result), $detailsList);
 	$this->appendInfoToContainer( $this->detailLineAuto('medium', $result), $detailsList);
 	$this->appendInfoToContainer( $this->detailLineAuto('series-title', $result), $detailsList);
-	$this->appendInfoToContainer( $this->detailLineAuto('issn', $result), $detailsList);
-	$this->appendInfoToContainer( $this->detailLineAuto('pissn', $result), $detailsList);
-	$this->appendInfoToContainer( $this->detailLineAuto('eissn', $result), $detailsList);
+	$this->appendInfoToContainer( $this->ISSNsDetailLine($result), $detailsList);
 	$this->appendInfoToContainer( $this->detailLineAuto('doi', $result), $detailsList);
 
 	$this->appendInfoToContainer( $this->locationDetails($result), $detailsList);
@@ -571,6 +569,49 @@ private function catalogueLink ($locationAll) {
 
 	return $linkElement;
 }
+
+
+
+/**
+ * @param array $result
+ * @return array of DOM Elements
+ */
+private function ISSNsDetailLine ($result) {
+	$ISSNList = Array();
+	if ($result['md-issn'][0]['values']) {
+		$ISSNList = $result['md-issn'][0]['values'];
+	}
+	foreach ($result['md-pissn'][0]['values'] as $pISSN) {
+		$pISSN = substr($pISSN, 0, 9);
+		$pISSNExists = False;
+		foreach ($ISSNList as $ISSN) {
+			if ($pISSN == substr($ISSN, 0, 9)) {
+				$pISSNExists = True;
+				break;
+			}
+		}
+		if (!$pISSNExists) {
+			$ISSNList[] = $pISSN . ' (' . Tx_Extbase_Utility_Localization::translate('gedruckt', 'Pazpar2') . ')';
+		}
+	}
+	foreach ($result['md-eissn'][0]['values'] as $eISSN) {
+		$eISSN = substr($eISSN, 0, 9);
+		$eISSNExists = False;
+		foreach ($ISSNList as $ISSN) {
+			if ($eISSN == substr($ISSN, 0, 9)) {
+				$eISSNExists = True;
+				break;
+			}
+		}
+		if (!$eISSNExists) {
+			$ISSNList[] = $eISSN . ' (' . Tx_Extbase_Utility_Localization::translate('elektronisch', 'Pazpar2') . ')';
+		}
+	}
+	$infoElements = Array( $this->doc->createTextNode(implode(', ', $ISSNList)) );
+	
+	return $this->detailLine('issn', $infoElements);
+}
+
 
 
 

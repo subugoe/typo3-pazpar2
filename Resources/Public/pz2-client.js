@@ -1814,7 +1814,7 @@ function renderDetails(recordID) {
 					var electronicInfos = ZDBInfoElement( $('ElectronicData', data) );
 					var printInfos = ZDBInfoElement( $('PrintData', data) );
 					
-					if (electronicInfos || printInfos) {
+					if ((electronicInfos || printInfos) && ZDBUseClientIP) {
 						container = document.createElement('div');
 						appendLibraryNameFromResultDataTo(data, container);
 					}

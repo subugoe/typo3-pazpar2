@@ -56,7 +56,7 @@ public function render ($result) {
 
 	// year or journal + year information
 	if($result['md-medium'][0]['values'][0] == 'article') {
-		$this->appendInfoToContainer($this->journalInfo($result), $li);
+		$this->appendJournalInfoToContainer($result, $li);
 	}
 	else {
 		$spaceBefore = ' ';
@@ -216,11 +216,11 @@ private function authorInfo ($result) {
  * @param DOMElement $result
  * @param DOMElement $container to append the DOM element to
  */
-private function journalInfo($result, $container) {
+private function appendJournalInfoToContainer($result, $container) {
 	$outputElement = $this->doc->createElement('span');
 	$outputElement->setAttribute('class', 'pz2-journal');
 
-	$journalTitle = $this->appendMarkupForFieldToContainer('journal-title', $result, $container, ' ' . Tx_Extbase_Utility_Localization::translate("In", "Pazpar2") . ":");
+	$journalTitle = $this->appendMarkupForFieldToContainer('journal-title', $result, $container, ' ' . Tx_Extbase_Utility_Localization::translate("In", "Pazpar2") . ": ");
 	if ($journalTitle) {
 		$this->appendMarkupForFieldToContainer('journal-subpart', $result, $journalTitle, ', ');
 		$journalTitle->appendChild($this->doc->createTextNode('.'));

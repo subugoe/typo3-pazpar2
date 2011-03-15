@@ -55,7 +55,7 @@ public function render ($result) {
 	$this->appendInfoToContainer($authors, $li);
 
 	// year or journal + year information
-	if($result['md-medium'][0][values][0] == 'article') {
+	if($result['md-medium'][0]['values'][0] == 'article') {
 		$this->appendInfoToContainer($this->journalInfo($result), $li);
 	}
 	else {

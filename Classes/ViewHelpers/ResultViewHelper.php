@@ -404,7 +404,7 @@ private function locationDetails ($result) {
 		$this->appendInfoToContainer( $this->detailInfoItem('physical-extent', $location), $detailsData);
 		// $this->cleanISBNs(); not implemented in PHP version
 		$this->appendInfoToContainer( $this->detailInfoItem('isbn', $location), $detailsData);
-		$this->appendInfoToContainer( $this->electronicURLs($location), $detailsData);
+		$this->appendInfoToContainer( $this->electronicURLs($location, $result), $detailsData);
 		$this->appendInfoToContainer( $this->catalogueLink($locationAll), $detailsData);
 
 		if (! $detailsData->hasChildNodes()) {
@@ -485,10 +485,20 @@ private function detailInfoItemWithLabel($fieldContent, $labelName, $dontTermina
 /**
  * Create markup for URLs in current location data.
  * @param array $location
+ * @param array $result the result containing $location
  * @return DOMElement
  */
-private function electronicURLs ($location) {
+private function electronicURLs ($location, $result) {
 	$electronicURLs = $location['md-electronic-url'];
+	foreach ($result['md-doi'] as $DOI) {
+		foreach ($electronicURLs as $URLIndex => $URL) {
+			if (strpos($DOI, $URL) !== False) {
+				array_splice($electronicURLs, $URLIndex, 1);
+				break;
+			}
+		}
+	}
+	
 	$URLsContainer = Null;
 
 	if ($electronicURLs && count($electronicURLs) != 0) {
@@ -501,8 +511,6 @@ private function electronicURLs ($location) {
 			if ($URLInfo['attrs']['name']) {
 				$linkText = '[' . $URLInfo['attrs']['name'] . ']';
 			}
-
-			// DOI duplication avoidance not implemented in PHP version
 
 			if ($URLsContainer->hasChildNodes()) {
 				$URLsContainer->appendChild($this->doc->createTextNode(', '));

@@ -1856,9 +1856,11 @@ function renderDetails(recordID) {
 					var electronicInfos = ZDBInfoElement( $('ElectronicData', data) );
 					var printInfos = ZDBInfoElement( $('PrintData', data) );
 					
-					if ((electronicInfos || printInfos) && ZDBUseClientIP) {
+					if (electronicInfos || printInfos) {
 						container = document.createElement('div');
-						appendLibraryNameFromResultDataTo(data, container);
+						if (ZDBUseClientIP) {
+							appendLibraryNameFromResultDataTo(data, container);
+						}
 					}
 
 					if (electronicInfos) {

@@ -1592,7 +1592,10 @@ function renderDetails(recordID) {
 			}
 		}
 
-		var infoElements = [document.createTextNode(ISSNList.join(', '))];
+		var infoElements;
+		if (ISSNList.length > 0) {
+			infoElements = [document.createTextNode(ISSNList.join(', '))];
+		}
 
 		return detailLine('issn', infoElements);
 	}

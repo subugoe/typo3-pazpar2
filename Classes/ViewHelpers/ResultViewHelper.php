@@ -607,7 +607,11 @@ private function ISSNsDetailLine ($result) {
 			$ISSNList[] = $eISSN . ' (' . Tx_Extbase_Utility_Localization::translate('elektronisch', 'Pazpar2') . ')';
 		}
 	}
-	$infoElements = Array( $this->doc->createTextNode(implode(', ', $ISSNList)) );
+
+	$infoElements = Null;
+	if (count($ISSNList) > 0) {
+		$infoElements = Array( $this->doc->createTextNode(implode(', ', $ISSNList)) );
+	}
 	
 	return $this->detailLine('issn', $infoElements);
 }

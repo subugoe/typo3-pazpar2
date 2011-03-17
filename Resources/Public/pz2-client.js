@@ -2210,17 +2210,15 @@ function renderDetails(recordID) {
 						linkURL = URLInfo['#text'];
 					}
 
-					if (!URLAlreadyListed) {
-						if (URLsContainer.childElementCount > 0) {
-							// add , as separator if not the first element
-							URLsContainer.appendChild(document.createTextNode(', '));
-						}
-						var link = document.createElement('a');
-						URLsContainer.appendChild(link);
-						link.setAttribute('href', linkURL);
-						turnIntoNewWindowLink(link);
-						link.appendChild(document.createTextNode(linkText));
+					if (URLsContainer.childElementCount > 0) {
+						// add , as separator if not the first element
+						URLsContainer.appendChild(document.createTextNode(', '));
 					}
+					var link = document.createElement('a');
+					URLsContainer.appendChild(link);
+					link.setAttribute('href', linkURL);
+					turnIntoNewWindowLink(link);
+					link.appendChild(document.createTextNode(linkText));
 				}
 				URLsContainer.appendChild(document.createTextNode('; '));
 			}

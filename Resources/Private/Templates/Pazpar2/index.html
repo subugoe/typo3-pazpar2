@@ -5,7 +5,12 @@
 		<f:translate key="Search is better with JavaScript."/>
 	</div>
 
-	<f:render partial="form" arguments="{queryString: queryString}"/>
+	<f:render partial="form" arguments="{queryString: queryString,
+												queryStringTitel: queryStringTitel,
+												queryStringPerson: queryStringPerson,
+												queryStringZeitschrift: queryStringZeitschrift,
+												queryStringDate: queryStringDate,
+												extended: extended}"/>
 
 	<div id="pz2-recordView">
 		<div class="pz2-pager">

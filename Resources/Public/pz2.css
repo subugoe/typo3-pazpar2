@@ -14,6 +14,22 @@
 	font-size: 133%;
 }
 
+.pz2-mainForm .formField {
+	line-height: 150%;
+}
+
+.pz2-mainForm label {
+	display: block;
+	float: left;
+	width: 6em;
+	text-align: right;
+}
+
+.pz2-mainForm input.extended {
+	font-size: 100%;
+	margin-left: 0.5em;
+}
+
 .pz2-searchField {
 	width: 20em;
 }

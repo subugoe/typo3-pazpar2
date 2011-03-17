@@ -88,9 +88,17 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		$this->addResourcesToHead();
 
 		$arguments = $this->request->getArguments();
-		$myQueryString = trim($arguments["queryString"]);
-		$this->query->setQueryString($myQueryString);
-		$this->view->assign('queryString', $myQueryString);
+
+		$this->query->setQueryFromArguments($arguments);
+
+		$this->view->assign('extended', $arguments['extended']);
+
+		$this->view->assign('queryString', $this->query->getQueryString());
+		$this->view->assign('queryStringTitel', $this->query->getQueryStringTitel());
+		$this->view->assign('queryStringPerson', $this->query->getQueryStringPerson());
+		$this->view->assign('queryStringZeitschrift', $this->query->getQueryStringZeitschrift());
+		$this->view->assign('queryStringDate', $this->query->getQueryStringDate());
+
 		if ($arguments['useJS'] != 'yes') {
 			$totalResultCount = $this->query->run();
 			$this->view->assign('totalResultCount', $totalResultCount);

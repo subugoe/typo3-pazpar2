@@ -1,6 +1,34 @@
 <f:form class="pz2-searchForm">
 	<div class="pz2-mainForm">
-		<f:form.textbox class="pz2-searchField" name="queryString"  value="{queryString}"/>
+		<f:form.textbox class="pz2-searchField main" name="queryString" value="{queryString}"/>
+
+		<f:if condition="{extended}">
+			<f:then>
+				<f:link.action arguments="{extended: 0}" class="pz2-extendedLink"><f:translate key="einfache Suche"/></f:link.action>
+				<div class="formField">
+					<label for="form-extended-label-titel"><f:translate key="form-extended-label-titel" >titel</f:translate></label>
+					<f:form.textbox class="pz2-searchField extended" id="form-extended-label-titel" name="queryStringTitel" value="{queryStringTitel}"/>
+				</div>
+				<div class="formField">
+					<label for="form-extended-label-person"><f:translate key="form-extended-label-person" >person</f:translate></label>
+					<f:form.textbox class="pz2-searchField extended" id="form-extended-label-person" name="queryStringPerson" value="{queryStringPerson}"/>
+				</div>
+				<div class="formField">
+					<label for="form-extended-label-zeitschrift"><f:translate key="form-extended-label-zeitschrift">zeitschrift</f:translate></label>
+					<f:form.textbox class="pz2-searchField extended" id="form-extended-label-zeitschrift" name="queryStringZeitschrift" value="{queryStringZeitschrift}"/>
+				</div>
+				<div class="formField">
+					<label for="form-extended-label-date"><f:translate key="form-extended-label-date" >date</f:translate></label>
+					<f:form.textbox class="pz2-searchField extended" id="form-extended-label-date" name="queryStringDate" value="{queryStringDate}"/>
+				</div>
+
+				<f:form.hidden name="extended" value="1"/>
+			</f:then>
+			<f:else>
+				<f:link.action arguments="{extended: 1}" class="pz2-extendedLink"><f:translate key="erweiterte Suche"/></f:link.action>
+			</f:else>
+		</f:if>
+
 		<f:form.submit name="button" value="<f:translate key='Find'/>"/>
 	</div>
 
@@ -17,4 +45,5 @@
 			options="{10:10, 20:20, 50:50, 100:100}"
 			value="100" />
 	</div>
+
 </f:form>

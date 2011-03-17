@@ -27,27 +27,32 @@
  */
 class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEntity {
 
-
 	/**
-	 * Search string.
-	 *
-	 * @var string
+	 * Search strings and reading accessors.
 	 */
 	protected $queryString;
+	protected $queryStringTitel;
+	protected $queryStringPerson;
+	protected $queryStringZeitschrift;
+	protected $queryStringDate;
+
+	public function getQueryString () { return $this->queryString; }
+	public function getQueryStringTitel () { return $this->queryStringTitel; }
+	public function getQueryStringPerson () { return $this->queryStringPerson; }
+	public function getQueryStringZeitschrift () { return $this->queryStringZeitschrift; }
+	public function getQueryStringDate () { return $this->queryStringDate; }
 
 	/**
-	 * @return string
+	 * Set search strings from the request’s arguments array.
+	 * 
+	 * @param array $newArguments 
 	 */
-	public function getQueryString () {
-		return $this->queryString;
-	}
-
-	/**
-	 * @param string $newQueryString
-	 * @return void
-	 */
-	public function setQueryString ($newQueryString) {
-		$this->queryString = $newQueryString;
+	public function setQueryFromArguments ($newArguments) {
+		$this->queryString = trim($newArguments['queryString']);
+		$this->queryStringTitel = trim($newArguments['queryStringTitel']);
+		$this->queryStringPerson = trim($newArguments['queryStringPerson']);
+		$this->queryStringZeitschrift = trim($newArguments['queryStringZeitschrift']);
+		$this->queryStringDate = trim($newArguments['queryStringDate']);
 	}
 
 
@@ -151,6 +156,24 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 
 
 
+	/**
+	 * Returns the full query string to use in pazpar2.
+	 * 
+	 * @return string
+	 */
+	private function fullQueryString () {
+		$query = '';
+
+		if ($this->queryString) { $query .= $this->queryString; }
+		if ($this->queryStringTitel) { $query .= 'tit=' . $this->queryStringTitel; }
+		if ($this->queryStringPerson) {	$query .= 'per=' . $this->queryStringPerson; }
+		if ($this->queryStringZeitschrift) { $query .= 'zti=' . $this->queryStringZeitschrift; }
+		if ($this->queryStringDate) { $query .= 'date=' . $this->queryStringDate; }
+
+		return $query;
+	}
+
+
 
 	/**
 	 * Returns URL to initialise pazpar2.
@@ -176,7 +199,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	private function pazpar2SearchURL () {
 		$URL = $this->getPazpar2BaseURL() . '?command=search';
 		$URL .= '&session=' . $this->pazpar2SessionID;
-		$URL .= '&query=' . urlencode($this->getQueryString());
+		$URL .= '&query=' . urlencode($this->fullQueryString());
 
 		return $URL;
 	}
@@ -211,7 +234,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	private function pazpar2ShowURL ($start=0, $num=500) {
 		$URL = $this->getPazpar2BaseURL() . '?command=show';
 		$URL .= '&session=' . $this->pazpar2SessionID;
-		$URL .= '&query=' . urlencode($this->getQueryString());
+		$URL .= '&query=' . urlencode($this->fullQueryString());
 		$URL .= '&start=' . $start . '&num=' . $num;
 		$URL .= '&sort=date%3A0%2Cauthor%3A1%2Ctitle%3A1';
 		$URL .= '&block=1'; // unclear how this is advantagous but the JS client adds it
@@ -363,7 +386,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 
 	/**
 	 * Public function to run the pazpar2 query.
-	 * If $queryString is empty, don't do anything.
+	 * If the query string is empty, don’t do anything.
 	 * 
 	 * The results of the query are available via getResults() after this function returns.
 	 *
@@ -372,7 +395,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	public function run () {
 		$totalResultCount = Null;
 
-		if ($this->queryString) {
+		if ($this->fullQueryString() !== '') {
 			$this->startQuery();
 			// Fetching results can take a while. Increase our time limit.
 			$maximumTime = 60;

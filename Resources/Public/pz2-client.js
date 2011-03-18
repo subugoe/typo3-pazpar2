@@ -1150,12 +1150,11 @@ function resetPage() {
 */
 function triggerSearchForForm (form) {
 	if (domReadyFired && pz2Initialised) {
-		resetPage();
+		var searchTerm = $('.pz2-searchField', form).val().trim();
 
-		var searchTerm = $('.pz2-searchField', form).val();
-
-		if ( searchTerm.trim() != '' && searchTerm != curSearchTerm ) {
+		if ( searchTerm != '' && searchTerm != curSearchTerm ) {
 			loadSelectsFromForm(form);
+			resetPage();
 			my_paz.search(searchTerm, fetchRecords, curSort, curFilter);
 			curSearchTerm = searchTerm;
 		}

@@ -10,6 +10,7 @@
 	<data type="array">
 
 		<languageKey index="default" type="array">
+			<label index="form-extended-label-all">Irgendwo</label>
 			<label index="form-extended-label-titel">Titel</label>
 			<label index="form-extended-label-person">Namen</label>
 			<label index="form-extended-label-zeitschrift">Zeitschrift</label>
@@ -69,6 +70,7 @@
 
 
 		<languageKey index="en" type="array">
+			<label index="form-extended-label-all">Anywhere</label>
 			<label index="form-extended-label-titel">Title</label>
 			<label index="form-extended-label-person">Names</label>
 			<label index="form-extended-label-zeitschrift">Journal</label>

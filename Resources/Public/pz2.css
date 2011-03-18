@@ -10,12 +10,23 @@
 	margin: 0px;
 }
 
-.pz2-mainForm input {
-	font-size: 133%;
+
+/* form */
+
+.pz2-mainForm {
+	line-height: 150%;
 }
 
-.pz2-mainForm .formField {
-	line-height: 150%;
+.pz2-searchField {
+	width: 20em;
+}
+
+.pz2-extended .pz2-searchField {
+	margin-left: 0.5em;
+}
+
+.pz2-searchForm.pz2-basic .pz2-searchField, .pz2-searchForm.pz2-basic .pz2-submitButton {
+	font-size: 133%;
 }
 
 .pz2-mainForm label {
@@ -25,16 +36,13 @@
 	text-align: right;
 }
 
-.pz2-mainForm input.extended {
-	font-size: 100%;
-	margin-left: 0.5em;
+.pz2-searchForm.pz2-basic label {
+	display: none;
 }
 
-.pz2-searchField {
-	width: 20em;
-}
 
-.pz2-ranking, .pz2-mainForm {
+
+.pz2-ranking {
 	display: inline;
 }
 
@@ -74,8 +82,8 @@
 
 
 
-/* facets
-*/
+/* facets */
+
 #pz2-termLists {
 	float:right;
 	width: 15em;

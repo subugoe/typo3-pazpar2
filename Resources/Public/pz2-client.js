@@ -15,7 +15,7 @@ var showResponseType = '';
 	metadata tags for the service.
 */
 var termListNames = ['xtargets', 'medium', 'language', 'author', 'date'];
-var termListMax = {'xtargets': 25, 'medium': 10, 'language': 6, 'author': 10, 'date': 10 };
+var termListMax = {'xtargets': 25, 'medium': 10, 'language': 6, 'author': 10, 'date': 10};
 
 if (document.location.hash == '#useproxy') {
 	usesessions = false;
@@ -170,7 +170,7 @@ function my_errorHandler (error) {
 
 
 
-my_paz = new pz2( {	"onshow": my_onshow,
+my_paz = new pz2( {"onshow": my_onshow,
 					"showtime": 1000,//each timer (show, stat, term, bytarget) can be specified this way
 					"pazpar2path": pazpar2path,
 					"oninit": my_oninit,
@@ -359,21 +359,21 @@ function displayList (list) {
 					if (facetType === 'xtargets') {
 						for (var locationIndex in record.location) {
 							matches = (record.location[locationIndex]['@name'] == filterValue);
-							if (matches) { break; }
+							if (matches) {break;}
 						}
 					}
 					else {
 						var contents = fieldContentsInRecord(facetType, record);
 						for (var index in contents) {
 							matches = (String(contents[index]).toLowerCase() == filterValue.toLowerCase());
-							if (matches) { break; }
+							if (matches) {break;}
 						}
 					}
 
-					if (!matches) { break; }
+					if (!matches) {break;}
 				}
 
-				if (!matches) {	break; }
+				if (!matches) {break;}
 			}
 
 			return matches;
@@ -851,7 +851,7 @@ function facetListForType (type, preferOriginalFacets) {
 			var isFiltered = false;
 			for (var filterType in filterArray) {
 				isFiltered = isFilteredForType(filterType);
-				if (isFiltered) { break; }
+				if (isFiltered) {break;}
 			}
 			return isFiltered;
 		}
@@ -885,12 +885,12 @@ function facetListForType (type, preferOriginalFacets) {
 
 			if (termList.length > 0) {
 				termList.sort( function(term1, term2) {
-						if (term1.freq < term2.freq) { return 1; }
+						if (term1.freq < term2.freq) {return 1;}
 						else if (term1.freq == term2.freq) {
-							if (term1.name < term2.name) { return -1; }
-							else { return 1; }
+							if (term1.name < term2.name) {return -1;}
+							else {return 1;}
 						}
-						else { return -1; }
+						else {return -1;}
 					}
 				);
 	
@@ -1622,7 +1622,7 @@ function renderDetails(recordID) {
 			eISSN = data['md-eissn'][0];
 		}
 		
-		if ( !(ISSN || eISSN) ) { return; }
+		if ( !(ISSN || eISSN) ) {return;}
 
 		var serviceID = 'sub:vlib';
 		var parameters = 'sid=' + serviceID;
@@ -2300,7 +2300,7 @@ function renderDetails(recordID) {
 			appendInfoToContainer( electronicURLs(), detailsData);
 			appendInfoToContainer( catalogueLink(), detailsData);
 
-			if (detailsData.childNodes.length == 0) { locationDetails = []; }
+			if (detailsData.childNodes.length == 0) {locationDetails = [];}
 		}
 
 		return locationDetails;

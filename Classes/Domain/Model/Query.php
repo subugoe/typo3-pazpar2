@@ -31,15 +31,15 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	 * Search strings and reading accessors.
 	 */
 	protected $queryString;
-	protected $queryStringTitel;
+	protected $queryStringTitle;
 	protected $queryStringPerson;
-	protected $queryStringZeitschrift;
+	protected $queryStringJournal;
 	protected $queryStringDate;
 
 	public function getQueryString () { return $this->queryString; }
-	public function getQueryStringTitel () { return $this->queryStringTitel; }
+	public function getQueryStringTitle () { return $this->queryStringTitle; }
 	public function getQueryStringPerson () { return $this->queryStringPerson; }
-	public function getQueryStringZeitschrift () { return $this->queryStringZeitschrift; }
+	public function getQueryStringJournal () { return $this->queryStringJournal; }
 	public function getQueryStringDate () { return $this->queryStringDate; }
 
 	/**
@@ -49,9 +49,9 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	 */
 	public function setQueryFromArguments ($newArguments) {
 		$this->queryString = trim($newArguments['queryString']);
-		$this->queryStringTitel = trim($newArguments['queryStringTitel']);
+		$this->queryStringTitle = trim($newArguments['queryStringTitle']);
 		$this->queryStringPerson = trim($newArguments['queryStringPerson']);
-		$this->queryStringZeitschrift = trim($newArguments['queryStringZeitschrift']);
+		$this->queryStringJournal = trim($newArguments['queryStringJournal']);
 		$this->queryStringDate = trim($newArguments['queryStringDate']);
 	}
 
@@ -165,9 +165,9 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 		$query = '';
 
 		if ($this->queryString) { $query .= $this->queryString; }
-		if ($this->queryStringTitel) { $query .= 'tit=' . $this->queryStringTitel; }
-		if ($this->queryStringPerson) {	$query .= 'per=' . $this->queryStringPerson; }
-		if ($this->queryStringZeitschrift) { $query .= 'zti=' . $this->queryStringZeitschrift; }
+		if ($this->queryStringTitle) { $query .= 'title=' . $this->queryStringTitle; }
+		if ($this->queryStringPerson) {	$query .= 'person=' . $this->queryStringPerson; }
+		if ($this->queryStringJournal) { $query .= 'journal=' . $this->queryStringJournal; }
 		if ($this->queryStringDate) { $query .= 'date=' . $this->queryStringDate; }
 
 		return $query;

@@ -76,8 +76,8 @@ var germanTerms = {
 	'Erscheint in separatem Fenster.': 'Erscheint in separatem Fenster.',
 	// Search Form
 	'form-extended-label-title': 'Titel',
+	'form-extended-label-journalOnly': 'nur Zeitschriftentitel',
 	'form-extended-label-person': 'Person',
-	'form-extended-label-journal': 'Zeitschrift',
 	'form-extended-label-date': 'Jahr'
 };
 
@@ -131,8 +131,8 @@ var englishTerms = {
 	'Erscheint in separatem Fenster.': 'Link opens in a new window.',
 	// Search Form
 	'form-extended-label-title': 'Title',
+	'form-extended-label-journalOnly': 'journal titles only',
 	'form-extended-label-person': 'Author',
-	'form-extended-label-journal': 'Journal',
 	'form-extended-label-date': 'Year'
 };
 
@@ -1160,23 +1160,38 @@ function resetPage() {
 	input:	form - DOM element of the form used to trigger the search
 */
 function triggerSearchForForm (form) {
+
+	/*	addSearchStringForFieldToArray
+		Creates the appropriate search string for the passed field name and
+			adds it to the passed array.
+		pazpar2-style search strings are 'fieldname=searchTerm'.
+
+		inputs:	fieldName - string
+				array - array containing the search strings
+	*/
 	var addSearchStringForFieldToArray = function (fieldName, array) {
 		var searchString = $('#pz2-field-' + fieldName, form).val()
-		if (searchString != '') {
+		if (searchString && searchString != '') {
 			searchString = searchString.trim();
 			if (fieldName != 'all') {
-				searchString = fieldName + '=' + searchString;
+				if (!(fieldName == 'title' && $('#pz2-checkbox-journal:checked', form).length > 0)) {
+					searchString = fieldName + '=' + searchString;
+				}
+				else {
+					// special case for title restricted to journals only
+					searchString = 'journal=' + searchString;
+				}
 			}
 			array.push(searchString);
 		}
 	}
+
 
 	if (domReadyFired && pz2Initialised) {
 		var searchChunks = [];
 		addSearchStringForFieldToArray('all', searchChunks);
 		addSearchStringForFieldToArray('title', searchChunks);
 		addSearchStringForFieldToArray('person', searchChunks);
-		addSearchStringForFieldToArray('journal', searchChunks);
 		addSearchStringForFieldToArray('date', searchChunks);
 
 		var searchTerm = searchChunks.join(' and ');
@@ -1200,19 +1215,26 @@ function triggerSearchForForm (form) {
 	output:	false
 */
 function addExtendedSearchForLink (event) {
-	var extendedSearchField = function (title) {
-		var myID = 'pz2-field-' + title;
 
+	/*	extendedSearchField
+		Returns a DIV containing a label and a text field for the given field name.
+
+		input:	fieldName - string containing the field name to be used
+		output:	DOMElement - div containing the input text field and label
+	*/
+	var extendedSearchField = function (fieldName) {
+		var myID = 'pz2-field-' + fieldName;
 		var div = document.createElement('div');
 		div.setAttribute('class', 'pz2-fieldContainer');
 		var label = document.createElement('label');
 		div.appendChild(label);
 		label.setAttribute('for', myID);
-		label.appendChild(document.createTextNode(localise('form-extended-label-' + title)));
+		label.setAttribute('class', 'pz2-textFieldLabel');
+		label.appendChild(document.createTextNode(localise('form-extended-label-' + fieldName)));
 		var input = document.createElement('input');
 		div.appendChild(input);
 		input.setAttribute('type', 'text');
-		input.setAttribute('name', title);
+		input.setAttribute('name', fieldName);
 		input.setAttribute('id', myID);
 		input.setAttribute('class', 'pz2-searchField extended');
 
@@ -1226,9 +1248,19 @@ function addExtendedSearchForLink (event) {
 	jQuery(formContainer).parent('form').removeClass('pz2-basic').addClass('pz2-extended');
 
 	// append new fields
-	formContainer.appendChild(extendedSearchField('title'));
+	var titleField = extendedSearchField('title');
+	formContainer.appendChild(titleField);
+	var checkBox = document.createElement('input');
+	titleField.appendChild(checkBox);
+	checkBox.setAttribute('id', 'pz2-checkbox-journal');
+	checkBox.setAttribute('type', 'checkbox');
+	checkBox.setAttribute('name', 'journalTitle');
+	var label = document.createElement('label');
+	titleField.appendChild(label);
+	label.setAttribute('for', 'pz2-checkbox-journal');
+	label.appendChild(document.createTextNode(localise('form-extended-label-journalOnly')));
+
 	formContainer.appendChild(extendedSearchField('person'));
-	formContainer.appendChild(extendedSearchField('journal'));
 	var dateLine = extendedSearchField('date');
 	formContainer.appendChild(dateLine);
 

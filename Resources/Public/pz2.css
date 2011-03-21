@@ -29,7 +29,7 @@
 	font-size: 133%;
 }
 
-.pz2-mainForm label {
+.pz2-mainForm label.pz2-textFieldLabel {
 	display: block;
 	float: left;
 	width: 6em;

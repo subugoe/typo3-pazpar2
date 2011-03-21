@@ -11,9 +11,9 @@
 
 		<languageKey index="default" type="array">
 			<label index="form-extended-label-all">Irgendwo</label>
-			<label index="form-extended-label-titel">Titel</label>
+			<label index="form-extended-label-title">Titel</label>
+			<label index="form-extended-label-journalOnly">nur Zeitschriftentitel</label>
 			<label index="form-extended-label-person">Person</label>
-			<label index="form-extended-label-zeitschrift">Zeitschrift</label>
 			<label index="form-extended-label-date">Jahr</label>
 			<label index="erweiterte Suche">erweiterte Suche</label>
 			<label index="einfache Suche">einfache Suche</label>
@@ -71,9 +71,9 @@
 
 		<languageKey index="en" type="array">
 			<label index="form-extended-label-all">Anywhere</label>
-			<label index="form-extended-label-titel">Title</label>
+			<label index="form-extended-label-title">Title</label>
+			<label index="form-extended-label-journalOnly">journal titles only</label>
 			<label index="form-extended-label-person">Author</label>
-			<label index="form-extended-label-zeitschrift">Journal</label>
 			<label index="form-extended-label-date">Year</label>
 			<label index="erweiterte Suche">Extended Search</label>
 			<label index="einfache Suche">Basic Search</label>

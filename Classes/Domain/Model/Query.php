@@ -28,30 +28,30 @@
 class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEntity {
 
 	/**
-	 * Search strings and reading accessors.
+	 * Search query and reading accessors.
 	 */
 	protected $queryString;
 	protected $queryStringTitle;
+	protected $querySwitchJournalOnly;
 	protected $queryStringPerson;
-	protected $queryStringJournal;
 	protected $queryStringDate;
 
 	public function getQueryString () { return $this->queryString; }
 	public function getQueryStringTitle () { return $this->queryStringTitle; }
+	public function getQuerySwitchJournalOnly () { return $this->querySwitchJournalOnly; }
 	public function getQueryStringPerson () { return $this->queryStringPerson; }
-	public function getQueryStringJournal () { return $this->queryStringJournal; }
 	public function getQueryStringDate () { return $this->queryStringDate; }
 
 	/**
-	 * Set search strings from the request’s arguments array.
+	 * Set search query elements from the request’s arguments array.
 	 * 
 	 * @param array $newArguments 
 	 */
 	public function setQueryFromArguments ($newArguments) {
 		$this->queryString = trim($newArguments['queryString']);
 		$this->queryStringTitle = trim($newArguments['queryStringTitle']);
+		$this->querySwitchJournalOnly = ($newArguments['querySwitchJournalOnly'] != '');
 		$this->queryStringPerson = trim($newArguments['queryStringPerson']);
-		$this->queryStringJournal = trim($newArguments['queryStringJournal']);
 		$this->queryStringDate = trim($newArguments['queryStringDate']);
 	}
 
@@ -162,14 +162,21 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	 * @return string
 	 */
 	private function fullQueryString () {
-		$query = '';
+		$queryParts = Array();
 
-		if ($this->queryString) { $query .= $this->queryString; }
-		if ($this->queryStringTitle) { $query .= 'title=' . $this->queryStringTitle; }
-		if ($this->queryStringPerson) {	$query .= 'person=' . $this->queryStringPerson; }
-		if ($this->queryStringJournal) { $query .= 'journal=' . $this->queryStringJournal; }
-		if ($this->queryStringDate) { $query .= 'date=' . $this->queryStringDate; }
+		if ($this->queryString) { $queryParts[] = $this->queryString; }
+		if ($this->queryStringTitle) {
+			if (!$this->querySwitchJournalOnly) {
+				$queryParts[] = 'title=' . $this->queryStringTitle;
+			}
+			else {
+				$queryParts[] = 'journal=' . $this->queryStringTitle;
+			}
+		}
+		if ($this->queryStringPerson) {	$queryParts[] = 'person=' . $this->queryStringPerson; }
+		if ($this->queryStringDate) { $queryParts[] = 'date=' . $this->queryStringDate; }
 
+		$query = implode(' and ', $queryParts);
 		return $query;
 	}
 

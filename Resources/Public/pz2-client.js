@@ -1160,9 +1160,26 @@ function resetPage() {
 	input:	form - DOM element of the form used to trigger the search
 */
 function triggerSearchForForm (form) {
-	if (domReadyFired && pz2Initialised) {
-		var searchTerm = $('.pz2-searchField', form).val().trim();
+	var addSearchStringForFieldToArray = function (fieldName, array) {
+		var searchString = $('#pz2-field-' + fieldName, form).val()
+		if (searchString != '') {
+			searchString = searchString.trim();
+			if (fieldName != 'all') {
+				searchString = fieldName + '=' + searchString;
+			}
+			array.push(searchString);
+		}
+	}
 
+	if (domReadyFired && pz2Initialised) {
+		var searchChunks = [];
+		addSearchStringForFieldToArray('all', searchChunks);
+		addSearchStringForFieldToArray('title', searchChunks);
+		addSearchStringForFieldToArray('person', searchChunks);
+		addSearchStringForFieldToArray('journal', searchChunks);
+		addSearchStringForFieldToArray('date', searchChunks);
+
+		var searchTerm = searchChunks.join(' and ');
 		if ( searchTerm != '' && searchTerm != curSearchTerm ) {
 			loadSelectsFromForm(form);
 			resetPage();
@@ -1184,14 +1201,14 @@ function triggerSearchForForm (form) {
 */
 function addExtendedSearchForLink (event) {
 	var extendedSearchField = function (title) {
-		var myID = 'form-extended-label-' + title;
+		var myID = 'pz2-field-' + title;
 
 		var div = document.createElement('div');
 		div.setAttribute('class', 'pz2-fieldContainer');
 		var label = document.createElement('label');
 		div.appendChild(label);
 		label.setAttribute('for', myID);
-		label.appendChild(document.createTextNode(localise(myID)));
+		label.appendChild(document.createTextNode(localise('form-extended-label-' + title)));
 		var input = document.createElement('input');
 		div.appendChild(input);
 		input.setAttribute('type', 'text');

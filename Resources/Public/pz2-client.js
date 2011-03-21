@@ -654,16 +654,6 @@ function display () {
 				var onsides = 6;
 				var pages = Math.ceil(displayHitList.length / recPerPage);
 
-				var pageList = document.createElement('ol');
-				pageList.setAttribute('class', 'pz2-pages');
-				this.appendChild(pageList);
-			
-				if (pages <= 1) {
-					pageList.setAttribute('style', 'visibility:hidden;')
-				}
-				var firstClickable = ( curPage - onsides > 0 ) ? curPage - onsides : 1;
-				var lastClickable = firstClickable + 2*onsides < pages ? firstClickable + 2*onsides	: pages;
-
 				// create pager
 				if (curPage > 1) {
 					var prevLink = document.createElement('a');
@@ -674,7 +664,17 @@ function display () {
 					prevLink.appendChild(document.createTextNode('«'));
 					this.appendChild(prevLink);
 				}
+
+				var pageList = document.createElement('ol');
+				pageList.setAttribute('class', 'pz2-pages');
+				this.appendChild(pageList);
 			
+				if (pages <= 1) {
+					pageList.setAttribute('style', 'visibility:hidden;')
+				}
+				var firstClickable = ( curPage - onsides > 0 ) ? curPage - onsides : 1;
+				var lastClickable = firstClickable + 2*onsides < pages ? firstClickable + 2*onsides	: pages;
+		
 				var dotsItem = document.createElement('li');
 				dotsItem.appendChild(document.createTextNode('…'));
 			

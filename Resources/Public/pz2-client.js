@@ -651,7 +651,6 @@ function display () {
 					this.appendChild(progress[0]);
 				}
 
-				var onsides = 6;
 				var pages = Math.ceil(displayHitList.length / recPerPage);
 
 				// create pager
@@ -672,17 +671,11 @@ function display () {
 				if (pages <= 1) {
 					pageList.setAttribute('style', 'visibility:hidden;')
 				}
-				var firstClickable = ( curPage - onsides > 0 ) ? curPage - onsides : 1;
-				var lastClickable = firstClickable + 2*onsides < pages ? firstClickable + 2*onsides	: pages;
 		
 				var dotsItem = document.createElement('li');
 				dotsItem.appendChild(document.createTextNode('…'));
-			
-				if (firstClickable > 1) {
-					pageList.appendChild(dotsItem.cloneNode());
-				}
 		
-				for(var pageNumber = firstClickable; pageNumber <= lastClickable; pageNumber++) {
+				for(var pageNumber = 1; pageNumber <= pages; pageNumber++) {
 					var pageItem = document.createElement('li');
 					pageList.appendChild(pageItem);
 					if(pageNumber != curPage) {
@@ -706,10 +699,6 @@ function display () {
 					nextLink.setAttribute('title', localise('Nächste Trefferseite anzeigen'));
 					nextLink.appendChild(document.createTextNode('»'));
 					this.appendChild(nextLink);			
-				}
-		
-				if (lastClickable < pages) {
-					pageList.appendChild(dotsItem);
 				}
 			
 				// add record count information

@@ -65,6 +65,7 @@ var germanTerms = {
 	'Umschlagbild': 'Umschlagbild',
 	'Ansehen und Ausleihen bei': 'Ansehen und Ausleihen bei',
 	'keine Treffer gefunden': 'keine Treffer',
+	'In diesem Katalog gibt es noch # weitere Treffer.': 'In diesem Katalog gibt es noch # weitere Treffer, die wir nicht herunterladen und hier anzeigen können. Bitte wählen Sie einen spezifischeren Suchbegriff, um alle Treffer sehen zu können. Oder suchen Sie direkt im Katalog.',
 	// ZDB-JOP status labels
 	'frei verfügbar': 'frei verfügbar',
 	'teilweise frei verfügbar': 'teilweise frei verfügbar',
@@ -120,6 +121,7 @@ var englishTerms = {
 	'Umschlagbild': 'Book Cover',
 	'Ansehen und Ausleihen bei': 'View catalogue record at',
 	'keine Treffer gefunden': 'no matching records',
+	'In diesem Katalog gibt es noch # weitere Treffer.': 'There are # additional results available in this catalogue which we cannot download and display. Please choose a more specific search query or visit the website of the catalogue itself if you require the full set of results.',
 	// ZDB-JOP status labels
 	'frei verfügbar': 'accessible for all',
 	'teilweise frei verfügbar': 'partially accessible for all',
@@ -218,6 +220,7 @@ var displayHitList = []; // filtered and sorted list used for display
 var useGoogleBooks = false;
 var useZDB = false;
 var ZDBUseClientIP = true;
+var targetStatus = {};
 
 
 
@@ -969,7 +972,16 @@ function facetListForType (type, preferOriginalFacets) {
 			var count = document.createElement('span');
 			link.appendChild(count);
 			count.setAttribute('class', 'pz2-facetCount');
-				count.appendChild(document.createTextNode(terms[i].freq));
+			count.appendChild(document.createTextNode(terms[i].freq));
+			if (type == 'xtargets' && targetStatus[facetName]) {
+				var hitOverflow = targetStatus[facetName].hits - targetStatus[facetName].records;
+				if (hitOverflow > 0) {
+					count.appendChild(document.createTextNode(' +'));
+					var titleString = localise('In diesem Katalog gibt es noch # weitere Treffer.');
+					titleString = titleString.replace('#', hitOverflow);
+					item.setAttribute('title', titleString);
+				}
+			}
 
 			// Mark facets which are currently active and add button to remove faceting.
 			if (isFilteredForType(type)) {
@@ -1045,7 +1057,7 @@ function my_onbytarget(data) {
 	thead.appendChild(tr);
 	var td = document.createElement('td');
 	tr.appendChild(td);
-	td.appendChild(document.createTextNode(localise('Datenbank URL')));
+	td.appendChild(document.createTextNode(localise('Datenbank')));
 	td = document.createElement('td');
 	tr.appendChild(td);
 	td.appendChild(document.createTextNode(localise('Treffer')));
@@ -1067,7 +1079,8 @@ function my_onbytarget(data) {
 		tbody.appendChild(tr);
 		td = document.createElement('td');
 		tr.appendChild(td);
-		td.appendChild(document.createTextNode(data[i].id));
+		td.appendChild(document.createTextNode(data[i].name));
+		td.setAttribute('title', data[i].id)
 		td = document.createElement('td');
 		tr.appendChild(td);
 		td.appendChild(document.createTextNode(data[i].hits));
@@ -1080,6 +1093,8 @@ function my_onbytarget(data) {
 		td = document.createElement('td');
 		tr.appendChild(td);
 		td.appendChild(document.createTextNode(localise(data[i].state)));
+
+		targetStatus[data[i].name] = data[i];
 	}
 }
 

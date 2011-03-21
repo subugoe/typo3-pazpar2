@@ -877,14 +877,17 @@ function facetListForType (type, preferOriginalFacets) {
 			for (var recordIndex in displayHitList) {
 				var record = displayHitList[recordIndex];
 				var dataArray = fieldContentsInRecord(type, record);
+				var countsToIncrement = {}
 				for (var index in dataArray) {
 					var data = dataArray[index];
-					if (termArray[data]) {
-						termArray[data]++;
+					countsToIncrement[data] = true;
+				}
+
+				for (var term in countsToIncrement) {
+					if (!termArray[term]) {
+						termArray[term] = 0;
 					}
-					else {
-						termArray[data] = 1;
-					}
+					termArray[term]++;
 				}
 			}
 			

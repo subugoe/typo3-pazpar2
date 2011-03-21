@@ -213,7 +213,7 @@ var displaySort =  [{'fieldName': 'date', 'direction': 'descending'},
 						{'fieldName': 'author', 'direction': 'ascending'},
 						{'fieldName': 'title', 'direction': 'ascending'}];
 var displayFilter = undefined;
-var hitList = []; // local storage for the records sent from pazpar2
+var hitList = {}; // local storage for the records sent from pazpar2
 var displayHitList = []; // filtered and sorted list used for display
 var useGoogleBooks = false;
 var useZDB = false;
@@ -1138,7 +1138,7 @@ function onSelectDidChange () {
 */
 function resetPage() {
 	curPage = 1;
-	hitList = [];
+	hitList = {};
 	displayHitList = [];
 	filterArray = {};
 	updateAndDisplay();

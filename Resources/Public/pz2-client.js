@@ -76,7 +76,7 @@ var germanTerms = {
 	'Erscheint in separatem Fenster.': 'Erscheint in separatem Fenster.',
 	// Search Form
 	'form-extended-label-title': 'Titel',
-	'form-extended-label-person': 'Namen',
+	'form-extended-label-person': 'Person',
 	'form-extended-label-journal': 'Zeitschrift',
 	'form-extended-label-date': 'Jahr'
 };
@@ -131,7 +131,7 @@ var englishTerms = {
 	'Erscheint in separatem Fenster.': 'Link opens in a new window.',
 	// Search Form
 	'form-extended-label-title': 'Title',
-	'form-extended-label-person': 'Names',
+	'form-extended-label-person': 'Author',
 	'form-extended-label-journal': 'Journal',
 	'form-extended-label-date': 'Year'
 };

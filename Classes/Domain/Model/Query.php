@@ -165,6 +165,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 		$queryParts = Array();
 
 		if ($this->queryString) { $queryParts[] = $this->queryString; }
+		// Title search can be proper title or journal title depending on the switch.
 		if ($this->queryStringTitle) {
 			if (!$this->querySwitchJournalOnly) {
 				$queryParts[] = 'title=' . $this->queryStringTitle;
@@ -173,7 +174,8 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 				$queryParts[] = 'journal=' . $this->queryStringTitle;
 			}
 		}
-		if ($this->queryStringPerson) {	$queryParts[] = 'person=' . $this->queryStringPerson; }
+		// Person search is a phrase search.
+		if ($this->queryStringPerson) {	$queryParts[] = 'person="' . $this->queryStringPerson . '"'; }
 		if ($this->queryStringDate) { $queryParts[] = 'date=' . $this->queryStringDate; }
 
 		$query = implode(' and ', $queryParts);

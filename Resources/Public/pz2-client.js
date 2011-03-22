@@ -1181,12 +1181,16 @@ function triggerSearchForForm (form) {
 		if (searchString && searchString != '') {
 			searchString = searchString.trim();
 			if (fieldName != 'all') {
-				if (!(fieldName == 'title' && $('#pz2-checkbox-journal:checked', form).length > 0)) {
-					searchString = fieldName + '=' + searchString;
+				if (fieldName == 'title' && $('#pz2-checkbox-journal:checked', form).length > 0) {
+					// Special case for title restricted to journals only.
+					searchString = 'journal=' + searchString;
+				}
+				else if (fieldName == 'person') {
+					// Special case for person search: do a phrase search.
+					searchString = fieldName + '="' + searchString + '"';
 				}
 				else {
-					// special case for title restricted to journals only
-					searchString = 'journal=' + searchString;
+					searchString = fieldName + '=' + searchString;
 				}
 			}
 			array.push(searchString);

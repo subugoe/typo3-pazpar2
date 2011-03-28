@@ -136,6 +136,19 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		$scriptTag->setContent($jsCommand);
 		$this->response->addAdditionalHeaderData( $scriptTag->render() );
 
+		// Load flot graphing library.
+		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
+		$scriptTag->addAttribute('type', 'text/javascript');
+		$scriptTag->addAttribute('src', 'typo3conf/ext/pazpar2/Resources/Public/flot/jquery.flot.js') ;
+		$scriptTag->forceClosingTag(true);
+		$this->response->addAdditionalHeaderData( $scriptTag->render() );
+		
+		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
+		$scriptTag->addAttribute('type', 'text/javascript');
+		$scriptTag->addAttribute('src', 'typo3conf/ext/pazpar2/Resources/Public/flot/jquery.flot.selection.js') ;
+		$scriptTag->forceClosingTag(true);
+		$this->response->addAdditionalHeaderData( $scriptTag->render() );
+		
 		// Add pz2-client.js to <head>.
 		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
 		$scriptTag->addAttribute('type', 'text/javascript');

@@ -13,9 +13,11 @@ var showResponseType = '';
 /*	Maintain a list of all facet types so we can loop over it.
 	Don't forget to also set termlist attributes in the corresponding
 	metadata tags for the service.
+
+	It’s crucial for the date histogram that 'date' is the last item in this list.
 */
 var termListNames = ['xtargets', 'medium', 'language', 'author', 'date'];
-var termListMax = {'xtargets': 25, 'medium': 10, 'language': 6, 'author': 10, 'date': 10};
+var termListMax = {'xtargets': 25, 'medium': 10, 'language': 6, 'author': 10, 'date': 10000};
 
 if (document.location.hash == '#useproxy') {
 	usesessions = false;
@@ -66,6 +68,9 @@ var germanTerms = {
 	'Ansehen und Ausleihen bei': 'Ansehen und Ausleihen bei',
 	'keine Treffer gefunden': 'keine Treffer',
 	'In diesem Katalog gibt es noch # weitere Treffer.': 'In diesem Katalog gibt es noch # weitere Treffer, die wir nicht herunterladen und hier anzeigen können. Bitte wählen Sie einen spezifischeren Suchbegriff, um alle Treffer sehen zu können. Oder suchen Sie direkt im Katalog.',
+	'gefiltert': 'gefiltert',
+	'Filter aufheben': 'Filter aufheben',
+	'Filter # aufheben': 'Filter # aufheben',
 	// ZDB-JOP status labels
 	'frei verfügbar': 'frei verfügbar',
 	'teilweise frei verfügbar': 'teilweise frei verfügbar',
@@ -124,6 +129,9 @@ var englishTerms = {
 	'Ansehen und Ausleihen bei': 'View catalogue record at',
 	'keine Treffer gefunden': 'no matching records',
 	'In diesem Katalog gibt es noch # weitere Treffer.': 'There are # additional results available in this catalogue which we cannot download and display. Please choose a more specific search query or visit the website of the catalogue itself if you require the full set of results.',
+	'gefiltert': 'filtered',
+	'Filter aufheben': 'Remove filter',
+	'Filter # aufheben': 'Remove filter #',
 	// ZDB-JOP status labels
 	'frei verfügbar': 'accessible for all',
 	'teilweise frei verfügbar': 'partially accessible for all',
@@ -221,6 +229,7 @@ var displaySort =  [{'fieldName': 'date', 'direction': 'descending'},
 var displayFilter = undefined;
 var hitList = {}; // local storage for the records sent from pazpar2
 var displayHitList = []; // filtered and sorted list used for display
+var displayHitListUpToDate = []; // list filtered for all conditions but the date used for drawing the date histogram
 var useGoogleBooks = false;
 var useZDB = false;
 var ZDBUseClientIP = true;
@@ -348,34 +357,52 @@ function fieldContentsInRecord (fieldName, record) {
 
 
 
-/*	displayList
-	Converts a given list of data to a the list used for display by:
+/*	displayLists
+	Converts a given list of data to thes list used for display by:
 		1. applying filters
 		2. sorting
 	according to the setup in the displaySort and displayFilter variables.
 */
-function displayList (list) {
+function displayLists (list) {
+	
 	/*	filter
-		Returns a filtered list of pazpar2 records according to the current filterArray.
+		Returns filtered lists of pazpar2 records according to the current 
+		filterArray. The first list are the results to display. The second list
+		are the results satisfying all filters except the date ones. It is used
+		for drawing the date histogram.
+	
 		input:	list - list of pazpar2 records
-		output:	list of pazpar2 records
+		output:	list of 2 items:
+					* list of pazpar2 records matching all filters
+					* list of pazpar2 records matching all non-date filters
 	*/
-	var filter = function (listToFilter) {
+	var filteredLists = function (listToFilter) {
+		
 		/*	matchesFilters
-			Returns whether the passed record passes all filters.
-				I.e.: for each facet type it meets one of the listed conditions.
+			Returns how the passed record passes the filters.
 			input:	record - pazpar2 record
-			output: boolean
+			output: integer - 0 if no match, 1 if matching, 2 if matching everything but date
 		*/
 		var matchesFilters = function (record) {
 			var matches = true;
-			for (var facetType in filterArray) {
+			var matchesEverythingNotTheDate = true;
+			for (var termListIndex in termListNames) {
+				var facetType = termListNames[termListIndex];
 				for (var filterIndex in filterArray[facetType]) {
 					matches = false;
+					matchesEverythingNotTheDate = false;
 					var filterValue = filterArray[facetType][filterIndex];
 					if (facetType === 'xtargets') {
 						for (var locationIndex in record.location) {
 							matches = (record.location[locationIndex]['@name'] == filterValue);
+							if (matches) {break;}
+						}
+					}
+					else if (facetType === 'date' && filterValue.constructor == Object) {
+						matchesEverythingNotTheDate = true;
+						for (var dateIndex in record['md-date']) {
+							var recordDate = parseInt(record['md-date'][dateIndex].substr(0,4));
+							matches = (filterValue.from <= recordDate) && (recordDate <= filterValue.to);
 							if (matches) {break;}
 						}
 					}
@@ -393,19 +420,28 @@ function displayList (list) {
 				if (!matches) {break;}
 			}
 
-			return matches;
+			var result = (matches) ? 1 : 0;
+			if (!matches && matchesEverythingNotTheDate) result = 2;
+			return result;
 		}
 
 
 		var filteredList = [];
+		var filteredUpToDateList = [];
 		for (var index in listToFilter) {
 			var item = listToFilter[index];
-			if ( matchesFilters(item) ) {
+			var matchState = matchesFilters(item);
+			if (matchState == 1) {
 				filteredList.push(item);
 			}
+			if (matchState >= 1) {
+				filteredUpToDateList.push(item);
+			}
 		}
-		return filteredList;
+		
+		return [filteredList, filteredUpToDateList];
 	}
+
 
 
 	/*	sortFunction
@@ -485,16 +521,20 @@ function displayList (list) {
 	}
 	
 
-	return filter(list).sort(sortFunction);
+	var result = filteredLists(list);
+	result[0] = result[0].sort(sortFunction)
+	return result
 }
 
 
 
 /*	updateAndDisplay
-	Updates the displayHitList and redraws.
+	Updates displayHitList and displayHitListUpToDate, then redraws.
 */
 function updateAndDisplay () {
-	displayHitList = displayList(hitList);
+	var filterResults = displayLists(hitList);
+	displayHitList = filterResults[0];
+	displayHitListUpToDate = filterResults[1];
 	display();
 	updateFacetLists();
 }
@@ -504,7 +544,7 @@ function updateAndDisplay () {
 /*	my_onshow
 	Callback for pazpar2 when data become available.
 	Goes through the records and adds them to hitList.
-	Regenerates displayHitList and triggers redisplay.
+	Regenerates displayHitList(UpToDate) and triggers redisplay.
 	input:	data - result data passed from pazpar2
 */
 function my_onshow (data) {
@@ -870,8 +910,12 @@ function facetListForType (type, preferOriginalFacets) {
 		else {
 			// Loop through data ourselves to gather facet information.
 			var termArray = {};
-			for (var recordIndex in displayHitList) {
-				var record = displayHitList[recordIndex];
+			var recordList = displayHitList;
+			if (type == 'date') {
+				recordList = displayHitListUpToDate;
+			}
+			for (var recordIndex in recordList) {
+				var record = recordList[recordIndex];
 				var dataArray = fieldContentsInRecord(type, record);
 				var countsToIncrement = {}
 				for (var index in dataArray) {
@@ -936,6 +980,8 @@ function facetListForType (type, preferOriginalFacets) {
 			headingText += ' [' + localise('gefiltert') + ']';
 		}
 		heading.appendChild(document.createTextNode(headingText));
+		
+		if (type != 'date') {
 		var list = document.createElement('ol');
 		container.appendChild(list);
 
@@ -1004,7 +1050,81 @@ function facetListForType (type, preferOriginalFacets) {
 				}
 			}
 		}
+		}
+		else {
+			if (isFilteredForType('date')) {
+				var cancelLink = document.createElement('a');
+				container.appendChild(cancelLink);
+				cancelLink.setAttribute('href', '#');
+				cancelLink.setAttribute('class', 'pz2-facetCancel pz2-activeFacet');
+				cancelLink.setAttribute('onclick', 'delimitResults("date"); return false;');
+				var yearRange = filterArray['date'][0].from + '-' + filterArray['date'][0].to;
+				var cancelLinkText = localise('Filter # aufheben').replace('#', yearRange);
+				cancelLink.appendChild(document.createTextNode(cancelLinkText));
+			}
+
+			var graphDiv = document.createElement('div');
+			container.appendChild(graphDiv);
+			graphDiv.setAttribute('class', 'pz2-histogramContainer');
+			jQuery(graphDiv).css({'width': '200px', 'height': '150px', 'position': 'relative'})
+			
+			var graphData = [];
+			for (var termIndex in terms) {
+				var year = parseInt(terms[termIndex].name);
+				if (year) {
+					graphData.push([year, terms[termIndex].freq]);
+				}
+			}
+			
+			var graphOptions = {
+				'series': {
+					'bars': {
+						'show': true,
+						'fill': true,
+						'fillColor': '#b5b0cc'
+					}
+				},
+				'xaxis':  {
+					'tickDecimals': 0,
+					'ticks': function(axis) { return [axis.min, axis.max]; }
+				},
+				'yaxis': {
+					'position': 'right',
+					'tickDecimals': 0,
+					'tickFormatter': function(val, axis) { return (val != 0) ? (val) : (''); }
+				},
+				'grid': {
+					'borderWidth': 0,
+					'clickable': true
+				},
+				'selection': {
+					'mode': 'x',
+					'color': '#009'
+				}
+			};
+						
+			var plot = jQuery.plot(jQuery(graphDiv) , [{'data': graphData, 'color': '#b5b0cc'}], graphOptions);
+			
+			jQuery(graphDiv).bind('plotselected', function(event, ranges) {
+				var firstYear = Math.floor(ranges.xaxis.from);
+				var lastYear = Math.ceil(ranges.xaxis.to);
+				ranges.xaxis.from = firstYear;
+				ranges.xaxis.to = lastYear;
+				plot.setSelection(ranges, true);
+				filterArray['date'] = undefined;
+				limitResults('date', ranges.xaxis);
+			});
+			
+			jQuery(graphDiv).bind('plotunselected', function() {
+				delimitResults('date');
+			});
+
+			for (filterIndex in filterArray['date']) {
+				plot.setSelection({'xaxis': filterArray['date'][filterIndex]}, true);
+			}					
+		}
 	}
+		
 	return container;		
 }
 

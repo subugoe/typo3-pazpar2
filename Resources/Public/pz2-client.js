@@ -650,10 +650,10 @@ function display () {
 		Updates pagers and record counts shown in .pz2-pager elements.
 	*/
 	var updatePagers = function () {
-		$('div.pz2-pager').each( function(index) {
+		jQuery('div.pz2-pager').each( function(index) {
 				// Remove existing pager content, preserving the progressIndicator
-				var progress = $(this).children('.pz2-progressIndicator');
-				$(this).empty()
+				var progress = jQuery(this).children('.pz2-progressIndicator');
+				jQuery(this).empty()
 				if (progress.length == 1) {
 					this.appendChild(progress[0]);
 				}
@@ -780,7 +780,7 @@ function display () {
 
 	// Replace old results list
 	var results = document.getElementById("pz2-results");
-	$(results).empty();
+	jQuery(results).empty();
 	results.appendChild(OL);
 
 	updatePagers();
@@ -796,12 +796,12 @@ function my_onstat(data) {
 	// Display progress bar.
 	var progress = (data.clients - data.activeclients) / data.clients * 100;
 	var opacityValue = (progress == 100) ? 0 : 1;
-	$('.pz2-pager .pz2-progressIndicator').animate({width: progress + '%', opacity: opacityValue}, 100);
+	jQuery('.pz2-pager .pz2-progressIndicator').animate({width: progress + '%', opacity: opacityValue}, 100);
 
 	// Write out status information.
 	var statDiv = document.getElementById('pz2-stat');
 	if (statDiv) {
-		$(statDiv).empty();
+		jQuery(statDiv).empty();
 
 		var heading = document.createElement('h4');
 		statDiv.appendChild(heading);
@@ -1015,7 +1015,7 @@ function facetListForType (type, preferOriginalFacets) {
 */
 function updateFacetLists () {
 	var container = document.getElementById('pz2-termLists');
-	$(container).empty();
+	jQuery(container).empty();
 
 	var mainHeading = document.createElement('h4');
 	container.appendChild(mainHeading);
@@ -1050,7 +1050,7 @@ function my_onrecord(data) {
 */
 function my_onbytarget(data) {
 	var targetDiv = document.getElementById("pz2-byTarget");
-	$(targetDiv).empty();
+	jQuery(targetDiv).empty();
 
 	var table = document.createElement('table');
 	targetDiv.appendChild(table);
@@ -1113,7 +1113,7 @@ function my_onbytarget(data) {
 function domReady ()  {
 	domReadyFired = true;
 
-	$('.pz2-searchForm').each( function(index, form) {
+	jQuery('.pz2-searchForm').each( function(index, form) {
 			form.onsubmit = onFormSubmitEventHandler;
 			form.action = null;
 			form.method = null;
@@ -1121,8 +1121,8 @@ function domReady ()  {
 		}
 	);
 
-	$('.pz2-sort, .pz2-perPage').attr('onchange', 'onSelectDidChange');
-	$('#pazpar2').removeClass('pz2-noJS');
+	jQuery('.pz2-sort, .pz2-perPage').attr('onchange', 'onSelectDidChange');
+	jQuery('#pazpar2').removeClass('pz2-noJS');
 
 	triggerSearchForForm(null);
 }
@@ -1181,11 +1181,11 @@ function triggerSearchForForm (form) {
 				array - array containing the search strings
 	*/
 	var addSearchStringForFieldToArray = function (fieldName, array) {
-		var searchString = $('#pz2-field-' + fieldName, form).val()
+		var searchString = jQuery('#pz2-field-' + fieldName, form).val()
 		if (searchString && searchString != '') {
 			searchString = searchString.trim();
 			if (fieldName != 'all') {
-				if (fieldName == 'title' && $('#pz2-checkbox-journal:checked', form).length > 0) {
+				if (fieldName == 'title' && jQuery('#pz2-checkbox-journal:checked', form).length > 0) {
 					// Special case for title restricted to journals only.
 					searchString = 'journal=' + searchString;
 				}
@@ -1365,10 +1365,10 @@ function setSortCriteriaFromString (curSortString) {
 	input:	form - DOM element of the form to get the data from
 */
 function loadSelectsFromForm (form) {
-	var sortOrderString = $('.pz2-sort option:selected', form).val();
+	var sortOrderString = jQuery('.pz2-sort option:selected', form).val();
 	setSortCriteriaFromString(sortOrderString);
 
-	recPerPage = $('.pz2-perPage option:selected', form).val();
+	recPerPage = jQuery('.pz2-perPage option:selected', form).val();
 }
 
 
@@ -1494,7 +1494,7 @@ function toggleDetails (prefixRecId) {
 
 	if (detRecordDivVisible) {
 		// Detailed record information is present: remove it
-		$('#det_'+ recordIDHTML).remove();
+		jQuery('#det_'+ recordIDHTML).remove();
 		record.detailsDivVisible = false;
 	}
 	else {
@@ -1559,7 +1559,7 @@ function renderDetails(recordID) {
 		}
 		else if (infoItems.length > 1) {
 			result = document.createElement('ul');
-			$(infoItems).each( function(index) {
+			jQuery(infoItems).each( function(index) {
 					var LI = document.createElement('li');
 					result.appendChild(LI);
 					LI.appendChild(this);
@@ -1850,7 +1850,7 @@ function renderDetails(recordID) {
 		}
 		var ZDBURL = ZDBPath + 'full.xml?' + parameters;
 
-		$.get(ZDBURL,
+		jQuery.get(ZDBURL,
 			/*	AJAX callback
 				Creates DOM elements with information coming from ZDB.
 				input:	resultData - XML from ZDB server
@@ -1898,7 +1898,7 @@ function renderDetails(recordID) {
 						var statusElement = document.createElement('span');
 						statusElement.setAttribute('class', 'pz2-ZDBStatusInfo');
 
-						var accessLinkURL = $('AccessURL', ZDBResult);
+						var accessLinkURL = jQuery('AccessURL', ZDBResult);
 						if (accessLinkURL.length > 0) {
 							// Having an AccessURL implies this is inside ElectronicData.
 							statusElement.appendChild(document.createTextNode(statusText));
@@ -1906,7 +1906,7 @@ function renderDetails(recordID) {
 							statusElement.appendChild(document.createTextNode(' – '));
 							statusElement.appendChild(accessLink);
 							accessLink.setAttribute('href', accessLinkURL[0].textContent);
-							var linkTitle = $('Title', ZDBResult);
+							var linkTitle = jQuery('Title', ZDBResult);
 							if (linkTitle && linkTitle.length > 0) {
 								linkTitle = linkTitle[0].textContent;
 							}
@@ -1917,7 +1917,7 @@ function renderDetails(recordID) {
 							turnIntoNewWindowLink(accessLink);
 
 							var additionals = [];
-							var ZDBAdditionals = $('Additional', ZDBResult);
+							var ZDBAdditionals = jQuery('Additional', ZDBResult);
 							ZDBAdditionals.each( function (index) {
 									additionals.push(this.textContent);
 								}
@@ -1932,17 +1932,17 @@ function renderDetails(recordID) {
 							var locationInfo = document.createElement('span');
 							var infoText = '';
 
-							var period = $('Period', ZDBResult)[0];
+							var period = jQuery('Period', ZDBResult)[0];
 							if (period) {
 								infoText += period.textContent + ': ';
 
 							}
-							var location = $('Location', ZDBResult)[0];
+							var location = jQuery('Location', ZDBResult)[0];
 							if (location) {
 								infoText += location.textContent + ' ';
 							}
 
-							var signature = $('Signature', ZDBResult)[0];
+							var signature = jQuery('Signature', ZDBResult)[0];
 							if (signature) {
 								infoText += signature.textContent;
 							}
@@ -1965,7 +1965,7 @@ function renderDetails(recordID) {
 							* target: DOM container to which the marked up library name is appended
 				*/
 				var appendLibraryNameFromResultDataTo = function (data, target) {
-					var libraryName = $('Library', data)[0];
+					var libraryName = jQuery('Library', data)[0];
 					if (libraryName) {
 						var libraryNameSpan = document.createElement('span');
 						libraryNameSpan.setAttribute('class', 'pz2-ZDBLibraryName');
@@ -1983,7 +1983,7 @@ function renderDetails(recordID) {
 					output:	DOM element containing the information from data
 				*/				
 				var ZDBInfoElement = function (data) {
-					var results = $('Result', data);
+					var results = jQuery('Result', data);
 
 					if (results.length > 0) {
 						var infoItems = [];
@@ -2019,8 +2019,8 @@ function renderDetails(recordID) {
 				var ZDBInformation = function (data) {
 					var container;
 
-					var electronicInfos = ZDBInfoElement( $('ElectronicData', data) );
-					var printInfos = ZDBInfoElement( $('PrintData', data) );
+					var electronicInfos = ZDBInfoElement( jQuery('ElectronicData', data) );
+					var printInfos = ZDBInfoElement( jQuery('PrintData', data) );
 					
 					if (electronicInfos || printInfos) {
 						container = document.createElement('div');
@@ -2096,7 +2096,7 @@ function renderDetails(recordID) {
 		// Query Google Books for the ISBN/OCLC numbers in question.
 		var googleBooksURL = 'http://books.google.com/books?bibkeys=' + searchTerms
 					+ '&jscmd=viewapi&callback=?';
-		$.getJSON(googleBooksURL,
+		jQuery.getJSON(googleBooksURL,
 			function(data) {
 				/*
 					If there are multiple results choose the one we want:
@@ -2106,7 +2106,7 @@ function renderDetails(recordID) {
 					Usually the first item in the list is also the newest one.
 				*/
 				var selectedBook;
-				$.each(data,
+				jQuery.each(data,
 					function(bookNumber, book) {
 						if (book.preview === 'full') {
 							selectedBook = book;
@@ -2124,7 +2124,7 @@ function renderDetails(recordID) {
 					bookLink.setAttribute('href', selectedBook.preview_url);
 					bookLink.onclick = openPreview;
 
-					var language = $('html').attr('lang');
+					var language = jQuery('html').attr('lang');
 					if (language === undefined) {
 						language = 'en';
 					}
@@ -2164,27 +2164,27 @@ function renderDetails(recordID) {
 			if (!previewContainerDiv) {
 				previewContainerDiv = document.createElement('div');
 				previewContainerDiv.setAttribute('id', previewContainerDivName);
-				$('#page').get(0).appendChild(previewContainerDiv);
+				jQuery('#page').get(0).appendChild(previewContainerDiv);
 
 				var titleBarDiv = document.createElement('div');
 				titleBarDiv.setAttribute('class', 'titleBar');
 				previewContainerDiv.appendChild(titleBarDiv);
-				$(titleBarDiv).css({height:'20px', width:'100%',
+				jQuery(titleBarDiv).css({height:'20px', width:'100%',
 									position:'absolute', top:'-20px', background:'#eee'});
 
 				var closeBoxLink = document.createElement('a');
 				titleBarDiv.appendChild(closeBoxLink);
-				$(closeBoxLink).css({display:'block', height:'16px', width:'16px',
+				jQuery(closeBoxLink).css({display:'block', height:'16px', width:'16px',
 									position:'absolute', right:'2px', top:'2px', background:'#666'})
 				closeBoxLink.setAttribute('href', '#');
-				closeBoxLink.setAttribute('onclick', 'javascript:$("#' + previewContainerDivName + '").hide(200);return false;');
+				closeBoxLink.setAttribute('onclick', 'javascript:jQuery("#' + previewContainerDivName + '").hide(200);return false;');
 
 				previewDiv = document.createElement('div');
 				previewDiv.setAttribute('id', previewDivName);
 				previewContainerDiv.appendChild(previewDiv);
 			}
 			else {
-				$(previewContainerDiv).show(200);
+				jQuery(previewContainerDiv).show(200);
 			}
 
 			var viewer = new google.books.DefaultViewer(previewDiv);

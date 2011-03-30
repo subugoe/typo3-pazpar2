@@ -78,7 +78,7 @@ var germanTerms = {
 	// Search Form
 	'form-extended-label-title': 'Titel',
 	'form-extended-label-journalOnly': 'nur Zeitschriftentitel',
-	'form-extended-label-person': 'Person',
+	'form-extended-label-person': 'Person, Autor',
 	'form-extended-placeholder-person': 'z.B. Lincoln oder Wilde, Oscar',
 	'form-extended-label-date': 'Jahr',
 	'form-extended-placeholder-date': 'z.B. 2004, 2004-, -2004 oder 2004-2008'
@@ -136,7 +136,7 @@ var englishTerms = {
 	// Search Form
 	'form-extended-label-title': 'Title',
 	'form-extended-label-journalOnly': 'journal titles only',
-	'form-extended-label-person': 'Author',
+	'form-extended-label-person': 'Person, Author',
 	'form-extended-placeholder-person': 'e.g. Lincoln or Wilde, Oscar',
 	'form-extended-label-date': 'Year',
 	'form-extended-placeholder-date': 'g.g. 2004, 2004-, -2004 or 2004-2008'

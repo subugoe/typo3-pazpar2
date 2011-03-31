@@ -76,6 +76,7 @@ var germanTerms = {
 	// Link tooltip
 	'Erscheint in separatem Fenster.': 'Erscheint in separatem Fenster.',
 	// Search Form
+	'erweiterte Suche': 'erweiterte Suche',
 	'einfache Suche': 'einfache Suche',
 	'form-extended-label-title': 'Titel',
 	'form-extended-label-journalOnly': 'nur Zeitschriftentitel',
@@ -135,6 +136,7 @@ var englishTerms = {
 	// Link tooltip
 	'Erscheint in separatem Fenster.': 'Link opens in a new window.',
 	// Search Form
+	'erweiterte Suche': 'Extended Search',
 	'einfache Suche': 'Basic Search',
 	'form-extended-label-title': 'Title',
 	'form-extended-label-journalOnly': 'journal titles only',

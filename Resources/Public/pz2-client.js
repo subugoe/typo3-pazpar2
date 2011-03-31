@@ -59,11 +59,11 @@ var germanTerms = {
 	'gedruckt': 'gedruckt',
 	'detail-label-id': 'PPN',
 	'link': 'Link',
-	'Kataloge': 'Kataloge',
 	'Ausgabe': 'Ausgabe',
 	'Google Books Vorschau': 'Google Books Vorschau',
 	'Umschlagbild': 'Umschlagbild',
-	'Ansehen und Ausleihen bei': 'Ansehen und Ausleihen bei',
+	'Ansehen und Ausleihen bei:': 'Ansehen und Ausleihen bei:',
+	'von': 'von',
 	'keine Treffer gefunden': 'keine Treffer',
 	'In diesem Katalog gibt es noch # weitere Treffer.': 'In diesem Katalog gibt es noch # weitere Treffer, die wir nicht herunterladen und hier anzeigen können. Bitte wählen Sie einen spezifischeren Suchbegriff, um alle Treffer sehen zu können. Oder suchen Sie direkt im Katalog.',
 	// ZDB-JOP status labels
@@ -117,11 +117,11 @@ var englishTerms = {
 	'gedruckt': 'printed',
 	'detail-label-id': 'PPN',
 	'link': 'link',
-	'Kataloge': 'Catalogues',
 	'Ausgabe': 'Edition',
 	'Google Books Vorschau': 'Google Books Preview',
 	'Umschlagbild': 'Book Cover',
-	'Ansehen und Ausleihen bei': 'View catalogue record at',
+	'Ansehen und Ausleihen bei:': 'View catalogue record at:',
+	'von': 'of',
 	'keine Treffer gefunden': 'no matching records',
 	'In diesem Katalog gibt es noch # weitere Treffer.': 'There are # additional results available in this catalogue which we cannot download and display. Please choose a more specific search query or visit the website of the catalogue itself if you require the full set of results.',
 	// ZDB-JOP status labels
@@ -154,21 +154,26 @@ var localisations = {
 /*	localise
 	Return localised term using the passed dictionary
 		or the one stored in localisations variable.
-	The localisation dictionary has two-letter language codes as keys.
-		For each of them there is a dictionary with translations to that language.
+	The localisation dictionary has ISO 639-1 language codes as keys.
+	For each of them there can be a dictionary with terms for that language.
+	In case the language dictionary is not present, the default ('de') is used.
 	input:	term - string to localise
 			externalDictionary (optional) - localisation dictionary
 	output:	localised string
 */
 function localise (term, externalDictionary) {
 	var dictionary = localisations;
-
 	if (externalDictionary) {
 		dictionary = externalDictionary;
 	}
 
-	var localised = dictionary['de'][term];
-	if ( localised == undefined ) {
+	var languageCode = jQuery('html')[0].getAttribute('lang');
+	if (languageCode == null || dictionary[languageCode] == null) {
+		languageCode = 'de';
+	}
+
+	var localised = dictionary[languageCode][term];
+	if (localised == undefined) {
 		localised = term;
 	}
 

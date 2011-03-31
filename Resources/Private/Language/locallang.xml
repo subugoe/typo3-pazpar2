@@ -10,7 +10,7 @@
 	<data type="array">
 
 		<languageKey index="default" type="array">
-			<label index="form-extended-label-all">Alle Wörter</label>
+			<label index="form-extended-label-all">Alle Felder</label>
 			<label index="form-extended-label-title">Titel</label>
 			<label index="form-extended-label-journalOnly">nur Zeitschriftentitel</label>
 			<label index="form-extended-label-person">Person, Autor</label>
@@ -72,7 +72,7 @@
 
 
 		<languageKey index="en" type="array">
-			<label index="form-extended-label-all">All Words</label>
+			<label index="form-extended-label-all">All Fields</label>
 			<label index="form-extended-label-title">Title</label>
 			<label index="form-extended-label-journalOnly">journal titles only</label>
 			<label index="form-extended-label-person">Person, Author</label>
@@ -123,10 +123,10 @@
 			<label index="detail-label-doi-plural">DOIs</label>
 			<label index="elektronisch">electronic</label>
 			<label index="gedruckt">printed</label>
-			<label index="Ausgabe">Ausgabe</label>
+			<label index="Ausgabe">Edition</label>
 			<label index="link">link</label>
 			<label index="In">In</label>
-			<label index="Ansehen und Ausleihen bei:">Ansehen und Ausleihen bei:</label>
+			<label index="Ansehen und Ausleihen bei:">View catalogue record at:</label>
 			<label index="Search is better with JavaScript.">JavaScript seems to be unavailable in your web browser. Without JavaScript, displaying the results of a query can take up to a minute in some cases. Please be patient or turn on JavaScript for a more interactive search experience.</label>
 			<label index="of">of</label>
 			<label index="Erscheint in separatem Fenster.">Link opens in a new Window.</label>

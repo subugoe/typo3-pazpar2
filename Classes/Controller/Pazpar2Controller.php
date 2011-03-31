@@ -66,6 +66,9 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 			'CSSPath' => t3lib_extMgm::siteRelPath('pazpar2') . 'Resources/Public/pz2.css',
 			'pz2JSPath' => t3lib_extMgm::siteRelPath('pazpar2') . 'Resources/Public/pz2.js',
 			'pz2-clientJSPath' => t3lib_extMgm::siteRelPath('pazpar2') . 'Resources/Public/pz2-client.js',
+			'flotJSPath' => t3lib_extMgm::siteRelPath('pazpar2') . 'Resources/Public/flot/jquery.flot.min.js',
+			'flotSelectionJSPath' => t3lib_extMgm::siteRelPath('pazpar2') . 'Resources/Public/flot/jquery.flot.selection.min.js',
+			'useHistogramForYearFacets' => '1',
 			'useGoogleBooks' => '1',
 			'useZDB' => '1',
 			'ZDBIP' => '0'
@@ -136,18 +139,20 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		$scriptTag->setContent($jsCommand);
 		$this->response->addAdditionalHeaderData( $scriptTag->render() );
 
-		// Load flot graphing library.
-		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
-		$scriptTag->addAttribute('type', 'text/javascript');
-		$scriptTag->addAttribute('src', 'typo3conf/ext/pazpar2/Resources/Public/flot/jquery.flot.js') ;
-		$scriptTag->forceClosingTag(true);
-		$this->response->addAdditionalHeaderData( $scriptTag->render() );
-		
-		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
-		$scriptTag->addAttribute('type', 'text/javascript');
-		$scriptTag->addAttribute('src', 'typo3conf/ext/pazpar2/Resources/Public/flot/jquery.flot.selection.js') ;
-		$scriptTag->forceClosingTag(true);
-		$this->response->addAdditionalHeaderData( $scriptTag->render() );
+		// Load flot graphing library if needed.
+		if ( $this->conf['useHistogramForYearFacets'] ) {
+			$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
+			$scriptTag->addAttribute('type', 'text/javascript');
+			$scriptTag->addAttribute('src', $this->conf['flotJSPath']) ;
+			$scriptTag->forceClosingTag(true);
+			$this->response->addAdditionalHeaderData( $scriptTag->render() );
+
+			$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
+			$scriptTag->addAttribute('type', 'text/javascript');
+			$scriptTag->addAttribute('src', $this->conf['flotSelectionJSPath']) ;
+			$scriptTag->forceClosingTag(true);
+			$this->response->addAdditionalHeaderData( $scriptTag->render() );
+		}
 		
 		// Add pz2-client.js to <head>.
 		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
@@ -159,7 +164,8 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		// Add settings for pz2-client.js to <head>.
 		$jsCommand = 'useGoogleBooks = ' . (($this->conf['useGoogleBooks']) ? 'true' : 'false') . '; ';
 		$jsCommand .= 'useZDB = ' . (($this->conf['useZDB']) ? 'true' : 'false') . '; ';
-		$jsCommand .= 'ZDBUseClientIP = ' . ((!$this->conf['ZDBIP']) ? 'true' : 'false') . ';';
+		$jsCommand .= 'ZDBUseClientIP = ' . ((!$this->conf['ZDBIP']) ? 'true' : 'false') . '; ';
+		$jsCommand .= 'useHistogramForYearFacets = ' . (($this->conf['useHistogramForYearFacets'] == '1') ? 'true' : 'false') . ';';
 		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
 		$scriptTag->addAttribute('type', 'text/javascript');
 		$scriptTag->setContent($jsCommand);

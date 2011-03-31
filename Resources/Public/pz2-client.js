@@ -232,6 +232,7 @@ var displayHitList = []; // filtered and sorted list used for display
 var displayHitListUpToDate = []; // list filtered for all conditions but the date used for drawing the date histogram
 var useGoogleBooks = false;
 var useZDB = false;
+var useHistogramForYearFacets = true;
 var ZDBUseClientIP = true;
 var targetStatus = {};
 
@@ -967,28 +968,14 @@ function facetListForType (type, preferOriginalFacets) {
 	}
 
 
-	// Create container and heading.
-	var container = document.createElement('div');
-	container.setAttribute('class', 'pz2-termList pz2-termList-' + type);
 
-	var terms = facetInformationForType(type);
-	if (terms.length > 0) {
-		var heading = document.createElement('h5')
-		container.appendChild(heading);
-		var headingText = localise('facet-title-'+type);
-		if (isFilteredForType(type)) {
-			headingText += ' [' + localise('gefiltert') + ']';
-		}
-		heading.appendChild(document.createTextNode(headingText));
-		
-		if (type != 'date') {
+	var facetDisplayForType = function (type) {
 		var list = document.createElement('ol');
-		container.appendChild(list);
-
+		
 		// Loop through list of terms for the type and create an item with link for each one.
+		var terms = facetInformationForType(type);
 		for (var i = 0; i < terms.length && i < termListMax[type]; i++) {
 			var facetName = terms[i].name;
-
 			var item = document.createElement('li');
 			list.appendChild(item);
 
@@ -1050,78 +1037,105 @@ function facetListForType (type, preferOriginalFacets) {
 				}
 			}
 		}
+		
+		return list;
+	}
+
+
+	var appendFacetHistogramForDatesTo = function (container) {
+		if (isFilteredForType('date')) {
+			var cancelLink = document.createElement('a');
+			container.appendChild(cancelLink);
+			cancelLink.setAttribute('href', '#');
+			cancelLink.setAttribute('class', 'pz2-facetCancel pz2-activeFacet');
+			cancelLink.setAttribute('onclick', 'delimitResults("date"); return false;');
+			var yearRange = filterArray['date'][0].from + '-' + filterArray['date'][0].to;
+			var cancelLinkText = localise('Filter # aufheben').replace('#', yearRange);
+			cancelLink.appendChild(document.createTextNode(cancelLinkText));
+		}
+
+		var graphDiv = document.createElement('div');
+		container.appendChild(graphDiv);
+		graphDiv.setAttribute('class', 'pz2-histogramContainer');
+		jQuery(graphDiv).css({'width': '200px', 'height': '150px', 'position': 'relative'})
+
+		var graphData = [];
+		for (var termIndex in terms) {
+			var year = parseInt(terms[termIndex].name);
+			if (year) {
+				graphData.push([year, terms[termIndex].freq]);
+			}
+		}
+
+		var graphOptions = {
+			'series': {
+				'bars': {
+					'show': true,
+					'fill': true,
+					'fillColor': '#b5b0cc'
+				}
+			},
+			'xaxis':  {
+				'tickDecimals': 0,
+				'ticks': function(axis) { return [axis.min, axis.max]; },
+				'labelWidth': 0
+			},
+			'yaxis': {
+				'position': 'right',
+				'tickDecimals': 0,
+				'tickFormatter': function(val, axis) { return (val != 0) ? (val) : (''); }
+			},
+			'grid': {
+				'borderWidth': 0,
+				'clickable': true
+			},
+			'selection': {
+				'mode': 'x',
+				'color': '#009'
+			}
+		};
+
+		var plot = jQuery.plot(jQuery(graphDiv) , [{'data': graphData, 'color': '#b5b0cc'}], graphOptions);
+
+		jQuery(graphDiv).bind('plotselected', function(event, ranges) {
+			var firstYear = Math.floor(ranges.xaxis.from);
+			var lastYear = Math.ceil(ranges.xaxis.to);
+			ranges.xaxis.from = firstYear;
+			ranges.xaxis.to = lastYear;
+			plot.setSelection(ranges, true);
+			filterArray['date'] = undefined;
+			limitResults('date', ranges.xaxis);
+		});
+
+		jQuery(graphDiv).bind('plotunselected', function() {
+			delimitResults('date');
+		});
+
+		for (filterIndex in filterArray['date']) {
+			plot.setSelection({'xaxis': filterArray['date'][filterIndex]}, true);
+		}					
+	}
+
+
+	// Create container and heading.
+	var container = document.createElement('div');
+	container.setAttribute('class', 'pz2-termList pz2-termList-' + type);
+
+	var terms = facetInformationForType(type);
+	if (terms.length > 0) {
+		var heading = document.createElement('h5')
+		container.appendChild(heading);
+		var headingText = localise('facet-title-'+type);
+		if (isFilteredForType(type)) {
+			headingText += ' [' + localise('gefiltert') + ']';
+		}
+		heading.appendChild(document.createTextNode(headingText));
+		
+		if (useHistogramForYearFacets && type == 'date') {
+			appendFacetHistogramForDatesTo(container);
 		}
 		else {
-			if (isFilteredForType('date')) {
-				var cancelLink = document.createElement('a');
-				container.appendChild(cancelLink);
-				cancelLink.setAttribute('href', '#');
-				cancelLink.setAttribute('class', 'pz2-facetCancel pz2-activeFacet');
-				cancelLink.setAttribute('onclick', 'delimitResults("date"); return false;');
-				var yearRange = filterArray['date'][0].from + '-' + filterArray['date'][0].to;
-				var cancelLinkText = localise('Filter # aufheben').replace('#', yearRange);
-				cancelLink.appendChild(document.createTextNode(cancelLinkText));
-			}
-
-			var graphDiv = document.createElement('div');
-			container.appendChild(graphDiv);
-			graphDiv.setAttribute('class', 'pz2-histogramContainer');
-			jQuery(graphDiv).css({'width': '200px', 'height': '150px', 'position': 'relative'})
-			
-			var graphData = [];
-			for (var termIndex in terms) {
-				var year = parseInt(terms[termIndex].name);
-				if (year) {
-					graphData.push([year, terms[termIndex].freq]);
-				}
-			}
-			
-			var graphOptions = {
-				'series': {
-					'bars': {
-						'show': true,
-						'fill': true,
-						'fillColor': '#b5b0cc'
-					}
-				},
-				'xaxis':  {
-					'tickDecimals': 0,
-					'ticks': function(axis) { return [axis.min, axis.max]; }
-				},
-				'yaxis': {
-					'position': 'right',
-					'tickDecimals': 0,
-					'tickFormatter': function(val, axis) { return (val != 0) ? (val) : (''); }
-				},
-				'grid': {
-					'borderWidth': 0,
-					'clickable': true
-				},
-				'selection': {
-					'mode': 'x',
-					'color': '#009'
-				}
-			};
-						
-			var plot = jQuery.plot(jQuery(graphDiv) , [{'data': graphData, 'color': '#b5b0cc'}], graphOptions);
-			
-			jQuery(graphDiv).bind('plotselected', function(event, ranges) {
-				var firstYear = Math.floor(ranges.xaxis.from);
-				var lastYear = Math.ceil(ranges.xaxis.to);
-				ranges.xaxis.from = firstYear;
-				ranges.xaxis.to = lastYear;
-				plot.setSelection(ranges, true);
-				filterArray['date'] = undefined;
-				limitResults('date', ranges.xaxis);
-			});
-			
-			jQuery(graphDiv).bind('plotunselected', function() {
-				delimitResults('date');
-			});
-
-			for (filterIndex in filterArray['date']) {
-				plot.setSelection({'xaxis': filterArray['date'][filterIndex]}, true);
-			}					
+			container.appendChild(facetDisplayForType(type));
 		}
 	}
 		

@@ -57,6 +57,15 @@
 				</TCEforms>
 			</settings.ZDBIP>
 
+			<settings.useHistogramForYearFacets>
+				<TCEforms>
+					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang.xml:settings.useHistogramForYearFacets</label>
+					<config>
+						<type>check</type>
+						<default>1</default>
+					</config>
+				</TCEforms>
+			</settings.useHistogramForYearFacets>
 
 			<settings.CSSPath>
 				<TCEforms>

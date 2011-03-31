@@ -76,6 +76,7 @@ var germanTerms = {
 	// Link tooltip
 	'Erscheint in separatem Fenster.': 'Erscheint in separatem Fenster.',
 	// Search Form
+	'einfache Suche': 'einfache Suche',
 	'form-extended-label-title': 'Titel',
 	'form-extended-label-journalOnly': 'nur Zeitschriftentitel',
 	'form-extended-label-person': 'Person, Autor',
@@ -134,6 +135,7 @@ var englishTerms = {
 	// Link tooltip
 	'Erscheint in separatem Fenster.': 'Link opens in a new window.',
 	// Search Form
+	'einfache Suche': 'Basic Search',
 	'form-extended-label-title': 'Title',
 	'form-extended-label-journalOnly': 'journal titles only',
 	'form-extended-label-person': 'Person, Author',
@@ -1298,7 +1300,6 @@ function addExtendedSearchForLink (event) {
 
 	// switch the link to a simple search link
 	jQuery(this).unbind().click(removeExtendedSearchForLink).empty().text(localise('einfache Suche'));
-
 
 	return false;
 }

@@ -16,8 +16,8 @@ var showResponseType = '';
 
 	It’s crucial for the date histogram that 'date' is the last item in this list.
 */
-var termListNames = ['xtargets', 'medium', 'language', 'author', 'date'];
-var termListMax = {'xtargets': 25, 'medium': 10, 'language': 6, 'author': 10, 'date': 10000};
+var termListNames = ['xtargets', 'medium', 'language', 'author', 'filterDate'];
+var termListMax = {'xtargets': 25, 'medium': 10, 'language': 6, 'author': 10, 'filterDate': 10};
 
 if (document.location.hash == '#useproxy') {
 	usesessions = false;
@@ -35,7 +35,7 @@ var germanTerms = {
 	'facet-title-author': 'Autoren',
 	'facet-title-language': 'Sprache',
 	'facet-title-subject': 'Themengebiete',
-	'facet-title-date': 'Jahre',
+	'facet-title-filterDate': 'Jahre',
 	'detail-label-title': 'Titel',
 	'detail-label-author': 'Autor',
 	'detail-label-author-plural': 'Autoren',
@@ -98,7 +98,7 @@ var englishTerms = {
 	'facet-title-author': 'Authors',
 	'facet-title-language': 'Languages',
 	'facet-title-subject': 'Subjects',
-	'facet-title-date': 'Years',
+	'facet-title-filterDate': 'Years',
 	'detail-label-title': 'Title',
 	'detail-label-author': 'Author',
 	'detail-label-author-plural': 'Authors',
@@ -408,10 +408,10 @@ function displayLists (list) {
 							if (matches) {break;}
 						}
 					}
-					else if (facetType === 'date' && filterValue.constructor == Object) {
+					else if (facetType === 'filterDate' && filterValue.constructor == Object) {
 						matchesEverythingNotTheDate = true;
-						for (var dateIndex in record['md-date']) {
-							var recordDate = parseInt(record['md-date'][dateIndex].substr(0,4));
+						for (var dateIndex in record['md-filterDate']) {
+							var recordDate = parseInt(record['md-filterDate'][dateIndex].substr(0,4));
 							matches = (filterValue.from <= recordDate) && (recordDate <= filterValue.to);
 							if (matches) {break;}
 						}
@@ -570,6 +570,16 @@ function my_onshow (data) {
 					hit.detailsDiv = hitList[hitID].detailsDiv;
 				}
 			}
+			
+			// Create a 'filterDate' field which only uses the first four characters
+			// of the date and is used for faceting.
+			if (hit['md-date']) {
+				hit['md-filterDate'] = [];
+				for (var dateIndex in hit['md-date']) {
+					hit['md-filterDate'].push(hit['md-date'][dateIndex].substr(0,4));
+				}
+			}
+			
 			hitList[hitID] = hit;
 		}
 	}
@@ -921,7 +931,7 @@ function facetListForType (type, preferOriginalFacets) {
 			// Loop through data ourselves to gather facet information.
 			var termArray = {};
 			var recordList = displayHitList;
-			if (type == 'date') {
+			if (type == 'filterDate') {
 				recordList = displayHitListUpToDate;
 			}
 			for (var recordIndex in recordList) {
@@ -960,10 +970,11 @@ function facetListForType (type, preferOriginalFacets) {
 				// Note the maximum number
 				termList['maximumNumber'] = termList[0].freq;
 
-				// Special case for dates: take the most frequent items and sort by date.
-				if (type === 'date') {
-					if (termList.length > termListMax['date']) {
-						termList.splice(termListMax['date'], termList.length - termListMax['date']);
+				// Special case for dates when displaying them as a list:
+				// take the most frequent items and sort by date.
+				if (type === 'filterDate' && !useHistogramForYearFacets) {
+					if (termList.length > termListMax['filterDate']) {
+						termList.splice(termListMax['filterDate'], termList.length - termListMax['filterDate']);
 					}
 					termList.sort( function(term1, term2) {
 							return (term1.name < term2.name) ? 1 : -1;
@@ -978,11 +989,10 @@ function facetListForType (type, preferOriginalFacets) {
 
 
 
-	var facetDisplayForType = function (type) {
+	var facetDisplayTermsForType = function (terms, type) {
 		var list = document.createElement('ol');
 		
 		// Loop through list of terms for the type and create an item with link for each one.
-		var terms = facetInformationForType(type);
 		for (var i = 0; i < terms.length && i < termListMax[type]; i++) {
 			var facetName = terms[i].name;
 			var item = document.createElement('li');
@@ -1051,14 +1061,14 @@ function facetListForType (type, preferOriginalFacets) {
 	}
 
 
-	var appendFacetHistogramForDatesTo = function (container) {
-		if (isFilteredForType('date')) {
+	var appendFacetHistogramForDatesTo = function (terms, container) {
+		if (isFilteredForType('filterDate')) {
 			var cancelLink = document.createElement('a');
 			container.appendChild(cancelLink);
 			cancelLink.setAttribute('href', '#');
 			cancelLink.setAttribute('class', 'pz2-facetCancel pz2-activeFacet');
-			cancelLink.setAttribute('onclick', 'delimitResults("date"); return false;');
-			var yearRange = filterArray['date'][0].from + '-' + filterArray['date'][0].to;
+			cancelLink.setAttribute('onclick', 'delimitResults("filterDate"); return false;');
+			var yearRange = filterArray['filterDate'][0].from + '-' + filterArray['filterDate'][0].to;
 			var cancelLinkText = localise('Filter # aufheben').replace('#', yearRange);
 			cancelLink.appendChild(document.createTextNode(cancelLinkText));
 		}
@@ -1113,16 +1123,16 @@ function facetListForType (type, preferOriginalFacets) {
 			ranges.xaxis.from = firstYear;
 			ranges.xaxis.to = lastYear;
 			plot.setSelection(ranges, true);
-			filterArray['date'] = undefined;
-			limitResults('date', ranges.xaxis);
+			filterArray['filterDate'] = undefined;
+			limitResults('filterDate', ranges.xaxis);
 		});
 
 		jQuery(graphDiv).bind('plotunselected', function() {
-			delimitResults('date');
+			delimitResults('filterDate');
 		});
 
-		for (filterIndex in filterArray['date']) {
-			plot.setSelection({'xaxis': filterArray['date'][filterIndex]}, true);
+		for (filterIndex in filterArray['filterDate']) {
+			plot.setSelection({'xaxis': filterArray['filterDate'][filterIndex]}, true);
 		}					
 	}
 
@@ -1141,11 +1151,11 @@ function facetListForType (type, preferOriginalFacets) {
 		}
 		heading.appendChild(document.createTextNode(headingText));
 		
-		if (useHistogramForYearFacets && type == 'date') {
-			appendFacetHistogramForDatesTo(container);
+		if (useHistogramForYearFacets && type == 'filterDate') {
+			appendFacetHistogramForDatesTo(terms, container);
 		}
 		else {
-			container.appendChild(facetDisplayForType(type));
+			container.appendChild(facetDisplayTermsForType(terms, type));
 		}
 	}
 		

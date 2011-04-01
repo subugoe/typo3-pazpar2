@@ -19,7 +19,7 @@
 			<label index="form-extended-placeholder-date">z.B. 2004, 2004-, -2004 oder 2004-2008</label>
 			<label index="erweiterte Suche">erweiterte Suche</label>
 			<label index="einfache Suche">einfache Suche</label>
-			<label index="Find">Finden</label>
+			<label index="Find">Suchen</label>
 			<label index="Sort by">Sortieren nach</label>
 			<label index="Age">Alter</label>
 			<label index="Author">Autor</label>
@@ -82,7 +82,7 @@
 			<label index="form-extended-placeholder-date">e.g. 2004, 2004-, -2004 or 2004-2008</label>
 			<label index="erweiterte Suche">Extended Search</label>
 			<label index="einfache Suche">Basic Search</label>
-			<label index="Find">Find</label>
+			<label index="Find">Search</label>
 			<label index="Sort by">Sort by</label>
 			<label index="Age">Age</label>
 			<label index="Author">Author</label>

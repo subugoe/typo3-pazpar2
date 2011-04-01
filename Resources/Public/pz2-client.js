@@ -1066,7 +1066,8 @@ function facetListForType (type, preferOriginalFacets) {
 		var graphDiv = document.createElement('div');
 		container.appendChild(graphDiv);
 		graphDiv.setAttribute('class', 'pz2-histogramContainer');
-		jQuery(graphDiv).css({'width': '200px', 'height': '150px', 'position': 'relative'})
+		var graphWidth = jQuery('#pz2-termLists').width() - 30;
+		jQuery(graphDiv).css({'width': graphWidth + 'px', 'height': '150px', 'position': 'relative'});
 
 		var graphData = [];
 		for (var termIndex in terms) {
@@ -1103,7 +1104,7 @@ function facetListForType (type, preferOriginalFacets) {
 				'color': '#009'
 			}
 		};
-
+		
 		var plot = jQuery.plot(jQuery(graphDiv) , [{'data': graphData, 'color': '#b5b0cc'}], graphOptions);
 
 		jQuery(graphDiv).bind('plotselected', function(event, ranges) {

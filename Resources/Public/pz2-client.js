@@ -30,12 +30,18 @@ if (document.location.hash == '#useproxy') {
 	Create a hash for each language, then use the appropriate one on the page.
 */
 var germanTerms = {
+	// Facets
+	'gefiltert': 'gefiltert',
+	'Filter aufheben': 'Filter aufheben',
+	'Filter # aufheben': 'Filter # aufheben',
+	'Facetten': 'Facetten',
 	'facet-title-xtargets': 'Kataloge',
 	'facet-title-medium': 'Art',
 	'facet-title-author': 'Autoren',
 	'facet-title-language': 'Sprache',
 	'facet-title-subject': 'Themengebiete',
 	'facet-title-filterDate': 'Jahre',
+	// Detail display
 	'detail-label-title': 'Titel',
 	'detail-label-author': 'Autor',
 	'detail-label-author-plural': 'Autoren',
@@ -64,13 +70,18 @@ var germanTerms = {
 	'Ausgabe': 'Ausgabe',
 	'Google Books Vorschau': 'Google Books Vorschau',
 	'Umschlagbild': 'Umschlagbild',
+	// Short Display
 	'Ansehen und Ausleihen bei:': 'Ansehen und Ausleihen bei:',
 	'von': 'von',
+	'In': 'In',
+	// General Information
 	'keine Treffer gefunden': 'keine Treffer',
 	'In diesem Katalog gibt es noch # weitere Treffer.': 'In diesem Katalog gibt es noch # weitere Treffer, die wir nicht herunterladen und hier anzeigen können. Bitte wählen Sie einen spezifischeren Suchbegriff, um alle Treffer sehen zu können. Oder suchen Sie direkt im Katalog.',
-	'gefiltert': 'gefiltert',
-	'Filter aufheben': 'Filter aufheben',
-	'Filter # aufheben': 'Filter # aufheben',
+	// Pager
+	'Vorige Trefferseite anzeigen': 'Vorige Trefferseite anzeigen',
+	'Nächste Trefferseite anzeigen': 'Nächste Trefferseite anzeigen',
+	// Histogram Tooltip
+	'Treffer': 'Treffer',
 	// ZDB-JOP status labels
 	'frei verfügbar': 'frei verfügbar',
 	'teilweise frei verfügbar': 'teilweise frei verfügbar',
@@ -88,17 +99,33 @@ var germanTerms = {
 	'form-extended-label-person': 'Person, Autor',
 	'form-extended-placeholder-person': 'z.B. Lincoln oder Wilde, Oscar',
 	'form-extended-label-date': 'Jahr',
-	'form-extended-placeholder-date': 'z.B. 2004, 2004-, -2004 oder 2004-2008'
+	'form-extended-placeholder-date': 'z.B. 2004, 2004-, -2004 oder 2004-2008',
+	// Status display
+	'Status:': 'Status:',
+	'Aktive Abfragen:': 'Aktive Abfragen:',
+	'Geladene Datensätze:': 'Geladene Datensätze:',
+	'Datenbank': 'Datenbank',
+	'Code': 'Statuscode',
+	'Status': 'Status',
+	'Gesamt': 'Gesamt',
+	'Client_Working': 'Client arbeitet',
+	'Client_Idle': 'Client inaktiv'
 };
 
 
 var englishTerms = {
+	// Facets
+	'gefiltert': 'filtered',
+	'Filter aufheben': 'Remove filter',
+	'Filter # aufheben': 'Remove filter #',
+	'Facetten': 'Facets',
 	'facet-title-xtargets': 'Catalogues',
 	'facet-title-medium': 'Type',
 	'facet-title-author': 'Authors',
 	'facet-title-language': 'Languages',
 	'facet-title-subject': 'Subjects',
 	'facet-title-filterDate': 'Years',
+	// Detail display
 	'detail-label-title': 'Title',
 	'detail-label-author': 'Author',
 	'detail-label-author-plural': 'Authors',
@@ -127,13 +154,18 @@ var englishTerms = {
 	'Ausgabe': 'Edition',
 	'Google Books Vorschau': 'Google Books Preview',
 	'Umschlagbild': 'Book Cover',
+	// Short Display
 	'Ansehen und Ausleihen bei:': 'View catalogue record at:',
 	'von': 'of',
+	'In': 'In',
+	// General Information
 	'keine Treffer gefunden': 'no matching records',
 	'In diesem Katalog gibt es noch # weitere Treffer.': 'There are # additional results available in this catalogue which we cannot download and display. Please choose a more specific search query or visit the website of the catalogue itself if you require the full set of results.',
-	'gefiltert': 'filtered',
-	'Filter aufheben': 'Remove filter',
-	'Filter # aufheben': 'Remove filter #',
+	// Pager
+	'Vorige Trefferseite anzeigen': 'Show next page of results',
+	'Nächste Trefferseite anzeigen': 'Show previous page of results',
+	// Histogram Tooltip
+	'Treffer': 'Treffer',
 	// ZDB-JOP status labels
 	'frei verfügbar': 'accessible for all',
 	'teilweise frei verfügbar': 'partially accessible for all',
@@ -151,7 +183,17 @@ var englishTerms = {
 	'form-extended-label-person': 'Person, Author',
 	'form-extended-placeholder-person': 'e.g. Lincoln or Wilde, Oscar',
 	'form-extended-label-date': 'Year',
-	'form-extended-placeholder-date': 'g.g. 2004, 2004-, -2004 or 2004-2008'
+	'form-extended-placeholder-date': 'g.g. 2004, 2004-, -2004 or 2004-2008',
+	// Status display
+	'Status:': 'Status:',
+	'Aktive Abfragen:': 'Active Queries:',
+	'Geladene Datensätze:': 'Loaded Records:',
+	'Datenbank': 'Database',
+	'Code': 'Status Code',
+	'Status': 'Status',
+	'Gesamt': 'Total',
+	'Client_Working': 'Client working',
+	'Client_Idle': 'Client inactive'
 };
 
 
@@ -179,14 +221,22 @@ function localise (term, externalDictionary) {
 		dictionary = externalDictionary;
 	}
 
-	var languageCode = jQuery('html')[0].getAttribute('lang');
-	if (languageCode == null || dictionary[languageCode] == null) {
+	if (!pageLanguage) {
+		pageLanguage = jQuery('html')[0].getAttribute('lang');
+		if (!pageLanguage) {
+			pageLanguage = 'de';
+		}
+	}
+
+	var languageCode = pageLanguage;
+	if (dictionary[pageLanguage] == null) {
 		languageCode = 'de';
 	}
 
 	var localised = dictionary[languageCode][term];
 	if (localised == undefined) {
 		localised = term;
+		console.log('No localisation for: "' + term + '"');
 	}
 
 	return localised;
@@ -222,6 +272,7 @@ my_paz = new pz2( {"onshow": my_onshow,
 // some state vars
 var domReadyFired = false;
 var pz2Initialised = false;
+var pageLanguage = undefined;
 var curPage = 1;
 var recPerPage = 100;
 var fetchRecords = 1500;

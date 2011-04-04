@@ -1077,7 +1077,9 @@ function facetListForType (type, preferOriginalFacets) {
 		container.appendChild(graphDiv);
 		graphDiv.setAttribute('class', 'pz2-histogramContainer');
 		var graphWidth = jQuery('#pz2-termLists').width() - 30;
-		jQuery(graphDiv).css({'width': graphWidth + 'px', 'height': '150px', 'position': 'relative'});
+		var jGraphDiv = jQuery(graphDiv);
+		var canvasHeight = 150;
+		jGraphDiv.css({'width': graphWidth + 'px', 'height': canvasHeight + 'px', 'position': 'relative'});
 
 		var graphData = [];
 		for (var termIndex in terms) {
@@ -1085,6 +1087,10 @@ function facetListForType (type, preferOriginalFacets) {
 			if (year) {
 				graphData.push([year, terms[termIndex].freq]);
 			}
+		}
+		
+		var xaxisTicks = function (axis) {
+			return [axis.min, axis.max];
 		}
 
 		var graphOptions = {
@@ -1097,7 +1103,7 @@ function facetListForType (type, preferOriginalFacets) {
 			},
 			'xaxis':  {
 				'tickDecimals': 0,
-				'ticks': function(axis) { return [axis.min, axis.max]; },
+				'ticks': xaxisTicks,
 				'labelWidth': 0
 			},
 			'yaxis': {
@@ -1107,7 +1113,8 @@ function facetListForType (type, preferOriginalFacets) {
 			},
 			'grid': {
 				'borderWidth': 0,
-				'clickable': true
+				'clickable': true,
+				'hoverable': true
 			},
 			'selection': {
 				'mode': 'x',
@@ -1115,9 +1122,9 @@ function facetListForType (type, preferOriginalFacets) {
 			}
 		};
 		
-		var plot = jQuery.plot(jQuery(graphDiv) , [{'data': graphData, 'color': '#b5b0cc'}], graphOptions);
+		var plot = jQuery.plot(jGraphDiv , [{'data': graphData, 'color': '#b5b0cc'}], graphOptions);
 
-		jQuery(graphDiv).bind('plotselected', function(event, ranges) {
+		jGraphDiv.bind('plotselected', function(event, ranges) {
 			var firstYear = Math.floor(ranges.xaxis.from);
 			var lastYear = Math.ceil(ranges.xaxis.to);
 			ranges.xaxis.from = firstYear;
@@ -1127,8 +1134,35 @@ function facetListForType (type, preferOriginalFacets) {
 			limitResults('filterDate', ranges.xaxis);
 		});
 
-		jQuery(graphDiv).bind('plotunselected', function() {
+		jGraphDiv.bind('plotunselected', function() {
 			delimitResults('filterDate');
+		});
+		
+		jGraphDiv.mouseleave(function() {
+			jQuery("#pz2-histogram-tooltip").remove();
+		});
+		
+		jGraphDiv.bind('plothover', function(event, ranges) {
+			var showTooltip = function(x, y, contents) {
+				jQuery('<div id="pz2-histogram-tooltip">' + contents + '</div>').css( {
+					'position': 'absolute',
+					'display': 'none',
+					'top': y + 5,
+					'left': x + 5
+				}).appendTo('body').fadeIn(200);
+			}
+		
+			jQuery("#pz2-histogram-tooltip").remove();
+			var year = Math.floor(ranges.x);
+			for (termIndex in terms) {
+				var term = terms[termIndex].name;
+				if (term == year) {
+					var hitCount = terms[termIndex].freq;
+					var displayString = year + ': ' + hitCount + ' ' + localise('Treffer');
+					tooltipY = jGraphDiv.offset().top + canvasHeight - 20;
+                    showTooltip(ranges.pageX, tooltipY, displayString);
+				}
+			}
 		});
 
 		for (filterIndex in filterArray['filterDate']) {

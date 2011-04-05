@@ -16,8 +16,8 @@ var showResponseType = '';
 
 	It’s crucial for the date histogram that 'date' is the last item in this list.
 */
-var termListNames = ['xtargets', 'medium', 'language', 'author', 'date'];
-var termListMax = {'xtargets': 25, 'medium': 10, 'language': 6, 'author': 10, 'date': 10000};
+var termListNames = ['xtargets', 'medium', 'language', 'author', 'filterDate'];
+var termListMax = {'xtargets': 25, 'medium': 10, 'language': 6, 'author': 10, 'filterDate': 10};
 
 if (document.location.hash == '#useproxy') {
 	usesessions = false;
@@ -30,12 +30,18 @@ if (document.location.hash == '#useproxy') {
 	Create a hash for each language, then use the appropriate one on the page.
 */
 var germanTerms = {
+	// Facets
+	'gefiltert': 'gefiltert',
+	'Filter aufheben': 'Filter aufheben',
+	'Filter # aufheben': 'Filter # aufheben',
+	'Facetten': 'Facetten',
 	'facet-title-xtargets': 'Kataloge',
 	'facet-title-medium': 'Art',
 	'facet-title-author': 'Autoren',
 	'facet-title-language': 'Sprache',
 	'facet-title-subject': 'Themengebiete',
-	'facet-title-date': 'Jahre',
+	'facet-title-filterDate': 'Jahre',
+	// Detail display
 	'detail-label-title': 'Titel',
 	'detail-label-author': 'Autor',
 	'detail-label-author-plural': 'Autoren',
@@ -60,17 +66,22 @@ var germanTerms = {
 	'elektronisch': 'digital',
 	'gedruckt': 'gedruckt',
 	'detail-label-id': 'PPN',
-	'link': 'Link',
+	'Link': 'Link',
 	'Ausgabe': 'Ausgabe',
 	'Google Books Vorschau': 'Google Books Vorschau',
 	'Umschlagbild': 'Umschlagbild',
+	// Short Display
 	'Ansehen und Ausleihen bei:': 'Ansehen und Ausleihen bei:',
 	'von': 'von',
+	'In': 'In',
+	// General Information
 	'keine Treffer gefunden': 'keine Treffer',
 	'In diesem Katalog gibt es noch # weitere Treffer.': 'In diesem Katalog gibt es noch # weitere Treffer, die wir nicht herunterladen und hier anzeigen können. Bitte wählen Sie einen spezifischeren Suchbegriff, um alle Treffer sehen zu können. Oder suchen Sie direkt im Katalog.',
-	'gefiltert': 'gefiltert',
-	'Filter aufheben': 'Filter aufheben',
-	'Filter # aufheben': 'Filter # aufheben',
+	// Pager
+	'Vorige Trefferseite anzeigen': 'Vorige Trefferseite anzeigen',
+	'Nächste Trefferseite anzeigen': 'Nächste Trefferseite anzeigen',
+	// Histogram Tooltip
+	'Treffer': 'Treffer',
 	// ZDB-JOP status labels
 	'frei verfügbar': 'frei verfügbar',
 	'teilweise frei verfügbar': 'teilweise frei verfügbar',
@@ -78,6 +89,8 @@ var germanTerms = {
 	'teilweise verfügbar': 'teilweise verfügbar',
 	'nicht verfügbar': 'nicht verfügbar',
 	'diese Ausgabe nicht verfügbar': 'diese Ausgabe nicht verfügbar',
+	'Informationen bei der Zeitschriftendatenbank': 'Verfügbarkeitsinformationen bei der Zeitschriftendatenbank ansehen',
+	'[neuere Bände im Lesesaal 2]': '[neuere Bände im Lesesaal 2]',
 	// Link tooltip
 	'Erscheint in separatem Fenster.': 'Erscheint in separatem Fenster.',
 	// Search Form
@@ -88,17 +101,33 @@ var germanTerms = {
 	'form-extended-label-person': 'Person, Autor',
 	'form-extended-placeholder-person': 'z.B. Lincoln oder Wilde, Oscar',
 	'form-extended-label-date': 'Jahr',
-	'form-extended-placeholder-date': 'z.B. 2004, 2004-, -2004 oder 2004-2008'
+	'form-extended-placeholder-date': 'z.B. 2004, 2004-, -2004 oder 2004-2008',
+	// Status display
+	'Status:': 'Status:',
+	'Aktive Abfragen:': 'Aktive Abfragen:',
+	'Geladene Datensätze:': 'Geladene Datensätze:',
+	'Datenbank': 'Datenbank',
+	'Code': 'Statuscode',
+	'Status': 'Status',
+	'Gesamt': 'Gesamt',
+	'Client_Working': 'Client arbeitet',
+	'Client_Idle': 'Client inaktiv'
 };
 
 
 var englishTerms = {
+	// Facets
+	'gefiltert': 'filtered',
+	'Filter aufheben': 'Remove filter',
+	'Filter # aufheben': 'Remove filter #',
+	'Facetten': 'Facets',
 	'facet-title-xtargets': 'Catalogues',
 	'facet-title-medium': 'Type',
 	'facet-title-author': 'Authors',
 	'facet-title-language': 'Languages',
 	'facet-title-subject': 'Subjects',
-	'facet-title-date': 'Years',
+	'facet-title-filterDate': 'Years',
+	// Detail display
 	'detail-label-title': 'Title',
 	'detail-label-author': 'Author',
 	'detail-label-author-plural': 'Authors',
@@ -123,17 +152,22 @@ var englishTerms = {
 	'elektronisch': 'electronic',
 	'gedruckt': 'printed',
 	'detail-label-id': 'PPN',
-	'link': 'link',
+	'Link': 'link',
 	'Ausgabe': 'Edition',
 	'Google Books Vorschau': 'Google Books Preview',
 	'Umschlagbild': 'Book Cover',
+	// Short Display
 	'Ansehen und Ausleihen bei:': 'View catalogue record at:',
 	'von': 'of',
+	'In': 'In',
+	// General Information
 	'keine Treffer gefunden': 'no matching records',
 	'In diesem Katalog gibt es noch # weitere Treffer.': 'There are # additional results available in this catalogue which we cannot download and display. Please choose a more specific search query or visit the website of the catalogue itself if you require the full set of results.',
-	'gefiltert': 'filtered',
-	'Filter aufheben': 'Remove filter',
-	'Filter # aufheben': 'Remove filter #',
+	// Pager
+	'Vorige Trefferseite anzeigen': 'Show next page of results',
+	'Nächste Trefferseite anzeigen': 'Show previous page of results',
+	// Histogram Tooltip
+	'Treffer': 'Treffer',
 	// ZDB-JOP status labels
 	'frei verfügbar': 'accessible for all',
 	'teilweise frei verfügbar': 'partially accessible for all',
@@ -141,6 +175,8 @@ var englishTerms = {
 	'teilweise verfügbar': 'partially accessible',
 	'nicht verfügbar': 'not accessible',
 	'diese Ausgabe nicht verfügbar': 'this issue not accessible',
+	'Informationen bei der Zeitschriftendatenbank': 'View availability information at Zeitschriftendatenbank',
+	'[neuere Bände im Lesesaal 2]': '[current volumes in Lesesaal 2]',
 	// Link tooltip
 	'Erscheint in separatem Fenster.': 'Link opens in a new window.',
 	// Search Form
@@ -151,7 +187,17 @@ var englishTerms = {
 	'form-extended-label-person': 'Person, Author',
 	'form-extended-placeholder-person': 'e.g. Lincoln or Wilde, Oscar',
 	'form-extended-label-date': 'Year',
-	'form-extended-placeholder-date': 'g.g. 2004, 2004-, -2004 or 2004-2008'
+	'form-extended-placeholder-date': 'g.g. 2004, 2004-, -2004 or 2004-2008',
+	// Status display
+	'Status:': 'Status:',
+	'Aktive Abfragen:': 'Active Queries:',
+	'Geladene Datensätze:': 'Loaded Records:',
+	'Datenbank': 'Database',
+	'Code': 'Status Code',
+	'Status': 'Status',
+	'Gesamt': 'Total',
+	'Client_Working': 'Client working',
+	'Client_Idle': 'Client inactive'
 };
 
 
@@ -179,14 +225,22 @@ function localise (term, externalDictionary) {
 		dictionary = externalDictionary;
 	}
 
-	var languageCode = jQuery('html')[0].getAttribute('lang');
-	if (languageCode == null || dictionary[languageCode] == null) {
+	if (!pageLanguage) {
+		pageLanguage = jQuery('html')[0].getAttribute('lang');
+		if (!pageLanguage) {
+			pageLanguage = 'de';
+		}
+	}
+
+	var languageCode = pageLanguage;
+	if (dictionary[pageLanguage] == null) {
 		languageCode = 'de';
 	}
 
 	var localised = dictionary[languageCode][term];
 	if (localised == undefined) {
 		localised = term;
+		console.log('No localisation for: "' + term + '"');
 	}
 
 	return localised;
@@ -222,6 +276,7 @@ my_paz = new pz2( {"onshow": my_onshow,
 // some state vars
 var domReadyFired = false;
 var pz2Initialised = false;
+var pageLanguage = undefined;
 var curPage = 1;
 var recPerPage = 100;
 var fetchRecords = 1500;
@@ -408,10 +463,10 @@ function displayLists (list) {
 							if (matches) {break;}
 						}
 					}
-					else if (facetType === 'date' && filterValue.constructor == Object) {
+					else if (facetType === 'filterDate' && filterValue.constructor == Object) {
 						matchesEverythingNotTheDate = true;
-						for (var dateIndex in record['md-date']) {
-							var recordDate = parseInt(record['md-date'][dateIndex].substr(0,4));
+						for (var dateIndex in record['md-filterDate']) {
+							var recordDate = parseInt(record['md-filterDate'][dateIndex].substr(0,4));
 							matches = (filterValue.from <= recordDate) && (recordDate <= filterValue.to);
 							if (matches) {break;}
 						}
@@ -570,6 +625,16 @@ function my_onshow (data) {
 					hit.detailsDiv = hitList[hitID].detailsDiv;
 				}
 			}
+			
+			// Create a 'filterDate' field which only uses the first four characters
+			// of the date and is used for faceting.
+			if (hit['md-date']) {
+				hit['md-filterDate'] = [];
+				for (var dateIndex in hit['md-date']) {
+					hit['md-filterDate'].push(hit['md-date'][dateIndex].substr(0,4));
+				}
+			}
+			
 			hitList[hitID] = hit;
 		}
 	}
@@ -921,7 +986,7 @@ function facetListForType (type, preferOriginalFacets) {
 			// Loop through data ourselves to gather facet information.
 			var termArray = {};
 			var recordList = displayHitList;
-			if (type == 'date') {
+			if (type == 'filterDate') {
 				recordList = displayHitListUpToDate;
 			}
 			for (var recordIndex in recordList) {
@@ -960,10 +1025,11 @@ function facetListForType (type, preferOriginalFacets) {
 				// Note the maximum number
 				termList['maximumNumber'] = termList[0].freq;
 
-				// Special case for dates: take the most frequent items and sort by date.
-				if (type === 'date') {
-					if (termList.length > termListMax['date']) {
-						termList.splice(termListMax['date'], termList.length - termListMax['date']);
+				// Special case for dates when displaying them as a list:
+				// take the most frequent items and sort by date.
+				if (type === 'filterDate' && !useHistogramForYearFacets) {
+					if (termList.length > termListMax['filterDate']) {
+						termList.splice(termListMax['filterDate'], termList.length - termListMax['filterDate']);
 					}
 					termList.sort( function(term1, term2) {
 							return (term1.name < term2.name) ? 1 : -1;
@@ -978,11 +1044,10 @@ function facetListForType (type, preferOriginalFacets) {
 
 
 
-	var facetDisplayForType = function (type) {
+	var facetDisplayTermsForType = function (terms, type) {
 		var list = document.createElement('ol');
 		
 		// Loop through list of terms for the type and create an item with link for each one.
-		var terms = facetInformationForType(type);
 		for (var i = 0; i < terms.length && i < termListMax[type]; i++) {
 			var facetName = terms[i].name;
 			var item = document.createElement('li');
@@ -1051,14 +1116,14 @@ function facetListForType (type, preferOriginalFacets) {
 	}
 
 
-	var appendFacetHistogramForDatesTo = function (container) {
-		if (isFilteredForType('date')) {
+	var appendFacetHistogramForDatesTo = function (terms, container) {
+		if (isFilteredForType('filterDate')) {
 			var cancelLink = document.createElement('a');
 			container.appendChild(cancelLink);
 			cancelLink.setAttribute('href', '#');
 			cancelLink.setAttribute('class', 'pz2-facetCancel pz2-activeFacet');
-			cancelLink.setAttribute('onclick', 'delimitResults("date"); return false;');
-			var yearRange = filterArray['date'][0].from + '-' + filterArray['date'][0].to;
+			cancelLink.setAttribute('onclick', 'delimitResults("filterDate"); return false;');
+			var yearRange = filterArray['filterDate'][0].from + '-' + filterArray['filterDate'][0].to;
 			var cancelLinkText = localise('Filter # aufheben').replace('#', yearRange);
 			cancelLink.appendChild(document.createTextNode(cancelLinkText));
 		}
@@ -1067,7 +1132,9 @@ function facetListForType (type, preferOriginalFacets) {
 		container.appendChild(graphDiv);
 		graphDiv.setAttribute('class', 'pz2-histogramContainer');
 		var graphWidth = jQuery('#pz2-termLists').width() - 30;
-		jQuery(graphDiv).css({'width': graphWidth + 'px', 'height': '150px', 'position': 'relative'});
+		var jGraphDiv = jQuery(graphDiv);
+		var canvasHeight = 150;
+		jGraphDiv.css({'width': graphWidth + 'px', 'height': canvasHeight + 'px', 'position': 'relative'});
 
 		var graphData = [];
 		for (var termIndex in terms) {
@@ -1075,6 +1142,10 @@ function facetListForType (type, preferOriginalFacets) {
 			if (year) {
 				graphData.push([year, terms[termIndex].freq]);
 			}
+		}
+		
+		var xaxisTicks = function (axis) {
+			return [axis.min, axis.max];
 		}
 
 		var graphOptions = {
@@ -1087,7 +1158,7 @@ function facetListForType (type, preferOriginalFacets) {
 			},
 			'xaxis':  {
 				'tickDecimals': 0,
-				'ticks': function(axis) { return [axis.min, axis.max]; },
+				'ticks': xaxisTicks,
 				'labelWidth': 0
 			},
 			'yaxis': {
@@ -1097,7 +1168,8 @@ function facetListForType (type, preferOriginalFacets) {
 			},
 			'grid': {
 				'borderWidth': 0,
-				'clickable': true
+				'clickable': true,
+				'hoverable': true
 			},
 			'selection': {
 				'mode': 'x',
@@ -1105,24 +1177,51 @@ function facetListForType (type, preferOriginalFacets) {
 			}
 		};
 		
-		var plot = jQuery.plot(jQuery(graphDiv) , [{'data': graphData, 'color': '#b5b0cc'}], graphOptions);
+		var plot = jQuery.plot(jGraphDiv , [{'data': graphData, 'color': '#b5b0cc'}], graphOptions);
 
-		jQuery(graphDiv).bind('plotselected', function(event, ranges) {
+		jGraphDiv.bind('plotselected', function(event, ranges) {
 			var firstYear = Math.floor(ranges.xaxis.from);
 			var lastYear = Math.ceil(ranges.xaxis.to);
 			ranges.xaxis.from = firstYear;
 			ranges.xaxis.to = lastYear;
 			plot.setSelection(ranges, true);
-			filterArray['date'] = undefined;
-			limitResults('date', ranges.xaxis);
+			filterArray['filterDate'] = undefined;
+			limitResults('filterDate', ranges.xaxis);
 		});
 
-		jQuery(graphDiv).bind('plotunselected', function() {
-			delimitResults('date');
+		jGraphDiv.bind('plotunselected', function() {
+			delimitResults('filterDate');
+		});
+		
+		jGraphDiv.mouseleave(function() {
+			jQuery("#pz2-histogram-tooltip").remove();
+		});
+		
+		jGraphDiv.bind('plothover', function(event, ranges) {
+			var showTooltip = function(x, y, contents) {
+				jQuery('<div id="pz2-histogram-tooltip">' + contents + '</div>').css( {
+					'position': 'absolute',
+					'display': 'none',
+					'top': y + 5,
+					'left': x + 5
+				}).appendTo('body').fadeIn(200);
+			}
+		
+			jQuery("#pz2-histogram-tooltip").remove();
+			var year = Math.floor(ranges.x);
+			for (termIndex in terms) {
+				var term = terms[termIndex].name;
+				if (term == year) {
+					var hitCount = terms[termIndex].freq;
+					var displayString = year + ': ' + hitCount + ' ' + localise('Treffer');
+					tooltipY = jGraphDiv.offset().top + canvasHeight - 20;
+                    showTooltip(ranges.pageX, tooltipY, displayString);
+				}
+			}
 		});
 
-		for (filterIndex in filterArray['date']) {
-			plot.setSelection({'xaxis': filterArray['date'][filterIndex]}, true);
+		for (filterIndex in filterArray['filterDate']) {
+			plot.setSelection({'xaxis': filterArray['filterDate'][filterIndex]}, true);
 		}					
 	}
 
@@ -1141,11 +1240,11 @@ function facetListForType (type, preferOriginalFacets) {
 		}
 		heading.appendChild(document.createTextNode(headingText));
 		
-		if (useHistogramForYearFacets && type == 'date') {
-			appendFacetHistogramForDatesTo(container);
+		if (useHistogramForYearFacets && type == 'filterDate') {
+			appendFacetHistogramForDatesTo(terms, container);
 		}
 		else {
-			container.appendChild(facetDisplayForType(type));
+			container.appendChild(facetDisplayTermsForType(terms, type));
 		}
 	}
 		
@@ -2056,7 +2155,6 @@ function renderDetails(recordID) {
 							else {
 								linkTitle = localise('Zugriff');
 							}
-							accessLink.appendChild(document.createTextNode(linkTitle));
 							turnIntoNewWindowLink(accessLink);
 
 							var additionals = [];
@@ -2066,7 +2164,10 @@ function renderDetails(recordID) {
 								}
 							);
 							if (additionals.length > 0) {
-								accessLink.setAttribute('title', additionals.join('; ') + '.');
+								accessLink.appendChild(document.createTextNode(additionals.join('; ') + '. '))
+							}
+							else {
+								accessLink.appendChild(document.createTextNode(linkTitle));
 							}
 						}
 						else if (status < 4) {
@@ -2081,13 +2182,19 @@ function renderDetails(recordID) {
 
 							}
 							var location = jQuery('Location', ZDBResult)[0];
+							var locationText = '';
 							if (location) {
-								infoText += location.textContent + ' ';
+								locationText = location.textContent;
+								infoText += locationText;
 							}
 
 							var signature = jQuery('Signature', ZDBResult)[0];
 							if (signature) {
-								infoText += signature.textContent;
+								infoText += ' ' + signature.textContent;
+							}
+							
+							if (locationText.search('Göttingen SUB') != -1 && locationText.search('LS2') != -1) {
+								infoText += ' ' + localise('[neuere Bände im Lesesaal 2]');
 							}
 
 							locationInfo.appendChild(document.createTextNode(infoText));

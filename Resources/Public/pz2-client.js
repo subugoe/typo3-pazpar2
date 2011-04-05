@@ -66,7 +66,7 @@ var germanTerms = {
 	'elektronisch': 'digital',
 	'gedruckt': 'gedruckt',
 	'detail-label-id': 'PPN',
-	'link': 'Link',
+	'Link': 'Link',
 	'Ausgabe': 'Ausgabe',
 	'Google Books Vorschau': 'Google Books Vorschau',
 	'Umschlagbild': 'Umschlagbild',
@@ -89,6 +89,7 @@ var germanTerms = {
 	'teilweise verfügbar': 'teilweise verfügbar',
 	'nicht verfügbar': 'nicht verfügbar',
 	'diese Ausgabe nicht verfügbar': 'diese Ausgabe nicht verfügbar',
+	'Informationen bei der Zeitschriftendatenbank': 'Verfügbarkeitsinformationen bei der Zeitschriftendatenbank ansehen',
 	// Link tooltip
 	'Erscheint in separatem Fenster.': 'Erscheint in separatem Fenster.',
 	// Search Form
@@ -150,7 +151,7 @@ var englishTerms = {
 	'elektronisch': 'electronic',
 	'gedruckt': 'printed',
 	'detail-label-id': 'PPN',
-	'link': 'link',
+	'Link': 'link',
 	'Ausgabe': 'Edition',
 	'Google Books Vorschau': 'Google Books Preview',
 	'Umschlagbild': 'Book Cover',
@@ -173,6 +174,7 @@ var englishTerms = {
 	'teilweise verfügbar': 'partially accessible',
 	'nicht verfügbar': 'not accessible',
 	'diese Ausgabe nicht verfügbar': 'this issue not accessible',
+	'Informationen bei der Zeitschriftendatenbank': 'View availability information at Zeitschriftendatenbank',
 	// Link tooltip
 	'Erscheint in separatem Fenster.': 'Link opens in a new window.',
 	// Search Form

@@ -90,6 +90,7 @@ var germanTerms = {
 	'nicht verfügbar': 'nicht verfügbar',
 	'diese Ausgabe nicht verfügbar': 'diese Ausgabe nicht verfügbar',
 	'Informationen bei der Zeitschriftendatenbank': 'Verfügbarkeitsinformationen bei der Zeitschriftendatenbank ansehen',
+	'[neuere Bände im Lesesaal 2]': '[neuere Bände im Lesesaal 2]',
 	// Link tooltip
 	'Erscheint in separatem Fenster.': 'Erscheint in separatem Fenster.',
 	// Search Form
@@ -175,6 +176,7 @@ var englishTerms = {
 	'nicht verfügbar': 'not accessible',
 	'diese Ausgabe nicht verfügbar': 'this issue not accessible',
 	'Informationen bei der Zeitschriftendatenbank': 'View availability information at Zeitschriftendatenbank',
+	'[neuere Bände im Lesesaal 2]': '[current volumes in Lesesaal 2]',
 	// Link tooltip
 	'Erscheint in separatem Fenster.': 'Link opens in a new window.',
 	// Search Form
@@ -2153,7 +2155,6 @@ function renderDetails(recordID) {
 							else {
 								linkTitle = localise('Zugriff');
 							}
-							accessLink.appendChild(document.createTextNode(linkTitle));
 							turnIntoNewWindowLink(accessLink);
 
 							var additionals = [];
@@ -2163,7 +2164,10 @@ function renderDetails(recordID) {
 								}
 							);
 							if (additionals.length > 0) {
-								accessLink.setAttribute('title', additionals.join('; ') + '.');
+								accessLink.appendChild(document.createTextNode(additionals.join('; ') + '. '))
+							}
+							else {
+								accessLink.appendChild(document.createTextNode(linkTitle));
 							}
 						}
 						else if (status < 4) {
@@ -2178,13 +2182,19 @@ function renderDetails(recordID) {
 
 							}
 							var location = jQuery('Location', ZDBResult)[0];
+							var locationText = '';
 							if (location) {
-								infoText += location.textContent + ' ';
+								locationText = location.textContent;
+								infoText += locationText;
 							}
 
 							var signature = jQuery('Signature', ZDBResult)[0];
 							if (signature) {
-								infoText += signature.textContent;
+								infoText += ' ' + signature.textContent;
+							}
+							
+							if (locationText.search('Göttingen SUB') != -1 && locationText.search('LS2') != -1) {
+								infoText += ' ' + localise('[neuere Bände im Lesesaal 2]');
 							}
 
 							locationInfo.appendChild(document.createTextNode(infoText));

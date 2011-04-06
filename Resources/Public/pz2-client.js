@@ -111,7 +111,8 @@ var germanTerms = {
 	'Status': 'Status',
 	'Gesamt': 'Gesamt',
 	'Client_Working': 'Client arbeitet',
-	'Client_Idle': 'Client inaktiv'
+	'Client_Idle': 'Client inaktiv',
+	'Client_Error': 'Fehler'
 };
 
 
@@ -197,7 +198,8 @@ var englishTerms = {
 	'Status': 'Status',
 	'Gesamt': 'Total',
 	'Client_Working': 'Client working',
-	'Client_Idle': 'Client inactive'
+	'Client_Idle': 'Client inactive',
+	'Client_Error': 'Client error'
 };
 
 

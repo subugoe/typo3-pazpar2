@@ -2323,10 +2323,6 @@ function renderDetails(recordID) {
 		output:	SPAN DOM element that will contain the Google Books button and cover art.
 	*/
 	var googleBooksElement = function () {
-		var booksSpan = document.createElement('span');
-		booksSpan.setAttribute('class', 'googleBooks');
-
-
 		// Create list of search terms from ISBN and OCLC numbers.
 		var searchTerms = [];
 		for (locationNumber in data.location) {
@@ -2341,61 +2337,67 @@ function renderDetails(recordID) {
 				searchTerms.push('OCLC:' + matches[OCLCMatchNumber]);
 			}
 		}
-		
 
-		// Query Google Books for the ISBN/OCLC numbers in question.
-		var googleBooksURL = 'http://books.google.com/books?bibkeys=' + searchTerms
-					+ '&jscmd=viewapi&callback=?';
-		jQuery.getJSON(googleBooksURL,
-			function(data) {
-				/*
-					If there are multiple results choose the one we want:
-						1. If available the first one with 'full' preview capabilities,
-						2. otherwise the first one with 'partial' preview capabilities,
-						3. undefined if none of the results has preview capabilities.
-					Usually the first item in the list is also the newest one.
-				*/
-				var selectedBook;
-				jQuery.each(data,
-					function(bookNumber, book) {
-						if (book.preview === 'full') {
-							selectedBook = book;
-							return false;
+		var booksSpan;
+
+		if (searchTerms.length > 0) {
+			booksSpan = document.createElement('span');
+			booksSpan.setAttribute('class', 'googleBooks');
+
+			// Query Google Books for the ISBN/OCLC numbers in question.
+			var googleBooksURL = 'http://books.google.com/books?bibkeys=' + searchTerms
+						+ '&jscmd=viewapi&callback=?';
+			jQuery.getJSON(googleBooksURL,
+				function(data) {
+					/*
+						If there are multiple results choose the one we want:
+							1. If available the first one with 'full' preview capabilities,
+							2. otherwise the first one with 'partial' preview capabilities,
+							3. undefined if none of the results has preview capabilities.
+						Usually the first item in the list is also the newest one.
+					*/
+					var selectedBook;
+					jQuery.each(data,
+						function(bookNumber, book) {
+							if (book.preview === 'full') {
+								selectedBook = book;
+								return false;
+							}
+							else if (book.preview === 'partial' && selectedBook === undefined) {
+								selectedBook = book;
+							}
 						}
-						else if (book.preview === 'partial' && selectedBook === undefined) {
-							selectedBook = book;
+					);
+
+					// Add link to Google Books if there is a selected book.
+					if (selectedBook !== undefined) {
+						var bookLink = document.createElement('a');
+						bookLink.setAttribute('href', selectedBook.preview_url);
+						bookLink.onclick = openPreview;
+
+						var language = jQuery('html').attr('lang');
+						if (language === undefined) {
+							language = 'en';
 						}
-					}
-				);
-			
-				// Add link to Google Books if there is a selected book.
-				if (selectedBook !== undefined) {
-					var bookLink = document.createElement('a');
-					bookLink.setAttribute('href', selectedBook.preview_url);
-					bookLink.onclick = openPreview;
+						var buttonImageURL = 'http://www.google.com/intl/' + language + '/googlebooks/images/gbs_preview_button1.gif';
+						var buttonImage = document.createElement('img');
+						buttonImage.setAttribute('src', buttonImageURL);
+						buttonImage.setAttribute('alt', localise('Google Books Vorschau'));
+						bookLink.appendChild(buttonImage);
+						booksSpan.appendChild(bookLink);
 
-					var language = jQuery('html').attr('lang');
-					if (language === undefined) {
-						language = 'en';
-					}
-					var buttonImageURL = 'http://www.google.com/intl/' + language + '/googlebooks/images/gbs_preview_button1.gif';
-					var buttonImage = document.createElement('img');
-					buttonImage.setAttribute('src', buttonImageURL);
-					buttonImage.setAttribute('alt', localise('Google Books Vorschau'));
-					bookLink.appendChild(buttonImage);
-					booksSpan.appendChild(bookLink);
-
-					if (selectedBook.thumbnail_url !== undefined) {
-						var coverArtImage = document.createElement('img');
-						bookLink.appendChild(coverArtImage);
-						coverArtImage.setAttribute('src', selectedBook.thumbnail_url);
-						coverArtImage.setAttribute('alt', localise('Umschlagbild'));
-						coverArtImage.setAttribute('class', 'bookCover');
+						if (selectedBook.thumbnail_url !== undefined) {
+							var coverArtImage = document.createElement('img');
+							bookLink.appendChild(coverArtImage);
+							coverArtImage.setAttribute('src', selectedBook.thumbnail_url);
+							coverArtImage.setAttribute('alt', localise('Umschlagbild'));
+							coverArtImage.setAttribute('class', 'bookCover');
+						}
 					}
 				}
-			}
-		);
-
+			);
+		}
+		
 		return booksSpan;
 
 
@@ -2459,7 +2461,7 @@ function renderDetails(recordID) {
 		dataElement.setAttribute('class', 'pz2-extraLinks');
 		
 		if (useGoogleBooks) {
-			dataElement.appendChild(googleBooksElement());
+			appendInfoToContainer(googleBooksElement(), dataElement);
 		}
 		
 		return [titleElement, dataElement];

@@ -636,6 +636,11 @@ function my_onshow (data) {
 					hit['md-filterDate'].push(hit['md-date'][dateIndex].substr(0,4));
 				}
 			}
+			// If there is no title information but series information, use the
+			// first series field for the title.
+			if (!(hit['md-title'] || hit['md-multivolume-title']) && hit['md-series-title']) {
+				hit['md-multivolume-title'] = hit['md-series-title'][0];
+			}
 			
 			hitList[hitID] = hit;
 		}

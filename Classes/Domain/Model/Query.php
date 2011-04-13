@@ -376,6 +376,13 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 					foreach ($hits as $hit) {
 						$myHit = $hit['ch'];
 						$key = $myHit['recid'][0]['values'][0];
+						// If there is no title information but series information, use the
+						// first series field for the title.
+						if (!(array_key_exists('md-title', $myHit) || array_key_exists('md-multivolume-title', $myHit))
+								&& array_key_exists('md-series-title', $myHit)) {
+							$myHit['md-multivolume-title'] = Array($myHit['md-series-title'][0]);
+						}
+						
 						$this->results[$key] = $myHit;
 					}
 				}

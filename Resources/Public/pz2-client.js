@@ -242,7 +242,7 @@ function localise (term, externalDictionary) {
 	var localised = dictionary[languageCode][term];
 	if (localised == undefined) {
 		localised = term;
-		console.log('No localisation for: "' + term + '"');
+		// console.log('No localisation for: "' + term + '"');
 	}
 
 	return localised;

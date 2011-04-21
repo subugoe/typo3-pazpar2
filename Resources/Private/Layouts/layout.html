@@ -1,0 +1,13 @@
+<div id="pazpar2" class="pz2-noJS">
+	<div class="pz2-JSNote">
+		<f:translate key="Search is better with JavaScript."/>
+	</div>
+
+	<f:render section="form"/>
+	
+	<f:render partial="../../../../pazpar2/Resources/Private/Partials/results" 
+			  arguments="{queryString: queryString,
+							results: results
+							totalResultCount: totalResultCount}"
+	/>
+</div> <!-- #pazpar2 -->

@@ -22,16 +22,19 @@
  */
 
 
-
-
 /**
- * pazpar2 controller for the pazpar2 package.
+ * pazpar2 controller for the pazpar2 extension.
  */
 class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_ActionController {
 
-	public $query;
+	/**
+	 * Query object handling the pazpar2 logic.
+	 * @var Tx_Pazpar2_Domain_Model_Query
+	 */
+	protected $query;
 
 
+	
 	/**
 	 * Initialiser
 	 *
@@ -51,6 +54,7 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 
 		$this->query = t3lib_div::makeInstance('Tx_Pazpar2_Domain_Model_Query');
 		$this->query->setServiceName($this->conf['serviceID']);
+		$this->query->setQueryFromArguments($this->request->getArguments());
 	}
 
 
@@ -92,15 +96,12 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 
 		$arguments = $this->request->getArguments();
 
-		$this->query->setQueryFromArguments($arguments);
-
 		$this->view->assign('extended', $arguments['extended']);
 		$this->view->assign('queryString', $this->query->getQueryString());
 		$this->view->assign('queryStringTitle', $this->query->getQueryStringTitle());
 		$this->view->assign('querySwitchJournalOnly', $this->query->getQuerySwitchJournalOnly());
 		$this->view->assign('queryStringPerson', $this->query->getQueryStringPerson());
 		$this->view->assign('queryStringDate', $this->query->getQueryStringDate());
-
 		if ($arguments['useJS'] != 'yes') {
 			$totalResultCount = $this->query->run();
 			$this->view->assign('totalResultCount', $totalResultCount);

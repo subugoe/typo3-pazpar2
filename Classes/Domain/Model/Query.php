@@ -42,13 +42,25 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	public function getQueryStringPerson () { return $this->queryStringPerson; }
 	public function getQueryStringDate () { return $this->queryStringDate; }
 
+	
+
+	/**
+	 * Setter for the main query string.
+	 * 
+	 * @param string $newQueryString 
+	 */
+	public function setQueryString ($newQueryString) { 
+		$this->queryString = $newQueryString;
+	}
+
+	
 	/**
 	 * Set search query elements from the request’s arguments array.
 	 * 
 	 * @param array $newArguments 
 	 */
 	public function setQueryFromArguments ($newArguments) {
-		$this->queryString = trim($newArguments['queryString']);
+		$this->setQueryString(trim($newArguments['queryString']));
 		$this->queryStringTitle = trim($newArguments['queryStringTitle']);
 		$this->querySwitchJournalOnly = ($newArguments['querySwitchJournalOnly'] != '');
 		$this->queryStringPerson = trim($newArguments['queryStringPerson']);

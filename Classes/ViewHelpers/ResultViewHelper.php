@@ -245,20 +245,20 @@ private function renderDetails ($result) {
 	// duplicating persons listed in title-responsiblity already.
 	$result['md-author-clean'] = Array();
 	foreach ($result['md-author'] as $author) {
-		$nameParts = split(",", $author);
+		$nameParts = split(",", $author['values'][0]);
 		$authorName = trim($nameParts[0]);
 		foreach ($result['md-title-responsibility'] as $responsibility) {
-			if (strpos($responsibility, $authorName) === False) {
+			if (strpos($responsibility['values'][0], $authorName) === False) {
 				$result['md-author-clean'][] = $author;
 			}
 		}
 	}
 	$result['md-other-person-clean'] = Array();
 	foreach ($result['md-other-person'] as $otherPerson) {
-		$nameParts = split(",", $otherPerson);
+		$nameParts = split(",", $otherPerson['values'][0]);
 		$personName = trim($nameParts[0]);
 		foreach ($result['md-title-responsibility'] as $responsibility) {
-			if (strpos($responsibility, $personName) === False) {
+			if (strpos($responsibility['values'][0], $personName) === False) {
 				$result['md-other-person-clean'][] = $otherPerson;
 			}
 		}

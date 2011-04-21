@@ -635,6 +635,23 @@ private function addZDBInfoIntoElement ($container, $result) {
 
 
 /**
+ * Removes duplicate entries from an array of pazpar2 result values.
+ * 
+ * @param array $array of pazpar2 result values (each being an array with the element 'values' containing a 1-element array with the actual string
+ * @return array $array
+ */
+private function pz2ValuesUnique ($array) {
+	$newArray = Array();
+	foreach ($array as $element) {
+		$newArray[] = $element['values'][0];
+	}
+	
+	return array_unique($newArray);
+}
+
+
+
+/**
  * @param string $title name of the data field
  * @param array $result
  * @return array of DOM elements
@@ -644,11 +661,9 @@ private function DOMElementForTitle ($title, $result) {
 	$theData = Null;
 
 	if ($result['md-' . $title]) {
-		$theData = $result['md-' . $title];
-		// uniquing array elements omitted in PHP version
-
+		$theData = $this->pz2ValuesUnique($result['md-' . $title]);
 		foreach ($theData as $value) {
-			$rawDatum = $value['values'][0];
+			$rawDatum = $value;
 			$wrappedDatum = Null;
 			switch ($title) {
 				case 'doi':

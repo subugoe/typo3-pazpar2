@@ -1,8 +1,8 @@
 <?php
-/********************************************************************
+/*************************************************************************
  *  Copyright notice
  *
- *  © 2010 Sven-S. Porst, SUB Göttingen <porst@sub.uni-goettingen.de>
+ *  © 2010-2011 Sven-S. Porst, SUB Göttingen <porst@sub.uni-goettingen.de>
  *  All rights reserved
  *
  *  This script is distributed in the hope that it will be useful,
@@ -10,30 +10,39 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
  *  This copyright notice MUST APPEAR in all copies of the script.
- ********************************************************************/
+ *************************************************************************/
 if (!defined ('TYPO3_MODE')) die ('Access denied.');
 
 
 
-// Configure plug-in
+// Configure Plug-Ins
+
 Tx_Extbase_Utility_Extension::configurePlugin (
 	$_EXTKEY,
-
-	// Need to pass 'Pi1' here (despite other comments mentioning a unique ID).
-	'Pi1',
-
+	'pazpar2', // Name used internally by Typo3
 	// Array holding the controller-action-combinations that are accessible
 	array(
 		// The first controller and its first action will be the default
 		'Pazpar2' => 'index'
 	),
-
 	// Array holding non-cachable controller-action-combinations
 	array(
 		'Pazpar2' => 'index'
 	)
-
 );
 
+Tx_Extbase_Utility_Extension::configurePlugin (
+	$_EXTKEY,
+	'pazpar2neuerwerbungen', // Name used internally by Typo3
+	// Array holding the controller-action-combinations that are accessible
+	array(
+		// The first controller and its first action will be the default
+		'Pazpar2neuerwerbungen' => 'index'
+	),
+	// Array holding non-cachable controller-action-combinations
+	array(
+		'Pazpar2neuerwerbungen' => 'index'
+	)
+);
 
 ?>

@@ -1,0 +1,50 @@
+<f:form name="search" class="pz2-searchForm">
+	<div class="pz2-mainForm">
+		<p>
+			<f:form.select options="{pazpar2neuerwerbungen.months}"
+						 name="months"
+						 class="pz2-months"
+						 value="{pazpar2neuerwerbungen.defaultMonth}"
+						 additionalAttributes="{onchange:'pz2-checkboxChanged(this);'}"/>
+			<f:link.external class="pz2-atomLink"
+							uri="TODO"
+							additionalAttributes="{type: 'application/atom+xml'}">
+				<f:translate key="Die aktuelle Liste als RSS-Feed abonnieren."/>
+			</f:link.external>
+		</p>
+
+		<f:form.submit name="button" value="<f:translate key='Anzeigen'/>" />
+
+		<div class="pz2-fieldsets">
+			<f:for each="{pazpar2neuerwerbungen.subjects}" as="section" key="sectionIndex">
+				<fieldset class="pz2-fieldset-{sectionIndex}">
+					<legend>
+						<label for="neuerwerbungen-group-checkbox-{sectionIndex}">
+							<f:form.checkbox name="pz2subject-{sectionIndex}"
+											value="<f:for each='{section.GOKs}' as='GOK' key='GOKIndex'><f:if condition='{GOKIndex} != 0'>,</f:if>{GOK}</f:for>"
+											checked="{section.selected}"
+											onclick="groupCheckboxChanged(this);"
+											id="neuerwerbungen-group-checkbox-{sectionIndex}"/>
+							<f:translate key="{section.name}"/>
+						</label>
+					</legend>
+
+					<ul>
+						<f:for each="{section.subjects}" as="subject" key="subjectIndex">
+							<li {f:if(condition: subject.inline, then: 'class="inline"')}>
+								<f:if condition="{subject.break} == 1"><br></f:if>
+								<label>
+									<f:form.checkbox name="pz2subject-{sectionIndex}-{subjectIndex}"
+											value="<f:for each='{subject.GOKs}' as='GOK' key='GOKIndex'><f:if condition='{GOKIndex} != 0'>,</f:if>{GOK}</f:for>"
+											checked="{subject.selected}"
+											onclick="checkboxChanged(this);"/>
+									<f:translate key="{subject.name}"/>
+								</label>
+							</li>
+						</f:for>
+					</ul>
+				</fieldset>
+			</f:for>
+		</div>
+	</div>
+</f:form>

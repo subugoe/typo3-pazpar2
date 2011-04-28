@@ -1,0 +1,39 @@
+.pz2-fieldsets {
+	margin-top: 1em;
+}
+
+fieldset {
+	width: 48%;
+	position: relative;
+	margin-bottom: 0.5em;
+}
+
+fieldset.pz2-fieldset-0 {
+	float: right;
+}
+
+
+form.pz2-searchForm ul {
+	list-style-type: none;
+	padding-left: 0em;
+}
+
+
+form.pz2-searchForm li {
+	margin-left: 0.5em;
+}
+
+
+form.pz2-searchForm li.inline {
+	display: inline;
+}
+
+
+legend {
+	font-weight: bold; 
+}
+
+
+.pz2-months {
+	font-size: 133%;
+}

@@ -9,7 +9,7 @@
 
 			<settings.serviceID>
 				<TCEforms>
-					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang.xml:settings.serviceID</label>
+					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang-flexform.xml:settings.serviceID</label>
 					<config>
 						<type>input</type>
 						<size>40</size>
@@ -19,7 +19,7 @@
 
 			<settings.useGoogleBooks>
 				<TCEforms>
-					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang.xml:settings.useGoogleBooks</label>
+					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang-flexform.xml:settings.useGoogleBooks</label>
 					<config>
 						<type>check</type>
 						<default>1</default>
@@ -29,7 +29,7 @@
 
 			<settings.useZDB>
 				<TCEforms>
-					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang.xml:settings.useZDB</label>
+					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang-flexform.xml:settings.useZDB</label>
 					<config>
 						<type>check</type>
 						<default>1</default>
@@ -39,17 +39,17 @@
 
 			<settings.ZDBIP>
 				<TCEforms>
-					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang.xml:settings.ZDBIP</label>
+					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang-flexform.xml:settings.ZDBIP</label>
 					<config>
 						<type>radio</type>
 						<default>0</default>
 						<items type="array">
 							<numIndex index="0" type="array">
-								<numIndex index="0">LLL:EXT:pazpar2/Resources/Private/Language/locallang.xml:settings.ZDBIPUser</numIndex>
+								<numIndex index="0">LLL:EXT:pazpar2/Resources/Private/Language/locallang-flexform.xml:settings.ZDBIPUser</numIndex>
 								<numIndex index="1">0</numIndex>
 							</numIndex>
 							<numIndex index="1" type="array">
-								<numIndex index="0">LLL:EXT:pazpar2/Resources/Private/Language/locallang.xml:settings.ZDBIPLocal</numIndex>
+								<numIndex index="0">LLL:EXT:pazpar2/Resources/Private/Language/locallang-flexform.xml:settings.ZDBIPLocal</numIndex>
 								<numIndex index="1">1</numIndex>
 							</numIndex>
 						</items>
@@ -59,7 +59,7 @@
 
 			<settings.useHistogramForYearFacets>
 				<TCEforms>
-					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang.xml:settings.useHistogramForYearFacets</label>
+					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang-flexform.xml:settings.useHistogramForYearFacets</label>
 					<config>
 						<type>check</type>
 						<default>1</default>
@@ -69,7 +69,7 @@
 
 			<settings.CSSPath>
 				<TCEforms>
-					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang.xml:settings.CSSPath</label>
+					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang-flexform.xml:settings.CSSPath</label>
 					<config>
 						<type>input</type>
 						<size>40</size>
@@ -79,7 +79,7 @@
 
 			<settings.pz2JSPath>
 				<TCEforms>
-					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang.xml:settings.pz2JSPath</label>
+					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang-flexform.xml:settings.pz2JSPath</label>
 					<config>
 						<type>input</type>
 						<size>40</size>
@@ -89,13 +89,29 @@
 
 			<settings.pz2-clientJSPath>
 				<TCEforms>
-					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang.xml:settings.pz2-clientJSPath</label>
+					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang-flexform.xml:settings.pz2-clientJSPath</label>
 					<config>
 						<type>input</type>
 						<size>40</size>
 					</config>
 				</TCEforms>
 			</settings.pz2-clientJSPath>
+
+
+			<settings.subjects>
+				<TCEforms>
+					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang-flexform.xml:settings.neuerwerbungen.subjects</label>
+					<config>
+						<type>select</type>
+						<items type="array">
+							<numIndex index="0" type="array">
+								<numIndex index="0">AAC</numIndex>
+								<numIndex index="1">AAC</numIndex>
+							</numIndex>
+						</items>
+					</config>
+				</TCEforms>
+			</settings.subjects>
 
 		</el>
 	</ROOT>

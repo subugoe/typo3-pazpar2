@@ -10,6 +10,7 @@
 	<data type="array">
 
 		<languageKey index="default" type="array">
+			<!-- pazpar2 extended search form -->
 			<label index="form-extended-label-all">Alle Felder</label>
 			<label index="form-extended-label-title">Titel</label>
 			<label index="form-extended-label-journalOnly">nur Zeitschriftentitel</label>
@@ -20,27 +21,26 @@
 			<label index="erweiterte Suche">erweiterte Suche</label>
 			<label index="einfache Suche">einfache Suche</label>
 			<label index="Find">Suchen</label>
+			
+			<!-- pazpar2neuerwerbungen form -->
+			<label index="Anzeigen">Anzeigen</label>
+			<label index="Die aktuelle Liste als RSS-Feed abonnieren.">Diese Auswahl als Feed abonnieren.</label>
+			<label index="unvollständig">unvollständig</label>
+
+			<!-- Sort controls -->
 			<label index="Sort by">Sortieren nach</label>
 			<label index="Age">Alter</label>
 			<label index="Author">Autor</label>
 			<label index="Title">Titel</label>
+
+			<!-- Status strings -->
 			<label index="No information available yet.">Noch keine Informationen verfügbar.</label>
 			<label index="No Results">Es gab keine Suchergebnisse für Ihre Anfrage.</label>
 			<label index="Result">Ergebnis</label>
 			<label index="Results">Ergebnisse</label>
 			<label index="Status">Status</label>
 
-			<label index="settings.serviceID">pazpar2 service ID (leer, falls im Server nur ein unbenannter Service konfiguriert ist)</label>
-			<label index="settings.useGoogleBooks">ISBN und OCLC Nummern bei Google Books nachschlagen, um  Buchdeckel und Vorschau anzeigen zu können</label>
-			<label index="settings.useZDB">ISSN Nummern beim Journals Online &amp; Print Dienst der ZDB nachschlagen, und die Verfügbarkeit anzeigen</label>			
-			<label index="settings.ZDBIP">ZDB Proxy</label>
-			<label index="settings.ZDBIPUser">Abfrage für die IP Adresse des Nutzers machen (Proxy unter /zdb/)</label>
-			<label index="settings.ZDBIPLocal">Abfrage für die IP Adresse des Servers machen (Proxy unter /zdb-local/)</label>
-			<label index="settings.useHistogramForYearFacets">Verteilung der Erscheinungsjahre als Histogramm anzeigen</label>
-			<label index="settings.CSSPath">Pfad zum eigenem Stylesheet (ersetzt das eingebaute)</label>
-			<label index="settings.pz2JSPath">Pfad zu eigenem pz2.js (ersetzt das aus dem pazpar2 Paket)</label>
-			<label index="settings.pz2-clientJSPath">Pfad zu eigenem pz2-client.js, das eine domReady()-Funktion zur Verfügung stellt (ersetzt das eingebaute)</label>
-
+			<!-- Labels for book display details -->
 			<label index="detail-label-title">Titel</label>
 			<label index="detail-label-author">Autor</label>
 			<label index="detail-label-author-plural">Autoren</label>
@@ -69,10 +69,52 @@
 			<label index="Search is better with JavaScript.">Ihr Browser scheint kein JavaScript zu unterstützen. Ohne JavaScript kann es bei Anfragen mit vielen Ergebnissen eine Minute dauern, bis alle Ergebnisse verfügbar sind. Wir empfehlen daher, für die Suchfunktion JavaScript zu aktivieren.</label>
 			<label index="of">von</label>
 			<label index="Erscheint in separatem Fenster.">Erscheint in separatem Fenster.</label>
+			
+			<!-- Subject names for pazpar2neuerwerbungen -->
+			<!-- Subject names English language -->
+			<label index="Englische Philologie">Englische Philologie</label>
+			<label index="Sprach- und Literaturwissenschaft, Allgemeines">Sprach- und Literaturwissenschaft, Allgemeines</label>
+			<label index="Sprachwissenschaft">Sprachwissenschaft</label>
+			<label index="Anthologien">Anthologien</label>
+			<label index="Literaturwissenschaft">Literaturwissenschaft</label>
+			<label index="Textausgaben und Sekundärliteratur">Textausgaben und Sekundärliteratur</label>
+			<label index="Altenglisch">Altenglisch</label>
+			<label index="Mittel- und Frühneuenglisch">Mittel- und Frühneuenglisch</label>
+			<label index="Schottland">Schottland</label>
+			<label index="Wales">Wales</label>
+			<label index="Irland">Irland</label>
+			<label index="Amerikanische Philologie">Amerikanische Philologie</label>
+			<label index="Globales Englisch">Globales Englisch</label>
+			<label index="Kanada">Kanada</label>
+			<label index="Australien">Australien</label>
+			<label index="Neuseeland">Neuseeland</label>
+			<label index="Afrika">Afrika</label>
+			<label index="Karibischer Raum">Karibischer Raum</label>
+			<label index="Malta">Malta</label>
+			<label index="Asien, Ozeanien">Asien, Ozeanien</label>
+			<label index="Indischer Subkontinent">Indischer Subkontinent</label>
+			<label index="Mischsprachen">Mischsprachen</label>
+			<!-- Subject names History -->
+			<label index="Geschichte">Geschichte</label>
+			<label index="Geschichtsschreibung und -theorie">Geschichtsschreibung und -theorie</label>
+			<label index="Historische Hilfswissenschaften">Historische Hilfswissenschaften</label>
+			<label index="Weltgeschichte (Entdeckungen; Weltkriege etc.)">Weltgeschichte (Entdeckungen; Weltkriege etc.)</label>
+			<label index="England (epochenübergreifend)">England (epochenübergreifend)</label>
+			<label index="England im Mittelalter">England im Mittelalter</label>
+			<label index="England in der Frühen Neuzeit">England in der Frühen Neuzeit</label>
+			<label index="England im 19. Jahrhundert">England im 19. Jahrhundert</label>
+			<label index="England im 20. Jahrhundert">England im 20. Jahrhundert</label>
+			<label index="USA (epochenübergreifend)">USA (epochenübergreifend)</label>
+			<label index="USA in der Frühen Neuzeit">USA in der Frühen Neuzeit</label>
+			<label index="USA 1776-1918">USA 1776-1918</label>
+			<label index="USA im 20. Jahrhundert">USA im 20. Jahrhundert</label>
+			<label index="Jüdisches Volk im angloamerikanischen Raum">Jüdisches Volk im angloamerikanischen Raum</label>
+			
 		</languageKey>
 
 
 		<languageKey index="en" type="array">
+			<!-- pazpar2 extended search form -->
 			<label index="form-extended-label-all">All Fields</label>
 			<label index="form-extended-label-title">Title</label>
 			<label index="form-extended-label-journalOnly">journal titles only</label>
@@ -83,27 +125,26 @@
 			<label index="erweiterte Suche">Extended Search</label>
 			<label index="einfache Suche">Basic Search</label>
 			<label index="Find">Search</label>
+			
+			<!-- pazpar2neuerwerbungen form -->
+			<label index="Anzeigen">Show</label>
+			<label index="Die aktuelle Liste als RSS-Feed abonnieren.">Subscribe to these subjects as a feed.</label>
+			<label index="unvollständig">incomplete</label>
+			
+			<!-- Sort controls -->
 			<label index="Sort by">Sort by</label>
 			<label index="Age">Age</label>
 			<label index="Author">Author</label>
 			<label index="Title">Title</label>
+			
+			<!-- Status strings -->
 			<label index="No information available yet.">No information available yet.</label>
 			<label index="No Results">There were no search results for your query.</label>
 			<label index="Results">Result</label>
 			<label index="Results">Results</label>
 			<label index="Status">Status</label>
 
-			<label index="settings.serviceID">pazpar2 service ID</label>
-			<label index="settings.useGoogleBooks">Send ISBN and OCLC Numbers to Google Books to show cover art and use the Preview service</label>
-			<label index="settings.useZDB">Query the ZDB Journals Online and Print Service to learn about local availability of the journals for the user (in Germany)</label>
-			<label index="settings.ZDBIP">ZDB Proxy</label>
-			<label index="settings.ZDBIPUser">Query with the user’s IP address (using service at /zdb/)</label>
-			<label index="settings.ZDBIPLocal">Query with the server’s IP address (using service at /zdb-local/)</label>
-			<label index="settings.useHistogramForYearFacets">Draw a histogram to visualise the distribution of publication dates</label>
-			<label index="settings.CSSPath">Path to stylesheet (replaces built-in stylesheet)</label>
-			<label index="settings.pz2JSPath">Path to pz2.js (replaces the built-in one from pazpar2 distribution)</label>
-			<label index="settings.pz2-clientJSPath">Path to pz2-client.js which provides a domReady() function (replaces built-in script)</label>
-
+			<!-- Labels for book display details -->
 			<label index="detail-label-title">Title</label>
 			<label index="detail-label-author">Author</label>
 			<label index="detail-label-author-plural">Authors</label>
@@ -132,6 +173,47 @@
 			<label index="Search is better with JavaScript.">JavaScript seems to be unavailable in your web browser. Without JavaScript, displaying the results of a query can take up to a minute in some cases. Please be patient or turn on JavaScript for a more interactive search experience.</label>
 			<label index="of">of</label>
 			<label index="Erscheint in separatem Fenster.">Link opens in a new Window.</label>
+			
+			<!-- Subject names for pazpar2neuerwerbungen -->
+			<!-- Subject names English language -->
+			<label index="Englische Philologie">English Philology</label>
+			<label index="Sprach- und Literaturwissenschaft, Allgemeines">Sprach- und Literaturwissenschaft, Allgemeines</label>
+			<label index="Sprachwissenschaft">Sprachwissenschaft</label>
+			<label index="Anthologien">Anthologien</label>
+			<label index="Literaturwissenschaft">Literaturwissenschaft</label>
+			<label index="Textausgaben und Sekundärliteratur">Textausgaben und Sekundärliteratur</label>
+			<label index="Altenglisch">Altenglisch</label>
+			<label index="Mittel- und Frühneuenglisch">Mittel- und Frühneuenglisch</label>
+			<label index="Schottland">Scotland</label>
+			<label index="Wales">Wales</label>
+			<label index="Irland">Ireland</label>
+			<label index="Amerikanische Philologie">American Philology</label>
+			<label index="Globales Englisch">Global English</label>
+			<label index="Kanada">Canada</label>
+			<label index="Australien">Australia</label>
+			<label index="Neuseeland">New Zealand</label>
+			<label index="Afrika">Africa</label>
+			<label index="Karibischer Raum">Caribbean</label>
+			<label index="Malta">Malta</label>
+			<label index="Asien, Ozeanien">Asia and Oceania</label>
+			<label index="Indischer Subkontinent">Indian subcontinent</label>
+			<label index="Mischsprachen">Mixed languages</label>
+			<!-- Subject names History -->
+			<label index="Geschichte">History</label>
+			<label index="Geschichtsschreibung und -theorie">Historiography and Theory</label>
+			<label index="Historische Hilfswissenschaften">Auxiliary Sciences</label>
+			<label index="Weltgeschichte (Entdeckungen; Weltkriege etc.)">World History (European expansion; World Wars etc.)</label>
+			<label index="England (epochenübergreifend)">England (epoch spanning)</label>
+			<label index="England im Mittelalter">England in the Middle Ages</label>
+			<label index="England in der Frühen Neuzeit">England in the Early Modern Period</label>
+			<label index="England im 19. Jahrhundert">England in the 19th Century</label>
+			<label index="England im 20. Jahrhundert">England in the 20th Century</label>
+			<label index="USA (epochenübergreifend)">USA (epoch-spanning)</label>
+			<label index="USA in der Frühen Neuzeit">USA in the Early Modern Period</label>
+			<label index="USA 1776-1918">USA 1776-1918</label>
+			<label index="USA im 20. Jahrhundert">USA in the 20th Century</label>
+			<label index="Jüdisches Volk im angloamerikanischen Raum">History of the Jewish People in the Anglo-American Regions</label>
+			
 		</languageKey>
 
 	</data>

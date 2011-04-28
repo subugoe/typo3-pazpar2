@@ -3,7 +3,7 @@
  *  Copyright notice
  *
  *  © 2010-2011 Sven-S. Porst, SUB Göttingen <porst@sub.uni-goettingen.de>
- *  All rigs reserved
+ *  All rights reserved
  *
  *  This script is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of

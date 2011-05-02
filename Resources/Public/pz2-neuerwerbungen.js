@@ -32,7 +32,7 @@ function pz2neuerwerbungenDOMReady () {
  * restoreCookieState
  *
  * Restore previously checked checkboxes from the stated stored in the
- *	'previousQuery' cookie.
+ *	'pz2neuerwerbungen-previousQuery' cookie.
  *
  * Cookie data is a string whose components are separated by colons (:).
  * Each item corresponds to the value of a checkbox. Select those checkboxes and
@@ -46,7 +46,7 @@ function restoreCookieState () {
 		var equalsLocation = cookie.search('=');
 		if (equalsLocation != -1) {
 			var cookieName = cookie.substring(0, equalsLocation);
-			if (cookieName == 'previousQuery') {
+			if (cookieName == 'pz2neuerwerbungen-previousQuery') {
 				var cookieValue = cookie.substring(equalsLocation +1);
 				var fieldNames = cookieValue.split(':');
 				for (var fieldNameIndex in fieldNames) {
@@ -66,7 +66,7 @@ function restoreCookieState () {
  * saveFormStateAsCookie
  *
  * Get the checked checkboxes from the passed form and concatenate their values
- *	with colon (:) separators. Store the result in the 'previousQuery' cookie.
+ *	with colon (:) separators. Store the result in the 'pz2neuerwerbungen-previousQuery' cookie.
  *
  * input:	form - DOM form element in which to look for checked checkboxes
  */
@@ -77,7 +77,7 @@ function saveFormStateAsCookie (form) {
 		}
 	)
 
-	document.cookie = 'previousQuery=' +  selectedValues.join(':');
+	document.cookie = 'pz2neuerwerbungen-previousQuery=' +  selectedValues.join(':');
 }
 
 

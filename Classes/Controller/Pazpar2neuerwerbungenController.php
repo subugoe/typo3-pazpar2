@@ -112,23 +112,58 @@ class Tx_Pazpar2_Controller_Pazpar2neuerwerbungenController extends Tx_Pazpar2_C
 		// and -y is optional with y being the index of the subject inside its
 		// group.
 		$arguments = $this->request->getArguments();
-		foreach ($arguments as $argumentName => $argument) {
-			if ($argument != '' && strpos($argumentName, 'pz2subject-') == 0) {
-				$nameParts = explode('-', $argumentName);
-				if (count($nameParts) >= 2) {
-					$groupIndex = intval($nameParts[1]);
-					
-					if (count($nameParts) == 3) {
-						$subjectIndex = intval($nameParts[2]);
-						$subjects[$groupIndex]['subjects'][$subjectIndex]['selected'] = True;
+		if ($arguments['controller']) {
+			$selectedCheckboxes = Array();
+			// Our form was submitted: use form values only.
+			foreach ($arguments as $argumentName => $argument) {
+				if ($argument != '' && strpos($argumentName, 'pz2subject-') == 0) {
+					$nameParts = explode('-', $argumentName);
+					if (count($nameParts) >= 2) {
+						$groupIndex = intval($nameParts[1]);
+
+						if (count($nameParts) == 3) {
+							$subjectIndex = intval($nameParts[2]);
+							$subjects[$groupIndex]['subjects'][$subjectIndex]['selected'] = True;
+							$checkBoxGOKs = $subjects[$groupIndex]['GOKs'];
+							$selectedCheckboxes[] =  implode(',', $subjects[$groupIndex]['subjects'][$subjectIndex]['GOKs']);
+						}
+						else {
+							$subjects[$groupIndex]['selected'] = True;
+							$checkBoxGOKs = $subjects[$groupIndex]['GOKs'];
+							$selectedCheckboxes[] =  implode(',', $checkBoxGOKs);
+						}
 					}
-					else {
-						$subjects[$groupIndex]['selected'] = True;
+				}
+			}
+
+			// Also write the selected values to our cookie.
+			$cookieString = implode(':', $selectedCheckboxes);
+			setcookie('pz2neuerwerbungen-previousQuery', $cookieString);
+		}
+		else {
+			// Our form was not submitted: use cookie to set the selected checkboxes.
+			$previousQuery = $_COOKIE['pz2neuerwerbungen-previousQuery'];
+			$queryItems = explode(':', $previousQuery);
+
+			// Turn on the selection for each group if its GOKs have been passed
+			// in the cookie xor for each included subject if its GOKs have been
+			// passed in the cookie.
+			foreach ($subjects as &$group) {
+				$GOKsString = implode(',', $group['GOKs']);
+				if (in_array($GOKsString, $queryItems)) {
+					$group['selected'] = True;
+				}
+				else {
+					foreach ($group['subjects'] as &$subject) {
+						$GOKsString = implode(',', $subject['GOKs']);
+						if (in_array($GOKsString, $queryItems)) {
+							$subject['selected'] = True;
+						}
 					}
 				}
 			}
 		}
-		
+
 		// Turn on the selection for the group if all containing subjects are selected
 		foreach ($subjects as &$group) {
 			$isSelected = True;
@@ -172,7 +207,7 @@ class Tx_Pazpar2_Controller_Pazpar2neuerwerbungenController extends Tx_Pazpar2_C
 	 * Return the array of all GOKs selected in the form, taking into account
 	 *  group checkboxes.
 	 * 
-	 * @param String $wildcard appended to each extracted GOK
+	 * @param string $wildcard appended to each extracted GOK
 	 * @return array of GOK strings
 	 */
 	private function selectedGOKsInFormWithWildcard($wildcard) {
@@ -198,6 +233,31 @@ class Tx_Pazpar2_Controller_Pazpar2neuerwerbungenController extends Tx_Pazpar2_C
 	
 	
 	/**
+	 * Return an array containing the selected month(s). If no month is selected
+	 *  use the previous month.
+	 * 
+	 * @param string $wildcard
+	 * @return array 
+	 */
+	private function selectedMonthInFormWithWildcard($wildcard) {
+		$arguments = $this->request->getArguments();
+		$months = explode(',', $arguments['months']);
+		// If there is no selection, use the previous month (i.e. the item at
+		// index 0 of the monthsArray() result).
+		if ($months[0] == '') {
+			$monthKeysArray = array_keys($this->monthsArray());
+			$months = Array($monthKeysArray[1]);
+		}
+
+		$dates = Array();
+		$this->addSearchTermsToList($months, $dates, $wildcard);
+
+		return $dates;
+	}
+
+
+	
+	/**
 	 * Builds a query string using the selected GOKs in the form.
 	 * The strings used for equals assignment and wildcard can be configured
 	 *  to yield string that can be used for both Pica- and CCL-style queries.
@@ -213,15 +273,13 @@ class Tx_Pazpar2_Controller_Pazpar2neuerwerbungenController extends Tx_Pazpar2_C
 		$GOKs = $this->selectedGOKsInFormWithWildcard($wildcard);
 		if (count($GOKs) > 0) {
 			$LKLQueryString = $this->oredSearchQueries($GOKs, 'lkl', $equals);
-			$dates = Array();
-			$arguments = $this->request->getArguments();
-			$monthsArray = explode(',', $arguments['months']);
-			$this->addSearchTermsToList($monthsArray, $dates, $wildcard);
+
+			$dates = $this->selectedMonthInFormWithWildcard($wildcard);
 			$DTMQueryString = $this->oredSearchQueries($dates, 'dtm', $equals);
 			
 			$queryString = $LKLQueryString . ' and ' . $DTMQueryString;
   		}
-		
+
 		return $queryString;
 	}
 	

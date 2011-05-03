@@ -22,7 +22,7 @@
 			<label index="settings.pz2JSPath">Pfad zu eigenem pz2.js (ersetzt das aus dem pazpar2 Paket)</label>
 			<label index="settings.pz2-clientJSPath">Pfad zu eigenem pz2-client.js, das eine domReady()-Funktion zur Verfügung stellt (ersetzt das eingebaute)</label>
 
-			<label index="settings.neuerwerbungen.subjects">Fachgebietsauswahl für Themen aus dem Bereich: (nur pazapar2-neuerwerbungen)</label>
+			<label index="settings.neuerwerbungen-subjects">Fachgebietsauswahl für pazpar2-Neuerwerbungen: (benötigt GOK)</label>
 
 		</languageKey>
 
@@ -40,7 +40,7 @@
 			<label index="settings.pz2JSPath">Path to pz2.js (replaces the built-in one from pazpar2 distribution)</label>
 			<label index="settings.pz2-clientJSPath">Path to pz2-client.js which provides a domReady() function (replaces built-in script)</label>
 
-			<label index="settings.neuerwerbungen.subjects">Show subject list for: (pazapar2-neuerwerbungen only)</label>
+			<label index="settings.neuerwerbungen-subjects">Subject list for pazapar2-neuerwerbungen: (requires GOK)</label>
 
 		</languageKey>
 

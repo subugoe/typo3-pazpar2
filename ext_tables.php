@@ -46,5 +46,7 @@ foreach ($plugInFlexForms as $plugInFlexFormInfo) {
 					'/Configuration/FlexForms/' . $plugInFlexFormInfo['flexForm'] . '.xml';
 	t3lib_extMgm::addPiFlexFormValue($fullPlugInName, $flexFormPath);
 }
-		
+
+include_once(t3lib_extMgm::extPath($_EXTKEY) . 'Classes/Service/Flexform.php');
+
 ?>

@@ -98,20 +98,15 @@
 			</settings.pz2-clientJSPath>
 
 
-			<settings.subjects>
+			<settings.neuerwerbungen-subjects>
 				<TCEforms>
-					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang-flexform.xml:settings.neuerwerbungen.subjects</label>
+					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang-flexform.xml:settings.neuerwerbungen-subjects</label>
 					<config>
 						<type>select</type>
-						<items type="array">
-							<numIndex index="0" type="array">
-								<numIndex index="0">AAC</numIndex>
-								<numIndex index="1">AAC</numIndex>
-							</numIndex>
-						</items>
+						<itemsProcFunc>tx_Pazpar2_Service_Flexform->buildMenu</itemsProcFunc>
 					</config>
 				</TCEforms>
-			</settings.subjects>
+			</settings.neuerwerbungen-subjects>
 
 		</el>
 	</ROOT>

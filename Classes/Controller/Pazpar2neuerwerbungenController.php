@@ -48,7 +48,7 @@ class Tx_Pazpar2_Controller_Pazpar2neuerwerbungenController extends Tx_Pazpar2_C
 		$defaults = parent::defaultSettings();
 		$defaults['pz2-neuerwerbungenJSPath'] = t3lib_extMgm::siteRelPath('pazpar2') . 'Resources/Public/pz2-neuerwerbungen.js';
 		$defaults['pz2-neuerwerbungenCSSPath'] = t3lib_extMgm::siteRelPath('pazpar2') . 'Resources/Public/pz2-neuerwerbungen.css';
-		$defaults['subjects'] = '';
+		$defaults['neuerwerbungen-subjects'] = '';
 
 		return $defaults;
 	}
@@ -105,7 +105,8 @@ class Tx_Pazpar2_Controller_Pazpar2neuerwerbungenController extends Tx_Pazpar2_C
 	 * @return void
 	 */
 	private function setupSubjects () {
-		$subjects = $this->getSubjectsArray();
+		$rootGOK = $this->conf['neuerwerbungen-subjects'];
+		$subjects = $this->getSubjectsArray($rootGOK);
 
 		// Figure out selected subjects from arguments. Subject argument names
 		// are "pz2subject-x-y" where x is the index of the subject group
@@ -394,47 +395,100 @@ class Tx_Pazpar2_Controller_Pazpar2neuerwerbungenController extends Tx_Pazpar2_C
 
 
 	/**
-	 * Return array of subjects.
-	 *	conf['subjects'] determines the name of the data file in Configuration/Subjects.
-	 *  Running the file sets the variable $subjectGroups to the array of subjects.	 *
-	 *  Its form should be
-	 *		* Array [subject groups]
-	 *			* Array [subject group, associative]
-	 *				* name => string - name of subject group [required]
-	 *				* GOKs => Array [optional]
-	 *					* string that is a truncated GOK notation
-	 *				* subjects => Array [required, subjects]
-	 *					* Array [subject, associative]
-	 *						* name => string - name of subject group [required]
-	 *						* GOKs => Array [required]
-	 *							* string that is a truncated GOK notation
-	 *						* inline => boolean - displayed in one line with other items?
-	 *							[optional, defaults to false]
-	 *						* break => boolean - insert <br> before current element?
-	 *							[optional, should only be used with inline => true, defaults to false]
+	 * Return array of subjects for the parentPPN passed.
+	 * The data needed are loaded from the tx_nkwgok_data table of the database.
+	 * They are expected to be imported from CSV-data by the GOK Plug-In. See its documentation
+	 * or code for the fields required in teh CSV-file.
+	 * The information is converted to nested arrays as required by the 'neuerwerbungen-form'
+	 * Partial that handles the display. The data format is:
+	 *	* Array [subject groups]
+	 *		* Array [subject group, associative]
+	 *			* name => string - name of subject group [required]
+	 *			* GOKs => Array [optional]
+	 *				* string that is a truncated GOK notation
+	 *			* subjects => Array [required, subjects]
+	 *				* Array [subject, associative]
+	 *					* name => string - name of subject group [required]
+	 *					* GOKs => Array [required]
+	 *						* string that is a truncated GOK notation
+	 *					* inline => boolean - displayed in one line with other items?
+	 *						[optional, defaults to false]
+	 *					* break => boolean - insert <br> before current element?
+	 *						[optional, should only be used with inline => true, defaults to false]
 	 *
 	 * If the GOKs field of a subject group is not specified, create it by taking
 	 *	the union of the GOKs arrays of all its subjects.
 	 *
+	 * @param string $parentPPN
 	 * @return Array subjects to be displayed
 	 */
-	private function getSubjectsArray () {
-		$subjectsFile = 'Configuration/Subjects/' . $this->conf['subjects'] . '.php';
-		require_once(t3lib_extMgm::siteRelPath('pazpar2') . $subjectsFile);
+	private function getSubjectsArray ($parentPPN) {
+		$rootNodes = $this->queryForChildrenOf($parentPPN);
+		$subjects = array();
 
-		foreach ($subjectGroups as &$subjectGroup) {
-			if (!$subjectGroup['GOKs']) {
-				$GOKs = array();
-				foreach ($subjectGroup['subjects'] as $subject) {
-					foreach ($subject['GOKs'] as $GOK) {
-						$GOKs[] = $GOK;
+		while($nodeRecord = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($rootNodes)) {
+			$subject = array();
+			$subject['name'] = $nodeRecord['descr']; // TODO: localise
+
+			// Recursively add child elements if they exist.
+			if ($nodeRecord['childcount'] > 0) {
+				$subject['subjects'] = $this->getSubjectsArray($nodeRecord['ppn']);
+			}
+
+			// Extract each search term from the 'search' field and add an array with all of them.
+			if ($nodeRecord['search'] != '') {
+				$searchComponents = array();
+				foreach (explode( ' or ', urldecode($nodeRecord['search'])) as $searchComponent) {
+					$component = trim($searchComponent, ' *');
+					$component = preg_replace('/^LKL /', '', $component);
+					$searchComponents[] = trim($component);
+				}
+				$subject['GOKs'] = $searchComponents;
+			}
+			else {
+				$subGOKs = array();
+				foreach ($subject['subjects'] as $subsubject) {
+					foreach ($subsubject['GOKs'] as $subGOK) {
+						$subGOKs[] = $subGOK;
 					}
 				}
-				$subjectGroup['GOKs'] = $GOKs;
+				$subject['GOKs'] = $subGOKs;
 			}
+
+			// Add tag fields to subject (inline and break).
+			foreach (explode(',', $nodeRecord['tags']) as $tag) {
+				if ($tag != '') {
+					$subject[$tag] = True;
+				}
+			}
+
+			$subjects[] = $subject;
 		}
 
-		return $subjectGroups;
+		return $subjects;
+	}
+
+
+
+	/**
+	 * Queries the database for all records having the $parentGOK parameter as their parent element
+	 *  and returns the query result.
+	 *
+	 * Uses table tx_nkwgok_data from the GOK extension.
+	 *
+	 * @param string $parentGOK
+	 * @return array
+	 */
+	private function queryForChildrenOf ($parentGOK) {
+		$queryResults = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			'*',
+			'tx_nkwgok_data',
+			"parent = '" . $parentGOK . "'",
+			'',
+			'gok ASC',
+			'');
+
+		return $queryResults;
 	}
 
 

@@ -12,15 +12,13 @@ fieldset.pz2-fieldset-0 {
 	float: right;
 }
 
+fieldset ul {
+	margin-left: 0.5em;
+}
 
 form.pz2-searchForm ul {
 	list-style-type: none;
 	padding-left: 0em;
-}
-
-
-form.pz2-searchForm li {
-	margin-left: 0.5em;
 }
 
 

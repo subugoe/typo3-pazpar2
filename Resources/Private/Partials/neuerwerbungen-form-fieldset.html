@@ -1,0 +1,37 @@
+<fieldset class="pz2-fieldset-{sectionIndex}">
+	<legend>
+		<f:form.checkbox name="pz2subject-{sectionIndex}"
+						value="<f:for each='{section.GOKs}' as='GOK' key='GOKIndex'><f:if condition='{GOKIndex} != 0'>,</f:if>{GOK}</f:for>"
+						checked="{section.selected}"
+						onclick="groupCheckboxChanged(this);"
+						id="neuerwerbungen-group-checkbox-{sectionIndex}"/>
+		<label for="neuerwerbungen-group-checkbox-{sectionIndex}">
+			<f:translate key="{section.name}"/>
+		</label>
+	</legend>
+
+	<ul>
+		<f:for each="{section.subjects}" as="sectionItem" key="itemIndex">
+			<li {f:if(condition: sectionItem.inline, then: 'class="inline"')}>
+				<f:if condition="{f:count(subject:sectionItem.subjects)} == 0">
+					<f:then>
+						<f:if condition="{sectionItem.break} == 1"><br></f:if>
+						<f:form.checkbox name="pz2subject-{sectionIndex}-{itemIndex}"
+								value="<f:for each='{sectionItem.GOKs}' as='GOK' iteration='GOKIterator' key='GOKIndex'>{GOK}{f:if(condition:GOKIterator.isLast, then:'', else:',')}</f:for>"
+								checked="{sectionItem.selected}"
+								onclick="checkboxChanged(this);"
+								id="neuerwerbungen-group-checkbox-{sectionIndex}-{itemIndex}"/>
+						<label for="neuerwerbungen-group-checkbox-{sectionIndex}-{itemIndex}">
+							<f:translate key="{sectionItem.name}"/>
+						</label>
+					</f:then>
+					<f:else>
+						<f:render partial="neuerwerbungen-form-fieldset"
+								  arguments="{section: sectionItem
+												sectionIndex: '{sectionIndex}-{itemIndex}'}"/>
+					</f:else>
+				</f:if>
+			</li>
+		</f:for>
+	</ul>
+</fieldset>

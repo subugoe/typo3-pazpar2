@@ -109,30 +109,27 @@ class Tx_Pazpar2_Controller_Pazpar2neuerwerbungenController extends Tx_Pazpar2_C
 		$subjects = $this->getSubjectsArray($rootGOK);
 
 		// Figure out selected subjects from arguments. Subject argument names
-		// are "pz2subject-x-y" where x is the index of the subject group
-		// and -y is optional with y being the index of the subject inside its
-		// group.
+		// are "pz2subject-x0-x1-x2-..." where xi is the index of the subject group
+		// at level i.
 		$arguments = $this->request->getArguments();
-		if ($arguments['controller']) {
+		if ($arguments['button']) {
 			$selectedCheckboxes = Array();
 			// Our form was submitted: use form values only.
 			foreach ($arguments as $argumentName => $argument) {
-				if ($argument != '' && strpos($argumentName, 'pz2subject-') == 0) {
-					$nameParts = explode('-', $argumentName);
-					if (count($nameParts) >= 2) {
-						$groupIndex = intval($nameParts[1]);
+				$fieldNameStart = 'pz2subject-';
+				if (($argument != '') && (strpos($argumentName, $fieldNameStart) === 0)) {
+					$nameParts = explode('-', substr($argumentName, strlen($fieldNameStart)));
+					if (count($nameParts) > 0) {
+						$mySubjects =& $subjects;
+						while (count($nameParts) > 1) {
+							$subjectIndex = intval(array_shift($nameParts));
+							$mySubjects =& $mySubjects[$subjectIndex]['subjects'];
+						}
 
-						if (count($nameParts) == 3) {
-							$subjectIndex = intval($nameParts[2]);
-							$subjects[$groupIndex]['subjects'][$subjectIndex]['selected'] = True;
-							$checkBoxGOKs = $subjects[$groupIndex]['GOKs'];
-							$selectedCheckboxes[] =  implode(',', $subjects[$groupIndex]['subjects'][$subjectIndex]['GOKs']);
-						}
-						else {
-							$subjects[$groupIndex]['selected'] = True;
-							$checkBoxGOKs = $subjects[$groupIndex]['GOKs'];
-							$selectedCheckboxes[] =  implode(',', $checkBoxGOKs);
-						}
+						$subjectIndex = intval(array_shift($nameParts));
+						$subject =& $mySubjects[$subjectIndex];
+						$subject['selected'] = True;
+						$selectedCheckboxes[] = implode(',', $subject['GOKs']);
 					}
 				}
 			}
@@ -167,29 +164,63 @@ class Tx_Pazpar2_Controller_Pazpar2neuerwerbungenController extends Tx_Pazpar2_C
 
 		// Turn on the selection for the group if all containing subjects are selected
 		foreach ($subjects as &$group) {
-			$isSelected = True;
-			foreach ($group['subjects'] as &$subject) {
-				$isSelected &= $subject['selected'];
-			}
-			if ($isSelected) {
-				$group['selected'] = True;
-			}
+			$this->turnOnGroupSelectionIfNeeded($group);
 		}
 		
-		// Turn on the selection for all included subjects if the containing
-		// group is selected.
+		// Turn on the selection for all included subjects if the containing group is selected.
 		foreach ($subjects as &$group) {
-			if ($group['selected']) {
-				foreach ($group['subjects'] as &$subject) {
-					$subject['selected'] = True;
-				}
-			}
+			$this->turnOnChildSelectionIfNeeded($group);
 		}
 
 		$this->pz2Neuerwerbungen->setSubjects($subjects);
 	}
-	
-	
+
+
+
+	/**
+	 * Takes the passed $group array and sets its 'selected' field to True if the 'selected' fields
+	 * of all the objects in its 'subjects' array are set to True. Uses recursion to check
+	 * potentially existant nested groups.
+	 *
+	 * @param array $group (passed by reference)
+	 * @return void
+	 */
+	private function turnOnGroupSelectionIfNeeded (&$group) {
+		$isSelected = True;
+		foreach ($group['subjects'] as &$subject) {
+			if ($subject['subjects']) {
+				$this->turnOnGroupSelectionIfNeeded($subject);
+			}
+			$isSelected &= $subject['selected'];
+		}
+
+		if ($isSelected) {
+			$group['selected'] = True;
+		}
+	}
+
+
+
+	/**
+	 * Checks whether the 'selected' field of the passed $group array is true and recursively sets
+	 * the 'selected' fields of all contained subjects in the 'subject' element to True if that is
+	 * the case.
+	 *
+	 * @param array $group (passed by reference)
+	 * @return void
+	 */
+	private function turnOnChildSelectionIfNeeded (&$group) {
+		if ($group['selected'] == True) {
+			foreach ($group['subjects'] as &$subject) {
+				$subject['selected'] = True;
+				if ($subject['subjects']) {
+					$this->turnOnChildSelectionIfNeeded($subject);
+				}
+			}
+		}
+	}
+
+
 	
 	/**
 	 * Get the query string for the current setup and set it in our Query
@@ -212,22 +243,32 @@ class Tx_Pazpar2_Controller_Pazpar2neuerwerbungenController extends Tx_Pazpar2_C
 	 * @return array of GOK strings
 	 */
 	private function selectedGOKsInFormWithWildcard($wildcard) {
-		$GOKs = Array();
-		
 		$subjects = $this->pz2Neuerwerbungen->getSubjects();
-		foreach ($subjects as $group) {
-			if ($group['selected'] && $group['GOKs']) {
-				$this->addSearchTermsToList($group['GOKs'], $GOKs, $wildcard);
+		$GOKs = $this->selectedGOKsInGroupWithWildcard($subjects, $wildcard);
+		return $GOKs;
+	}
+
+
+
+	/**
+	 * Return the array of all GOKs selected in a subject group, taking into account
+	 *  group checkboxes.
+	 *
+	 * @param array $subjects
+	 * @param string $wildcard appended to each extracted GOK
+	 * @return array of GOK strings
+	 */
+	private function selectedGOKsInGroupWithWildcard($subjects, $wildcard) {
+		$GOKs = Array();
+
+		foreach ($subjects as $subject) {
+			if ($subject['selected'] && $subject['GOKs']) {
+				$this->addSearchTermsToList($subject['GOKs'], $GOKs, $wildcard);
 			}
-			else {
-				foreach ($group['subjects'] as $subject) {
-					if ($subject['selected']) {
-						$this->addSearchTermsToList($subject['GOKs'], $GOKs, $wildcard);
-					}
-				}
+			elseif ($subject['subjects']) {
+				$GOKs = array_merge($GOKs, $this->selectedGOKsInGroupWithWildcard($subject['subjects'], $wildcard));
 			}
 		}
-		
 		return $GOKs;
 	}
 	

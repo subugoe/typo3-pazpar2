@@ -503,6 +503,24 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 
 
 	/**
+	 * Return URL for the Atom feed of the current query.
+	 *
+	 * @return string
+	 */
+	public function getAtomURL () {
+		$searchQuery = $this->searchQueryWithEqualsAndWildcard(' ', '*');
+
+		$searchQuery = urlencode($searchQuery);
+
+		$atomBaseURL = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . 'opac.atom?q=';
+		$atomURL = $atomBaseURL . $searchQuery;
+
+		return $atomURL;
+	}
+
+
+
+	/**
 	 * Return the array of all GOKs selected in the form, taking into account
 	 *  group checkboxes.
 	 *

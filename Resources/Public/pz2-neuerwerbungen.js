@@ -93,7 +93,7 @@ function saveFormStateAsCookie (form) {
 function runSearchForForm (form) {
 	resetPage();
 	setSortCriteriaFromString('author-a--title-a--date-d');
-	var query = buildSearchQueryWithEqualsAndWildcard(form, '=', '');
+	var query = searchQueryWithEqualsAndWildcard(form, '=', '');
 
 	if (query) {
 		my_paz.search(query, 2000, null, null);
@@ -221,7 +221,7 @@ function selectedGOKsInFormWithWildcard (form, wildcard) {
 
 
 /*
- * buildSearchQueryWithEqualsAndWildcard
+ * searchQueryWithEqualsAndWildcard
  *
  * Builds a query string using the selected GOKs and date in the passed form.
  * Equals assignment and wildcard can be configured to yield strings that can
@@ -234,7 +234,7 @@ function selectedGOKsInFormWithWildcard (form, wildcard) {
  *			wildcard - string to be appended to each extracted GOK
  * output:	string containing the complete query / undefined if no GOKs are found
  */
-function buildSearchQueryWithEqualsAndWildcard (form, equals, wildcard) {
+function searchQueryWithEqualsAndWildcard (form, equals, wildcard) {
 	var GOKs = selectedGOKsInFormWithWildcard(form, wildcard);
 
 	if (GOKs.length > 0) {
@@ -306,7 +306,7 @@ function addSearchTermsToList (searchTerms, list, wildcard) {
  * output:	string with the URL to the Atom feed / undefined if nothing is selected
  */
 function atomURL (form) {
-	var searchQuery = buildSearchQueryWithEqualsAndWildcard(form, ' ', '*');
+	var searchQuery = searchQueryWithEqualsAndWildcard(form, ' ', '*');
 
 	if (searchQuery) {
 		searchQuery = searchQuery.replace(/ /g, '+');

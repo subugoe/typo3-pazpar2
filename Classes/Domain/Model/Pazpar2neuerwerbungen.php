@@ -482,19 +482,21 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	 *
 	 * @param string $equals [defaults to '=']
 	 * @param string $wildcard [defaults to '']
+	 * @param bollean $ignoreSelectedDate [defaults to False]
 	 * @return string
 	 */
-	public function searchQueryWithEqualsAndWildcard ($equals = '=', $wildcard = '') {
+	public function searchQueryWithEqualsAndWildcard ($equals = '=', $wildcard = '', $ignoreSelectedDate = False) {
 		$queryString = Null;
 
 		$GOKs = $this->selectedGOKsInFormWithWildcard($wildcard);
 		if (count($GOKs) > 0) {
-			$LKLQueryString = $this->oredSearchQueries($GOKs, 'lkl', $equals);
+			$queryString = $this->oredSearchQueries($GOKs, 'lkl', $equals);
 
-			$dates = $this->selectedMonthInFormWithWildcard($wildcard);
-			$NELQueryString = $this->oredSearchQueries($dates, 'nel', $equals);
-
-			$queryString = $LKLQueryString . ' and ' . $NELQueryString;
+			if (!$ignoreSelectedDate) {
+				$dates = $this->selectedMonthInFormWithWildcard($wildcard);
+				$NELQueryString = $this->oredSearchQueries($dates, 'nel', $equals);
+				$queryString .= ' and ' . $NELQueryString;
+			}
   		}
 
 		return $queryString;
@@ -508,12 +510,15 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	 * @return string
 	 */
 	public function getAtomURL () {
-		$searchQuery = $this->searchQueryWithEqualsAndWildcard(' ', '*');
+		$atomURL = Null;
 
-		$searchQuery = urlencode($searchQuery);
+		$searchQuery = $this->searchQueryWithEqualsAndWildcard(' ', '*', True);
+		if ($searchQuery) {
+			$searchQuery = urlencode($searchQuery);
 
-		$atomBaseURL = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . 'opac.atom?q=';
-		$atomURL = $atomBaseURL . $searchQuery;
+			$atomBaseURL = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . 'opac.atom?q=';
+			$atomURL = $atomBaseURL . $searchQuery;
+		}
 
 		return $atomURL;
 	}

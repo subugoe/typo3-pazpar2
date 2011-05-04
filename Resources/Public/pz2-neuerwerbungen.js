@@ -93,15 +93,17 @@ function saveFormStateAsCookie (form) {
 function runSearchForForm (form) {
 	resetPage();
 	setSortCriteriaFromString('author-a--title-a--date-d');
-	var query = searchQueryWithEqualsAndWildcard(form, '=', '');
+	var linkElement = document.getElementById('pz2neuerwerbungen-atom-linkElement');
 
+	var query = searchQueryWithEqualsAndWildcard(form, '=', '');
 	if (query) {
 		my_paz.search(query, 2000, null, null);
-		
-		var myAtomURL = atomURL(form);
-		jQuery('.pz2-atomLink').show().attr('href', myAtomURL);
 
-		var linkElement = document.getElementById('pz2neuerwerbungen-atom-linkElement');
+		var myAtomURL = atomURL(form);
+		// Update clickable link to Atom feed.
+		jQuery('.pz2-atomLink', form).attr('href', myAtomURL);
+
+		// Add Atom <link> element if it is not present, then set the link.
 		if (!linkElement) {
 			linkElement = document.createElement('link');
 			linkElement.setAttribute('id', 'pz2neuerwerbungen-atom-linkElement');
@@ -112,7 +114,11 @@ function runSearchForForm (form) {
 		linkElement.setAttribute('href', myAtomURL);
 	}
 	else {
-		jQuery('.pz2-atomLink').hide();
+		// There is no query: Remove the clickable Atom link and the Atom <link> element.
+		jQuery('.pz2-atomLink', form).removeAttr('href');
+		if (linkElement) {
+			linkElement.parentNode.removeChild(linkElement);
+		}
 	}
 
 	saveFormStateAsCookie(form);
@@ -232,20 +238,23 @@ function selectedGOKsInFormWithWildcard (form, wildcard) {
  *			equals - string used between the field name and the query term
  *				(typically ' ' in Pica or '=' in CCL)
  *			wildcard - string to be appended to each extracted GOK
+ *			ignoreSelectedDate - boolean indicating whether the date is to be
+ *				included in the search query [optional, defaults to false]
  * output:	string containing the complete query / undefined if no GOKs are found
  */
-function searchQueryWithEqualsAndWildcard (form, equals, wildcard) {
+function searchQueryWithEqualsAndWildcard (form, equals, wildcard, ignoreSelectedDate) {
 	var GOKs = selectedGOKsInFormWithWildcard(form, wildcard);
 
 	if (GOKs.length > 0) {
-		var LKLQueryString = oredSearchQueries(GOKs, 'lkl', equals);
+		var queryString = oredSearchQueries(GOKs, 'lkl', equals);
 
-		var dates = [];
-		var searchTerms = jQuery('.pz2-months :selected', form)[0].value.split(',');
-		addSearchTermsToList(searchTerms, dates, wildcard);
-		var	NELQueryString = oredSearchQueries(dates, 'nel', equals);
-		
-		var queryString = LKLQueryString + ' and ' + NELQueryString // + ' not ' + SLKQueryString;
+		if (!ignoreSelectedDate) {
+			var dates = [];
+			var searchTerms = jQuery('.pz2-months :selected', form)[0].value.split(',');
+			addSearchTermsToList(searchTerms, dates, wildcard);
+			var	NELQueryString = oredSearchQueries(dates, 'nel', equals);
+			queryString += ' and ' + NELQueryString;
+		}
 	}
 
 	return queryString;
@@ -306,14 +315,15 @@ function addSearchTermsToList (searchTerms, list, wildcard) {
  * output:	string with the URL to the Atom feed / undefined if nothing is selected
  */
 function atomURL (form) {
-	var searchQuery = searchQueryWithEqualsAndWildcard(form, ' ', '*');
+	var searchQuery = searchQueryWithEqualsAndWildcard(form, ' ', '*', true);
+	var atomURL = '';
 
 	if (searchQuery) {
 		searchQuery = searchQuery.replace(/ /g, '+');
 		searchQuery = encodeURI(searchQuery);
 
 		var atomBaseURL = document.baseURI + 'opac.atom?q=';
-		var atomURL = atomBaseURL + searchQuery;
+		atomURL = atomBaseURL + searchQuery;
 	}
 
 	return atomURL;

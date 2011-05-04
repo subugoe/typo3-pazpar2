@@ -6,11 +6,9 @@
 						 class="pz2-months"
 						 value="{pazpar2neuerwerbungen.defaultMonth}"
 						 additionalAttributes="{onchange:'pz2-checkboxChanged(this);'}"/>
-			<f:link.external class="pz2-atomLink"
-							uri="{pazpar2neuerwerbungen.atomURL}"
-							additionalAttributes="{type: 'application/atom+xml'}">
-				<f:translate key="Die aktuelle Liste als RSS-Feed abonnieren."/>
-			</f:link.external>
+			<a <f:if condition="{pazpar2neuerwerbungen.atomURL}">href="{pazpar2neuerwerbungen.atomURL}"</f:if>
+				class="pz2-atomLink"
+				type="application/atom+xml"><f:translate key="Die aktuelle Liste als RSS-Feed abonnieren."/></a>
 		</p>
 
 		<f:form.submit name="button" value="<f:translate key='Anzeigen'/>" />

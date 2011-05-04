@@ -26,7 +26,7 @@ class tx_Pazpar2_Service_Flexform {
 		$options = array(array('',''));
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($rootNodes)) {
 			$optionTitle = $row['descr'];
-			$optionValue = $row['gok'];
+			$optionValue = $row['ppn'];
 			$options[] = array($optionTitle , $optionValue);
 		}
 

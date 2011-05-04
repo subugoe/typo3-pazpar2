@@ -243,9 +243,9 @@ function searchQueryWithEqualsAndWildcard (form, equals, wildcard) {
 		var dates = [];
 		var searchTerms = jQuery('.pz2-months :selected', form)[0].value.split(',');
 		addSearchTermsToList(searchTerms, dates, wildcard);
-		var	DTMQueryString = oredSearchQueries(dates, 'dtm', equals);
+		var	NELQueryString = oredSearchQueries(dates, 'nel', equals);
 		
-		var queryString = LKLQueryString + ' and ' + DTMQueryString // + ' not ' + SLKQueryString;
+		var queryString = LKLQueryString + ' and ' + NELQueryString // + ' not ' + SLKQueryString;
 	}
 
 	return queryString;

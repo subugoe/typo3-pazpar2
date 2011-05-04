@@ -330,7 +330,7 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	 * Array used for month selection menu.
 	 * Array elements are associative arrays with two elements:
 	 * 	* name - the localised string used for display, e.g. Oktober 2010
-	 *	* searchTerms - string used to query the catalogue’s DTM field, e.g. 201010.
+	 *	* searchTerms - string used to query the catalogue’s NEL field, e.g. 201010.
 	 * 		In case several months are used, the different strings are comma separated.
 	 *
 	 * @var array
@@ -492,9 +492,9 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 			$LKLQueryString = $this->oredSearchQueries($GOKs, 'lkl', $equals);
 
 			$dates = $this->selectedMonthInFormWithWildcard($wildcard);
-			$DTMQueryString = $this->oredSearchQueries($dates, 'dtm', $equals);
+			$NELQueryString = $this->oredSearchQueries($dates, 'nel', $equals);
 
-			$queryString = $LKLQueryString . ' and ' . $DTMQueryString;
+			$queryString = $LKLQueryString . ' and ' . $NELQueryString;
   		}
 
 		return $queryString;

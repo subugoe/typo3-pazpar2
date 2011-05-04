@@ -425,7 +425,7 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 			$leadingZero = '0';
 		}
 
-		return $year . $leadingZero . $month;
+		return $year . '-' . $leadingZero . $month;
 	}
 
 
@@ -446,7 +446,131 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 
 		return $result;
 	}
-	
+
+
+
+	/**
+	 * Return an array containing the selected month(s). If no month is selected
+	 *  use the previous month.
+	 *
+	 * @param string $wildcard
+	 * @return array
+	 */
+	private function selectedMonthInFormWithWildcard($wildcard) {
+		$arguments = $this->getRequestArguments();
+		$months = explode(',', $arguments['months']);
+		// If there is no selection, use the previous month (i.e. the item at
+		// index 0 of the monthsArray() result).
+		if ($months[0] == '') {
+			$monthKeysArray = array_keys($this->monthsArray());
+			$months = Array($monthKeysArray[1]);
+		}
+
+		$dates = Array();
+		$this->addSearchTermsToList($months, $dates, $wildcard);
+
+		return $dates;
+	}
+
+
+
+	/**
+	 * Builds a query string using the selected GOKs in the form.
+	 * The strings used for equals assignment and wildcard can be configured
+	 *  to yield string that can be used for both Pica- and CCL-style queries.
+	 * Null is returned when there are no GOKs to search for.
+	 *
+	 * @param string $equals [defaults to '=']
+	 * @param string $wildcard [defaults to '']
+	 * @return string
+	 */
+	public function searchQueryWithEqualsAndWildcard ($equals = '=', $wildcard = '') {
+		$queryString = Null;
+
+		$GOKs = $this->selectedGOKsInFormWithWildcard($wildcard);
+		if (count($GOKs) > 0) {
+			$LKLQueryString = $this->oredSearchQueries($GOKs, 'lkl', $equals);
+
+			$dates = $this->selectedMonthInFormWithWildcard($wildcard);
+			$DTMQueryString = $this->oredSearchQueries($dates, 'dtm', $equals);
+
+			$queryString = $LKLQueryString . ' and ' . $DTMQueryString;
+  		}
+
+		return $queryString;
+	}
+
+
+
+	/**
+	 * Return the array of all GOKs selected in the form, taking into account
+	 *  group checkboxes.
+	 *
+	 * @param string $wildcard appended to each extracted GOK
+	 * @return array of GOK strings
+	 */
+	private function selectedGOKsInFormWithWildcard($wildcard) {
+		return $this->selectedGOKsInGroupWithWildcard($this->getSubjects(), $wildcard);
+	}
+
+
+
+	/**
+	 * Return the array of all GOKs selected in a subject group, taking into account
+	 *  group checkboxes.
+	 *
+	 * @param array $subjects
+	 * @param string $wildcard appended to each extracted GOK
+	 * @return array of GOK strings
+	 */
+	private function selectedGOKsInGroupWithWildcard($subjects, $wildcard) {
+		$GOKs = Array();
+
+		foreach ($subjects as $subject) {
+			if ($subject['selected'] && $subject['GOKs']) {
+				$this->addSearchTermsToList($subject['GOKs'], $GOKs, $wildcard);
+			}
+			elseif ($subject['subjects']) {
+				$subsubjects = $this->selectedGOKsInGroupWithWildcard($subject['subjects'], $wildcard);
+				$GOKs = array_merge($GOKs, $subsubjects);
+			}
+		}
+		return $GOKs;
+	}
+
+
+
+	/**
+	 * Helper function adding the elements of an array to a given array,
+	 *  potentially appending a wildcard to each of them in the process.
+	 *
+	 * @param Array $searchTerms strings to be added to the list
+	 * @param type $list Array the terms are added to
+	 * @param type $wildcard string that is appended to each component before adding it to the list
+	 */
+	private function addSearchTermsToList ($searchTerms, &$list, $wildcard) {
+		foreach($searchTerms as $term) {
+			if ($term != '') {
+				$list[] = $term . $wildcard;
+			}
+		}
+	}
+
+
+
+	/**
+	 * Helper function for preparing search queries.
+	 *
+	 * @param Array $queryTerms strings, each of which will be a sub-query
+	 * @param string $key search key the query is made for
+	 * @param string $equals string used to separate the key and the query term
+	 * @return string query
+	 */
+	private function oredSearchQueries ($queryTerms, $key, $equals) {
+		$query = '(' . $key . $equals . implode(' or ' . $key . $equals, $queryTerms) . ')';
+		return $query;
+	}
+
 }
 
 ?>

@@ -21,7 +21,7 @@ class tx_Pazpar2_Service_Flexform {
 	 * @return array
 	 */
 	public function buildMenu ($config) {
-		$rootNodes = $this->queryForChildrenOf('Neuerwerbungen');
+		$rootNodes = $this->queryForChildrenOf('NE');
 
 		$options = array(array('',''));
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($rootNodes)) {

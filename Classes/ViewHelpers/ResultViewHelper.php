@@ -542,12 +542,21 @@ private function catalogueLink ($locationAll) {
 	$catalogueURL = Null;
 
 	if (preg_match('/z3950.gbv.de:20012\/subgoe_opc/', $targetURL) > 0) {
+		// Old GBV Z39.50 server
 		$catalogueURL = 'http://gso.gbv.de/DB=2.1/PPNSET?PPN=' . $PPN;
 	}
+	else if (preg_match('/sru.gbv.de\/natliz/', $targetURL) > 0) {
+		// match Nationallizenzen natliz and natlizzss on new GBV SRU server: no link
+	}
+	else if (preg_match('/sru.gbv.de\//', $targetURL) > 0) {
+		// New GBV SRU server
+		$catalogueURL = preg_replace('/(sru.gbv.de\/)([a-zA-Z0-9-]*)/', 'http://gso.gbv.de/$2/PPNSET?PPN=' . $PPN, $targetURL);
+	}
 	else if (preg_match('/gso.gbv.de\/sru\/DB=1.5/', $targetURL) > 0) {
-			// match Nationallizenzen 1.50 and 1.55: no link
+		// match Nationallizenzen 1.50 and 1.55 on old GBV SRU server: no link
 	}
 	else if (preg_match('/gso.gbv.de\/sru\//', $targetURL) > 0) {
+		// Old GBV SRU server
 		$catalogueURL = preg_replace('/(gso.gbv.de\/sru\/)(DB=[\.0-9]*)/', 'http://gso.gbv.de/$2/PPNSET?PPN=' . $PPN, $targetURL);
 	}
 	else if (preg_match('134.76.176.48:2020/jfm', $targetURL) > 0) {

@@ -2664,12 +2664,22 @@ function renderDetails(recordID) {
 
 			var catalogueURL;			
 			if (targetURL.search(/z3950.gbv.de:20012\/subgoe_opc/) != -1) {
+				// Old GBV Z39.50 server for SUB Opac
 				catalogueURL = 'http://gso.gbv.de/DB=2.1/PPNSET?PPN=' + PPN;
 			}
+			else if (targetURL.search(/sru.gbv.de\/natliz/) != -1) {
+				// match Nationallizenzen natliz and natzlizzss on new GBV SRU server: no link
+			}
+			else if (targetURL.search(/sru.gbv.de\//) != -1) {
+				// New GBV SRU server
+				catalogueURL = targetURL.replace(/(sru.gbv.de\/)([a-zA-Z0-9-]*)/,
+										'http://gso.gbv.de/$2/PPNSET?PPN=' + PPN);
+			}
 			else if (targetURL.search(/gso.gbv.de\/sru\/DB=1.5/) != -1) {
-				// match Nationallizenzen 1.50 and 1.55: no link
+				// match Nationallizenzen 1.50 and 1.55 on old GBV SRU server: no link
 			}
 			else if (targetURL.search(/gso.gbv.de\/sru\//) != -1) {
+				// Old GBV SRU server
 				catalogueURL = targetURL.replace(/(gso.gbv.de\/sru\/)(DB=[\.0-9]*)/,
 										'http://gso.gbv.de/$2/PPNSET?PPN=' + PPN);
 			}

@@ -70,46 +70,6 @@
 			<label index="of">von</label>
 			<label index="Erscheint in separatem Fenster.">Erscheint in separatem Fenster.</label>
 			
-			<!-- Subject names for pazpar2neuerwerbungen -->
-			<!-- Subject names English language -->
-			<label index="Englische Philologie">Englische Philologie</label>
-			<label index="Sprach- und Literaturwissenschaft, Allgemeines">Sprach- und Literaturwissenschaft, Allgemeines</label>
-			<label index="Sprachwissenschaft">Sprachwissenschaft</label>
-			<label index="Anthologien">Anthologien</label>
-			<label index="Literaturwissenschaft">Literaturwissenschaft</label>
-			<label index="Textausgaben und Sekundärliteratur">Textausgaben und Sekundärliteratur</label>
-			<label index="Altenglisch">Altenglisch</label>
-			<label index="Mittel- und Frühneuenglisch">Mittel- und Frühneuenglisch</label>
-			<label index="Schottland">Schottland</label>
-			<label index="Wales">Wales</label>
-			<label index="Irland">Irland</label>
-			<label index="Amerikanische Philologie">Amerikanische Philologie</label>
-			<label index="Globales Englisch">Globales Englisch</label>
-			<label index="Kanada">Kanada</label>
-			<label index="Australien">Australien</label>
-			<label index="Neuseeland">Neuseeland</label>
-			<label index="Afrika">Afrika</label>
-			<label index="Karibischer Raum">Karibischer Raum</label>
-			<label index="Malta">Malta</label>
-			<label index="Asien, Ozeanien">Asien, Ozeanien</label>
-			<label index="Indischer Subkontinent">Indischer Subkontinent</label>
-			<label index="Mischsprachen">Mischsprachen</label>
-			<!-- Subject names History -->
-			<label index="Geschichte">Geschichte</label>
-			<label index="Geschichtsschreibung und -theorie">Geschichtsschreibung und -theorie</label>
-			<label index="Historische Hilfswissenschaften">Historische Hilfswissenschaften</label>
-			<label index="Weltgeschichte (Entdeckungen; Weltkriege etc.)">Weltgeschichte (Entdeckungen; Weltkriege etc.)</label>
-			<label index="England (epochenübergreifend)">England (epochenübergreifend)</label>
-			<label index="England im Mittelalter">England im Mittelalter</label>
-			<label index="England in der Frühen Neuzeit">England in der Frühen Neuzeit</label>
-			<label index="England im 19. Jahrhundert">England im 19. Jahrhundert</label>
-			<label index="England im 20. Jahrhundert">England im 20. Jahrhundert</label>
-			<label index="USA (epochenübergreifend)">USA (epochenübergreifend)</label>
-			<label index="USA in der Frühen Neuzeit">USA in der Frühen Neuzeit</label>
-			<label index="USA 1776-1918">USA 1776-1918</label>
-			<label index="USA im 20. Jahrhundert">USA im 20. Jahrhundert</label>
-			<label index="Jüdisches Volk im angloamerikanischen Raum">Jüdisches Volk im angloamerikanischen Raum</label>
-			
 		</languageKey>
 
 
@@ -173,47 +133,7 @@
 			<label index="Search is better with JavaScript.">JavaScript seems to be unavailable in your web browser. Without JavaScript, displaying the results of a query can take up to a minute in some cases. Please be patient or turn on JavaScript for a more interactive search experience.</label>
 			<label index="of">of</label>
 			<label index="Erscheint in separatem Fenster.">Link opens in a new Window.</label>
-			
-			<!-- Subject names for pazpar2neuerwerbungen -->
-			<!-- Subject names English language -->
-			<label index="Englische Philologie">English Philology</label>
-			<label index="Sprach- und Literaturwissenschaft, Allgemeines">Sprach- und Literaturwissenschaft, Allgemeines</label>
-			<label index="Sprachwissenschaft">Sprachwissenschaft</label>
-			<label index="Anthologien">Anthologien</label>
-			<label index="Literaturwissenschaft">Literaturwissenschaft</label>
-			<label index="Textausgaben und Sekundärliteratur">Textausgaben und Sekundärliteratur</label>
-			<label index="Altenglisch">Altenglisch</label>
-			<label index="Mittel- und Frühneuenglisch">Mittel- und Frühneuenglisch</label>
-			<label index="Schottland">Scotland</label>
-			<label index="Wales">Wales</label>
-			<label index="Irland">Ireland</label>
-			<label index="Amerikanische Philologie">American Philology</label>
-			<label index="Globales Englisch">Global English</label>
-			<label index="Kanada">Canada</label>
-			<label index="Australien">Australia</label>
-			<label index="Neuseeland">New Zealand</label>
-			<label index="Afrika">Africa</label>
-			<label index="Karibischer Raum">Caribbean</label>
-			<label index="Malta">Malta</label>
-			<label index="Asien, Ozeanien">Asia and Oceania</label>
-			<label index="Indischer Subkontinent">Indian subcontinent</label>
-			<label index="Mischsprachen">Mixed languages</label>
-			<!-- Subject names History -->
-			<label index="Geschichte">History</label>
-			<label index="Geschichtsschreibung und -theorie">Historiography and Theory</label>
-			<label index="Historische Hilfswissenschaften">Auxiliary Sciences</label>
-			<label index="Weltgeschichte (Entdeckungen; Weltkriege etc.)">World History (European expansion; World Wars etc.)</label>
-			<label index="England (epochenübergreifend)">England (epoch spanning)</label>
-			<label index="England im Mittelalter">England in the Middle Ages</label>
-			<label index="England in der Frühen Neuzeit">England in the Early Modern Period</label>
-			<label index="England im 19. Jahrhundert">England in the 19th Century</label>
-			<label index="England im 20. Jahrhundert">England in the 20th Century</label>
-			<label index="USA (epochenübergreifend)">USA (epoch-spanning)</label>
-			<label index="USA in der Frühen Neuzeit">USA in the Early Modern Period</label>
-			<label index="USA 1776-1918">USA 1776-1918</label>
-			<label index="USA im 20. Jahrhundert">USA in the 20th Century</label>
-			<label index="Jüdisches Volk im angloamerikanischen Raum">History of the Jewish People in the Anglo-American Regions</label>
-			
+						
 		</languageKey>
 
 	</data>

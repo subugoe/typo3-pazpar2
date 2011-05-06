@@ -6,7 +6,7 @@
 						onclick="groupCheckboxChanged(this);"
 						id="neuerwerbungen-group-checkbox-{sectionIndex}"/>
 		<label for="neuerwerbungen-group-checkbox-{sectionIndex}">
-			<f:translate key="{section.name}"/>
+			{section.name}
 		</label>
 	</legend>
 
@@ -22,7 +22,7 @@
 								onclick="checkboxChanged(this);"
 								id="neuerwerbungen-group-checkbox-{sectionIndex}-{itemIndex}"/>
 						<label for="neuerwerbungen-group-checkbox-{sectionIndex}-{itemIndex}">
-							<f:translate key="{sectionItem.name}"/>
+							{sectionItem.name}
 						</label>
 					</f:then>
 					<f:else>

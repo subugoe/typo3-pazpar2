@@ -131,7 +131,15 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 
 		while($nodeRecord = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($rootNodes)) {
 			$subject = array();
-			$subject['name'] = $nodeRecord['descr']; // TODO: localise
+
+			// Use English subject name if it exists and the language is English
+			// and the German subject name otherwise.
+			if ($GLOBALS['TSFE']->lang == 'en' && $nodeRecord['descr_en']) {
+				$subject['name'] = $nodeRecord['descr_en'];
+			}
+			else {
+				$subject['name'] = $nodeRecord['descr'];
+			}
 
 			// Recursively add child elements if they exist.
 			if ($nodeRecord['childcount'] > 0) {

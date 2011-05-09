@@ -281,7 +281,6 @@ private function renderDetails ($result) {
 	$this->appendInfoToContainer( $this->detailLineAuto('other-person-clean', $result), $detailsList);
 	$this->appendInfoToContainer( $this->detailLineAuto('abstract', $result), $detailsList);
 	$this->appendInfoToContainer( $this->detailLineAuto('description', $result), $detailsList);
-	$this->appendInfoToContainer( $this->detailLineAuto('medium', $result), $detailsList);
 	$this->appendInfoToContainer( $this->detailLineAuto('series-title', $result), $detailsList);
 	$this->appendInfoToContainer( $this->ISSNsDetailLine($result), $detailsList);
 	$this->appendInfoToContainer( $this->detailLineAuto('doi', $result), $detailsList);

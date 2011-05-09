@@ -875,6 +875,19 @@ function display () {
 		linkElement.setAttribute('onclick', 'toggleDetails(this.id);return false;');
 		linkElement.setAttribute('id', 'rec_' + HTMLIDForRecordData(hit));
 
+		var iconElement = document.createElement('span');
+		linkElement.appendChild(iconElement);
+		var mediaClass = 'unknown';
+		if (hit['md-medium'].length == 1) {
+			mediaClass = hit['md-medium'][0];
+		}
+		else if (hit['md-medium'].length > 1) {
+			mediaClass = 'multiple';
+		}
+
+		iconElement.setAttribute('class', 'pz2-mediaIcon ' + mediaClass);
+		iconElement.setAttribute('title', localise(mediaClass, mediaNames));
+
 		appendInfoToContainer(titleInfo(), linkElement);
 		var authors = authorInfo();
 		appendInfoToContainer(authors, linkElement);
@@ -2778,7 +2791,6 @@ function renderDetails(recordID) {
 		appendInfoToContainer( detailLineAuto('other-person-clean'), detailsList )
 		appendInfoToContainer( detailLineAuto('abstract'), detailsList )
 		appendInfoToContainer( detailLineAuto('description'), detailsList );
-	 	appendInfoToContainer( detailLineAuto('medium'), detailsList );
 		appendInfoToContainer( detailLineAuto('series-title'), detailsList );
 		appendInfoToContainer( ISSNsDetailLine(), detailsList );
 		appendInfoToContainer( detailLineAuto('doi'), detailsList );
@@ -2839,7 +2851,8 @@ var mediaNames = {
 		'music-score': 'Noten',
 		'other': 'Andere',
 		'recording': 'Aufnahme',
-		'website': 'Website'
+		'website': 'Website',
+		'multiple': 'Verschiedene Medien'
 	},
 	
 	'en': {
@@ -2850,10 +2863,11 @@ var mediaNames = {
 		'journal': 'Journal',
 		'map': 'Map',
 		'microform': 'Microform',
-		'music-score': 'Music score',
+		'music-score': 'Music Score',
 		'other': 'Other',
 		'recording': 'Recording',
-		'website': 'Website'
+		'website': 'Website',
+		'multiple': 'Mixed Media Types'
 	}
 };
 

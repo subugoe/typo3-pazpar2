@@ -69,7 +69,21 @@
 			<label index="Search is better with JavaScript.">Ihr Browser scheint kein JavaScript zu unterstützen. Ohne JavaScript kann es bei Anfragen mit vielen Ergebnissen eine Minute dauern, bis alle Ergebnisse verfügbar sind. Wir empfehlen daher, für die Suchfunktion JavaScript zu aktivieren.</label>
 			<label index="of">von</label>
 			<label index="Erscheint in separatem Fenster.">Erscheint in separatem Fenster.</label>
-			
+
+			<!-- Media Types -->
+			<label index="media-type-article">Aufsatz</label>
+			<label index="media-type-audio-visual">Video</label>
+			<label index="media-type-book">Buch</label>
+			<label index="media-type-electronic">Datei</label>
+			<label index="media-type-journal">Zeitschrift</label>
+			<label index="media-type-map">Karte</label>
+			<label index="media-type-microform">Mikroform</label>
+			<label index="media-type-music-score">Noten</label>
+			<label index="media-type-other">Andere</label>
+			<label index="media-type-recording">Aufnahme</label>
+			<label index="media-type-website">Website</label>
+			<label index="media-type-multiple">Verschiedene Medien</label>
+
 		</languageKey>
 
 
@@ -133,7 +147,21 @@
 			<label index="Search is better with JavaScript.">JavaScript seems to be unavailable in your web browser. Without JavaScript, displaying the results of a query can take up to a minute in some cases. Please be patient or turn on JavaScript for a more interactive search experience.</label>
 			<label index="of">of</label>
 			<label index="Erscheint in separatem Fenster.">Link opens in a new Window.</label>
-						
+
+			<!-- Media Types -->
+			<label index="media-type-article">Article</label>
+			<label index="media-type-audio-visual">Video</label>
+			<label index="media-type-book">Book</label>
+			<label index="media-type-electronic">Computer File</label>
+			<label index="media-type-journal">Journal</label>
+			<label index="media-type-map">Map</label>
+			<label index="media-type-microform">Microform</label>
+			<label index="media-type-music-score">Music Score</label>
+			<label index="media-type-other">Other</label>
+			<label index="media-type-recording">Recording</label>
+			<label index="media-type-website">Website</label>
+			<label index="media-type-multiple">Mixed Media Types</label>
+
 		</languageKey>
 
 	</data>

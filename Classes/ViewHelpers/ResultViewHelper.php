@@ -49,6 +49,19 @@ public function render ($result) {
 	$li = $this->doc->createElement('li');
 	$this->doc->appendChild($li);
 
+	$iconElement = $this->doc->createElement('span');
+	$li->appendChild($iconElement);
+	$mediaClass = 'unknown';
+	if (count($result['md-medium']) == 1) {
+		$mediaClass = $result['md-medium'][0]['values'][0];
+	}
+	elseif (count($result['md-medium']) > 1) {
+		$mediaClass = 'multiple';
+	}
+
+	$iconElement->setAttribute('class', 'pz2-mediaIcon ' . $mediaClass);
+	$iconElement->setAttribute('title', Tx_Extbase_Utility_Localization::translate('media-type-' . $mediaClass, 'Pazpar2'));
+
 	// basic title/author information
 	$this->appendInfoToContainer($this->titleInfo($result), $li);
 	$authors = $this->authorInfo($result);

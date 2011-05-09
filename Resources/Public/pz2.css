@@ -1,5 +1,6 @@
 #pazpar2 {
 	margin: 1em 0em;
+	line-height: 133%;
 }
 
 #pazpar2 a {
@@ -41,11 +42,6 @@
 }
 
 
-
-.pz2-ranking {
-	display: inline;
-}
-
 .pz2-ranking {
 	display: none;
 }
@@ -59,16 +55,18 @@
 }
 
 #pz2-results {
-	margin-right: 15em;
+	margin-right: 220px;
 }
 
 #pz2-results ol {
-	padding-left: 3em;
+	padding-left: 40px;
+	list-style-type: none;
 	float: left; /* required so we don't clear the sidebar/faceting when clearing our <li>s */
 }
 
 #pz2-results ol li {
 	margin-bottom: 0.5em;
+	position: relative;
 	clear: right; /* required to clear the right floated Google Books element */
 }
 
@@ -86,7 +84,7 @@
 
 #pz2-termLists {
 	float:right;
-	width: 15em;
+	width: 200px;
 	font-family: Optima, Tahoma, sans-serif;
 	font-size: 88%;
 }
@@ -164,6 +162,7 @@
 /* pager
 */
 .pz2-pager {
+	margin: 20px 0;
 	position: relative;
 	text-align: center;
 }
@@ -201,6 +200,30 @@
 
 /* item records
 */
+.pz2-mediaIcon {
+	display:block;
+	height: 20px;
+	width: 20px;
+	position: absolute;
+	left: -30px;
+	/* Media icon sprite. Position defaults to other/unknown icon. */
+	background: url(pz2-media-icons.png) transparent no-repeat;
+	background-position: 0px 40px;
+}
+
+.pz2-mediaIcon.article { background-position: 0px 0px; }
+.pz2-mediaIcon.audio-visual { background-position: -20px 0px; }
+.pz2-mediaIcon.book { background-position: -40px 0px; }
+.pz2-mediaIcon.electronic { background-position: -60px 0px; }
+.pz2-mediaIcon.journal { background-position: 0px -20px; }
+.pz2-mediaIcon.map { background-position: -20px -20px; }
+.pz2-mediaIcon.microform { background-position: -40px -20px; }
+.pz2-mediaIcon.music-score { background-position: -60px -20px; }
+.pz2-mediaIcon.recording { background-position: -20px -40px; }
+.pz2-mediaIcon.website { background-position: -40px -40px; }
+.pz2-mediaIcon.multiple { background-position: -60px -40px; }
+
+
 .pz2-title-main {
 	font-weight: bold;
 }

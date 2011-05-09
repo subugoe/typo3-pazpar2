@@ -2685,8 +2685,11 @@ function renderDetails(recordID) {
 			}
 			else if (targetURL.search(/sru.gbv.de\//) != -1) {
 				// New GBV SRU server
-				catalogueURL = targetURL.replace(/(sru.gbv.de\/)([a-zA-Z0-9-]*)/,
-										'http://gso.gbv.de/$2/PPNSET?PPN=' + PPN);
+				var databaseName = targetURL.match(/sru.gbv.de\/([a-zA-Z0-9-]*)/)[1];
+				var databaseID = GBVDatabaseIDs[databaseName];
+				if (databaseID) {
+					catalogueURL = 'http://gso.gbv.de/DB=' + databaseID + '/PPNSET?PPN=' + PPN;
+				}
 			}
 			else if (targetURL.search(/gso.gbv.de\/sru\/DB=1.5/) != -1) {
 				// match Nationallizenzen 1.50 and 1.55 on old GBV SRU server: no link
@@ -2835,6 +2838,40 @@ function recordIDForHTMLID (HTMLID) {
 
 
 
+
+/* GBV Database-Names to Database-IDs
+*/
+var GBVDatabaseIDs = {
+	'wao': '1.46',
+	'natliz': '1.50',
+	'natlizzss': '1.55',
+	'gvk': '2.1',
+	'opac-de-7': '2.1', /* map Göttingen Opac to GVK */
+	'olc': '2.3',
+	'olcssg-his': '2.35',
+	'olcssg-geo': '2.38',
+	'olcssg-ast': '2.43',
+	'olcssg-ang': '2.75',
+	'olcssg-mat': '2.77',
+	'fachopac-ast': '2.112',
+	'fachopac-fin': '2.113',
+	'fachopac-geo': '2.114',
+	'fachopac-mat': '2.122',
+	'zdb-1-amb': '2.910',
+	'zdb-1-wfr': '5.1',
+	'zdb-1-dfl': '5.2',
+	'zdb-1-elw': '5.3',
+	'zdb-1-ecc': '5.4',
+	'zdb-1-eeb': '5.5',
+	'zdb-1-mml': '5.6',
+	'zdb-1-mme': '5.7',
+	'zdb-1-eai': '5.8',
+	'zdb-1-nel': '5.9',
+	'zdb-1-rth': '5.10',
+	'zdb-1-soj': '5.62',
+	'zdb-1-cup': '5.72',
+	'zdb-1-pio': '5.55'
+};
 
 
 /* Localised Media Types

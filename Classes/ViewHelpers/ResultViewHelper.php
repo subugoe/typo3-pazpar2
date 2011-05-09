@@ -543,6 +543,43 @@ private function electronicURLs ($location, $result) {
 
 
 /**
+ * @var array mapping GBV database names to their IDs.
+ */
+protected $GBVDatabaseIDs = array(
+	'wao' => '1.46',
+	'natliz' => '1.50',
+	'natlizzss' => '1.55',
+	'gvk' => '2.1',
+	'opac-de-7' => '2.1', /* map Göttingen Opac to GVK */
+	'olc' => '2.3',
+	'olcssg-his' => '2.35',
+	'olcssg-geo' => '2.38',
+	'olcssg-ast' => '2.43',
+	'olcssg-ang' => '2.75',
+	'olcssg-mat' => '2.77',
+	'fachopac-ast' => '2.112',
+	'fachopac-fin' => '2.113',
+	'fachopac-geo' => '2.114',
+	'fachopac-mat' => '2.122',
+	'zdb-1-amb' => '2.910',
+	'zdb-1-wfr' => '5.1',
+	'zdb-1-dfl' => '5.2',
+	'zdb-1-elw' => '5.3',
+	'zdb-1-ecc' => '5.4',
+	'zdb-1-eeb' => '5.5',
+	'zdb-1-mml' => '5.6',
+	'zdb-1-mme' => '5.7',
+	'zdb-1-eai' => '5.8',
+	'zdb-1-nel' => '5.9',
+	'zdb-1-rth' => '5.10',
+	'zdb-1-soj' => '5.62',
+	'zdb-1-cup' => '5.72',
+	'zdb-1-pio' => '5.55'
+);
+
+
+
+/**
  * Returns a link for the current record that points to the catalogue page for that item.
  * @param array $locationAll
  * @return DOMElement
@@ -552,6 +589,7 @@ private function catalogueLink ($locationAll) {
 	$targetName = $locationAll['attrs']['name'];
 	$PPN = preg_replace('/[a-zA-Z]*([0-9X]*)/', '$1', $locationAll['ch']['md-id'][0]['values'][0]);
 	$catalogueURL = Null;
+	$matches = Null;
 
 	if (preg_match('/z3950.gbv.de:20012\/subgoe_opc/', $targetURL) > 0) {
 		// Old GBV Z39.50 server
@@ -560,9 +598,11 @@ private function catalogueLink ($locationAll) {
 	else if (preg_match('/sru.gbv.de\/natliz/', $targetURL) > 0) {
 		// match Nationallizenzen natliz and natlizzss on new GBV SRU server: no link
 	}
-	else if (preg_match('/sru.gbv.de\//', $targetURL) > 0) {
+	else if (preg_match('/sru.gbv.de\/([a-zA-Z0-9-]*)/', $targetURL, $matches) > 0) {
 		// New GBV SRU server
-		$catalogueURL = preg_replace('/(sru.gbv.de\/)([a-zA-Z0-9-]*)/', 'http://gso.gbv.de/$2/PPNSET?PPN=' . $PPN, $targetURL);
+		$databaseName = $matches[1];
+		$databaseID = $this->GBVDatabaseIDs[$databaseName];
+		$catalogueURL = 'http://gso.gbv.de/' . $databaseID .'/PPNSET?PPN=' . $PPN;
 	}
 	else if (preg_match('/gso.gbv.de\/sru\/DB=1.5/', $targetURL) > 0) {
 		// match Nationallizenzen 1.50 and 1.55 on old GBV SRU server: no link

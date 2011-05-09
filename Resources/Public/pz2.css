@@ -1,6 +1,4 @@
 #pazpar2 {
-	margin: 1em 0em;
-	line-height: 133%;
 }
 
 #pazpar2 a {
@@ -91,6 +89,10 @@
 
 #pz2-termLists h4 {
 	display: none;
+}
+
+.pz2-termList {
+	margin-bottom: 1em;
 }
 
 .pz2-termList h5 {
@@ -237,7 +239,8 @@
 }
 
 .pz2-details {
-	font-size: 71%;
+	font-size: 85%;
+	padding: 10px 0 20px 0;
 }
 
 .pz2-details dt {

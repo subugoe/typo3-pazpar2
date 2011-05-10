@@ -83,8 +83,6 @@
 #pz2-termLists {
 	float:right;
 	width: 200px;
-	font-family: Optima, Tahoma, sans-serif;
-	font-size: 88%;
 }
 
 #pz2-termLists h4 {
@@ -118,8 +116,6 @@
 
 .pz2-facetCount {
 	color: #999;
-	font-size: 81%;
-	font-style: italic;
 	margin-left: 0.3em;
 }
 
@@ -261,7 +257,6 @@
 
 .pz2-detail-catalogueLink {
 	display: block;
-	font-size: 122%;
 }
 
 .pz2-details ul {

@@ -165,14 +165,22 @@
 	text-align: center;
 }
 
-.pz2-pager ol {
+.pz2-pager .pz2-pageNumbers {
 	position: relative;
-	list-style-type: none;
-	display: inline;
+	margin-right: 240px;
 }
 
 .pz2-next, .pz2-prev {
 	position: relative;
+}
+
+.pz2-pageCount-0 {
+	visibility: hidden;
+}
+
+.pz2-pager ol {
+	list-style-type: none;
+	display: inline;
 }
 
 .pz2-pager li {
@@ -183,14 +191,15 @@
 	padding: 0.3em;
 }
 
-.pz2-pager .currentPage {
+.pz2-pager .pz2-currentPage {
 	font-weight: bold;
 	padding: 0.3em;
 }
 
 .pz2-recordCount {
-	position: relative;
-	float: right;
+	position: absolute;
+	top: 0px;
+	right: 0px;
 }
 
 

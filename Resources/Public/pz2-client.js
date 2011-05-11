@@ -783,23 +783,23 @@ function display () {
 				var pages = Math.ceil(displayHitList.length / recPerPage);
 
 				// create pager
+				var pageNumbersContainer = document.createElement('div');
+				this.appendChild(pageNumbersContainer);
+				pageNumbersContainer.setAttribute('class', 'pz2-pageNumbers pz2-pageCount-' + pages);
+
+				var prevLink = document.createElement('a');
+				pageNumbersContainer.appendChild(prevLink);
+				prevLink.appendChild(document.createTextNode('«'));
+				prevLink.setAttribute('class', 'pz2-prev');
 				if (curPage > 1) {
-					var prevLink = document.createElement('a');
-					prevLink.setAttribute('class', 'pz2-prev');
 					prevLink.setAttribute('href', '#');
 					prevLink.setAttribute('onclick', 'pagerPrev();return false;');
 					prevLink.setAttribute('title', localise('Vorige Trefferseite anzeigen'));
-					prevLink.appendChild(document.createTextNode('«'));
-					this.appendChild(prevLink);
 				}
 
 				var pageList = document.createElement('ol');
 				pageList.setAttribute('class', 'pz2-pages');
-				this.appendChild(pageList);
-			
-				if (pages <= 1) {
-					pageList.setAttribute('style', 'visibility:hidden;')
-				}
+				pageNumbersContainer.appendChild(pageList);
 		
 				var dotsItem = document.createElement('li');
 				dotsItem.appendChild(document.createTextNode('…'));
@@ -815,21 +815,21 @@ function display () {
 						pageItem.appendChild(linkElement);
 					}
 					else {
-						pageItem.setAttribute('class', 'currentPage');
+						pageItem.setAttribute('class', 'pz2-currentPage');
 						pageItem.appendChild(document.createTextNode(pageNumber));
 					}
 				}
 
+				var nextLink = document.createElement('a');
+				pageNumbersContainer.appendChild(nextLink);
+				nextLink.appendChild(document.createTextNode('»'));
+				nextLink.setAttribute('class', 'pz2-next');
 				if (pages - curPage > 0) {
-					var nextLink = document.createElement('a');
-					nextLink.setAttribute('class', 'pz2-next');
 					nextLink.setAttribute('href', '#');
 					nextLink.setAttribute('onclick', 'pagerNext();return false;');
 					nextLink.setAttribute('title', localise('Nächste Trefferseite anzeigen'));
-					nextLink.appendChild(document.createTextNode('»'));
-					this.appendChild(nextLink);			
 				}
-			
+				
 				// add record count information
 				var recordCountDiv = document.createElement('div');
 				recordCountDiv.setAttribute('class', 'pz2-recordCount');

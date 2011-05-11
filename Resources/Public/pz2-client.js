@@ -1098,6 +1098,7 @@ function facetListForType (type, preferOriginalFacets) {
 			}
 			var textSpan = document.createElement('span');
 			link.appendChild(textSpan);
+			textSpan.setAttribute('class', 'pz2-facetName');
 			textSpan.appendChild(document.createTextNode(facetDisplayName));
 
 			// Hit Count
@@ -1113,6 +1114,13 @@ function facetListForType (type, preferOriginalFacets) {
 					titleString = titleString.replace('#', hitOverflow);
 					item.setAttribute('title', titleString);
 				}
+			}
+
+			// Media icons
+			if (type === 'medium') {
+				var mediaIcon = document.createElement('span');
+				link.appendChild(mediaIcon);
+				mediaIcon.setAttribute('class', 'pz2-mediaIcon ' + facetName);
 			}
 
 			// Mark facets which are currently active and add button to remove faceting.

@@ -117,6 +117,17 @@
 	text-transform: capitalize;
 }
 
+.pz2-termList-medium li a span.pz2-facetName {
+	margin-left: 20px;
+	position: relative;
+}
+
+.pz2-termList-medium .pz2-mediaIcon {
+	position: absolute;
+	top: -1px;
+	left: -2px;
+}
+
 .pz2-facetCount {
 	color: #999;
 	margin-left: 0.3em;

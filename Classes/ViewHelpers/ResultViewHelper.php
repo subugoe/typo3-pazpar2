@@ -627,16 +627,15 @@ private function catalogueLink ($locationAll) {
 	}
 
 	$linkElement = Null;
-	if ($catalogueURL) {
+	if ($catalogueURL && $targetName) {
 		$linkElement = $this->doc->createElement('a');
 		$linkElement->setAttribute('href', $catalogueURL);
 		$this->turnIntoNewWindowLink($linkElement);
 		$linkElement->setAttribute('class', 'pz2-detail-catalogueLink');
-		$linkText = Tx_Extbase_Utility_Localization::translate('Ansehen und Ausleihen bei:', 'Pazpar2');
-		if ($targetName) {
-			$linkText .= ' ' . $targetName;
-		}
-		$linkElement->appendChild($this->doc->createTextNode($linkText));
+		$linkTitle = Tx_Extbase_Utility_Localization::translate('Ansehen und Ausleihen bei:', 'Pazpar2') . ' ' . $targetName;
+		$linkElement->setAttribute('title', $linkTitle);
+		// Use non-breaking space in target name.
+		$linkElement->appendChild($this->doc->createTextNode(str_replace(' ', ' ', $targetName)));
 	}
 
 	return $linkElement;

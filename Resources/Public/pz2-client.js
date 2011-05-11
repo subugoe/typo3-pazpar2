@@ -2701,16 +2701,15 @@ function renderDetails(recordID) {
 			}
 			
 
-			if (catalogueURL) {
+			if (catalogueURL && targetName) {
 				var linkElement = document.createElement('a');
 				linkElement.setAttribute('href', catalogueURL);
 				turnIntoNewWindowLink(linkElement);
 				linkElement.setAttribute('class', 'pz2-detail-catalogueLink')
-				var linkText = localise('Ansehen und Ausleihen bei:');
-				if (targetName) {
-					linkText += ' ' + targetName;
-				}
-				linkElement.appendChild(document.createTextNode(linkText));
+				var linkTitle = localise('Ansehen und Ausleihen bei:') + ' ' + targetName;
+				linkElement.setAttribute('title', linkTitle);
+				// Use non-breaking spaces in target name.
+				linkElement.appendChild(document.createTextNode(targetName.replace(' ', ' ')));
 			}
 
 			return linkElement;

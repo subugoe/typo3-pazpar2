@@ -272,7 +272,12 @@
 }
 
 .pz2-detail-catalogueLink {
-	display: block;
+	font-weight: bold;
+}
+
+.pz2-detail-catalogueLink:after {
+	content: '\002192';
+	margin-left: 0.2em;
 }
 
 .pz2-details ul {

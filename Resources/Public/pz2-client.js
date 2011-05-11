@@ -933,7 +933,7 @@ function my_onstat(data) {
 	// Display progress bar.
 	var progress = (data.clients - data.activeclients) / data.clients * 100;
 	var opacityValue = (progress == 100) ? 0 : 1;
-	jQuery('.pz2-pager .pz2-progressIndicator').animate({width: progress + '%', opacity: opacityValue}, 100);
+	jQuery('.pz2-pager .pz2-progressIndicator').animate({width: progress + '%', opacity: opacityValue}, 'slow');
 
 	// Write out status information.
 	var statDiv = document.getElementById('pz2-stat');
@@ -1433,6 +1433,7 @@ function resetPage() {
 	hitList = {};
 	displayHitList = [];
 	filterArray = {};
+	jQuery('.pz2-pager .pz2-progressIndicator').css({'width': 0});
 	updateAndDisplay();
 }
 
@@ -1767,7 +1768,7 @@ function toggleDetails (prefixRecId) {
 
 	if (detRecordDivVisible) {
 		// Detailed record information is present: remove it
-		jQuery('#det_'+ recordIDHTML).remove();
+		jQuery('#det_'+ recordIDHTML).slideUp('fast');
 		record.detailsDivVisible = false;
 		jQuery(parent).removeClass('pz2-detailsVisible');
 	}
@@ -1775,9 +1776,11 @@ function toggleDetails (prefixRecId) {
 		// Detailed record information is not present: get detail view and append it
 		if (!record.detailsDiv) {
 			record.detailsDiv = renderDetails(recordID);
+			jQuery(record.detailsDiv).hide();
+			parent.appendChild(record.detailsDiv);
 		}
 
-		parent.appendChild(record.detailsDiv);
+		jQuery(record.detailsDiv).slideDown('fast');
 		record.detailsDivVisible = true;
 		jQuery(parent).addClass('pz2-detailsVisible');
 	}
@@ -2340,9 +2343,9 @@ function renderDetails(recordID) {
 				var infoBlock = ZDBInformation(resultData);
 
 				var infoLineElements = detailLineBasic(availabilityLabel, infoBlock, {'class':'pz2-ZDBInfo'});
-
+				jQuery(infoLineElements).hide();
 				appendInfoToContainer(infoLineElements, element);
-
+				jQuery(infoLineElements).slideDown('fast');
 			}
 		);
 	}
@@ -2369,8 +2372,6 @@ function renderDetails(recordID) {
 				searchTerms.push('OCLC:' + matches[OCLCMatchNumber]);
 			}
 		}
-
-		var booksSpan;
 
 		if (searchTerms.length > 0) {
 			// Query Google Books for the ISBN/OCLC numbers in question.
@@ -2401,12 +2402,10 @@ function renderDetails(recordID) {
 					// Add link to Google Books if there is a selected book.
 					if (selectedBook !== undefined) {
 						var dt = document.createElement('dt');
-						container.appendChild(dt);
-						dt.setAttribute('class', 'pz2-googleBooks');
-
 						var dd = document.createElement('dd');
+						jQuery([dt, dd]).addClass('pz2-googleBooks').hide();
+						container.appendChild(dt);
 						container.appendChild(dd);
-						dd.setAttribute('class', 'pz2-googleBooks');
 
 						var bookLink = document.createElement('a');
 						dd.appendChild(bookLink);
@@ -2434,6 +2433,7 @@ function renderDetails(recordID) {
 							coverArtImage.setAttribute('class', 'bookCover');
 						}
 
+						jQuery([dt, dd]).slideDown('fast');
 					}
 				}
 			);

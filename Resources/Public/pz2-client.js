@@ -910,7 +910,8 @@ function display () {
 				detailsDiv = renderDetails(hit.recid[0]);
 				hit.detailsDiv = detailsDiv;
 			}
-			appendInfoToContainer(detailsDiv, LI);	
+			appendInfoToContainer(detailsDiv, LI);
+			jQuery(LI).addClass('pz2-detailsVisible');
 		}
 	}
 
@@ -1762,11 +1763,13 @@ function toggleDetails (prefixRecId) {
 	var record = hitList[recordID];
 
 	var detRecordDivVisible = record.detailsDivVisible;
+	var parent = document.getElementById('recdiv_'+ recordIDHTML);
 
 	if (detRecordDivVisible) {
 		// Detailed record information is present: remove it
 		jQuery('#det_'+ recordIDHTML).remove();
 		record.detailsDivVisible = false;
+		jQuery(parent).removeClass('pz2-detailsVisible');
 	}
 	else {
 		// Detailed record information is not present: get detail view and append it
@@ -1774,9 +1777,9 @@ function toggleDetails (prefixRecId) {
 			record.detailsDiv = renderDetails(recordID);
 		}
 
-		var parent = document.getElementById('recdiv_'+ recordIDHTML);
 		parent.appendChild(record.detailsDiv);
 		record.detailsDivVisible = true;
+		jQuery(parent).addClass('pz2-detailsVisible');
 	}
 }
 

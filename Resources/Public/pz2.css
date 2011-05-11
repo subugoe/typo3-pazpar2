@@ -60,16 +60,23 @@
 }
 
 #pz2-results ol.pz2-resultList {
-	padding-left: 40px;
+	padding-left: 35px;
 	list-style-type: none;
 	float: left; /* required so we don't clear the sidebar/faceting when clearing our <li>s */
 }
 
 #pz2-results ol.pz2-resultList li {
 	margin-bottom: 0.5em;
+	padding-left: 5px;
 	position: relative;
 	clear: both;
+	border-left: 1px solid transparent;
 }
+
+#pz2-results ol.pz2-resultList li.pz2-detailsVisible {
+	border-left: 1px solid #eee;
+}
+
 
 #pazpar2 .pz2-JSNote {
 	margin-bottom: 1em;

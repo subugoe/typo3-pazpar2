@@ -236,7 +236,7 @@
 	left: -30px;
 	/* Media icon sprite. Position defaults to other/unknown icon. */
 	background: url(pz2-media-icons.png) transparent no-repeat;
-	background-position: 0px 40px;
+	background-position: 0px -40px;
 }
 
 .pz2-mediaIcon.article { background-position: 0px 0px; }

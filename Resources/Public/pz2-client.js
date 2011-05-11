@@ -860,6 +860,7 @@ function display () {
 	var firstIndex = recPerPage * (curPage - 1);
 	var numberOfRecordsOnPage = Math.min(displayHitList.length - firstIndex, recPerPage);
 	OL.setAttribute('start', firstIndex + 1);
+	OL.setAttribute('class', 'pz2-resultList');
 
 	for (var i = 0; i < numberOfRecordsOnPage; i++) {
 		var hit = displayHitList[firstIndex + i];
@@ -1184,7 +1185,7 @@ function facetListForType (type, preferOriginalFacets) {
 			'yaxis': {
 				'position': 'right',
 				'tickDecimals': 0,
-				'tickFormatter': function(val, axis) { return (val != 0) ? (val) : (''); }
+				'tickFormatter': function(val, axis) {return (val != 0) ? (val) : ('');}
 			},
 			'grid': {
 				'borderWidth': 0,
@@ -2338,11 +2339,11 @@ function renderDetails(recordID) {
 
 
 
-	/*	googleBooksElement
+	/*	appendGoogleBooksElementTo
 		Figure out whether there is a Google Books Preview for the current data.
-		output:	SPAN DOM element that will contain the Google Books button and cover art.
+		input:	DL DOM element that an additional item can be appended to
 	*/
-	var googleBooksElement = function () {
+	var appendGoogleBooksElementTo = function (container) {
 		// Create list of search terms from ISBN and OCLC numbers.
 		var searchTerms = [];
 		for (locationNumber in data.location) {
@@ -2361,9 +2362,6 @@ function renderDetails(recordID) {
 		var booksSpan;
 
 		if (searchTerms.length > 0) {
-			booksSpan = document.createElement('span');
-			booksSpan.setAttribute('class', 'googleBooks');
-
 			// Query Google Books for the ISBN/OCLC numbers in question.
 			var googleBooksURL = 'http://books.google.com/books?bibkeys=' + searchTerms
 						+ '&jscmd=viewapi&callback=?';
@@ -2391,7 +2389,16 @@ function renderDetails(recordID) {
 
 					// Add link to Google Books if there is a selected book.
 					if (selectedBook !== undefined) {
+						var dt = document.createElement('dt');
+						container.appendChild(dt);
+						dt.setAttribute('class', 'pz2-googleBooks');
+
+						var dd = document.createElement('dd');
+						container.appendChild(dd);
+						dd.setAttribute('class', 'pz2-googleBooks');
+
 						var bookLink = document.createElement('a');
+						dd.appendChild(bookLink);
 						bookLink.setAttribute('href', selectedBook.preview_url);
 						bookLink.onclick = openPreview;
 
@@ -2400,25 +2407,27 @@ function renderDetails(recordID) {
 							language = 'en';
 						}
 						var buttonImageURL = 'http://www.google.com/intl/' + language + '/googlebooks/images/gbs_preview_button1.gif';
+
 						var buttonImage = document.createElement('img');
 						buttonImage.setAttribute('src', buttonImageURL);
 						buttonImage.setAttribute('alt', localise('Google Books Vorschau'));
 						bookLink.appendChild(buttonImage);
-						booksSpan.appendChild(bookLink);
 
 						if (selectedBook.thumbnail_url !== undefined) {
+							bookLink = bookLink.cloneNode(false);
+							dt.appendChild(bookLink);
 							var coverArtImage = document.createElement('img');
 							bookLink.appendChild(coverArtImage);
 							coverArtImage.setAttribute('src', selectedBook.thumbnail_url);
 							coverArtImage.setAttribute('alt', localise('Umschlagbild'));
 							coverArtImage.setAttribute('class', 'bookCover');
 						}
+
 					}
 				}
 			);
 		}
-		
-		return booksSpan;
+
 
 
 		/*	openPreview
@@ -2469,26 +2478,6 @@ function renderDetails(recordID) {
 
 
 	
-	/*	extraLinks
-		Returns an array with markup for extra links and information.
-			* Google Books, if possible
-		output:	Array with DT/DD pair containing the information.
-	*/
-	var extraLinks = function () {
-		var titleElement = document.createElement('dt');
-
-		var dataElement = document.createElement('dd');
-		dataElement.setAttribute('class', 'pz2-extraLinks');
-		
-		if (useGoogleBooks) {
-			appendInfoToContainer(googleBooksElement(), dataElement);
-		}
-		
-		return [titleElement, dataElement];
-	}
-
-
-
 	/*	locationDetails
 		Returns markup for each location of the item found from the current data.
 		output:	DOM object with information about this particular copy/location of the item found
@@ -2768,6 +2757,9 @@ function renderDetails(recordID) {
 
 		var detailsList = document.createElement('dl');
 		detailsDiv.appendChild(detailsList);
+		var clearSpan = document.createElement('span');
+		detailsDiv.appendChild(clearSpan);
+		clearSpan.setAttribute('class', 'pz2-clear');
 
 		// create cleaned up author and other person list to avoid
 		// duplicating persons listed in title-responsiblity already.
@@ -2798,7 +2790,7 @@ function renderDetails(recordID) {
 		appendInfoToContainer( ISSNsDetailLine(), detailsList );
 		appendInfoToContainer( detailLineAuto('doi'), detailsList );
 		appendInfoToContainer( locationDetails(), detailsList );
-		appendInfoToContainer( extraLinks(), detailsList );
+		appendGoogleBooksElementTo(detailsList);
 		if ( useZDB == true ) {
 			addZDBInfoIntoElement( detailsList );
 		}

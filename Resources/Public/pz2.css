@@ -1,12 +1,15 @@
-#pazpar2 {
-}
-
 #pazpar2 a {
 	text-decoration:none;
 }
 
 #pazpar2 ol {
 	margin: 0px;
+}
+
+.pz2-clear {
+	display: block;
+	height: 0;
+	clear: both;
 }
 
 
@@ -56,16 +59,16 @@
 	margin-right: 220px;
 }
 
-#pz2-results ol {
+#pz2-results ol.pz2-resultList {
 	padding-left: 40px;
 	list-style-type: none;
 	float: left; /* required so we don't clear the sidebar/faceting when clearing our <li>s */
 }
 
-#pz2-results ol li {
+#pz2-results ol.pz2-resultList li {
 	margin-bottom: 0.5em;
 	position: relative;
-	clear: right; /* required to clear the right floated Google Books element */
+	clear: both;
 }
 
 #pazpar2 .pz2-JSNote {
@@ -260,6 +263,10 @@
 	margin-left: 10.3em;
 }
 
+.pz2-details dt, .pz2-details dd {
+	margin-bottom: 0.5em;
+}
+
 .pz2-detail-availability td a {
 	margin-bottom: 2px;
 }
@@ -271,6 +278,12 @@
 .pz2-details ul {
 	padding-left: 2em;
 }
+
+/* Cancel the clear done for list items in the main list on lists in .pz2-details. */
+#pz2-results ol.pz2-resultList .pz2-details li {
+	clear: none;
+}
+
 
 #pz2-results .pz2-details ul li {
 	margin: 0;
@@ -304,15 +317,6 @@ dl .pz2-ZDBInfo {
 
 /* Google Books 
 */
-.googleBooks {
-	display: block;
-	float: right;
-}
-
-.googleBooks .bookCover {
-	margin-left: 6px;
-}
-
 #googlePreviewContainer {
 	position: absolute;
 	left: 2em;

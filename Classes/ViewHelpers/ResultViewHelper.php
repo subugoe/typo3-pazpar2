@@ -253,6 +253,9 @@ private function renderDetails ($result) {
 	
 	$detailsList = $this->doc->createElement('dl');
 	$div->appendChild($detailsList);
+	$clearSpan = $this->doc->createElement('span');
+	$div->appendChild($clearSpan);
+	$clearSpan->setAttribute('class', 'pz2-clear');
 
 	// create cleaned up author and other person list to avoid
 	// duplicating persons listed in title-responsiblity already.

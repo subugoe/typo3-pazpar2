@@ -22,7 +22,7 @@
 	<div id="pz2-results">
 		<f:if condition="{f:count(subject: results)} > 0">
 			<f:then>
-				<ol>
+				<ol class="pz2-resultList">
 					<f:for each="{results}" as="result">
 						<pz2:result result="{result}"/>
 					</f:for>

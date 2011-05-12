@@ -77,6 +77,10 @@
 	border-left: 1px solid #eee;
 }
 
+#pazpar2 a img {
+	border: 0px transparent none;
+}
+
 
 #pazpar2 .pz2-JSNote {
 	margin-bottom: 1em;

@@ -19,23 +19,23 @@
 	line-height: 150%;
 }
 
-.pz2-searchField {
-	width: 20em;
+.pz2-basic .pz2-searchField {
+	width: 400px;
 }
-
-.pz2-extended .pz2-searchField {
-	margin-left: 0.5em;
-}
-
 
 .pz2-searchForm.pz2-basic .pz2-field-all input, .pz2-searchForm.pz2-basic .pz2-submitButton {
 	font-size: 133%;
 }
 
+.pz2-extended .pz2-searchField {
+	width: 250px; /* 400px - 130px - 20px to end up at the same total width as basic search */
+	margin-left: 20px;
+}
+
 .pz2-mainForm label.pz2-textFieldLabel {
 	display: block;
 	float: left;
-	width: 7em;
+	width: 130px;
 	text-align: right;
 }
 
@@ -137,7 +137,7 @@
 }
 
 .pz2-termList-medium li a span.pz2-facetName {
-	margin-left: 20px;
+	margin-left: 25px;
 	position: relative;
 }
 
@@ -303,6 +303,7 @@
 
 .pz2-detail-catalogueLink {
 	font-weight: bold;
+	white-space: nowrap;
 }
 
 .pz2-detail-catalogueLink:after {
@@ -377,4 +378,22 @@ pz2-client.js removes this once it it loaded.
 
 #pazpar2.pz2-noJS #pz2-switchMenu, #pazpar2.pz2-noJS .pz2-ranking {
 	display: none;
+}
+
+
+/*
+status display
+*/
+
+#pz2-byTarget table {
+	font-size: 12px;
+	padding-top: 20px;
+}
+
+#pz2-targetView #pz2-byTarget thead tr td {
+	background: silver;
+}
+
+#pz2-targetView #pz2-byTarget td {
+	padding: 0px 3px;
 }

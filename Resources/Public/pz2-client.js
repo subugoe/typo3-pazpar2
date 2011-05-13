@@ -2702,8 +2702,7 @@ function renderDetails(recordID) {
 				linkElement.setAttribute('class', 'pz2-detail-catalogueLink')
 				var linkTitle = localise('Ansehen und Ausleihen bei:') + ' ' + targetName;
 				linkElement.setAttribute('title', linkTitle);
-				// Use non-breaking spaces in target name.
-				linkElement.appendChild(document.createTextNode(targetName.replace(' ', ' ')));
+				linkElement.appendChild(document.createTextNode(targetName));
 			}
 
 			return linkElement;

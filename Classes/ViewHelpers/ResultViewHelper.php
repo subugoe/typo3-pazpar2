@@ -634,8 +634,7 @@ private function catalogueLink ($locationAll) {
 		$linkElement->setAttribute('class', 'pz2-detail-catalogueLink');
 		$linkTitle = Tx_Extbase_Utility_Localization::translate('Ansehen und Ausleihen bei:', 'Pazpar2') . ' ' . $targetName;
 		$linkElement->setAttribute('title', $linkTitle);
-		// Use non-breaking space in target name.
-		$linkElement->appendChild($this->doc->createTextNode(str_replace(' ', ' ', $targetName)));
+		$linkElement->appendChild($this->doc->createTextNode($targetName));
 	}
 
 	return $linkElement;

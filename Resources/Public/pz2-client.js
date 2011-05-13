@@ -109,7 +109,7 @@ var germanTerms = {
 	'Datenbank': 'Datenbank',
 	'Code': 'Statuscode',
 	'Status': 'Status',
-	'Gesamt': 'Gesamt',
+	'Geladen': 'Geladen',
 	'Client_Working': 'Client arbeitet',
 	'Client_Idle': 'Client inaktiv',
 	'Client_Error': 'Fehler'
@@ -196,7 +196,7 @@ var englishTerms = {
 	'Datenbank': 'Database',
 	'Code': 'Status Code',
 	'Status': 'Status',
-	'Gesamt': 'Total',
+	'Gesamt': 'Loaded',
 	'Client_Working': 'Client working',
 	'Client_Idle': 'Client inactive',
 	'Client_Error': 'Client error'
@@ -1337,13 +1337,13 @@ function my_onbytarget(data) {
 	td.appendChild(document.createTextNode(localise('Datenbank')));
 	td = document.createElement('td');
 	tr.appendChild(td);
+	td.appendChild(document.createTextNode(localise('Geladen')));
+	td = document.createElement('td');
+	tr.appendChild(td);
 	td.appendChild(document.createTextNode(localise('Treffer')));
 	td = document.createElement('td');
 	tr.appendChild(td);
 	td.appendChild(document.createTextNode(localise('Code')));
-	td = document.createElement('td');
-	tr.appendChild(td);
-	td.appendChild(document.createTextNode(localise('Gesamt')));
 	td = document.createElement('td');
 	tr.appendChild(td);
 	td.appendChild(document.createTextNode(localise('Status')));
@@ -1360,13 +1360,13 @@ function my_onbytarget(data) {
 		td.setAttribute('title', data[i].id)
 		td = document.createElement('td');
 		tr.appendChild(td);
+		td.appendChild(document.createTextNode(data[i].records));
+		td = document.createElement('td');
+		tr.appendChild(td);
 		td.appendChild(document.createTextNode(data[i].hits));
 		td = document.createElement('td');
 		tr.appendChild(td);
 		td.appendChild(document.createTextNode(data[i].diagnostic));
-		td = document.createElement('td');
-		tr.appendChild(td);
-		td.appendChild(document.createTextNode(data[i].records));
 		td = document.createElement('td');
 		tr.appendChild(td);
 		td.appendChild(document.createTextNode(localise(data[i].state)));

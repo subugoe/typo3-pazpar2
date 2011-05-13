@@ -1,43 +1,42 @@
 <f:form class="pz2-searchForm {f:if(condition: '{extended}', then: 'pz2-extended', else:'pz2-basic')}">
 	<div class="pz2-mainForm">
 
+		<div class="pz2-fieldContainer pz2-field-all">
+			<label class="pz2-textFieldLabel" for="pz2-field-all"><f:translate key="form-extended-label-all" >all</f:translate></label>
+			<f:form.textbox id="pz2-field-all" class="pz2-searchField" name="queryString" value="{queryString}"/>
+			<f:if condition="{extended}!=1">
+				<f:form.submit class="pz2-submitButton" value="{f:translate(key:'Find')}"/>
+			</f:if>
+			<f:link.action arguments="{extended: extended}" class="pz2-extendedLink"><f:translate key="{f:if(condition:extended, then:'einfache Suche', else:'erweiterte Suche')}"/></f:link.action>
+		</div>
+
+		<div class="pz2-extraFields">
+			<div class="pz2-fieldContainer pz2-field-title">
+				<label class="pz2-textFieldLabel" for="pz2-field-title"><f:translate key="form-extended-label-title" >title</f:translate></label>
+				<f:form.textbox id="pz2-field-title" class="pz2-searchField" name="queryStringTitle" value="{queryStringTitle}"/>
+				<f:form.checkbox id="pz2-checkbox-journal" name="querySwitchJournalOnly" value="1" checked="{querySwitchJournalOnly}"/>
+				<label for="pz2-checkbox-journal"><f:translate key="form-extended-label-journalOnly">journal only</f:translate></label>
+			</div>
+
+			<div class="pz2-fieldContainer pz2-field-person">
+				<label class="pz2-textFieldLabel" for="pz2-field-person"><f:translate key="form-extended-label-person" >person</f:translate></label>
+				<f:form.textbox id="pz2-field-person" class="pz2-searchField" name="queryStringPerson" value="{queryStringPerson}"
+					additionalAttributes="{placeholder: '{f:translate(key:\"form-extended-placeholder-person\")}'}"/>
+			</div>
+
+			<div class="pz2-fieldContainer pz2-field-date">
+				<label class="pz2-textFieldLabel" for="pz2-field-date"><f:translate key="form-extended-label-date" >date</f:translate></label>
+				<f:form.textbox id="pz2-field-date" class="pz2-searchField" name="queryStringDate" value="{queryStringDate}"
+					additionalAttributes="{placeholder: '{f:translate(key:\"form-extended-placeholder-date\")}'}"/>
+				<f:if condition="{extended}==1">
+					<f:form.submit class="pz2-submitButton" value="<f:translate key='Find'/>"/>
+				</f:if>
+			</div>
+		</div>
+
 		<f:if condition="{extended}">
-			<f:then>
-				<div class="pz2-fieldContainer">
-					<label class="pz2-textFieldLabel" for="pz2-field-all"><f:translate key="form-extended-label-all" >all</f:translate></label>
-					<f:form.textbox id="pz2-field-all" class="pz2-searchField" name="queryString" value="{queryString}"/>
-					<f:link.action arguments="{extended: 0}" class="pz2-extendedLink"><f:translate key="einfache Suche"/></f:link.action>
-				</div>
-				<div class="pz2-fieldContainer">
-					<label class="pz2-textFieldLabel" for="pz2-field-title"><f:translate key="form-extended-label-title" >title</f:translate></label>
-					<f:form.textbox id="pz2-field-title" class="pz2-searchField" name="queryStringTitle" value="{queryStringTitle}"/>
-					<f:form.checkbox id="pz2-checkbox-journal" name="querySwitchJournalOnly" value="1" checked="{querySwitchJournalOnly}"/>
-					<label for="pz2-checkbox-journal"><f:translate key="form-extended-label-journalOnly">journal only</f:translate></label>
-				</div>
-				<div class="pz2-fieldContainer">
-					<label class="pz2-textFieldLabel" for="pz2-field-person"><f:translate key="form-extended-label-person" >person</f:translate></label>
-					<f:form.textbox id="pz2-field-person" class="pz2-searchField" name="queryStringPerson" value="{queryStringPerson}"
-						additionalAttributes="{placeholder: '{f:translate(key:\"form-extended-placeholder-person\")}'}"/>
-				</div>
-				<div class="pz2-fieldContainer">
-					<label class="pz2-textFieldLabel" for="pz2-field-date"><f:translate key="form-extended-label-date" >date</f:translate></label>
-					<f:form.textbox id="pz2-field-date" class="pz2-searchField" name="queryStringDate" value="{queryStringDate}"
-						additionalAttributes="{placeholder: '{f:translate(key:\"form-extended-placeholder-date\")}'}"/>
-					<f:form.submit class="pz2-submitButton" value="<f:translate key='Find'/>"/>
-				</div>
-				<f:form.hidden name="extended" value="1"/>
-			</f:then>
-
-			<f:else>
-				<div class="pz2-fieldContainer">
-					<label class="pz2-textFieldLabel" for="pz2-field-all"><f:translate key="form-extended-label-all" >all</f:translate></label>
-					<f:form.textbox id="pz2-field-all" class="pz2-searchField" name="queryString" value="{queryString}"/>
-					<f:form.submit class="pz2-submitButton" value="<f:translate key='Find'/>"/>
-					<f:link.action arguments="{extended: 1}" class="pz2-extendedLink"><f:translate key="erweiterte Suche"/></f:link.action>
-				</div>
-			</f:else>
+			<f:form.hidden name="extended" value="1"/>
 		</f:if>
-
 	</div>
 
 	<div class="pz2-ranking">

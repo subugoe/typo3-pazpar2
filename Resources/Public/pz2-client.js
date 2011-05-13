@@ -1514,7 +1514,7 @@ function addExtendedSearchForLink (event) {
 	var extendedSearchField = function (fieldName) {
 		var myID = 'pz2-field-' + fieldName;
 		var div = document.createElement('div');
-		div.setAttribute('class', 'pz2-fieldContainer');
+		div.setAttribute('class', 'pz2-fieldContainer ' + myID);
 		var label = document.createElement('label');
 		div.appendChild(label);
 		label.setAttribute('for', myID);
@@ -1534,39 +1534,20 @@ function addExtendedSearchForLink (event) {
 			input.setAttribute('placeholder', placeholder);
 		}
 
-
 		return div;
 	}
 
-
-	var formContainer = jQuery('.pz2-mainForm')[0];
-
 	// switch form type
+	var formContainer = jQuery('.pz2-mainForm');
 	jQuery(formContainer).parent('form').removeClass('pz2-basic').addClass('pz2-extended');
 
-	// append new fields
-	var titleField = extendedSearchField('title');
-	formContainer.appendChild(titleField);
-	var checkBox = document.createElement('input');
-	titleField.appendChild(checkBox);
-	checkBox.setAttribute('id', 'pz2-checkbox-journal');
-	checkBox.setAttribute('type', 'checkbox');
-	checkBox.setAttribute('name', 'journalTitle');
-	var label = document.createElement('label');
-	titleField.appendChild(label);
-	label.setAttribute('for', 'pz2-checkbox-journal');
-	label.appendChild(document.createTextNode(localise('form-extended-label-journalOnly')));
-
-	formContainer.appendChild(extendedSearchField('person'));
-	var dateLine = extendedSearchField('date');
-	formContainer.appendChild(dateLine);
-
 	// move the submit button
-	var submitButton = jQuery('.pz2-submitButton', formContainer)[0];
-	dateLine.appendChild(submitButton);
+	var submitButton = jQuery('.pz2-submitButton', formContainer);
+	jQuery('.pz2-field-date').append(submitButton);
 
 	// switch the link to a simple search link
 	jQuery(this).unbind().click(removeExtendedSearchForLink).empty().text(localise('einfache Suche'));
+	jQuery('.pz2-extraFields').slideDown('fast');
 
 	return false;
 }
@@ -1582,20 +1563,22 @@ function addExtendedSearchForLink (event) {
 	output:	false
 */
 function removeExtendedSearchForLink (event) {
-	var formContainer = jQuery('.pz2-mainForm');
-
 	// switch form type
+	var formContainer = jQuery('.pz2-mainForm');
+	formContainer.addClass('pz2-form-animating');
 	formContainer.parent('form').removeClass('pz2-extended').addClass('pz2-basic');
 
 	// move the submit button
 	var submitButton = jQuery('.pz2-submitButton', formContainer);
-	jQuery(':first-child input', formContainer).after(submitButton);
+	jQuery('#pz2-field-all').after(submitButton);
 
 	// switch the link to an extended search link
 	jQuery(this).unbind().click(addExtendedSearchForLink).empty().text(localise('erweiterte Suche'));
 
 	// remove extended search fields
-	jQuery(':first-child ~ .pz2-fieldContainer', formContainer).remove();
+	jQuery('.pz2-extraFields', formContainer).slideUp('fast', function() {
+		formContainer.removeClass('pz2-form-animating');
+	});
 
 
 	return false;

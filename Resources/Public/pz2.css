@@ -27,7 +27,8 @@
 	margin-left: 0.5em;
 }
 
-.pz2-searchForm.pz2-basic .pz2-searchField, .pz2-searchForm.pz2-basic .pz2-submitButton {
+
+.pz2-searchForm.pz2-basic .pz2-field-all input, .pz2-searchForm.pz2-basic .pz2-submitButton {
 	font-size: 133%;
 }
 
@@ -38,10 +39,17 @@
 	text-align: right;
 }
 
-.pz2-searchForm.pz2-basic label {
+.pz2-searchForm.pz2-basic label, .pz2-searchForm.pz2-basic .pz2-extraFields {
 	display: none;
 }
 
+.pz2-form-animating .pz2-extraFields {
+	display:block;
+}
+
+
+
+/* results */
 
 .pz2-ranking {
 	display: none;

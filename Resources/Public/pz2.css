@@ -385,7 +385,7 @@ pz2-client.js removes this once it it loaded.
 status display
 */
 
-#pz2-byTarget table {
+#pz2-byTarget {
 	font-size: 12px;
 	padding-top: 20px;
 }

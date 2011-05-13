@@ -193,7 +193,7 @@ function toggleChildCheckboxesOf (checkbox) {
 
 
 /*
- * selectedGOKsInFormWithWildcard
+ * selectedQueriesInFormWithWildcard
  *
  * For a given form returns an array of all GOKs in the values of the checked
  *	checkboxes. Each checkbox' value can contain several GOKs, separated by a
@@ -203,7 +203,7 @@ function toggleChildCheckboxesOf (checkbox) {
  *			wildcard - string to be appended to each extracted GOK
  * output:	array of strings, each of which is a GOK, potentially with a wildcard
  */
-function selectedGOKsInFormWithWildcard (form, wildcard) {
+function selectedQueriesInFormWithWildcard (form, wildcard) {
 	var GOKs = [];
 
 	jQuery('fieldset', form).each( function (index) {
@@ -243,11 +243,11 @@ function selectedGOKsInFormWithWildcard (form, wildcard) {
  * output:	string containing the complete query / undefined if no GOKs are found
  */
 function searchQueryWithEqualsAndWildcard (form, equals, wildcard, ignoreSelectedDate) {
-	var GOKs = selectedGOKsInFormWithWildcard(form, wildcard);
+	var queries = selectedQueriesInFormWithWildcard(form, wildcard);
 
-	if (GOKs.length > 0) {
-		var queryString = oredSearchQueries(GOKs, 'lkl', equals);
-
+	if (queries.length > 0) {
+		var queryString = oredSearchQueries(queries, '', '');
+		queryString = queryString.replace(/=/g, equals);
 		if (!ignoreSelectedDate) {
 			var dates = [];
 			var searchTerms = jQuery('.pz2-months :selected', form)[0].value.split(',');

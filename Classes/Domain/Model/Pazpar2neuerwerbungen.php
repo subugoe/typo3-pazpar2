@@ -496,9 +496,10 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	public function searchQueryWithEqualsAndWildcard ($equals = '=', $wildcard = '', $ignoreSelectedDate = False) {
 		$queryString = Null;
 
-		$GOKs = $this->selectedGOKsInFormWithWildcard($wildcard);
-		if (count($GOKs) > 0) {
-			$queryString = $this->oredSearchQueries($GOKs, 'lkl', $equals);
+		$queries = $this->selectedQueriesInFormWithWildcard($wildcard);
+		if (count($queries) > 0) {
+			$queryString = $this->oredSearchQueries($queries, '', '');
+			$queryString = str_replace('=', $equals, $queryString);
 
 			if (!$ignoreSelectedDate) {
 				$dates = $this->selectedMonthInFormWithWildcard($wildcard);
@@ -540,8 +541,8 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	 * @param string $wildcard appended to each extracted GOK
 	 * @return array of GOK strings
 	 */
-	private function selectedGOKsInFormWithWildcard($wildcard) {
-		return $this->selectedGOKsInGroupWithWildcard($this->getSubjects(), $wildcard);
+	private function selectedQueriesInFormWithWildcard($wildcard) {
+		return $this->selectedQueriesInGroupWithWildcard($this->getSubjects(), $wildcard);
 	}
 
 
@@ -554,7 +555,7 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	 * @param string $wildcard appended to each extracted GOK
 	 * @return array of GOK strings
 	 */
-	private function selectedGOKsInGroupWithWildcard($subjects, $wildcard) {
+	private function selectedQueriesInGroupWithWildcard($subjects, $wildcard) {
 		$GOKs = Array();
 
 		foreach ($subjects as $subject) {
@@ -562,7 +563,7 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 				$this->addSearchTermsToList($subject['GOKs'], $GOKs, $wildcard);
 			}
 			elseif ($subject['subjects']) {
-				$subsubjects = $this->selectedGOKsInGroupWithWildcard($subject['subjects'], $wildcard);
+				$subsubjects = $this->selectedQueriesInGroupWithWildcard($subject['subjects'], $wildcard);
 				$GOKs = array_merge($GOKs, $subsubjects);
 			}
 		}

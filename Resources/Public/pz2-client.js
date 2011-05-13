@@ -1746,10 +1746,9 @@ function toggleDetails (prefixRecId) {
 	var recordID = recordIDForHTMLID(recordIDHTML);
 	var record = hitList[recordID];
 
-	var detRecordDivVisible = record.detailsDivVisible;
 	var parent = document.getElementById('recdiv_'+ recordIDHTML);
 
-	if (detRecordDivVisible) {
+	if (record.detailsDivVisible) {
 		// Detailed record information is present: remove it
 		jQuery('#det_'+ recordIDHTML).slideUp('fast');
 		record.detailsDivVisible = false;
@@ -2804,7 +2803,7 @@ function HTMLIDForRecordData (recordData) {
 	var result = undefined;
 
 	if (recordData.recid[0] !== undefined) {
-		result = recordData.recid[0].replace(/ /g,'-pd-');
+		result = recordData.recid[0].replace(/ /g, '-pd-').replace(/\//g, '-pe-').replace(/\./g,'-pf-');
 	}
 
 	return result;
@@ -2817,7 +2816,7 @@ function HTMLIDForRecordData (recordData) {
 	output:	input with dashes replaced by spaces
 */
 function recordIDForHTMLID (HTMLID) {
-	return HTMLID.replace(/-pd-/g,' ');
+	return HTMLID.replace(/-pd-/g, ' ').replace(/-pe-/g, '/').replace(/-pf-/g, '.');
 }
 
 

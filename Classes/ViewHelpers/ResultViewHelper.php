@@ -48,6 +48,7 @@ public function render ($result) {
 	$this->doc = DOMImplementation::createDocument();
 	$li = $this->doc->createElement('li');
 	$this->doc->appendChild($li);
+	$li->setAttribute('class', 'pz2-detailsVisible');
 
 	$iconElement = $this->doc->createElement('span');
 	$li->appendChild($iconElement);

@@ -536,14 +536,8 @@ function displayLists (list) {
 			}
 
 			// Records without a date are treated as very old.
-			// Except when they are Guide Links which are treated as coming from the future.
 			if (!date) {
-				if (record['location'][0]['@id'].search('ssgfi') != -1) {
-					date = new Date(2500,1,1);
-				}
-				else {
-					date = new Date(0,1,1);
-				}	
+				date = new Date(1000, 0, 0);
 			}
 
 			return date;

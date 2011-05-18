@@ -527,16 +527,17 @@ function displayLists (list) {
 		function dateForRecord (record) {
 			var dateArray = record['md-date'];
 			if (dateArray) {
-				var dateString = record['md-date'][0];
+				var dateString = dateArray[0];
 				if (dateString) {
 					var yearsArray = dateString.split('-');
-					var date = new Date(yearsArray[yearsArray.length - 1]);
+					var lastYear = yearsArray[yearsArray.length - 1];
+					var date = new Date(lastYear, 1, 1);
 				}
 			}
 
 			// Records without a date are treated as very old.
 			// Except when they are Guide Links which are treated as coming from the future.
-			if (date == undefined) {
+			if (!date) {
 				if (record['location'][0]['@id'].search('ssgfi') != -1) {
 					date = new Date(2500,1,1);
 				}

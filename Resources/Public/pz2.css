@@ -139,6 +139,7 @@
 .pz2-termList-medium li a span.pz2-facetName {
 	margin-left: 25px;
 	position: relative;
+	line-height: 19px;
 }
 
 .pz2-termList-medium .pz2-mediaIcon {
@@ -386,12 +387,13 @@ status display
 */
 
 #pz2-byTarget {
-	font-size: 12px;
-	padding-top: 20px;
+	font-size: 85%;
+	padding-top: 2em;
 }
 
 #pz2-targetView #pz2-byTarget thead tr td {
-	background: silver;
+	background: #eee;
+	font-weight: bold;
 }
 
 #pz2-targetView #pz2-byTarget td {

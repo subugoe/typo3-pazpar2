@@ -59,6 +59,10 @@
 	margin-bottom: 1em;
 }
 
+#pz2-recordView {
+	padding-top: 20px;
+}
+
 .pz2-recordLink {
 	display: block;
 }

@@ -1105,7 +1105,7 @@ function facetListForType (type, preferOriginalFacets) {
 			if (type == 'xtargets' && targetStatus[facetName]) {
 				var hitOverflow = targetStatus[facetName].hits - targetStatus[facetName].records;
 				if (hitOverflow > 0) {
-					count.appendChild(document.createTextNode(' +'));
+					count.appendChild(document.createTextNode('+'));
 					var titleString = localise('In diesem Katalog gibt es noch # weitere Treffer.');
 					titleString = titleString.replace('#', hitOverflow);
 					item.setAttribute('title', titleString);

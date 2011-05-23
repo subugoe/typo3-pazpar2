@@ -12,7 +12,7 @@
 
 	<ul>
 		<f:for each="{section.subjects}" as="sectionItem" key="itemIndex">
-			<li {f:if(condition: sectionItem.inline, then: 'class="inline"')}>
+			<li class="{f:if(condition:sectionItem.inline, then:'inline')} {f:if(condition:sectionItem.indent, then:'indent')}">
 				<f:if condition="{f:count(subject:sectionItem.subjects)} == 0">
 					<f:then>
 						<f:if condition="{sectionItem.break} == 1"><br></f:if>

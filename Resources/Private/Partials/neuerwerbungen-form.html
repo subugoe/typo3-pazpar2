@@ -15,9 +15,11 @@
 
 		<div class="pz2-fieldsets">
 			<f:for each="{pazpar2neuerwerbungen.subjects}" as="section" key="sectionIndex">
+				<f:if condition="{section.groupstart}"><div class="pz2-fieldset-group index-{sectionIndex}"></f:if>
 				<f:render partial="neuerwerbungen-form-fieldset"
 						  arguments="{section: section,
 										sectionIndex: sectionIndex}"/>
+				<f:if condition="{section.groupend}"></div></f:if>
 			</f:for>
 		</div>
 	</div>

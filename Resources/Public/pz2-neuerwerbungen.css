@@ -3,9 +3,7 @@
 }
 
 fieldset {
-	width: 48%;
 	position: relative;
-	margin-bottom: 0.5em;
 }
 
 fieldset ul {
@@ -22,6 +20,9 @@ form.pz2-searchForm li.inline {
 	display: inline;
 }
 
+form.pz2-searchForm li.indent {
+	margin-left: 1em;
+}
 
 legend {
 	font-weight: bold; 

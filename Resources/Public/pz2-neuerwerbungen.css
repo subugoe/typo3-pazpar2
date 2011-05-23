@@ -20,14 +20,17 @@ form.pz2-searchForm li.inline {
 	display: inline;
 }
 
-form.pz2-searchForm li.indent {
+form.pz2-searchForm li.indent input {
 	margin-left: 1em;
 }
 
 legend {
-	font-weight: bold; 
+	font-weight: bold;
 }
 
+label {
+	margin-right: 0.5em;
+}
 
 .pz2-months {
 	font-size: 133%;

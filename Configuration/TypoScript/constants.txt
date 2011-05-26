@@ -1,0 +1,3 @@
+plugin.tx_pazpar2_pazpar2 {
+	pageURL = http://localhost/search/
+}

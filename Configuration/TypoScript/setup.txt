@@ -1,0 +1,24 @@
+pazpar2searchplugin = PAGE
+pazpar2searchplugin {
+	typeNum = 9004
+	10 = TEXT
+	10.value (
+<?xml version="1.0" encoding="UTF-8" ?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+	<ShortName>Lib AAC</ShortName>
+	<Description>Search G&amp;ouml;ttinger Universit&amp;auml;tskatalog (GUK)</Description>
+	<Tags>G&amp;ouml;ttinger Universit&amp;auml;tskatalog (GUK)</Tags>
+	<Image width="16" height="16" type="image/x-icon"></Image>
+	<Url type="text/html" method="GET" template="{$plugin.tx_pazpar2_pazpar2.pageURL}?tx_pazpar2_pazpar2[controller]=Pazpar2&amp;tx_pazpar2_pazpar2[queryString]={searchTerms}"/>
+	<InputEncoding>UTF-8</InputEncoding>
+	<AdultContent>false</AdultContent>
+</OpenSearchDescription>
+)
+	config {
+		disableAllHeaderCode = 1
+		additionalHeaders = Content-type:text/xml;charset=utf-8
+		xhtml_cleaning = 0
+		admPanel = 0
+		charset = utf-8
+	}
+}

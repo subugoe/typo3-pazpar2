@@ -19,6 +19,23 @@
 	line-height: 150%;
 }
 
+.pz2-searchField {
+	-moz-border-bottom-colors: none;
+	-moz-border-image: none;
+	-moz-border-left-colors: none;
+	-moz-border-right-colors: none;
+	-moz-border-top-colors: none;
+	background: f3f5f9;
+	border-color: #b3b3b3 #d2d2d2 #d2d2d2 #b3b3b3;
+	border-style: solid;
+	border-width: 1px;
+	color: #333333;
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-size: 11px;
+	margin-right: 6px;
+	padding: 4px 5px;
+}
+
 .pz2-basic .pz2-searchField {
 	width: 400px;
 }
@@ -41,6 +58,42 @@
 
 .pz2-searchForm.pz2-basic label, .pz2-searchForm.pz2-basic .pz2-extraFields {
 	display: none;
+}
+
+.pz2-submitButton {
+	height: 33px;
+	min-width: 99px;
+	-moz-border-bottom-colors: none;
+	-moz-border-image: none;
+	-moz-border-left-colors: none;
+	-moz-border-right-colors: none;
+	-moz-border-top-colors: none;
+	background: url(data:;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAfCAYAAAAmyadiAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAFFJREFUeNpEjcENwDAIAxHDdP/lAAN5FLdN+jmdLWSkui/tKtE6SEAUmaIRNARt4E6DD2xg7uyIN9qOp/Pg8RNjr4DzvyUffc/HutZgtdwCDACV2Vpj5GKthgAAAABJRU5ErkJggg==) repeat-x scroll 0 100% #f3f6fb;
+	border-color: #d4d4d4 #b4b4b4 #b4b4b4 #d4d4d4;
+	border-radius: 3px 3px 3px 3px;
+	border-right: 1px solid #b4b4b4;
+	border-style: solid;
+	border-width: 1px;
+	color: #555555;
+	cursor: pointer;
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-size: 11px;
+	font-style: normal;
+	font-weight: bold;
+	line-height: 100%;
+	padding: 3px 12px;
+	text-align: center;
+	text-decoration: none;
+	text-shadow: 0 1px rgba(255, 255, 255, 0.75);
+	text-transform: uppercase;
+}
+
+.pz2-extended .pz2-submitButton {
+	height: 20px;
+}
+
+.pz2-submitButton:active {
+        background: url(data:;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAfCAYAAAAmyadiAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAE9JREFUeNpMzUsKwEAIA9Ag43/R+9+2RmiZzSNmEQHgET0KUTsQMycGcZ8UEZDMvFORrGIiTeqjq++uSfLM2C7/vU0zGnzknN+/iw6vAAMA9dIDPHw3gBIAAAAASUVORK5CYII=) repeat-x scroll 0 100% #e7e9ed;
 }
 
 .pz2-form-animating .pz2-extraFields {

@@ -1536,9 +1536,9 @@ function addExtendedSearchForLink (event) {
 	var formContainer = jQuery('.pz2-mainForm');
 	jQuery(formContainer).parent('form').removeClass('pz2-basic').addClass('pz2-extended');
 
-	// move the submit button
-	var submitButton = jQuery('.pz2-submitButton', formContainer);
-	jQuery('.pz2-field-date').append(submitButton);
+	// move the controls
+	var controls = jQuery('.pz2-formControls', formContainer);
+	jQuery('.pz2-field-date').append(controls);
 
 	// switch the link to a simple search link
 	jQuery(this).unbind().click(removeExtendedSearchForLink).empty().text(localise('einfache Suche'));
@@ -1563,9 +1563,9 @@ function removeExtendedSearchForLink (event) {
 	formContainer.addClass('pz2-form-animating');
 	formContainer.parent('form').removeClass('pz2-extended').addClass('pz2-basic');
 
-	// move the submit button
-	var submitButton = jQuery('.pz2-submitButton', formContainer);
-	jQuery('#pz2-field-all').after(submitButton);
+	// move the controls
+	var controls = jQuery('.pz2-formControls', formContainer);
+	jQuery('#pz2-field-all').after(controls);
 
 	// switch the link to an extended search link
 	jQuery(this).unbind().click(addExtendedSearchForLink).empty().text(localise('erweiterte Suche'));

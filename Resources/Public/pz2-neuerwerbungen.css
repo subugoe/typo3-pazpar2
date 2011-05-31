@@ -2,35 +2,32 @@
 	margin-top: 1em;
 }
 
-fieldset {
+.pz2-fieldsets fieldset {
 	position: relative;
 }
 
-fieldset ul {
-	margin-left: 0.5em;
-}
-
-form.pz2-searchForm ul {
+.pz2-fieldsets fieldset ul {
 	list-style-type: none;
-	padding-left: 0em;
+	margin: 0 0 0 0.5em;
+	padding: 0;
 }
 
-
-form.pz2-searchForm li.inline {
+.pz2-fieldsets li.inline {
 	display: inline;
 }
 
-form.pz2-searchForm li.indent input {
+.pz2-fieldsets li.indent input {
 	margin-left: 1em;
 }
 
-legend {
+.pz2-fieldsets legend {
 	font-weight: bold;
 }
 
-label {
+.pz2-fieldsets label {
 	margin-right: 0.5em;
 }
+
 
 .pz2-months {
 	font-size: 133%;

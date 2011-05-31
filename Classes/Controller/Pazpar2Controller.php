@@ -167,6 +167,7 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		$jsCommand .= 'useZDB = ' . (($this->conf['useZDB']) ? 'true' : 'false') . '; ';
 		$jsCommand .= 'ZDBUseClientIP = ' . ((!$this->conf['ZDBIP']) ? 'true' : 'false') . '; ';
 		$jsCommand .= 'useHistogramForYearFacets = ' . (($this->conf['useHistogramForYearFacets'] == '1') ? 'true' : 'false') . ';';
+		$jsCommand .= 'clientIPAddress = "' . $_SERVER["REMOTE_ADDR"] . '";';
 		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
 		$scriptTag->addAttribute('type', 'text/javascript');
 		$scriptTag->setContent($jsCommand);

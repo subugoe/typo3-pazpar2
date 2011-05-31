@@ -597,8 +597,16 @@ private function catalogueLink ($locationAll) {
 	$matches = Null;
 
 	if (preg_match('/z3950.gbv.de:20012\/subgoe_opc/', $targetURL) > 0) {
-		// Old GBV Z39.50 server
-		$catalogueURL = 'http://gso.gbv.de/DB=2.1/PPNSET?PPN=' . $PPN;
+		// Old GBV Z39.50 server for SUB Opac.
+		if (preg_match('/^134\.76\./', $_SERVER["REMOTE_ADDR"]) > 0) {
+			/* Special case: If the database is Göttingen’s Opac and the user seems
+								to be in Göttingen, then link to SUB Göttingen Opac. */
+			$catalogueURL = 'http://opac.sub.uni-goettingen.de/DB=1/PPN?PPN=' . $PPN;
+		}
+		else {
+			// General case: Link to GVK.
+			$catalogueURL = 'http://gso.gbv.de/DB=2.1/PPNSET?PPN=' . $PPN;
+		}
 	}
 	else if (preg_match('/sru.gbv.de\/natliz/', $targetURL) > 0) {
 		// match Nationallizenzen natliz and natlizzss on new GBV SRU server: no link
@@ -606,8 +614,16 @@ private function catalogueLink ($locationAll) {
 	else if (preg_match('/sru.gbv.de\/([a-zA-Z0-9-]*)/', $targetURL, $matches) > 0) {
 		// New GBV SRU server
 		$databaseName = $matches[1];
-		$databaseID = $this->GBVDatabaseIDs[$databaseName];
-		$catalogueURL = 'http://gso.gbv.de/' . $databaseID .'/PPNSET?PPN=' . $PPN;
+		if ($databaseName == 'opac-de-7' && preg_match('/^134\.76\./', $_SERVER["REMOTE_ADDR"]) > 0) {
+			/* Special case: If the database is Göttingen’s Opac and the user seems
+								to be in Göttingen, then link to SUB Göttingen Opac. */
+			$catalogueURL = 'http://opac.sub.uni-goettingen.de/DB=1/PPN?PPN=' . $PPN;
+		}
+		else {
+			// General case: Link to GVK.
+			$databaseID = $this->GBVDatabaseIDs[$databaseName];
+			$catalogueURL = 'http://gso.gbv.de/' . $databaseID .'/PPNSET?PPN=' . $PPN;
+		}
 	}
 	else if (preg_match('/gso.gbv.de\/sru\/DB=1.5/', $targetURL) > 0) {
 		// match Nationallizenzen 1.50 and 1.55 on old GBV SRU server: no link

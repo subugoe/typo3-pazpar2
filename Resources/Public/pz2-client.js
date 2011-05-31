@@ -62,6 +62,7 @@ var germanTerms = {
 	'detail-label-doi': 'DOI',
 	'detail-label-acronym-doi': 'Document Object Identifier: Mit dem Link zu dieser Nummer kann das Dokument im Netz gefunden werden.',
 	'detail-label-doi-plural': 'DOIs',
+	'detail-label-creator': 'erfaßt von',
 	'detail-label-verfügbarkeit': 'Verfügbarkeit',
 	'elektronisch': 'digital',
 	'gedruckt': 'gedruckt',
@@ -149,6 +150,7 @@ var englishTerms = {
 	'detail-label-doi': 'DOI',
 	'detail-label-acronym-doi': 'Document Object Identifier: Use the link to load the document.',
 	'detail-label-doi-plural': 'DOIs',
+	'detail-label-creator': 'catalogued by',
 	'detail-label-verfügbarkeit': 'Availability',
 	'elektronisch': 'electronic',
 	'gedruckt': 'printed',
@@ -2777,6 +2779,7 @@ function renderDetails(recordID) {
 		appendInfoToContainer( detailLineAuto('series-title'), detailsList );
 		appendInfoToContainer( ISSNsDetailLine(), detailsList );
 		appendInfoToContainer( detailLineAuto('doi'), detailsList );
+		appendInfoToContainer( detailLineAuto('creator'), detailsList );
 		appendInfoToContainer( locationDetails(), detailsList );
 		appendGoogleBooksElementTo(detailsList);
 		if ( useZDB == true ) {

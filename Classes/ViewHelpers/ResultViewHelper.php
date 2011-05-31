@@ -288,6 +288,7 @@ private function renderDetails ($result) {
 	$this->appendInfoToContainer( $this->detailLineAuto('series-title', $result), $detailsList);
 	$this->appendInfoToContainer( $this->ISSNsDetailLine($result), $detailsList);
 	$this->appendInfoToContainer( $this->detailLineAuto('doi', $result), $detailsList);
+	$this->appendInfoToContainer( $this->detailLineAuto('creator', $result), $detailsList);
 
 	$this->appendInfoToContainer( $this->locationDetails($result), $detailsList);
 	$this->addZDBInfoIntoElement( $detailsList, $result );

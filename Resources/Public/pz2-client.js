@@ -1177,12 +1177,15 @@ function facetListForType (type, preferOriginalFacets) {
 			return [axis.min, axis.max];
 		}
 
+		// Use the colour of term list titles for the histogram.
+		var graphColour = jQuery('.pz2-termList h5').css('color');
+
 		var graphOptions = {
 			'series': {
 				'bars': {
 					'show': true,
 					'fill': true,
-					'fillColor': '#b5b0cc'
+					'fillColor': graphColour
 				}
 			},
 			'xaxis':  {
@@ -1206,7 +1209,7 @@ function facetListForType (type, preferOriginalFacets) {
 			}
 		};
 		
-		var plot = jQuery.plot(jGraphDiv , [{'data': graphData, 'color': '#b5b0cc'}], graphOptions);
+		var plot = jQuery.plot(jGraphDiv , [{'data': graphData, 'color': graphColour}], graphOptions);
 
 		jGraphDiv.bind('plotselected', function(event, ranges) {
 			var firstYear = Math.floor(ranges.xaxis.from);

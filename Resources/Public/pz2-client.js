@@ -782,15 +782,16 @@ function display () {
 				this.appendChild(pageNumbersContainer);
 				pageNumbersContainer.setAttribute('class', 'pz2-pageNumbers pz2-pageCount-' + pages);
 
-				var prevLink = document.createElement('a');
-				pageNumbersContainer.appendChild(prevLink);
-				prevLink.appendChild(document.createTextNode('«'));
-				prevLink.setAttribute('class', 'pz2-prev');
+				var previous = document.createElement('span');
 				if (curPage > 1) {
-					prevLink.setAttribute('href', '#');
-					prevLink.setAttribute('onclick', 'pagerPrev();return false;');
-					prevLink.setAttribute('title', localise('Vorige Trefferseite anzeigen'));
+					previous = document.createElement('a');
+					previous.setAttribute('href', '#');
+					previous.setAttribute('onclick', 'pagerPrev();return false;');
+					previous.setAttribute('title', localise('Vorige Trefferseite anzeigen'));
 				}
+				previous.setAttribute('class', 'pz2-prev');
+				previous.appendChild(document.createTextNode('«'));
+				pageNumbersContainer.appendChild(previous);
 
 				var pageList = document.createElement('ol');
 				pageList.setAttribute('class', 'pz2-pages');
@@ -815,15 +816,16 @@ function display () {
 					}
 				}
 
-				var nextLink = document.createElement('a');
-				pageNumbersContainer.appendChild(nextLink);
-				nextLink.appendChild(document.createTextNode('»'));
-				nextLink.setAttribute('class', 'pz2-next');
+				var nextLink = document.createElement('span');
 				if (pages - curPage > 0) {
+					nextLink = document.createElement('a');
 					nextLink.setAttribute('href', '#');
 					nextLink.setAttribute('onclick', 'pagerNext();return false;');
 					nextLink.setAttribute('title', localise('Nächste Trefferseite anzeigen'));
 				}
+				nextLink.setAttribute('class', 'pz2-next');
+				nextLink.appendChild(document.createTextNode('»'));
+				pageNumbersContainer.appendChild(nextLink);
 				
 				// add record count information
 				var recordCountDiv = document.createElement('div');

@@ -213,6 +213,7 @@
 .pz2-termList ol {
 	list-style-type: none;
 	margin-bottom: 1em;
+	padding: 0;
 }
 
 .pz2-termList li a {
@@ -305,6 +306,7 @@
 
 .pz2-pager ol {
 	list-style-type: none;
+	padding: 0px;
 	display: inline;
 }
 
@@ -312,7 +314,7 @@
 	display: inline;
 }
 
-.pz2-pager a {
+.pz2-pager a, .pz2-prev, .pz2-next {
 	padding: 0.3em;
 }
 

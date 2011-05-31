@@ -8,7 +8,7 @@ pazpar2searchplugin {
 	<ShortName>{$plugin.tx_pazpar2_pazpar2.searchplugin.shortname}</ShortName>
 	<Description>{$plugin.tx_pazpar2_pazpar2.searchplugin.description}</Description>
 	<Tags>library catalogue</Tags>
-	<Url type="text/html" method="GET" template="{$plugin.tx_pazpar2_pazpar2.searchplugin.pageURL}?tx_pazpar2_pazpar2[controller]=Pazpar2&amp;tx_pazpar2_pazpar2[queryString]={searchTerms}"/>
+	<Url type="text/html" method="GET" template="{$plugin.tx_pazpar2_pazpar2.searchplugin.pageURL}?tx_pazpar2_pazpar2[controller]=Pazpar2&amp;tx_pazpar2_pazpar2[useJS]=yes&amp;tx_pazpar2_pazpar2[queryString]={searchTerms}"/>
 	<InputEncoding>UTF-8</InputEncoding>
 </OpenSearchDescription>
 )

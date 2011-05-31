@@ -16,7 +16,7 @@ var showResponseType = '';
 
 	It’s crucial for the date histogram that 'date' is the last item in this list.
 */
-var termListNames = ['xtargets', 'medium', 'language', 'author', 'filterDate'];
+var termListNames = ['xtargets', 'medium', 'language', 'filterDate'];
 var termListMax = {'xtargets': 25, 'medium': 10, 'language': 6, 'author': 10, 'filterDate': 10};
 
 if (document.location.hash == '#useproxy') {

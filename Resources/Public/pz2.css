@@ -413,6 +413,7 @@
 /* Cancel the clear done for list items in the main list on lists in .pz2-details. */
 #pz2-results ol.pz2-resultList .pz2-details li {
 	clear: none;
+	border-left: 0px none;
 }
 
 

@@ -3412,7 +3412,7 @@ var languageNames = {
 		'vol': 'Volapük',
 		'wak': 'Wakash-Sprachen',
 		'wal': 'Walamo',
-		'wel': 'Walisisch (Kymrisch)',
+		'wel': 'Walisisch',
 		'wln': 'Wallonisch',
 		'war': 'Waray',
 		'was': 'Washo',

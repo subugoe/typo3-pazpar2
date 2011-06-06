@@ -76,7 +76,7 @@
 	-moz-border-left-colors: none;
 	-moz-border-right-colors: none;
 	-moz-border-top-colors: none;
-	background: url(data:;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAfCAYAAAAmyadiAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAFFJREFUeNpEjcENwDAIAxHDdP/lAAN5FLdN+jmdLWSkui/tKtE6SEAUmaIRNARt4E6DD2xg7uyIN9qOp/Pg8RNjr4DzvyUffc/HutZgtdwCDACV2Vpj5GKthgAAAABJRU5ErkJggg==) repeat-x scroll 0 100% #f3f6fb;
+	background: url(button_shade_large.png) repeat-x scroll 0 100% #f3f6fb;
 	border-style: solid;
 	border-width: 1px;
 	border-color: #d4d4d4 #b4b4b4 #b4b4b4 #d4d4d4;
@@ -97,7 +97,7 @@
 }
 
 .pz2-submitButton:active {
-    background: url(data:;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAfCAYAAAAmyadiAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAE9JREFUeNpMzUsKwEAIA9Ag43/R+9+2RmiZzSNmEQHgET0KUTsQMycGcZ8UEZDMvFORrGIiTeqjq++uSfLM2C7/vU0zGnzknN+/iw6vAAMA9dIDPHw3gBIAAAAASUVORK5CYII=) repeat-x scroll 0 100% #e7e9ed;
+    background: url(button_shade_large_click.png) repeat-x scroll 0 100% #e7e9ed;
 }
 
 .pz2-extendedLink {

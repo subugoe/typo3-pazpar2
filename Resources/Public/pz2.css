@@ -1,5 +1,6 @@
 #pazpar2 a {
-	text-decoration:none;
+	font-weight: normal;
+	text-decoration: none;
 }
 
 #pazpar2 ol {
@@ -245,7 +246,7 @@
 
 .pz2-facetCount {
 	color: #999;
-	margin-left: 0.3em;
+	margin-left: 0.4em;
 }
 
 .pz2-activeFacet {
@@ -411,7 +412,7 @@
 }
 
 .pz2-details ul {
-	padding-left: 2em;
+	padding-left: 1.5em;
 }
 
 /* Cancel the clear done for list items in the main list on lists in .pz2-details. */

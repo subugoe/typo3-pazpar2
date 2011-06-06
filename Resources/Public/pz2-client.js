@@ -1178,7 +1178,7 @@ function facetListForType (type, preferOriginalFacets) {
 		}
 
 		// Use the colour of term list titles for the histogram.
-		var graphColour = jQuery('.pz2-termList h5').css('color');
+		var graphColour = jQuery('.pz2-termList-xtargets a').css('color');
 
 		var graphOptions = {
 			'series': {
@@ -2299,14 +2299,14 @@ function renderDetails(recordID) {
 					}
 
 					if (electronicInfos) {
-						var electronicHeading = document.createElement('h4');
+						var electronicHeading = document.createElement('h5');
 						container.appendChild(electronicHeading);
 						electronicHeading.appendChild(document.createTextNode(localise('elektronisch')));
 						container.appendChild(electronicInfos);
 					}
 
 					if (printInfos) {
-						var printHeading = document.createElement('h4');
+						var printHeading = document.createElement('h5');
 						container.appendChild(printHeading);
 						printHeading.appendChild(document.createTextNode(localise('gedruckt')));
 						container.appendChild(printInfos);

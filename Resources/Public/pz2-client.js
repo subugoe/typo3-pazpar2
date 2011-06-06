@@ -1752,7 +1752,8 @@ function toggleDetails (prefixRecId) {
 
 	if (record.detailsDivVisible) {
 		// Detailed record information is present: remove it
-		jQuery('#det_'+ recordIDHTML).slideUp('fast');
+		var detailsElement = document.getElementById('det_' + recordIDHTML);
+		jQuery(detailsElement).slideUp('fast');
 		record.detailsDivVisible = false;
 		jQuery(parent).removeClass('pz2-detailsVisible');
 	}

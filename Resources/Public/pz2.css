@@ -168,8 +168,7 @@
 	border-left: 1px solid transparent;
 }
 
-#pz2-results ol.pz2-resultList li.pz2-detailsVisible,
-#pz2-results ol.pz2-resultList li:hover {
+#pz2-results ol.pz2-resultList li.pz2-detailsVisible {
 	border-left: 1px solid #eee;
 }
 

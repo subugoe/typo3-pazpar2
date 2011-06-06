@@ -92,12 +92,17 @@
 	text-transform: uppercase;
 }
 
-.pz2-extended .pz2-submitButton {
-	height: 23px;
-}
-
 .pz2-submitButton:active {
     background: url(button_shade_large_click.png) repeat-x scroll 0 100% #e7e9ed;
+}
+
+.pz2-extended .pz2-submitButton {
+	height: 23px;
+	background: url(button_shade_small.png);
+}
+
+.pz2-extended .pz2-submitButton:active {
+	background: url(button_shade_small_click.png);
 }
 
 .pz2-extendedLink {

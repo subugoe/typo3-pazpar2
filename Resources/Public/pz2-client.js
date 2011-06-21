@@ -1988,37 +1988,21 @@ function renderDetails(recordID) {
 				1:	DD element with a list of ISSNs
 	*/
 	var ISSNsDetailLine = function () {
+		var ISSNTypes = {'issn': '', 'pissn': 'gedruckt', 'eissn': 'elektronisch'};
 		var ISSNList = [];
-		if (data['md-issn']) {
-			ISSNList = data['md-issn'];
-		}
-		for (var pISSNIndex in data['md-pissn']) {
-			var pISSN = data['md-pissn'][pISSNIndex].substr(0,9);
-			var pISSNExists = false;
-			for (var existingISSNIndex in ISSNList) {
-				if (pISSN == ISSNList[existingISSNIndex].substr(0,9)) {
-					pISSNExists = true;
-					break;
+		for (var ISSNTypeIndex in ISSNTypes) {
+			var fieldName = 'md-' + ISSNTypeIndex;
+			for (var ISSNIndex in data[fieldName]) {
+				var ISSN = data[fieldName][ISSNIndex].substr(0,9);
+				if (jQuery.inArray(ISSN, ISSNList) == -1) {
+					if (ISSNTypes[ISSNTypeIndex] !== '') {
+						ISSN += ' (' + localise(ISSNTypeIndex) + ')';
+					}
+					ISSNList.push(ISSN);
 				}
 			}
-			if (!pISSNExists) {
-				ISSNList.push(pISSN + ' (' + localise('gedruckt') + ')');
-			}
 		}
-		for (var eISSNIndex in data['md-eissn']) {
-			var eISSN = data['md-eissn'][eISSNIndex].substr(0,9);
-			var eISSNExists = false;
-			for (var existingISSNIndex2 in ISSNList) {
-				if (eISSN == ISSNList[existingISSNIndex2].substr(0,9)) {
-					eISSNExists = true;
-					break;
-				}
-			}
-			if (!eISSNExists) {
-				ISSNList.push(eISSN + ' (' + localise('elektronisch') + ')');
-			}
-		}
-
+		
 		var infoElements;
 		if (ISSNList.length > 0) {
 			infoElements = [document.createTextNode(ISSNList.join(', '))];

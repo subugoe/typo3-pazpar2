@@ -932,7 +932,7 @@ function my_onstat(data) {
 	// Display progress bar.
 	var progress = (data.clients - data.activeclients) / data.clients * 100;
 	var opacityValue = (progress == 100) ? 0 : 1;
-	jQuery('.pz2-pager .pz2-progressIndicator').animate({width: progress + '%', opacity: opacityValue}, 'slow');
+	jQuery('.pz2-pager .pz2-progressIndicator').animate({'width': progress + '%', 'opacity': opacityValue}, 'slow');
 
 	// Write out status information.
 	var statDiv = document.getElementById('pz2-stat');
@@ -1271,8 +1271,10 @@ function facetListForType (type, preferOriginalFacets) {
 			headingText += ' [' + localise('gefiltert') + ']';
 		}
 		heading.appendChild(document.createTextNode(headingText));
-		
-		if (useHistogramForYearFacets && type == 'filterDate') {
+
+		// Display histogram if set up and able to do so.
+		if (useHistogramForYearFacets && type == 'filterDate'
+			&& (!jQuery.browser.msie || jQuery.browser.version >= 9)) {
 			appendFacetHistogramForDatesTo(terms, container);
 		}
 		else {
@@ -1390,8 +1392,6 @@ function domReady ()  {
 
 	jQuery('.pz2-searchForm').each( function(index, form) {
 			form.onsubmit = onFormSubmitEventHandler;
-			form.action = null;
-			form.method = null;
 			jQuery('.pz2-extendedLink', form).click(addExtendedSearchForLink);
 		}
 	);
@@ -1406,9 +1406,8 @@ function domReady ()  {
 
 /*	onFormSubmitEventHandler
 	Called when the search button is pressed.
-	input:	event - of the mouse click
 */
-function onFormSubmitEventHandler (event) {
+function onFormSubmitEventHandler () {
 	triggerSearchForForm(event.target);
 	return false;
 }

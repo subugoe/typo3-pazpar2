@@ -1459,7 +1459,7 @@ function triggerSearchForForm (form) {
 	var addSearchStringForFieldToArray = function (fieldName, array) {
 		var searchString = jQuery('#pz2-field-' + fieldName, form).val()
 		if (searchString && searchString != '') {
-			searchString = searchString.trim();
+			searchString = jQuery.trim(searchString);
 			if (fieldName != 'all') {
 				if (fieldName == 'title' && jQuery('#pz2-checkbox-journal:checked', form).length > 0) {
 					// Special case for title restricted to journals only.
@@ -2776,7 +2776,7 @@ function renderDetails(recordID) {
 		// duplicating persons listed in title-responsiblity already.
 		data['md-author-clean'] = [];
 		for (var authorIndex in data['md-author']) {
-			var authorName = data['md-author'][authorIndex].split(',')[0].trim();
+			var authorName = jQuery.trim(data['md-author'][authorIndex].split(',')[0]);
 			for (var responsibilityIndex in data['md-title-responsibility']) {
 				if (!data['md-title-responsibility'][responsibilityIndex].match(authorName)) {
 					data['md-author-clean'].push(data['md-author'][authorIndex]);
@@ -2785,7 +2785,7 @@ function renderDetails(recordID) {
 		}
 		data['md-other-person-clean'] = [];
 		for (var personIndex in data['md-other-person']) {
-			var personName = data['md-other-person'][personIndex].split(',')[0].trim();
+			var personName = jQuery.trim(data['md-other-person'][personIndex].split(',')[0]);
 			for (var responsibilityIndex in data['md-title-responsibility']) {
 				if (!data['md-title-responsibility'][responsibilityIndex].match(personName)) {
 					data['md-other-person-clean'].push(data['md-other-person'][personIndex]);

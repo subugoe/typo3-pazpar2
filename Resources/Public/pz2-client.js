@@ -372,11 +372,11 @@ function turnIntoNewWindowLink (link) {
 		link.setAttribute('target', 'pz2-linkTarget');
 
 		var newTitle = localise('Erscheint in separatem Fenster.');
-		if (link.hasAttribute('title')) {
-			var oldTitle = link.getAttribute('title');
+		if (link.title) {
+			var oldTitle = link.title;
 			newTitle = oldTitle + ' (' + newTitle + ')';
 		}
-		link.setAttribute('title', newTitle);
+		link.title = newTitle;
 	}
 }
 
@@ -788,8 +788,8 @@ function display () {
 				if (curPage > 1) {
 					previous = document.createElement('a');
 					previous.setAttribute('href', '#');
-					previous.setAttribute('onclick', 'pagerPrev();return false;');
-					previous.setAttribute('title', localise('Vorige Trefferseite anzeigen'));
+					previous.onclick = new Function('pagerPrev();return false;');
+					previous.title = localise('Vorige Trefferseite anzeigen');
 				}
 				jQuery(previous).addClass('pz2-prev');
 				previous.appendChild(document.createTextNode('«'));
@@ -808,7 +808,7 @@ function display () {
 					if(pageNumber != curPage) {
 						var linkElement = document.createElement('a');
 						linkElement.setAttribute('href', '#');
-						linkElement.setAttribute('onclick', 'showPage(' + pageNumber + ');return false;');
+						linkElement.onclick = new Function('showPage(' + pageNumber + ');return false;');
 						linkElement.appendChild(document.createTextNode(pageNumber));
 						pageItem.appendChild(linkElement);
 					}
@@ -822,8 +822,8 @@ function display () {
 				if (pages - curPage > 0) {
 					nextLink = document.createElement('a');
 					nextLink.setAttribute('href', '#');
-					nextLink.setAttribute('onclick', 'pagerNext();return false;');
-					nextLink.setAttribute('title', localise('Nächste Trefferseite anzeigen'));
+					nextLink.onclick = new Function('pagerNext();return false;');
+					nextLink.title = localise('Nächste Trefferseite anzeigen');
 				}
 				jQuery(nextLink).addClass('pz2-next');
 				nextLink.appendChild(document.createTextNode('»'));
@@ -872,7 +872,7 @@ function display () {
 		LI.appendChild(linkElement);
 		linkElement.setAttribute('href', '#');
 		jQuery(linkElement).addClass('pz2-recordLink');
-		linkElement.setAttribute('onclick', 'toggleDetails(this.id);return false;');
+		linkElement.onclick = new Function('toggleDetails(this.id);return false;');
 		linkElement.setAttribute('id', 'rec_' + HTMLIDForRecordData(hit));
 
 		var iconElement = document.createElement('span');
@@ -886,7 +886,7 @@ function display () {
 		}
 
 		jQuery(iconElement).addClass('pz2-mediaIcon ' + mediaClass);
-		iconElement.setAttribute('title', localise(mediaClass, mediaNames));
+		iconElement.title = localise(mediaClass, mediaNames);
 
 		appendInfoToContainer(titleInfo(), linkElement);
 		var authors = authorInfo();
@@ -1078,8 +1078,7 @@ function facetListForType (type, preferOriginalFacets) {
 			var link = document.createElement('a');
 			item.appendChild(link);
 			link.setAttribute('href', '#');
-			link.setAttribute('onclick',
-				'limitResults("' + type + '","' + facetName + '");return false;');
+			link.onclick = new Function('limitResults("' + type + '","' + facetName + '");return false;');
 
 			// 'Progress bar'
 			var progressBar = document.createElement('div');
@@ -1112,7 +1111,7 @@ function facetListForType (type, preferOriginalFacets) {
 					count.appendChild(document.createTextNode('+'));
 					var titleString = localise('In diesem Katalog gibt es noch # weitere Treffer.');
 					titleString = titleString.replace('#', hitOverflow);
-					item.setAttribute('title', titleString);
+					item.title = titleString;
 				}
 			}
 
@@ -1132,8 +1131,7 @@ function facetListForType (type, preferOriginalFacets) {
 						item.appendChild(cancelLink);
 						cancelLink.setAttribute('href', '#');
 						jQuery(cancelLink).addClass('pz2-facetCancel');
-						cancelLink.setAttribute('onclick',
-							'delimitResults("' + type + '","' + facetName + '"); return false;');
+						cancelLink.onclick = new Function('delimitResults("' + type + '","' + facetName + '"); return false;');
 						cancelLink.appendChild(document.createTextNode(localise('Filter aufheben')));
 						break;
 					}
@@ -1151,7 +1149,7 @@ function facetListForType (type, preferOriginalFacets) {
 			container.appendChild(cancelLink);
 			cancelLink.setAttribute('href', '#');
 			jQuery(cancelLink).addClass('pz2-facetCancel pz2-activeFacet');
-			cancelLink.setAttribute('onclick', 'delimitResults("filterDate"); return false;');
+			cancelLink.onclick = new Function('delimitResults("filterDate"); return false;');
 			var yearRange = filterArray['filterDate'][0].from + '-' + filterArray['filterDate'][0].to;
 			var cancelLinkText = localise('Filter # aufheben').replace('#', yearRange);
 			cancelLink.appendChild(document.createTextNode(cancelLinkText));
@@ -1361,7 +1359,7 @@ function my_onbytarget(data) {
 		td = document.createElement('td');
 		tr.appendChild(td);
 		td.appendChild(document.createTextNode(data[i].name));
-		td.setAttribute('title', data[i].id)
+		td.title = data[i].id;
 		td = document.createElement('td');
 		tr.appendChild(td);
 		td.appendChild(document.createTextNode(data[i].records));
@@ -1865,7 +1863,7 @@ function renderDetails(recordID) {
 				if (localise(acronymKey) !== acronymKey) {
 					// acronym: add acronym element
 					var acronymElement = document.createElement('acronym');
-					acronymElement.setAttribute('title', localise(acronymKey));
+					acronymElement.title = localise(acronymKey);
 					acronymElement.appendChild(labelNode);
 					labelNode = acronymElement;
 				}
@@ -2271,7 +2269,7 @@ function renderDetails(recordID) {
 				var availabilityLabel = document.createElement('a');
 				var ZDBLinkURL = 'http://services.d-nb.de/fize-service/gvr/html-service.htm?' + parameters;
 				availabilityLabel.setAttribute('href', ZDBLinkURL);
-				availabilityLabel.setAttribute('title', localise('Informationen bei der Zeitschriftendatenbank'));
+				availabilityLabel.title = localise('Informationen bei der Zeitschriftendatenbank');
 				turnIntoNewWindowLink(availabilityLabel);
 				availabilityLabel.appendChild(document.createTextNode(localise('detail-label-verfügbarkeit') + ':'));
 
@@ -2406,7 +2404,7 @@ function renderDetails(recordID) {
 				jQuery(closeBoxLink).css({display:'block', height:'16px', width:'16px',
 									position:'absolute', right:'2px', top:'2px', background:'#666'})
 				closeBoxLink.setAttribute('href', '#');
-				closeBoxLink.setAttribute('onclick', 'javascript:jQuery("#' + previewContainerDivName + '").hide(200);return false;');
+				closeBoxLink.onclick = new Function('javascript:jQuery("#' + previewContainerDivName + '").hide(200);return false;');
 
 				previewDiv = document.createElement('div');
 				previewDiv.setAttribute('id', previewDivName);
@@ -2672,7 +2670,7 @@ function renderDetails(recordID) {
 				turnIntoNewWindowLink(linkElement);
 				jQuery(linkElement).addClass('pz2-detail-catalogueLink')
 				var linkTitle = localise('Ansehen und Ausleihen bei:') + ' ' + targetName;
-				linkElement.setAttribute('title', linkTitle);
+				linkElement.title = linkTitle;
 				linkElement.appendChild(document.createTextNode(targetName));
 			}
 

@@ -666,7 +666,7 @@ function display () {
 
 		if (fieldContent !== undefined && container) {
 			var span = document.createElement('span');
-			span.setAttribute('class', 'pz2-' + fieldName);
+			jQuery(span).addClass('pz2-' + fieldName);
 			span.appendChild(document.createTextNode(fieldContent));
 		
 			if (prepend) {
@@ -691,11 +691,11 @@ function display () {
 	*/
 	var titleInfo = function() {
 		var titleCompleteElement = document.createElement('span');
-		titleCompleteElement.setAttribute('class', 'pz2-title-complete');
+		jQuery(titleCompleteElement).addClass('pz2-title-complete');
 
 		var titleMainElement = document.createElement('span');
 		titleCompleteElement.appendChild(titleMainElement);
-		titleMainElement.setAttribute('class', 'pz2-title-main');
+		jQuery(titleMainElement).addClass('pz2-title-main');
 		markupForField('title', titleMainElement);
 		markupForField('multivolume-title', titleMainElement, ' ');
 
@@ -741,7 +741,7 @@ function display () {
 			}
 		
 			var output = document.createElement('span');
-			output.setAttribute('class', 'pz2-item-responsibility');
+			jQuery(output).addClass('pz2-item-responsibility');
 			output.appendChild(document.createTextNode(outputText + extraFullStop))
 		}
 		
@@ -755,7 +755,7 @@ function display () {
 	*/
 	var appendJournalInfo = function () {
 		var output = document.createElement('span');
-		output.setAttribute('class', 'pz2-journal');
+		jQuery(output).addClass('pz2-journal');
 
 		var journalTitle = markupForField('journal-title', linkElement, ' ' + localise('In') + ': ');
 		if (journalTitle) {
@@ -782,7 +782,7 @@ function display () {
 				// create pager
 				var pageNumbersContainer = document.createElement('div');
 				this.appendChild(pageNumbersContainer);
-				pageNumbersContainer.setAttribute('class', 'pz2-pageNumbers pz2-pageCount-' + pages);
+				jQuery(pageNumbersContainer).addClass('pz2-pageNumbers pz2-pageCount-' + pages);
 
 				var previous = document.createElement('span');
 				if (curPage > 1) {
@@ -791,12 +791,12 @@ function display () {
 					previous.setAttribute('onclick', 'pagerPrev();return false;');
 					previous.setAttribute('title', localise('Vorige Trefferseite anzeigen'));
 				}
-				previous.setAttribute('class', 'pz2-prev');
+				jQuery(previous).addClass('pz2-prev');
 				previous.appendChild(document.createTextNode('«'));
 				pageNumbersContainer.appendChild(previous);
 
 				var pageList = document.createElement('ol');
-				pageList.setAttribute('class', 'pz2-pages');
+				jQuery(pageList).addClass('pz2-pages');
 				pageNumbersContainer.appendChild(pageList);
 		
 				var dotsItem = document.createElement('li');
@@ -813,7 +813,7 @@ function display () {
 						pageItem.appendChild(linkElement);
 					}
 					else {
-						pageItem.setAttribute('class', 'pz2-currentPage');
+						jQuery(pageItem).addClass('pz2-currentPage');
 						pageItem.appendChild(document.createTextNode(pageNumber));
 					}
 				}
@@ -825,13 +825,13 @@ function display () {
 					nextLink.setAttribute('onclick', 'pagerNext();return false;');
 					nextLink.setAttribute('title', localise('Nächste Trefferseite anzeigen'));
 				}
-				nextLink.setAttribute('class', 'pz2-next');
+				jQuery(nextLink).addClass('pz2-next');
 				nextLink.appendChild(document.createTextNode('»'));
 				pageNumbersContainer.appendChild(nextLink);
 				
 				// add record count information
 				var recordCountDiv = document.createElement('div');
-				recordCountDiv.setAttribute('class', 'pz2-recordCount');
+				jQuery(recordCountDiv).addClass('pz2-recordCount');
 				var infoString;
 				if (displayHitList.length > 0) {
 					infoString = String(firstIndex + 1) + '-'
@@ -859,7 +859,7 @@ function display () {
 	var firstIndex = recPerPage * (curPage - 1);
 	var numberOfRecordsOnPage = Math.min(displayHitList.length - firstIndex, recPerPage);
 	OL.setAttribute('start', firstIndex + 1);
-	OL.setAttribute('class', 'pz2-resultList');
+	jQuery(OL).addClass('pz2-resultList');
 
 	for (var i = 0; i < numberOfRecordsOnPage; i++) {
 		var hit = displayHitList[firstIndex + i];
@@ -871,7 +871,7 @@ function display () {
 		var linkElement = document.createElement('a');
 		LI.appendChild(linkElement);
 		linkElement.setAttribute('href', '#');
-		linkElement.setAttribute('class', 'pz2-recordLink');
+		jQuery(linkElement).addClass('pz2-recordLink');
 		linkElement.setAttribute('onclick', 'toggleDetails(this.id);return false;');
 		linkElement.setAttribute('id', 'rec_' + HTMLIDForRecordData(hit));
 
@@ -885,7 +885,7 @@ function display () {
 			mediaClass = 'multiple';
 		}
 
-		iconElement.setAttribute('class', 'pz2-mediaIcon ' + mediaClass);
+		jQuery(iconElement).addClass('pz2-mediaIcon ' + mediaClass);
 		iconElement.setAttribute('title', localise(mediaClass, mediaNames));
 
 		appendInfoToContainer(titleInfo(), linkElement);
@@ -1086,7 +1086,7 @@ function facetListForType (type, preferOriginalFacets) {
 			link.appendChild(progressBar);
 			var progress = terms[i].freq / terms['maximumNumber'] * 100;
 			progressBar.setAttribute('style', 'width:' + progress + '%;');
-			progressBar.setAttribute('class', 'pz2-progressIndicator');
+			jQuery(progressBar).addClass('pz2-progressIndicator');
 
 			// Facet Display Name
 			var facetDisplayName = facetName;
@@ -1098,13 +1098,13 @@ function facetListForType (type, preferOriginalFacets) {
 			}
 			var textSpan = document.createElement('span');
 			link.appendChild(textSpan);
-			textSpan.setAttribute('class', 'pz2-facetName');
+			jQuery(textSpan).addClass('pz2-facetName');
 			textSpan.appendChild(document.createTextNode(facetDisplayName));
 
 			// Hit Count
 			var count = document.createElement('span');
 			link.appendChild(count);
-			count.setAttribute('class', 'pz2-facetCount');
+			jQuery(count).addClass('pz2-facetCount');
 			count.appendChild(document.createTextNode(terms[i].freq));
 			if (type == 'xtargets' && targetStatus[facetName]) {
 				var hitOverflow = targetStatus[facetName].hits - targetStatus[facetName].records;
@@ -1120,18 +1120,18 @@ function facetListForType (type, preferOriginalFacets) {
 			if (type === 'medium') {
 				var mediaIcon = document.createElement('span');
 				link.appendChild(mediaIcon);
-				mediaIcon.setAttribute('class', 'pz2-mediaIcon ' + facetName);
+				jQuery(mediaIcon).addClass('pz2-mediaIcon ' + facetName);
 			}
 
 			// Mark facets which are currently active and add button to remove faceting.
 			if (isFilteredForType(type)) {
 				for (var filterIndex in filterArray[type]) {
 					if (facetName === filterArray[type][filterIndex]) {
-						item.setAttribute('class', 'pz2-activeFacet');
+						jQuery(item).addClass('pz2-activeFacet');
 						var cancelLink = document.createElement('a');
 						item.appendChild(cancelLink);
 						cancelLink.setAttribute('href', '#');
-						cancelLink.setAttribute('class', 'pz2-facetCancel');
+						jQuery(cancelLink).addClass('pz2-facetCancel');
 						cancelLink.setAttribute('onclick',
 							'delimitResults("' + type + '","' + facetName + '"); return false;');
 						cancelLink.appendChild(document.createTextNode(localise('Filter aufheben')));
@@ -1150,7 +1150,7 @@ function facetListForType (type, preferOriginalFacets) {
 			var cancelLink = document.createElement('a');
 			container.appendChild(cancelLink);
 			cancelLink.setAttribute('href', '#');
-			cancelLink.setAttribute('class', 'pz2-facetCancel pz2-activeFacet');
+			jQuery(cancelLink).addClass('pz2-facetCancel pz2-activeFacet');
 			cancelLink.setAttribute('onclick', 'delimitResults("filterDate"); return false;');
 			var yearRange = filterArray['filterDate'][0].from + '-' + filterArray['filterDate'][0].to;
 			var cancelLinkText = localise('Filter # aufheben').replace('#', yearRange);
@@ -1159,7 +1159,7 @@ function facetListForType (type, preferOriginalFacets) {
 
 		var graphDiv = document.createElement('div');
 		container.appendChild(graphDiv);
-		graphDiv.setAttribute('class', 'pz2-histogramContainer');
+		jQuery(graphDiv).addClass('pz2-histogramContainer');
 		var graphWidth = jQuery('#pz2-termLists').width() - 30;
 		var jGraphDiv = jQuery(graphDiv);
 		var canvasHeight = 150;
@@ -1260,7 +1260,7 @@ function facetListForType (type, preferOriginalFacets) {
 
 	// Create container and heading.
 	var container = document.createElement('div');
-	container.setAttribute('class', 'pz2-termList pz2-termList-' + type);
+	jQuery(container).addClass('pz2-termList pz2-termList-' + type);
 
 	var terms = facetInformationForType(type);
 	if (terms.length > 0) {
@@ -1505,39 +1505,6 @@ function triggerSearchForForm (form) {
 	output:	false
 */
 function addExtendedSearchForLink (event) {
-
-	/*	extendedSearchField
-		Returns a DIV containing a label and a text field for the given field name.
-
-		input:	fieldName - string containing the field name to be used
-		output:	DOMElement - div containing the input text field and label
-	*/
-	var extendedSearchField = function (fieldName) {
-		var myID = 'pz2-field-' + fieldName;
-		var div = document.createElement('div');
-		div.setAttribute('class', 'pz2-fieldContainer ' + myID);
-		var label = document.createElement('label');
-		div.appendChild(label);
-		label.setAttribute('for', myID);
-		label.setAttribute('class', 'pz2-textFieldLabel');
-		label.appendChild(document.createTextNode(localise('form-extended-label-' + fieldName)));
-		var input = document.createElement('input');
-		div.appendChild(input);
-		input.setAttribute('type', 'text');
-		input.setAttribute('name', fieldName);
-		input.setAttribute('id', myID);
-		input.setAttribute('class', 'pz2-searchField extended');
-
-		var placeholderKey = 'form-extended-placeholder-' + fieldName;
-		var placeholder = localise(placeholderKey);
-		if (placeholderKey != placeholder) {
-			// we have a placeholder
-			input.setAttribute('placeholder', placeholder);
-		}
-
-		return div;
-	}
-
 	// switch form type
 	var formContainer = jQuery('.pz2-mainForm');
 	jQuery(formContainer).parent('form').removeClass('pz2-basic').addClass('pz2-extended');
@@ -2141,7 +2108,7 @@ function renderDetails(recordID) {
 					// Only display detail information if we do have access.
 					if (statusText) {
 						var statusElement = document.createElement('span');
-						statusElement.setAttribute('class', 'pz2-ZDBStatusInfo');
+						jQuery(statusElement).addClass('pz2-ZDBStatusInfo');
 
 						var accessLinkURL = jQuery('AccessURL', ZDBResult);
 						if (accessLinkURL.length > 0) {
@@ -2221,7 +2188,7 @@ function renderDetails(recordID) {
 					var libraryName = jQuery('Library', data)[0];
 					if (libraryName) {
 						var libraryNameSpan = document.createElement('span');
-						libraryNameSpan.setAttribute('class', 'pz2-ZDBLibraryName');
+						jQuery(libraryNameSpan).addClass('pz2-ZDBLibraryName');
 						libraryNameSpan.appendChild(document.createTextNode(libraryName.textContent));
 						target.appendChild(libraryNameSpan);
 					}
@@ -2311,9 +2278,10 @@ function renderDetails(recordID) {
 				var infoBlock = ZDBInformation(resultData);
 
 				var infoLineElements = detailLineBasic(availabilityLabel, infoBlock, {'class':'pz2-ZDBInfo'});
-				jQuery(infoLineElements).hide();
+				var jInfoLineElements = jQuery(infoLineElements);
+				jInfoLineElements.hide();
 				appendInfoToContainer(infoLineElements, element);
-				jQuery(infoLineElements).slideDown('fast');
+				jInfoLineElements.slideDown('fast');
 			}
 		);
 	}
@@ -2398,7 +2366,7 @@ function renderDetails(recordID) {
 							bookLink.appendChild(coverArtImage);
 							coverArtImage.setAttribute('src', selectedBook.thumbnail_url);
 							coverArtImage.setAttribute('alt', localise('Umschlagbild'));
-							coverArtImage.setAttribute('class', 'bookCover');
+							jQuery(coverArtImage).addClass('bookCover');
 						}
 
 						jQuery([dt, dd]).slideDown('fast');
@@ -2427,9 +2395,10 @@ function renderDetails(recordID) {
 				jQuery('#page').get(0).appendChild(previewContainerDiv);
 
 				var titleBarDiv = document.createElement('div');
-				titleBarDiv.setAttribute('class', 'titleBar');
+				var jTitleBarDiv = jQuery(titleBarDiv);
+				jTitleBarDiv.addClass('googlePreview-titleBar');
 				previewContainerDiv.appendChild(titleBarDiv);
-				jQuery(titleBarDiv).css({height:'20px', width:'100%',
+				jTitleBarDiv.css({height:'20px', width:'100%',
 									position:'absolute', top:'-20px', background:'#eee'});
 
 				var closeBoxLink = document.createElement('a');
@@ -2473,11 +2442,11 @@ function renderDetails(recordID) {
 			var infoSpan;
 			if ( fieldContent !== undefined ) {
 				infoSpan = document.createElement('span');
-				infoSpan.setAttribute('class', 'pz2-info');
+				jQuery(infoSpan).addClass('pz2-info');
 				if ( labelName !== undefined ) {
 					var infoLabel = document.createElement('span');
 					infoSpan.appendChild(infoLabel);
-					infoLabel.setAttribute('class', 'pz2-label');
+					jQuery(infoLabel).addClass('pz2-label');
 					infoLabel.appendChild(document.createTextNode(labelName));
 					infoSpan.appendChild(document.createTextNode(' '));
 				}
@@ -2701,7 +2670,7 @@ function renderDetails(recordID) {
 				var linkElement = document.createElement('a');
 				linkElement.setAttribute('href', catalogueURL);
 				turnIntoNewWindowLink(linkElement);
-				linkElement.setAttribute('class', 'pz2-detail-catalogueLink')
+				jQuery(linkElement).addClass('pz2-detail-catalogueLink')
 				var linkTitle = localise('Ansehen und Ausleihen bei:') + ' ' + targetName;
 				linkElement.setAttribute('title', linkTitle);
 				linkElement.appendChild(document.createTextNode(targetName));
@@ -2746,14 +2715,14 @@ function renderDetails(recordID) {
 
 	if (data) {
 		var detailsDiv = document.createElement('div');
-		detailsDiv.setAttribute('class', 'pz2-details');
+		jQuery(detailsDiv).addClass('pz2-details');
 		detailsDiv.setAttribute('id', 'det_' + HTMLIDForRecordData(data));
 
 		var detailsList = document.createElement('dl');
 		detailsDiv.appendChild(detailsList);
 		var clearSpan = document.createElement('span');
 		detailsDiv.appendChild(clearSpan);
-		clearSpan.setAttribute('class', 'pz2-clear');
+		jQuery(clearSpan).addClass('pz2-clear');
 
 		// create cleaned up author and other person list to avoid
 		// duplicating persons listed in title-responsiblity already.

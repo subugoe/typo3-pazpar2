@@ -1729,7 +1729,12 @@ function toggleDetails (prefixRecId) {
 			parent.appendChild(record.detailsDiv);
 		}
 
-		jQuery(record.detailsDiv).slideDown('fast');
+		if (!jQuery.browser.msie || jQuery.browser.version > 7) {
+			jQuery(record.detailsDiv).slideDown('fast');
+		}
+		else {
+			jQuery(record.detailsDiv).show();
+		}
 		record.detailsDivVisible = true;
 		jQuery(parent).addClass('pz2-detailsVisible');
 	}
@@ -2279,7 +2284,12 @@ function renderDetails(recordID) {
 				var jInfoLineElements = jQuery(infoLineElements);
 				jInfoLineElements.hide();
 				appendInfoToContainer(infoLineElements, element);
-				jInfoLineElements.slideDown('fast');
+				if (!jQuery.browser.msie || jQuery.browser.version > 7) {
+					jInfoLineElements.slideDown('fast');
+				}
+				else {
+					jInfoLineElements.show();
+				}
 			}
 		);
 	}
@@ -2337,9 +2347,6 @@ function renderDetails(recordID) {
 					if (selectedBook !== undefined) {
 						var dt = document.createElement('dt');
 						var dd = document.createElement('dd');
-						jQuery([dt, dd]).addClass('pz2-googleBooks').hide();
-						container.appendChild(dt);
-						container.appendChild(dd);
 
 						var bookLink = document.createElement('a');
 						dd.appendChild(bookLink);
@@ -2367,7 +2374,17 @@ function renderDetails(recordID) {
 							jQuery(coverArtImage).addClass('bookCover');
 						}
 
-						jQuery([dt, dd]).slideDown('fast');
+						jElements = jQuery([dt, dd]);
+						jElements.addClass('pz2-googleBooks');
+						jElements.hide();
+						container.appendChild(dt);
+						container.appendChild(dd);
+						if (!jQuery.browser.msie || jQuery.browser.version > 7) {
+							jElements.slideDown('fast');
+						}
+						else {
+							jElements.show()
+						}
 					}
 				}
 			);

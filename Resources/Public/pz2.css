@@ -99,11 +99,11 @@
 
 .pz2-extended .pz2-submitButton {
 	height: 23px;
-	background: url(button_shade_small.png);
+	background-image: url(button_shade_small.png);
 }
 
 .pz2-extended .pz2-submitButton:active {
-	background: url(button_shade_small_click.png);
+	background-image: url(button_shade_small_click.png);
 }
 
 .pz2-extendedLink {

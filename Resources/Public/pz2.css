@@ -1,5 +1,4 @@
 #pazpar2 a {
-	font-weight: normal;
 	text-decoration: none;
 }
 
@@ -217,6 +216,7 @@
 	display: block;
 	padding-left: 1em;
 	text-indent: -1em;
+	font-weight: normal;
 }
 
 .pz2-termList-author ol {

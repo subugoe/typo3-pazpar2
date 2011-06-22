@@ -14,7 +14,8 @@
 }
 
 
-/* form */
+
+/* SEARCH FORM */
 
 .pz2-mainForm {
 	line-height: 150%;
@@ -114,7 +115,7 @@
 
 
 
-/* results */
+/* RESULTS */
 
 .pz2-ranking {
 	display: none;
@@ -183,7 +184,7 @@
 
 
 
-/* facets */
+/* FACETS */
 
 #pz2-termLists {
 	float:right;
@@ -265,8 +266,8 @@
 
 
 
-/* progress indicator
-*/
+/* PROGRESS INDICATOR */
+
 .pz2-progressIndicator {
 	position: absolute;
 	display: block;
@@ -278,8 +279,8 @@
 
 
 
-/* pager
-*/
+/* PAGER */
+
 .pz2-pager {
 	margin: 20px 0;
 	position: relative;
@@ -328,8 +329,8 @@
 
 
 
-/* item records
-*/
+/* RESULT ITEMS */
+
 .pz2-mediaIcon {
 	display:block;
 	height: 20px;
@@ -405,9 +406,8 @@
 	padding-left: 1.5em;
 }
 
-/* Cancel the clear done for list items in the main list on lists in .pz2-details. */
 #pz2-results ol.pz2-resultList .pz2-details li {
-	clear: none;
+	clear: none; /* Cancel the clear done for list items in the main list on lists in .pz2-details. */
 	border-left: 0px none;
 }
 
@@ -418,9 +418,8 @@
 
 
 
+/* ZDB INFO */
 
-/* ZDB Info 
-*/
 .pz2-ZDBLibraryName {
 	display: block;
 	font-style: italic;
@@ -433,9 +432,8 @@ a.pz2-ZDBGeneralInfo {
 
 
 
+/* GOOGLE BOOKS */
 
-/* Google Books 
-*/
 #googlePreviewContainer {
 	position: absolute;
 	left: 2em;
@@ -472,9 +470,8 @@ pz2-client.js removes this once it it loaded.
 }
 
 
-/*
-status display
-*/
+
+/* STATUS DISPLAY */
 
 #pz2-byTarget {
 	font-size: 85%;

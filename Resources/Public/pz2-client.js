@@ -16,8 +16,14 @@ var showResponseType = '';
 
 	It is crucial for the date histogram that 'filterDate' is the last item in this list.
 */
-var termListNames = ['xtargets', 'medium', 'language', 'filterDate'];
-var termListMax = {'xtargets': 25, 'medium': 10, 'language': 6, 'author': 10, 'filterDate': 10};
+var termLists = {
+	'xtargets': {'maxFetch': 25, 'minDisplay': 1},
+	'medium': {'maxFetch': 12, 'minDisplay': 1},
+	'language': {'maxFetch': 6, 'minDisplay': 1},
+	// 'author': {'maxFetch': 10, 'minDisplay': 1},
+	'filterDate': {'maxFetch': 10, 'minDisplay': 5}
+};
+
 
 if (document.location.hash == '#useproxy') {
 	usesessions = false;
@@ -266,8 +272,10 @@ my_paz = new pz2( {"onshow": my_onshow,
 					"pazpar2path": pazpar2path,
 					"oninit": my_oninit,
 					"onstat": my_onstat,
+/* We are not using pazpar2’s termlists but create our own.
 					"onterm": my_onterm,
 					"termlist": termListNames.join(","),
+*/
 					"onbytarget": my_onbytarget,
 	 				"usesessions" : usesessions,
 					"showResponseType": showResponseType,
@@ -455,8 +463,7 @@ function displayLists (list) {
 		var matchesFilters = function (record) {
 			var matches = true;
 			var matchesEverythingNotTheDate = true;
-			for (var termListIndex in termListNames) {
-				var facetType = termListNames[termListIndex];
+			for (var facetType in termLists) {
 				for (var filterIndex in filterArray[facetType]) {
 					matches = false;
 					matchesEverythingNotTheDate = false;
@@ -1052,8 +1059,9 @@ function facetListForType (type, preferOriginalFacets) {
 				// Special case for dates when displaying them as a list:
 				// take the most frequent items and sort by date if we are not using the histogram.
 				if (type === 'filterDate' && !useHistogramForYearFacets) {
-					if (termList.length > termListMax['filterDate']) {
-						termList.splice(termListMax['filterDate'], termList.length - termListMax['filterDate']);
+					var maximumDateFacetCount = termLists['filterDate'].maxFetch;
+					if (termList.length > maximumDateFacetCount) {
+						termList.splice(maximumDateFacetCount, termList.length - maximumDateFacetCount);
 					}
 					termList.sort( function(term1, term2) {
 							return (term1.name < term2.name) ? 1 : -1;
@@ -1072,7 +1080,7 @@ function facetListForType (type, preferOriginalFacets) {
 		var list = document.createElement('ol');
 		
 		// Loop through list of terms for the type and create an item with link for each one.
-		for (var i = 0; i < terms.length && i < termListMax[type]; i++) {
+		for (var i = 0; i < terms.length && i < termLists[type].maxFetch; i++) {
 			var facetName = terms[i].name;
 			var item = document.createElement('li');
 			list.appendChild(item);
@@ -1264,7 +1272,7 @@ function facetListForType (type, preferOriginalFacets) {
 	jQuery(container).addClass('pz2-termList pz2-termList-' + type);
 
 	var terms = facetInformationForType(type);
-	if (terms.length > 0) {
+	if (terms.length >= termLists[type].minDisplay) {
 		var heading = document.createElement('h5')
 		container.appendChild(heading);
 		var headingText = localise('facet-title-'+type);
@@ -1289,7 +1297,7 @@ function facetListForType (type, preferOriginalFacets) {
 
 
 /*	updateFacetLists
-	Updates all facet lists for the facet names stored in termListNames.
+	Updates all facet lists for the facet types stored in termLists.
 */
 function updateFacetLists () {
 	var container = document.getElementById('pz2-termLists');
@@ -1299,8 +1307,8 @@ function updateFacetLists () {
 	container.appendChild(mainHeading);
 	mainHeading.appendChild(document.createTextNode(localise('Facetten')));
 
-	for ( index in termListNames ) {
-		container.appendChild(facetListForType(termListNames[index]));
+	for (facetType in termLists ) {
+		container.appendChild(facetListForType(facetType));
 	}
 }
 

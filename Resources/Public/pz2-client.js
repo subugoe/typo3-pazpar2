@@ -14,7 +14,7 @@ var showResponseType = '';
 	Don't forget to also set termlist attributes in the corresponding
 	metadata tags for the service.
 
-	It’s crucial for the date histogram that 'date' is the last item in this list.
+	It is crucial for the date histogram that 'filterDate' is the last item in this list.
 */
 var termListNames = ['xtargets', 'medium', 'language', 'filterDate'];
 var termListMax = {'xtargets': 25, 'medium': 10, 'language': 6, 'author': 10, 'filterDate': 10};
@@ -522,7 +522,7 @@ function displayLists (list) {
 	var sortFunction = function(record1, record2) {
 		/*	dateForRecord
 			Returns the year / last year of a date range of the given pazpar2 record.
-			If no year is present
+			If no year is present, the year 1000 is used to make records look old.
 			input:	record - pazpar2 record
 			output: Date object with year found in the pazpar2 record
 		*/
@@ -625,12 +625,15 @@ function my_onshow (data) {
 				}
 			}
 			
-			// Create a 'filterDate' field which only uses the first four characters
+			// Create a 'filterDate' field which uses the last consecutive four digits
 			// of the date and is used for faceting.
 			if (hit['md-date']) {
 				hit['md-filterDate'] = [];
 				for (var dateIndex in hit['md-date']) {
-					hit['md-filterDate'].push(hit['md-date'][dateIndex].substr(0,4));
+                    var dateParts = hit['md-date'][dateIndex].match(/[0-9]{4}/g);
+					if (dateParts.length > 0) {
+						hit['md-filterDate'].push(dateParts[dateParts.length - 1]);
+					}
 				}
 			}
 			// If there is no title information but series information, use the
@@ -1047,7 +1050,7 @@ function facetListForType (type, preferOriginalFacets) {
 				termList['maximumNumber'] = termList[0].freq;
 
 				// Special case for dates when displaying them as a list:
-				// take the most frequent items and sort by date.
+				// take the most frequent items and sort by date if we are not using the histogram.
 				if (type === 'filterDate' && !useHistogramForYearFacets) {
 					if (termList.length > termListMax['filterDate']) {
 						termList.splice(termListMax['filterDate'], termList.length - termListMax['filterDate']);

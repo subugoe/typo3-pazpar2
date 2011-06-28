@@ -632,6 +632,11 @@ function my_onshow (data) {
 				}
 			}
 			
+			// Make sure the 'medium' field exists by setting it to 'unknown' if necessary.
+			if (!hit['md-medium']) {
+				hit['md-medium'] = 'unknown';
+			}
+			
 			// Create a 'filterDate' field which uses the last consecutive four digits
 			// of the date and is used for faceting.
 			if (hit['md-date']) {

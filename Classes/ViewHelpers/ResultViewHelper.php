@@ -596,7 +596,7 @@ private function catalogueLink ($locationAll) {
 	$catalogueURL = Null;
 	$matches = Null;
 
-	if (preg_match('/z3950.gbv.de:20012\/subgoe_opc/', $targetURL) > 0) {
+	if (strpos('z3950.gbv.de:20012/subgoe_opc', $targetURL) !== False) {
 		// Old GBV Z39.50 server for SUB Opac.
 		if (preg_match('/^134\.76\./', $_SERVER["REMOTE_ADDR"]) > 0) {
 			/* Special case: If the database is Göttingen’s Opac and the user seems
@@ -608,7 +608,7 @@ private function catalogueLink ($locationAll) {
 			$catalogueURL = 'http://gso.gbv.de/DB=2.1/PPNSET?PPN=' . $PPN;
 		}
 	}
-	else if (preg_match('/sru.gbv.de\/natliz/', $targetURL) > 0) {
+	else if (strpos('sru.gbv.de/natliz', $targetURL) !== False) {
 		// match Nationallizenzen natliz and natlizzss on new GBV SRU server: no link
 	}
 	else if (preg_match('/sru.gbv.de\/([a-zA-Z0-9-]*)/', $targetURL, $matches) > 0) {
@@ -628,19 +628,19 @@ private function catalogueLink ($locationAll) {
 	else if (preg_match('/gso.gbv.de\/sru\/DB=1.5/', $targetURL) > 0) {
 		// match Nationallizenzen 1.50 and 1.55 on old GBV SRU server: no link
 	}
-	else if (preg_match('/gso.gbv.de\/sru\//', $targetURL) > 0) {
+	else if (strpos('gso.gbv.de/sru/', $targetURL) !== False) {
 		// Old GBV SRU server
 		$catalogueURL = preg_replace('/(gso.gbv.de\/sru\/)(DB=[\.0-9]*)/', 'http://gso.gbv.de/$2/PPNSET?PPN=' . $PPN, $targetURL);
 	}
-	else if (preg_match('134.76.176.48:2020/jfm', $targetURL) > 0) {
+	else if (strpos('134.76.176.48:2020/jfm', $targetURL) !== False) {
 		$catalogueURL = 'http://www.emis.de/cgi-bin/jfmen/MATH/JFM/quick.html?first=1&maxdocs=1&type=html&format=complete&an=' . $PPN;
 	}
-	else if (preg_match('134.76.176.48:2021/arxiv', $targetURL) > 0) {
+	else if (strpos('134.76.176.48:2021/arxiv', $targetURL) !== False) {
 		if ($locationAll['ch']['md-electronic-url']) {
 			$catalogueURL = $locationAll['ch']['md-electronic-url'][0];
 		}
 	}
-	else if (preg_match('pio.chadwyck.co.uk:210/pio', $targetURL) > 0) {
+	else if (strpos('pio.chadwyck.co.uk:210/pio', $targetURL) !== False) {
 		$catalogueURL = 'http://gateway.proquest.com/openurl?url_ver=Z39.88-2004&res_dat=xri:pio:&rft_dat=xri:pio:article:' . $PPN;
 	}
 

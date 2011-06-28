@@ -630,9 +630,9 @@ function my_onshow (data) {
 				}
 			}
 			
-			// Make sure the 'medium' field exists by setting it to 'unknown' if necessary.
+			// Make sure the 'medium' field exists by setting it to 'other' if necessary.
 			if (!hit['md-medium']) {
-				hit['md-medium'] = 'unknown';
+				hit['md-medium'] = ['other'];
 			}
 			
 			// Create a 'filterDate' field which uses the last consecutive four digits

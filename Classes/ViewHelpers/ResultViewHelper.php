@@ -52,7 +52,7 @@ public function render ($result) {
 
 	$iconElement = $this->doc->createElement('span');
 	$li->appendChild($iconElement);
-	$mediaClass = 'unknown';
+	$mediaClass = 'other';
 	if (count($result['md-medium']) == 1) {
 		$mediaClass = $result['md-medium'][0]['values'][0];
 	}

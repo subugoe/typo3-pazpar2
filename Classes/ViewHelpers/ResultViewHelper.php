@@ -508,8 +508,8 @@ private function detailInfoItemWithLabel($fieldContent, $labelName, $dontTermina
 private function electronicURLs ($location, $result) {
 	$electronicURLs = $location['md-electronic-url'];
 	foreach ($result['md-doi'] as $DOI) {
-		foreach ($electronicURLs as $URLIndex => $URL) {
-			if (strpos($DOI, $URL) !== False) {
+		foreach ($electronicURLs as $URLIndex => $URLInfo) {
+			if (strpos($DOI['values'][0], $URLInfo['values'][0]) !== False) {
 				array_splice($electronicURLs, $URLIndex, 1);
 				break;
 			}
@@ -522,13 +522,25 @@ private function electronicURLs ($location, $result) {
 		$URLsContainer = $this->doc->createElement('span');
 
 		foreach ($electronicURLs as $URLInfo) {
-			$linkText = '[' . Tx_Extbase_Utility_Localization::translate('link', 'Pazpar2') . ']';
+			$linkText = 'Link'; // default link name
 			$linkURL = $URLInfo['values'][0];
 
 			if ($URLInfo['attrs']['name']) {
-				$linkText = '[' . $URLInfo['attrs']['name'] . ']';
+				$linkText = $URLInfo['attrs']['name'];
 			}
-
+			else if ($URLInfo['attrs']['note']) {
+				$linkText = $URLInfo['attrs']['note'];
+			}
+			else if ($URLInfo['attrs']['fulltextfile']) {
+				$linkText = 'Document';
+			}
+			
+			$localisedLinkText = Tx_Extbase_Utility_Localization::translate('link-description-' . $linkText, 'Pazpar2');
+			if (!$localisedLinkText) {
+				$localisedLinkText = $linkText;
+			}
+			$linkText = '[' . $localisedLinkText . ']';
+			
 			if ($URLsContainer->hasChildNodes()) {
 				$URLsContainer->appendChild($this->doc->createTextNode(', '));
 			}

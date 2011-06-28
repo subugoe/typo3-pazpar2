@@ -73,7 +73,6 @@ var germanTerms = {
 	'elektronisch': 'digital',
 	'gedruckt': 'gedruckt',
 	'detail-label-id': 'PPN',
-	'Link': 'Link',
 	'Ausgabe': 'Ausgabe',
 	'Google Books Vorschau': 'Google Books Vorschau',
 	'Umschlagbild': 'Umschlagbild',
@@ -161,7 +160,6 @@ var englishTerms = {
 	'elektronisch': 'electronic',
 	'gedruckt': 'printed',
 	'detail-label-id': 'PPN',
-	'Link': 'link',
 	'Ausgabe': 'Edition',
 	'Google Books Vorschau': 'Google Books Preview',
 	'Umschlagbild': 'Book Cover',
@@ -2592,7 +2590,12 @@ function renderDetails(recordID) {
 			// remove those URLs from the list which are already present as DOI information
 			for (var DOIIndex in data['md-doi']) {
 				for (var URLIndex in electronicURLs) {
-					if (electronicURLs[URLIndex].search(data['md-doi'][DOIIndex]) != -1) {
+					var URLInfo = electronicURLs[URLIndex];
+					if (typeof(URLInfo) === 'object' && URLInfo['#text']) {
+						URLInfo = URLInfo['#text'];
+					}
+					
+					if (URLInfo.search(data['md-doi'][DOIIndex]) != -1) {
 						electronicURLs.splice(URLIndex, 1);
 						break;
 					}
@@ -2605,16 +2608,24 @@ function renderDetails(recordID) {
 
 				for (var URLNumber in electronicURLs) {
 					var URLInfo = electronicURLs[URLNumber];
-					var linkText = '[' + localise('Link') + ']';
+					var linkText = 'Link'; // default link name
 					var linkURL = URLInfo;
 	
 					if (typeof(URLInfo) === 'object' && URLInfo['#text'] !== undefined) {
 						// URLInfo is not just an URL but an array also containing the link name
 						if (URLInfo['@name'] !== undefined) {
-							linkText = '[' + URLInfo['@name'] + ']';
+							linkText = URLInfo['@name'];
+						}
+						else if (URLInfo['@note'] !== undefined) {
+							linkText = URLInfo['@note'];
+						}
+						else if (URLInfo['@fulltextfile'] !== undefined) {
+							linkText = 'Document';
 						}
 						linkURL = URLInfo['#text'];
 					}
+					
+					linkText = '[' + localise(linkText, linkDescriptions) +  ']';
 
 					if (URLsContainer.childElementCount > 0) {
 						// add , as separator if not the first element
@@ -2897,10 +2908,30 @@ var mediaNames = {
 
 
 
+/* Localised Link Descriptions
+*/
+var linkDescriptions = {
+	'de': {
+		'Document': 'Dokument',
+		'Inhaltsverzeichnis': 'Inhaltsverzeichnis',
+		'kostenfrei': 'kostenfrei',
+		'Link': 'Link',
+		'Publisher Description': 'Verlagsbeschreibung',
+		'Repository': 'Repository'
+	},
+	'en': {
+		'Document': 'Document',
+		'Inhaltsverzeichnis': 'Table of Contents',
+		'kostenfrei': 'freely accessible',
+		'Link': 'Link',
+		'Publisher Description': 'Publisher Description',
+		'Repository': 'Repository'
+	}
+}
+
 
 /* Localised Language Codes
 */
-
 var languageNames = {
 	'de': {
 		'ace': 'Aceh',

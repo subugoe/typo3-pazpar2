@@ -2908,24 +2908,39 @@ var mediaNames = {
 
 
 
-/* Localised Link Descriptions
+/*	Localised Link Descriptions
+	For link terminology found in:
+	* GVK Catalogue records
+	* Repository stylesheets
 */
 var linkDescriptions = {
 	'de': {
+		'Contributor biographical information': 'Biographische Informationen',
 		'Document': 'Dokument',
 		'Inhaltsverzeichnis': 'Inhaltsverzeichnis',
 		'kostenfrei': 'kostenfrei',
 		'Link': 'Link',
 		'Publisher Description': 'Verlagsbeschreibung',
-		'Repository': 'Repository'
+		'Repository': 'Repository',
+		'Table of Contents': 'Inhaltsverzeichnis',
+		'Table of contents': 'Inhaltsverzeichnis',
+		'Table of contents only': 'Inhaltsverzeichnis',
+		'TOC': 'Inhaltsverzeichnis',
+		'Volltext': 'Dokument'
 	},
 	'en': {
+		'Contributor biographical information': 'Biographical Information',
 		'Document': 'Document',
 		'Inhaltsverzeichnis': 'Table of Contents',
 		'kostenfrei': 'freely accessible',
 		'Link': 'Link',
 		'Publisher Description': 'Publisher Description',
-		'Repository': 'Repository'
+		'Repository': 'Repository',
+		'Table of Contents': 'Table of Contents',
+		'Table of contents': 'Table of Contents',
+		'Table of contents only': 'Table of Contents',
+		'TOC': 'Table of Contents',
+		'Volltext': 'Document'
 	}
 }
 

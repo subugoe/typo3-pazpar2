@@ -85,12 +85,18 @@
 			<label index="media-type-multiple">Verschiedene Medien</label>
 
 			<!-- Link Descriptions -->
+			<label index="link-description-Contributor biographical information">Biographische Informationen</label>
 			<label index="link-description-Document">Dokument</label>
 			<label index="link-description-Inhaltsverzeichnis">Inhaltsverzeichnis</label>
 			<label index="link-description-kostenfrei">kostenfrei</label>
 			<label index="link-description-Link">Link</label>
 			<label index="link-description-Publisher Description">Verlagsbeschreibung</label>
 			<label index="link-description-Repository">Repository</label>
+			<label index="link-description-Table of Contents">Inhaltsverzeichnis</label>
+			<label index="link-description-Table of contents">Inhaltsverzeichnis</label>
+			<label index="link-description-Table of contents only">Inhaltsverzeichnis</label>
+			<label index="link-description-TOC">Inhaltsverzeichnis</label>
+			<label index="link-description-Volltext">Dokument</label>
 
 		</languageKey>
 
@@ -171,12 +177,18 @@
 			<label index="media-type-multiple">Mixed Media Types</label>
 
 			<!-- Link Descriptions -->
+			<label index="link-description-Contributor biographical information">Biographical Information</label>
 			<label index="link-description-Document">Document</label>
 			<label index="link-description-Inhaltsverzeichnis">Table of Contents</label>
 			<label index="link-description-kostenfrei">freely accessible</label>
 			<label index="link-description-Link">Link</label>
 			<label index="link-description-Publisher Description">Publisher Description</label>
 			<label index="link-description-Repository">Repository</label>
+			<label index="link-description-Table of Contents">Table of Contents</label>
+			<label index="link-description-Table of contents">Table of Contents</label>
+			<label index="link-description-Table of contents only">Table of Contents</label>
+			<label index="link-description-TOC">Table of Contents</label>
+			<label index="link-description-Volltext">Document</label>
 			
 		</languageKey>
 

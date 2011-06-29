@@ -2917,7 +2917,7 @@ var mediaNames = {
 var linkDescriptions = {
 	'de': {
 		'Contributor biographical information': 'Biographische Informationen',
-		'Document': 'Dokument',
+		'Document': 'Volltext',
 		'Inhaltsverzeichnis': 'Inhaltsverzeichnis',
 		'kostenfrei': 'kostenfrei',
 		'Link': 'Link',
@@ -2927,11 +2927,11 @@ var linkDescriptions = {
 		'Table of contents': 'Inhaltsverzeichnis',
 		'Table of contents only': 'Inhaltsverzeichnis',
 		'TOC': 'Inhaltsverzeichnis',
-		'Volltext': 'Dokument'
+		'Volltext': 'Volltext'
 	},
 	'en': {
 		'Contributor biographical information': 'Biographical Information',
-		'Document': 'Document',
+		'Document': 'Full Text',
 		'Inhaltsverzeichnis': 'Table of Contents',
 		'kostenfrei': 'freely accessible',
 		'Link': 'Link',
@@ -2941,7 +2941,7 @@ var linkDescriptions = {
 		'Table of contents': 'Table of Contents',
 		'Table of contents only': 'Table of Contents',
 		'TOC': 'Table of Contents',
-		'Volltext': 'Document'
+		'Volltext': 'Full text'
 	}
 }
 

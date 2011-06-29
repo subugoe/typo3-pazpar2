@@ -604,56 +604,59 @@ protected $GBVDatabaseIDs = array(
 private function catalogueLink ($locationAll) {
 	$targetURL = $locationAll['attrs']['id'];
 	$targetName = $locationAll['attrs']['name'];
-	$PPN = preg_replace('/[a-zA-Z]*([0-9X]*)/', '$1', $locationAll['ch']['md-id'][0]['values'][0]);
-	$catalogueURL = Null;
-	$matches = Null;
+	$catalogueURL = $locationAll['ch']['md-catalogue-url'][0]['values'][0];
+debugster($locationAll);
+	if (!$catalogueURL) {
+		$PPN = preg_replace('/[a-zA-Z]*([0-9X]*)/', '$1', $locationAll['ch']['md-id'][0]['values'][0]);
+		$matches = Null;
 
-	if (strpos('z3950.gbv.de:20012/subgoe_opc', $targetURL) !== False) {
-		// Old GBV Z39.50 server for SUB Opac.
-		if (preg_match('/^134\.76\./', $_SERVER["REMOTE_ADDR"]) > 0) {
-			/* Special case: If the database is Göttingen’s Opac and the user seems
-								to be in Göttingen, then link to SUB Göttingen Opac. */
-			$catalogueURL = 'http://opac.sub.uni-goettingen.de/DB=1/PPN?PPN=' . $PPN;
+		if (strpos('z3950.gbv.de:20012/subgoe_opc', $targetURL) !== False) {
+			// Old GBV Z39.50 server for SUB Opac.
+			if (preg_match('/^134\.76\./', $_SERVER["REMOTE_ADDR"]) > 0) {
+				/* Special case: If the database is Göttingen’s Opac and the user seems
+									to be in Göttingen, then link to SUB Göttingen Opac. */
+				$catalogueURL = 'http://opac.sub.uni-goettingen.de/DB=1/PPN?PPN=' . $PPN;
+			}
+			else {
+				// General case: Link to GVK.
+				$catalogueURL = 'http://gso.gbv.de/DB=2.1/PPNSET?PPN=' . $PPN;
+			}
 		}
-		else {
-			// General case: Link to GVK.
-			$catalogueURL = 'http://gso.gbv.de/DB=2.1/PPNSET?PPN=' . $PPN;
+		else if (strpos('sru.gbv.de/natliz', $targetURL) !== False) {
+			// match Nationallizenzen natliz and natlizzss on new GBV SRU server: no link
 		}
-	}
-	else if (strpos('sru.gbv.de/natliz', $targetURL) !== False) {
-		// match Nationallizenzen natliz and natlizzss on new GBV SRU server: no link
-	}
-	else if (preg_match('/sru.gbv.de\/([a-zA-Z0-9-]*)/', $targetURL, $matches) > 0) {
-		// New GBV SRU server
-		$databaseName = $matches[1];
-		if ($databaseName == 'opac-de-7' && preg_match('/^134\.76\./', $_SERVER["REMOTE_ADDR"]) > 0) {
-			/* Special case: If the database is Göttingen’s Opac and the user seems
-								to be in Göttingen, then link to SUB Göttingen Opac. */
-			$catalogueURL = 'http://opac.sub.uni-goettingen.de/DB=1/PPN?PPN=' . $PPN;
+		else if (preg_match('/sru.gbv.de\/([a-zA-Z0-9-]*)/', $targetURL, $matches) > 0) {
+			// New GBV SRU server
+			$databaseName = $matches[1];
+			if ($databaseName == 'opac-de-7' && preg_match('/^134\.76\./', $_SERVER["REMOTE_ADDR"]) > 0) {
+				/* Special case: If the database is Göttingen’s Opac and the user seems
+									to be in Göttingen, then link to SUB Göttingen Opac. */
+				$catalogueURL = 'http://opac.sub.uni-goettingen.de/DB=1/PPN?PPN=' . $PPN;
+			}
+			else {
+				// General case: Link to GVK.
+				$databaseID = $this->GBVDatabaseIDs[$databaseName];
+				$catalogueURL = 'http://gso.gbv.de/' . $databaseID .'/PPNSET?PPN=' . $PPN;
+			}
 		}
-		else {
-			// General case: Link to GVK.
-			$databaseID = $this->GBVDatabaseIDs[$databaseName];
-			$catalogueURL = 'http://gso.gbv.de/' . $databaseID .'/PPNSET?PPN=' . $PPN;
+		else if (preg_match('/gso.gbv.de\/sru\/DB=1.5/', $targetURL) > 0) {
+			// match Nationallizenzen 1.50 and 1.55 on old GBV SRU server: no link
 		}
-	}
-	else if (preg_match('/gso.gbv.de\/sru\/DB=1.5/', $targetURL) > 0) {
-		// match Nationallizenzen 1.50 and 1.55 on old GBV SRU server: no link
-	}
-	else if (strpos('gso.gbv.de/sru/', $targetURL) !== False) {
-		// Old GBV SRU server
-		$catalogueURL = preg_replace('/(gso.gbv.de\/sru\/)(DB=[\.0-9]*)/', 'http://gso.gbv.de/$2/PPNSET?PPN=' . $PPN, $targetURL);
-	}
-	else if (strpos('134.76.176.48:2020/jfm', $targetURL) !== False) {
-		$catalogueURL = 'http://www.emis.de/cgi-bin/jfmen/MATH/JFM/quick.html?first=1&maxdocs=1&type=html&format=complete&an=' . $PPN;
-	}
-	else if (strpos('134.76.176.48:2021/arxiv', $targetURL) !== False) {
-		if ($locationAll['ch']['md-electronic-url']) {
-			$catalogueURL = $locationAll['ch']['md-electronic-url'][0];
+		else if (strpos('gso.gbv.de/sru/', $targetURL) !== False) {
+			// Old GBV SRU server
+			$catalogueURL = preg_replace('/(gso.gbv.de\/sru\/)(DB=[\.0-9]*)/', 'http://gso.gbv.de/$2/PPNSET?PPN=' . $PPN, $targetURL);
 		}
-	}
-	else if (strpos('pio.chadwyck.co.uk:210/pio', $targetURL) !== False) {
-		$catalogueURL = 'http://gateway.proquest.com/openurl?url_ver=Z39.88-2004&res_dat=xri:pio:&rft_dat=xri:pio:article:' . $PPN;
+		else if (strpos('134.76.176.48:2020/jfm', $targetURL) !== False) {
+			$catalogueURL = 'http://www.emis.de/cgi-bin/jfmen/MATH/JFM/quick.html?first=1&maxdocs=1&type=html&format=complete&an=' . $PPN;
+		}
+		else if (strpos('134.76.176.48:2021/arxiv', $targetURL) !== False) {
+			if ($locationAll['ch']['md-electronic-url']) {
+				$catalogueURL = $locationAll['ch']['md-electronic-url'][0];
+			}
+		}
+		else if (strpos('pio.chadwyck.co.uk:210/pio', $targetURL) !== False) {
+			$catalogueURL = 'http://gateway.proquest.com/openurl?url_ver=Z39.88-2004&res_dat=xri:pio:&rft_dat=xri:pio:article:' . $PPN;
+		}
 	}
 
 	$linkElement = Null;

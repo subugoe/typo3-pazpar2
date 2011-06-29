@@ -605,7 +605,7 @@ private function catalogueLink ($locationAll) {
 	$targetURL = $locationAll['attrs']['id'];
 	$targetName = $locationAll['attrs']['name'];
 	$catalogueURL = $locationAll['ch']['md-catalogue-url'][0]['values'][0];
-debugster($locationAll);
+
 	if (!$catalogueURL) {
 		$PPN = preg_replace('/[a-zA-Z]*([0-9X]*)/', '$1', $locationAll['ch']['md-id'][0]['values'][0]);
 		$matches = Null;

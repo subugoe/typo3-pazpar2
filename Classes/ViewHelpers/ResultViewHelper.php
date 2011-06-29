@@ -258,25 +258,34 @@ private function renderDetails ($result) {
 	$div->appendChild($clearSpan);
 	$clearSpan->setAttribute('class', 'pz2-clear');
 
-	// create cleaned up author and other person list to avoid
-	// duplicating persons listed in title-responsiblity already.
-	$result['md-author-clean'] = Array();
-	foreach ($result['md-author'] as $author) {
-		$nameParts = explode(",", $author['values'][0]);
-		$authorName = trim($nameParts[0]);
+	// Use a somewhat sloppy heuristic to create cleaned up author and
+	// other person lists to avoid duplicating persons listed in
+	// title-responsiblity already.
+	if ($result['md-title-responsibility']) {
+		$allResponsibility = '';
 		foreach ($result['md-title-responsibility'] as $responsibility) {
-			if (strpos($responsibility['values'][0], $authorName) === False) {
-				$result['md-author-clean'][] = $author;
+			$allResponsibility .= $responsibility['values'][0] . '; ';
+		}
+		$authors = $result['md-author'];
+		if ($authors) {
+			$result['md-author-clean'] = Array();
+			foreach ($authors as $author) {
+				$nameParts = explode(",", $author['values'][0]);
+				$authorSurname = trim($nameParts[0]);
+				if (strpos($allResponsibility, $authorSurname) === False) {
+					$result['md-author-clean'][] = $author;
+				}
 			}
 		}
-	}
-	$result['md-other-person-clean'] = Array();
-	foreach ($result['md-other-person'] as $otherPerson) {
-		$nameParts = explode(",", $otherPerson['values'][0]);
-		$personName = trim($nameParts[0]);
-		foreach ($result['md-title-responsibility'] as $responsibility) {
-			if (strpos($responsibility['values'][0], $personName) === False) {
-				$result['md-other-person-clean'][] = $otherPerson;
+		$otherPeople = $result['md-other-person'];
+		if ($otherPeople) {
+			$result['md-other-person-clean'] = Array();
+			foreach ($otherPeople as $otherPerson) {
+				$nameParts = explode(",", $otherPerson['values'][0]);
+				$personSurname = trim($nameParts[0]);
+				if (strpos($allResponsibility, $personSurname) === False) {
+					$result['md-other-person-clean'][] = $otherPerson;
+				}
 			}
 		}
 	}

@@ -2767,27 +2767,29 @@ function renderDetails(recordID) {
 		detailsDiv.appendChild(clearSpan);
 		jQuery(clearSpan).addClass('pz2-clear');
 
-		// create cleaned up author and other person list to avoid
-		// duplicating persons listed in title-responsiblity already.
-		data['md-author-clean'] = [];
-		for (var authorIndex in data['md-author']) {
-			var authorName = jQuery.trim(data['md-author'][authorIndex].split(',')[0]);
-			for (var responsibilityIndex in data['md-title-responsibility']) {
-				if (!data['md-title-responsibility'][responsibilityIndex].match(authorName)) {
-					data['md-author-clean'].push(data['md-author'][authorIndex]);
+		// Use a somewhat sloppy heuristic to create cleaned up author and
+		// other person lists to avoid duplicating persons listed in
+		// title-responsiblity already.
+		if (data['md-title-responsibility']) {
+			var allResponsibility = data['md-title-responsibility'].join('; ');
+			data['md-author-clean'] = [];
+			for (var authorIndex in data['md-author']) {
+				var authorName = jQuery.trim(data['md-author'][authorIndex].split(',')[0]);
+				if (allResponsibility.match(authorName) == null) {
+						data['md-author-clean'].push(data['md-author'][authorIndex]);
 				}
+				else console.log('Omitting author ' +  data['md-author'][authorIndex])
+			}
+			data['md-other-person-clean'] = [];
+			for (var personIndex in data['md-other-person']) {
+				var personName = jQuery.trim(data['md-other-person'][personIndex].split(',')[0]);
+				if (allResponsibility.match(personName) == null) {
+						data['md-other-person-clean'].push(data['md-other-person'][authorIndex]);
+				}
+				else console.log('Omitting other person ' +  data['md-other-person'][personIndex])
 			}
 		}
-		data['md-other-person-clean'] = [];
-		for (var personIndex in data['md-other-person']) {
-			var personName = jQuery.trim(data['md-other-person'][personIndex].split(',')[0]);
-			for (var responsibilityIndex in data['md-title-responsibility']) {
-				if (!data['md-title-responsibility'][responsibilityIndex].match(personName)) {
-					data['md-other-person-clean'].push(data['md-other-person'][personIndex]);
-				}
-			}
-		}
-
+		
 		appendInfoToContainer( detailLineAuto('author-clean'), detailsList );
 		appendInfoToContainer( detailLineAuto('other-person-clean'), detailsList )
 		appendInfoToContainer( detailLineAuto('abstract'), detailsList )

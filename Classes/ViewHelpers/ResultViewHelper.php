@@ -680,37 +680,23 @@ private function catalogueLink ($locationAll) {
  * @return array of DOM Elements
  */
 private function ISSNsDetailLine ($result) {
+	$ISSNTypes = Array('issn' => '', 'pissn' => 'gedruckt', 'eissn' => 'elektronisch');
 	$ISSNList = Array();
-	if ($result['md-issn'][0]['values']) {
-		$ISSNList = $result['md-issn'][0]['values'];
-	}
-	foreach ($result['md-pissn'][0]['values'] as $pISSN) {
-		$pISSN = substr($pISSN, 0, 9);
-		$pISSNExists = False;
-		foreach ($ISSNList as $ISSN) {
-			if ($pISSN == substr($ISSN, 0, 9)) {
-				$pISSNExists = True;
-				break;
+	foreach ($ISSNTypes as $ISSNTypeIndex => $ISSNType) {
+		$fieldName = 'md-' . $ISSNTypeIndex;
+		if ($result[$fieldName]) {
+			foreach($result[$fieldName][0]['values'] as $ISSNString) {
+				$ISSN = substr($ISSNString, 0, 9);
+				if (!in_array($ISSN, $ISSNList)) {
+					if ($ISSNTypeIndex != '') {
+						$ISSN .= ' (' . Tx_Extbase_Utility_Localization::translate($ISSNType, 'Pazpar2') . ')';
+					}
+					$ISSNList[] = $ISSN;
+				}
 			}
 		}
-		if (!$pISSNExists) {
-			$ISSNList[] = $pISSN . ' (' . Tx_Extbase_Utility_Localization::translate('gedruckt', 'Pazpar2') . ')';
-		}
 	}
-	foreach ($result['md-eissn'][0]['values'] as $eISSN) {
-		$eISSN = substr($eISSN, 0, 9);
-		$eISSNExists = False;
-		foreach ($ISSNList as $ISSN) {
-			if ($eISSN == substr($ISSN, 0, 9)) {
-				$eISSNExists = True;
-				break;
-			}
-		}
-		if (!$eISSNExists) {
-			$ISSNList[] = $eISSN . ' (' . Tx_Extbase_Utility_Localization::translate('elektronisch', 'Pazpar2') . ')';
-		}
-	}
-
+	
 	$infoElements = Null;
 	if (count($ISSNList) > 0) {
 		$infoElements = Array( $this->doc->createTextNode(implode(', ', $ISSNList)) );

@@ -1980,7 +1980,7 @@ function renderDetails(recordID) {
 				var ISSN = data[fieldName][ISSNIndex].substr(0,9);
 				if (jQuery.inArray(ISSN, ISSNList) == -1) {
 					if (ISSNTypes[ISSNTypeIndex] !== '') {
-						ISSN += ' (' + localise(ISSNTypeIndex) + ')';
+						ISSN += ' (' + localise(ISSNTypes[ISSNTypeIndex]) + ')';
 					}
 					ISSNList.push(ISSN);
 				}

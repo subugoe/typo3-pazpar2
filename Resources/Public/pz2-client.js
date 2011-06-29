@@ -1420,7 +1420,7 @@ function domReady ()  {
 	Called when the search button is pressed.
 */
 function onFormSubmitEventHandler () {
-	triggerSearchForForm(event.target);
+	triggerSearchForForm(this);
 	return false;
 }
 

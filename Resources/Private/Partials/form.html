@@ -7,7 +7,7 @@
 			<f:if condition="{extended}!=1">
 				<span class="pz2-formControls">
 					<f:form.submit class="pz2-submitButton" value="{f:translate(key:'Find')}"/>
-					<f:link.action arguments="{extended: extended}" class="pz2-extendedLink"><f:translate key="erweiterte Suche"/></f:link.action>
+					<f:link.action arguments="{extended: 1}" class="pz2-extendedLink"><f:translate key="erweiterte Suche"/></f:link.action>
 				</span>
 			</f:if>
 		</div>
@@ -33,7 +33,7 @@
 				<f:if condition="{extended}==1">
 					<span class="pz2-formControls">
 						<f:form.submit class="pz2-submitButton" value="{f:translate(key:'Find')}"/>
-						<f:link.action arguments="{extended: extended}" class="pz2-extendedLink"><f:translate key="einfache Suche"/></f:link.action>
+						<f:link.action arguments="{extended: 0}" class="pz2-extendedLink"><f:translate key="einfache Suche"/></f:link.action>
 					</span>
 				</f:if>
 			</div>

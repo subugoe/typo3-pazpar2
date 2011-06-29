@@ -516,11 +516,14 @@ private function detailInfoItemWithLabel($fieldContent, $labelName, $dontTermina
  */
 private function electronicURLs ($location, $result) {
 	$electronicURLs = $location['md-electronic-url'];
-	foreach ($result['md-doi'] as $DOI) {
-		foreach ($electronicURLs as $URLIndex => $URLInfo) {
-			if (strpos($DOI['values'][0], $URLInfo['values'][0]) !== False) {
-				array_splice($electronicURLs, $URLIndex, 1);
-				break;
+	$DOIs = $result['md-doi'];
+	if ($DOIs && $electronicURLs) {
+		foreach ($DOIs as $DOI) {
+			foreach ($electronicURLs as $URLIndex => $URLInfo) {
+				if (strpos($DOI['values'][0], $URLInfo['values'][0]) !== False) {
+					array_splice($electronicURLs, $URLIndex, 1);
+					break;
+				}
 			}
 		}
 	}

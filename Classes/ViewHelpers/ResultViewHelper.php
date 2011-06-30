@@ -704,7 +704,7 @@ private function ISSNsDetailLine ($result) {
 			foreach($result[$fieldName][0]['values'] as $ISSNString) {
 				$ISSN = substr($ISSNString, 0, 9);
 				if (!in_array($ISSN, $ISSNList)) {
-					if ($ISSNTypeIndex != '') {
+					if ($ISSNType != '') {
 						$ISSN .= ' (' . Tx_Extbase_Utility_Localization::translate($ISSNType, 'Pazpar2') . ')';
 					}
 					$ISSNList[] = $ISSN;

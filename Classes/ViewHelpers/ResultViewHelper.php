@@ -426,14 +426,15 @@ private function locationDetails ($result) {
 
 		$detailsData = $this->doc->createElement('dd');
 		$locationDetails[] = $detailsData;
-
-		$this->appendInfoToContainer( $this->detailInfoItem('edition', $location), $detailsData);
-		$this->appendInfoToContainer( $this->detailInfoItem('publication-name', $location), $detailsData);
-		$this->appendInfoToContainer( $this->detailInfoItem('publication-place', $location), $detailsData);
-		$this->appendInfoToContainer( $this->detailInfoItem('date', $location), $detailsData);
-		$this->appendInfoToContainer( $this->detailInfoItem('physical-extent', $location), $detailsData);
-		// $this->cleanISBNs(); not implemented in PHP version
-		$this->appendInfoToContainer( $this->detailInfoItem('isbn', $location), $detailsData);
+		if ($location['md-medium'][0]['values'][0] != 'article') {
+			$this->appendInfoToContainer( $this->detailInfoItem('edition', $location), $detailsData);
+			$this->appendInfoToContainer( $this->detailInfoItem('publication-name', $location), $detailsData);
+			$this->appendInfoToContainer( $this->detailInfoItem('publication-place', $location), $detailsData);
+			$this->appendInfoToContainer( $this->detailInfoItem('date', $location), $detailsData);
+			$this->appendInfoToContainer( $this->detailInfoItem('physical-extent', $location), $detailsData);
+			// $this->cleanISBNs(); not implemented in PHP version
+			$this->appendInfoToContainer( $this->detailInfoItem('isbn', $location), $detailsData);
+		}
 		$this->appendInfoToContainer( $this->electronicURLs($location, $result), $detailsData);
 		$this->appendInfoToContainer( $this->catalogueLink($locationAll), $detailsData);
 

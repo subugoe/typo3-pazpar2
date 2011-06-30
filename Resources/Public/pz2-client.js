@@ -2784,7 +2784,7 @@ function renderDetails(recordID) {
 			for (var personIndex in data['md-other-person']) {
 				var personName = jQuery.trim(data['md-other-person'][personIndex].split(',')[0]);
 				if (allResponsibility.match(personName) == null) {
-						data['md-other-person-clean'].push(data['md-other-person'][authorIndex]);
+						data['md-other-person-clean'].push(data['md-other-person'][personIndex]);
 				}
 				else console.log('Omitting other person ' +  data['md-other-person'][personIndex])
 			}

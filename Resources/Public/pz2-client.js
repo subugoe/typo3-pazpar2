@@ -1725,20 +1725,23 @@ function toggleDetails (prefixRecId) {
 	var recordIDHTML = prefixRecId.replace('rec_', '');
 	var recordID = recordIDForHTMLID(recordIDHTML);
 	var record = hitList[recordID];
-
+	var detailsElement = document.getElementById('det_' + recordIDHTML);
 	var parent = document.getElementById('recdiv_'+ recordIDHTML);
 
 	if (record.detailsDivVisible) {
 		// Detailed record information is present: remove it
-		var detailsElement = document.getElementById('det_' + recordIDHTML);
 		jQuery(detailsElement).slideUp('fast');
 		record.detailsDivVisible = false;
 		jQuery(parent).removeClass('pz2-detailsVisible');
 	}
 	else {
-		// Detailed record information is not present: get detail view and append it
+		// Create detail view if it doesn’t exist yet.
 		if (!record.detailsDiv) {
 			record.detailsDiv = renderDetails(recordID);
+		}
+
+		// Append the detail view if it is not in the DOM.
+		if (!detailsElement) {
 			jQuery(record.detailsDiv).hide();
 			parent.appendChild(record.detailsDiv);
 		}
@@ -1749,6 +1752,7 @@ function toggleDetails (prefixRecId) {
 		else {
 			jQuery(record.detailsDiv).show();
 		}
+
 		record.detailsDivVisible = true;
 		jQuery(parent).addClass('pz2-detailsVisible');
 	}

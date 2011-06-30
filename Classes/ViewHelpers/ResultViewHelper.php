@@ -258,14 +258,18 @@ private function renderDetails ($result) {
 	$div->appendChild($clearSpan);
 	$clearSpan->setAttribute('class', 'pz2-clear');
 
-	// Use a somewhat sloppy heuristic to create cleaned up author and
-	// other person lists to avoid duplicating persons listed in
-	// title-responsiblity already.
+	/*	A somewhat sloppy heuristic to create cleaned up author and other-person
+		lists to avoid duplicating names listed in title-responsiblity already:
+		* Do _not_ separately display authors and other-persons whose apparent
+			surname appears in the title-reponsibility field to avoid duplication.
+		* Completely omit the author list if no title-responsibility field is present
+			as author fields are used in its place then.
+	*/
+	$allResponsibility = '';
+	foreach ($result['md-title-responsibility'] as $responsibility) {
+		$allResponsibility .= $responsibility['values'][0] . '; ';
+	}
 	if ($result['md-title-responsibility']) {
-		$allResponsibility = '';
-		foreach ($result['md-title-responsibility'] as $responsibility) {
-			$allResponsibility .= $responsibility['values'][0] . '; ';
-		}
 		$authors = $result['md-author'];
 		if ($authors) {
 			$result['md-author-clean'] = Array();
@@ -277,15 +281,15 @@ private function renderDetails ($result) {
 				}
 			}
 		}
-		$otherPeople = $result['md-other-person'];
-		if ($otherPeople) {
-			$result['md-other-person-clean'] = Array();
-			foreach ($otherPeople as $otherPerson) {
-				$nameParts = explode(",", $otherPerson['values'][0]);
-				$personSurname = trim($nameParts[0]);
-				if (strpos($allResponsibility, $personSurname) === False) {
-					$result['md-other-person-clean'][] = $otherPerson;
-				}
+	}
+	$otherPeople = $result['md-other-person'];
+	if ($otherPeople) {
+		$result['md-other-person-clean'] = Array();
+		foreach ($otherPeople as $otherPerson) {
+			$nameParts = explode(",", $otherPerson['values'][0]);
+			$personSurname = trim($nameParts[0]);
+			if (strpos($allResponsibility, $personSurname) === False) {
+				$result['md-other-person-clean'][] = $otherPerson;
 			}
 		}
 	}

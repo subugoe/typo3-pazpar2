@@ -2767,11 +2767,16 @@ function renderDetails(recordID) {
 		detailsDiv.appendChild(clearSpan);
 		jQuery(clearSpan).addClass('pz2-clear');
 
-		// Use a somewhat sloppy heuristic to create cleaned up author and
-		// other person lists to avoid duplicating persons listed in
-		// title-responsiblity already.
+		/*	A somewhat sloppy heuristic to create cleaned up author and other-person
+			lists to avoid duplicating names listed in title-responsiblity already:
+			* Do _not_ separately display authors and other-persons whose apparent
+				surname appears in the title-reponsibility field to avoid duplication.
+			* Completely omit the author list if no title-responsibility field is present
+				as author fields are used in its place then.
+		*/
+		var allResponsibility = '';
 		if (data['md-title-responsibility']) {
-			var allResponsibility = data['md-title-responsibility'].join('; ');
+			allResponsibility = data['md-title-responsibility'].join('; ');
 			data['md-author-clean'] = [];
 			for (var authorIndex in data['md-author']) {
 				var authorName = jQuery.trim(data['md-author'][authorIndex].split(',')[0]);
@@ -2780,14 +2785,14 @@ function renderDetails(recordID) {
 				}
 				else console.log('Omitting author ' +  data['md-author'][authorIndex])
 			}
-			data['md-other-person-clean'] = [];
-			for (var personIndex in data['md-other-person']) {
-				var personName = jQuery.trim(data['md-other-person'][personIndex].split(',')[0]);
-				if (allResponsibility.match(personName) == null) {
-						data['md-other-person-clean'].push(data['md-other-person'][personIndex]);
-				}
-				else console.log('Omitting other person ' +  data['md-other-person'][personIndex])
+		}
+		data['md-other-person-clean'] = [];
+		for (var personIndex in data['md-other-person']) {
+			var personName = jQuery.trim(data['md-other-person'][personIndex].split(',')[0]);
+			if (allResponsibility.match(personName) == null) {
+					data['md-other-person-clean'].push(data['md-other-person'][personIndex]);
 			}
+			else console.log('Omitting other person ' +  data['md-other-person'][personIndex])
 		}
 		
 		appendInfoToContainer( detailLineAuto('author-clean'), detailsList );

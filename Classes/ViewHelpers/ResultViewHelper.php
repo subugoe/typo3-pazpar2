@@ -759,6 +759,7 @@ private function DOMElementForTitle ($title, $result) {
 
 	if ($result['md-' . $title]) {
 		$theData = $this->pz2ValuesUnique($result['md-' . $title]);
+		$theData = array_reverse($theData);
 		foreach ($theData as $value) {
 			$rawDatum = $value;
 			$wrappedDatum = Null;

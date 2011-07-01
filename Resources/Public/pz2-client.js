@@ -2797,7 +2797,6 @@ function renderDetails(recordID) {
 				if (allResponsibility.match(authorName) == null) {
 						data['md-author-clean'].push(data['md-author'][authorIndex]);
 				}
-				else console.log('Omitting author ' +  data['md-author'][authorIndex])
 			}
 		}
 		data['md-other-person-clean'] = [];
@@ -2806,7 +2805,6 @@ function renderDetails(recordID) {
 			if (allResponsibility.match(personName) == null) {
 					data['md-other-person-clean'].push(data['md-other-person'][personIndex]);
 			}
-			else console.log('Omitting other person ' +  data['md-other-person'][personIndex])
 		}
 		
 		appendInfoToContainer( detailLineAuto('author-clean'), detailsList );

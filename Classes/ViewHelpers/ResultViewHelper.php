@@ -626,7 +626,6 @@ private function catalogueLink ($locationAll) {
 	if (!$catalogueURL) {
 		$PPN = preg_replace('/[a-zA-Z]*([0-9X]*)/', '$1', $locationAll['ch']['md-id'][0]['values'][0]);
 		$matches = Null;
-debugster($targetURL);
 		if (strpos( $targetURL, 'z3950.gbv.de:20012/subgoe_opc') !== False) {
 			// Old GBV Z39.50 server for SUB Opac.
 			if (preg_match('/^134\.76\./', $_SERVER["REMOTE_ADDR"]) > 0) {
@@ -640,7 +639,6 @@ debugster($targetURL);
 			}
 		}
 		else if (strpos($targetURL, 'sru.gbv.de/natliz') !== False) {
-			debugster('Natliz');
 			// match Nationallizenzen natliz and natlizzss on new GBV SRU server: no link
 		}
 		else if (preg_match('/sru.gbv.de\/([a-zA-Z0-9-]*)/', $targetURL, $matches) > 0) {

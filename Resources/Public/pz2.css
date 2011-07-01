@@ -128,6 +128,10 @@
 	padding-top: 20px;
 }
 
+.pz2-recordLink {
+	display: block;
+}
+
 .pz2-recordLink:after {
 	font-family: Helvetica, Arial, sans-serif;
 	content:'\0000bb';

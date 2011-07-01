@@ -439,15 +439,27 @@ a.pz2-ZDBGeneralInfo {
 /* GOOGLE BOOKS */
 
 #googlePreviewContainer {
-	position: absolute;
-	left: 2em;
-	right: 2em;
-	top: 2em;
-	bottom: 2em;
+	position: fixed;
+	left: 4em;
+	right: 4em;
+	top: 4em;
+	height: 570px; /* 550px for preview + 20px for title bar */
+}
+
+.googlePreview-titleBar {
+	margin: auto;
+	height: 20px;
+	width: 450px;
+	background: #eee;
+	text-align: right;
+	padding-right: 2px;
 }
 
 #googlePreview {
+	margin: auto;
+	top: 20px;
 	height: 550px;
+	width: 450px;
 }
 
 

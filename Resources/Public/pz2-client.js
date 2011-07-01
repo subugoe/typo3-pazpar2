@@ -2423,11 +2423,13 @@ function renderDetails(recordID) {
 			output: false (so the click isn't handled any further)
 		*/
 		var openPreview = function() {
+			var googlePreviewButton = this;
 			// Get hold of containing <div>, creating it if necessary.
 			var previewContainerDivName = 'googlePreviewContainer';
 			var previewContainerDiv = document.getElementById(previewContainerDivName);
 			var previewDivName = 'googlePreview';
 			var previewDiv = document.getElementById(previewDivName);
+
 
 			if (!previewContainerDiv) {
 				previewContainerDiv = document.createElement('div');
@@ -2435,18 +2437,17 @@ function renderDetails(recordID) {
 				jQuery('#page').get(0).appendChild(previewContainerDiv);
 
 				var titleBarDiv = document.createElement('div');
-				var jTitleBarDiv = jQuery(titleBarDiv);
-				jTitleBarDiv.addClass('googlePreview-titleBar');
+				jQuery(titleBarDiv).addClass('googlePreview-titleBar');
 				previewContainerDiv.appendChild(titleBarDiv);
-				jTitleBarDiv.css({height:'20px', width:'100%',
-									position:'absolute', top:'-20px', background:'#eee'});
 
 				var closeBoxLink = document.createElement('a');
 				titleBarDiv.appendChild(closeBoxLink);
-				jQuery(closeBoxLink).css({display:'block', height:'16px', width:'16px',
-									position:'absolute', right:'2px', top:'2px', background:'#666'})
+				jQuery(closeBoxLink).addClass('googlePreview-closeBox');
 				closeBoxLink.setAttribute('href', '#');
+				
+				
 				closeBoxLink.onclick = new Function('javascript:jQuery("#' + previewContainerDivName + '").hide(200);return false;');
+				closeBoxLink.appendChild(document.createTextNode(localise('Vorschau schließen')));
 
 				previewDiv = document.createElement('div');
 				previewDiv.setAttribute('id', previewDivName);

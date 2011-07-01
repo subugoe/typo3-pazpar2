@@ -330,6 +330,10 @@
 	right: 0px;
 }
 
+.pz2-recordCount:hover {
+	font-weight: normal;
+	cursor: url;
+}
 
 
 
@@ -493,16 +497,33 @@ pz2-client.js removes this once it it loaded.
 
 /* STATUS DISPLAY */
 
-#pz2-byTarget {
+#pz2-targetView {
+	position: absolute;
+	top: -20px;
+	right: 100px;
+	padding: 10px;
+	background: #fff;
+	border: 2px solid #eee;
+	box-shadow: 1px 1px 4px #666;
+	z-index: 100;
 	font-size: 85%;
-	padding-top: 2em;
 }
 
-#pz2-targetView #pz2-byTarget thead tr td {
+#pz2-targetView td {
+	padding: 0px 3px;
+	text-align: right;
+}
+
+#pz2-targetView th {
+	padding: 0px 3px;
+	text-align: left;
+}
+
+#pz2-targetView thead tr {
 	background: #eee;
 	font-weight: bold;
 }
 
-#pz2-targetView #pz2-byTarget td {
-	padding: 0px 3px;
+#pz2-targetView .pz2-target-status {
+	min-width: 120px; 
 }

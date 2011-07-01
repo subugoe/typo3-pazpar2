@@ -783,20 +783,14 @@ function display () {
 	*/
 	var updatePagers = function () {
 		jQuery('div.pz2-pager').each( function(index) {
-				// Remove existing pager content, preserving the progressIndicator
-				var progress = jQuery(this).children('.pz2-progressIndicator');
-				jQuery(this).empty()
-				if (progress.length == 1) {
-					this.appendChild(progress[0]);
-				}
-
 				var pages = Math.ceil(displayHitList.length / recPerPage);
 
-				// create pager
-				var pageNumbersContainer = document.createElement('div');
-				this.appendChild(pageNumbersContainer);
-				jQuery(pageNumbersContainer).addClass('pz2-pageNumbers pz2-pageCount-' + pages);
-
+				// Update pager
+				var jPageNumbersContainer = jQuery('.pz2-pageNumbers', this);
+				jPageNumbersContainer.removeClass().addClass('pz2-pageNumbers pz2-pageCount-' + pages);
+				jPageNumbersContainer.empty();
+				var pageNumbersContainer = jPageNumbersContainer[0];
+				
 				var previous = document.createElement('span');
 				if (curPage > 1) {
 					previous = document.createElement('a');
@@ -841,10 +835,8 @@ function display () {
 				jQuery(nextLink).addClass('pz2-next');
 				nextLink.appendChild(document.createTextNode('»'));
 				pageNumbersContainer.appendChild(nextLink);
-				
-				// add record count information
-				var recordCountDiv = document.createElement('div');
-				jQuery(recordCountDiv).addClass('pz2-recordCount');
+
+				// Add record count information
 				var infoString;
 				if (displayHitList.length > 0) {
 					infoString = String(firstIndex + 1) + '-'
@@ -859,8 +851,10 @@ function display () {
 				if (displayFilter) {
 					infoString += ' ' + localise('gefiltert');
 				}
-				recordCountDiv.appendChild(document.createTextNode(infoString));
-				this.appendChild(recordCountDiv);
+
+				var jRecordCount = jQuery('a.pz2-recordCount');
+				jRecordCount.empty()
+				jRecordCount.append(infoString);
 			}
 		);	
 	}
@@ -1345,7 +1339,7 @@ function my_onrecord(data) {
 	input:	data - list coming from pazpar2
 */
 function my_onbytarget(data) {
-	var targetDiv = document.getElementById("pz2-byTarget");
+	var targetDiv = document.getElementById('pz2-targetView');
 	jQuery(targetDiv).empty();
 
 	var table = document.createElement('table');
@@ -1355,7 +1349,7 @@ function my_onbytarget(data) {
 	table.appendChild(thead);
 	var tr = document.createElement('tr');
 	thead.appendChild(tr);
-	var td = document.createElement('td');
+	var td = document.createElement('th');
 	tr.appendChild(td);
 	td.appendChild(document.createTextNode(localise('Datenbank')));
 	td = document.createElement('td');
@@ -1369,6 +1363,7 @@ function my_onbytarget(data) {
 	td.appendChild(document.createTextNode(localise('Code')));
 	td = document.createElement('td');
 	tr.appendChild(td);
+	jQuery(td).addClass('pz2-target-status');
 	td.appendChild(document.createTextNode(localise('Status')));
 	
 	var tbody = document.createElement('tbody');
@@ -1377,7 +1372,7 @@ function my_onbytarget(data) {
 	for (var i = 0; i < data.length; i++ ) {
 		tr = document.createElement('tr');
 		tbody.appendChild(tr);
-		td = document.createElement('td');
+		td = document.createElement('th');
 		tr.appendChild(td);
 		td.appendChild(document.createTextNode(data[i].name));
 		td.title = data[i].id;
@@ -1699,25 +1694,16 @@ function pagerPrev() {
 
 
 
-// switching view between targets and records
-
-function switchView(view) {
-	
-	var targets = document.getElementById('pz2-targetView');
-	var records = document.getElementById('pz2-recordView');
-	
-	switch(view) {
-		case 'pz2-targetView':
-			targets.style.display = "block";			
-			records.style.display = "none";
-			break;
-		case 'pz2-recordView':
-			targets.style.display = "none";			
-			records.style.display = "block";
-			break;
-		default:
-			alert('Unknown view.');
-	}
+/*	toggleStatus
+	Shows and hides the status display with information on all targets.
+	Invoked by clicking the number of results.
+	output:	false
+*/
+function toggleStatus() {
+	var jTargetView = jQuery('#pz2-targetView');
+	jQuery('#pazpar2 .pz2-recordCount').after(jTargetView);
+	jTargetView.slideToggle('fast');
+	return false;
 }
 
 

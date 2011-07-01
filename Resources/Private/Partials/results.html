@@ -3,8 +3,9 @@
 <div id="pz2-recordView">
 	<div class="pz2-pager">
 		<div class="pz2-progressIndicator"></div>
-		<f:if condition="{f:count(subject: results)} > 0">
-			<div class="pz2-recordCount">
+		<div class="pz2-pageNumbers"></div>
+		<a class="pz2-recordCount" onclick="toggleStatus();">
+			<f:if condition="{f:count(subject: results)} > 0">
 				<f:count subject="{results}"/>
 				<f:if condition="{f:count(subject: results)} == 1">
 					<f:then><f:translate key="Result"/></f:then>
@@ -13,8 +14,12 @@
 				<f:if condition="{f:count(subject: results)} != {totalResultCount}">
 					(<f:translate key="of"/> {totalResultCount})
 				</f:if>
-			</div>
-		</f:if>
+			</f:if>
+		</a>
+
+		<div id="pz2-targetView" style="display: none">
+				<f:translate key="No information available yet."/>
+		</div> <!-- #pz2-targetView -->
 	</div>
 
 	<div id="pz2-navi"></div>
@@ -35,16 +40,5 @@
 			</f:else>
 		</f:if>
 	</div>
-	<div id="pz2-stat"></div>
+
 </div> <!-- #pz2-recordView -->
-
-<div id="pz2-targetView" style="display: none">
-	<div id="pz2-byTarget">
-		<f:translate key="No information available yet."/>
-	</div>
-</div> <!-- #pz2-targetView -->
-
-<div id="pz2-switchMenu">
-	[<a href="#" onclick="switchView('pz2-recordView');return false;"><f:translate key="Results"/></a>,
-	<a href="#" onclick="switchView('pz2-targetView');return false;"><f:translate key="Status"/></a>]
-</div> <!-- #pz2-switchMenu -->

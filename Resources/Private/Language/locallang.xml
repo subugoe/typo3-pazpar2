@@ -38,7 +38,6 @@
 			<label index="No Results">Es gab keine Suchergebnisse für Ihre Anfrage.</label>
 			<label index="Result">Ergebnis</label>
 			<label index="Results">Ergebnisse</label>
-			<label index="Status">Status</label>
 
 			<!-- Labels for book display details -->
 			<label index="detail-label-title">Titel</label>
@@ -130,7 +129,6 @@
 			<label index="No Results">There were no search results for your query.</label>
 			<label index="Result">Result</label>
 			<label index="Results">Results</label>
-			<label index="Status">Status</label>
 
 			<!-- Labels for book display details -->
 			<label index="detail-label-title">Title</label>

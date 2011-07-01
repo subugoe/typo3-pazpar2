@@ -128,7 +128,7 @@
 			<!-- Status strings -->
 			<label index="No information available yet.">No information available yet.</label>
 			<label index="No Results">There were no search results for your query.</label>
-			<label index="Results">Result</label>
+			<label index="Result">Result</label>
 			<label index="Results">Results</label>
 			<label index="Status">Status</label>
 

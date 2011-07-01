@@ -1172,7 +1172,7 @@ function facetListForType (type, preferOriginalFacets) {
 		var graphDiv = document.createElement('div');
 		container.appendChild(graphDiv);
 		jQuery(graphDiv).addClass('pz2-histogramContainer');
-		var graphWidth = jQuery('#pz2-termLists').width() - 30;
+		var graphWidth = jQuery('#pz2-termLists').width();
 		var jGraphDiv = jQuery(graphDiv);
 		var canvasHeight = 150;
 		jGraphDiv.css({'width': graphWidth + 'px', 'height': canvasHeight + 'px', 'position': 'relative'});
@@ -1185,8 +1185,13 @@ function facetListForType (type, preferOriginalFacets) {
 			}
 		}
 		
+		/*	Set up xaxis with two labelled ticks, one at each end.
+			Dodgy: Use whitespace to approximately position the labels in a way that they don’t
+			extend beyond the end of the graph (by default they are centered at the point of
+			their axis, thus extending beyond the width of the graph on one site.
+		*/
 		var xaxisTicks = function (axis) {
-			return [axis.min, axis.max];
+			return [[axis.datamin, '      ' + axis.datamin], [axis.datamax, axis.datamax + '      ']];
 		}
 
 		// Use the colour of term list titles for the histogram.
@@ -1197,18 +1202,20 @@ function facetListForType (type, preferOriginalFacets) {
 				'bars': {
 					'show': true,
 					'fill': true,
+					'lineWidth': 0,
 					'fillColor': graphColour
 				}
 			},
 			'xaxis':  {
 				'tickDecimals': 0,
 				'ticks': xaxisTicks,
-				'labelWidth': 0
+				'autoscaleMargin': null
 			},
 			'yaxis': {
 				'position': 'right',
 				'tickDecimals': 0,
-				'tickFormatter': function(val, axis) {return (val != 0) ? (val) : ('');}
+				'tickFormatter': function(val, axis) {return (val != 0) ? (val) : ('');},
+				'labelWidth': 30
 			},
 			'grid': {
 				'borderWidth': 0,
@@ -1241,7 +1248,7 @@ function facetListForType (type, preferOriginalFacets) {
 			jQuery("#pz2-histogram-tooltip").remove();
 		});
 		
-		jGraphDiv.bind('plothover', function(event, ranges) {
+		jGraphDiv.bind('plothover', function(event, ranges, item) {
 			var showTooltip = function(x, y, contents) {
 				jQuery('<div id="pz2-histogram-tooltip">' + contents + '</div>').css( {
 					'position': 'absolute',
@@ -3145,7 +3152,7 @@ var languageNames = {
 		'cai': 'Indianersprachen (Zentralamerika) (andere)',
 		'inc': 'Indoarische Sprachen',
 		'ine': 'Indogermanische Sprachen (andere)',
-		'ind': 'Indonesisch (=Bahasa Indonesia=Bhasa Indonesia)',
+		'ind': 'Indonesisch',
 		'inh': 'Inguschisch',
 		'ina': 'Interlingua (IALA)',
 		'ile': 'Interlingue',
@@ -3369,6 +3376,7 @@ var languageNames = {
 		'sem': 'Semitische Sprachen (andere)',
 		'scc': 'Serbisch (alter Sprachcode)', // deprecated
 		'srp': 'Serbisch',
+		'scr': 'Serbokroatisch (alter Sprachcode)', // deprecated
 		'hrv': 'Kroatisch',
 		'srr': 'Serer',
 		'iii': 'Sichuan Yi',
@@ -3855,6 +3863,7 @@ var languageNames = {
 		'sel': 'Selkup',
 		'sem': 'Semitic (Other)',
 		'scc': 'Serbian (old language code)', // deprecated
+		'scr': 'Serbocroatian (old language code)', // deprecated
 		'srp': 'Serbian',
 		'srr': 'Serer',
 		'shn': 'Shan',

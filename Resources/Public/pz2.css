@@ -250,6 +250,10 @@
 	position: relative;
 }
 
+.pz2-histogramContainer {
+	margin-left: -18px;
+}
+
 #pz2-histogram-tooltip {
 	font-weight: bold;
 	font-size: 71%;

@@ -514,25 +514,83 @@ private function detailInfoItemWithLabel($fieldContent, $labelName, $dontTermina
 
 
 /**
+ * Comparison function for sorting URLs. Put URLs with attributes to the front.
+ * @param string|Array $a
+ * @param string|Array $b
+ * @return int
+ */
+private function URLSort ($a, $b) {
+	if ($a['attrs'] && !$b['attrs']) {
+		return -1;
+	}
+	else if (!$a['attrs'] && $b['attrs']) {
+		return 1;
+	}
+	return 0;
+}
+
+
+
+/**
+ * Returns a cleaned and sorted list of the URLs in the md-electronic-url fields.
+ * @param Array $location
+ * @param Array $result the result containing $location
+ * @return type Array subarray of $location without duplicates and sorted
+ */
+private function cleanURLList ($location, $result) {
+
+$URLs = $location['md-electronic-url'];
+	
+	// Figure out which URLs are duplicates and collect indexes of those to remove.
+	$indexesToRemove = Array();
+	foreach ($URLs as $URLIndex => $URLInfo) {
+		$URL = $URLInfo['values'][0];
+		
+		// Check for duplicates in the electronic-urls field.
+		for ($remainingURLIndex = $URLIndex + 1; $remainingURLIndex < count($URLs); $remainingURLIndex++) {
+			$remainingURLInfo = $URLs[$remainingURLIndex];
+			$remainingURL = $remainingURLInfo['values'][0];
+			if ($URL == $remainingURL) {
+				// Two of the URLs are identical.
+				// Keep the one with the title if only one of them has one,
+				// keep the first one otherwise.
+				$URLIndexToRemove = $URLIndex + $remainingURLIndex;
+				if (!$URLInfo['attrs'] && $remainingURLInfo['attrs']) {
+					$URLIndexToRemove = $URLIndex;
+				}
+				$indexesToRemove[$URLIndexToRemove] = true;
+			}
+		}
+		// Check for duplicates among the DOIs.
+		foreach ($DOIs as $DOI) {
+			if (strpos($DOI['values'][0], $URL) !== False) {
+				$indexesToRemove[$URLIndexToRemove] = true;
+				break;
+			}
+		}
+	}
+	
+	// Remove the duplicate URLs.
+	foreach (array_keys($indexesToRemove) as $index) {
+		$URLs[$index] = FALSE;
+	}
+	$URLs = array_filter($URLs);
+
+	// Re-order URLs so those with explicit labels appear at the beginning.
+	usort($URLs, Array($this, "URLSort"));
+
+	return $URLs;
+}
+
+
+/**
  * Create markup for URLs in current location data.
  * @param array $location
  * @param array $result the result containing $location
  * @return DOMElement
  */
 private function electronicURLs ($location, $result) {
-	$electronicURLs = $location['md-electronic-url'];
-	$DOIs = $result['md-doi'];
-	if ($DOIs && $electronicURLs) {
-		foreach ($DOIs as $DOI) {
-			foreach ($electronicURLs as $URLIndex => $URLInfo) {
-				if (strpos($DOI['values'][0], $URLInfo['values'][0]) !== False) {
-					array_splice($electronicURLs, $URLIndex, 1);
-					break;
-				}
-			}
-		}
-	}
-	
+	$electronicURLs = $this->cleanURLList($location, $result);
 	$URLsContainer = Null;
 
 	if ($electronicURLs && count($electronicURLs) != 0) {

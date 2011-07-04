@@ -2586,21 +2586,88 @@ function renderDetails(recordID) {
 			output:	DOM element containing URLs as links.
 		*/
 		var electronicURLs = function() {
-			var electronicURLs = location['md-electronic-url'];
-			// remove those URLs from the list which are already present as DOI information
-			for (var DOIIndex in data['md-doi']) {
-				for (var URLIndex in electronicURLs) {
-					var URLInfo = electronicURLs[URLIndex];
-					if (typeof(URLInfo) === 'object' && URLInfo['#text']) {
-						URLInfo = URLInfo['#text'];
+			
+			/*	cleanURLList
+				Returns a cleaned list of URLs for presentation.
+				1. Removes duplicates of URLs if they exist, preferring URLs with label
+				2. Removes URLs duplicating DOI information
+				3. Sorts URLs to have those with a label at the beginning
+				output:	array of URL strings or URL objects (with #text and other properties)
+			*/
+			var cleanURLList = function () {
+				var URLs = location['md-electronic-url'];
+	
+				if (URLs) {
+					// Figure out which URLs are duplicates and collect indexes of those to remove.
+					var indexesToRemove = {};
+					for (var URLIndex = 0; URLIndex < URLs.length; URLIndex++) {
+						var URLInfo = URLs[URLIndex];
+						var URL = URLInfo;
+						if (typeof(URLInfo) === 'object' && URLInfo['#text']) {
+							URL = URLInfo['#text'];
+						}
+
+						// Check for duplicates in the electronic-urls field.
+						for (var remainingURLIndex = URLIndex + 1; remainingURLIndex < URLs.length; remainingURLIndex++) {
+							var remainingURLInfo = URLs[remainingURLIndex];
+							var remainingURL = remainingURLInfo;
+							if (typeof(remainingURLInfo) === 'object' && remainingURLInfo['#text']) {
+								remainingURL = remainingURLInfo['#text'];
+							}
+
+							if (URL == remainingURL) {
+								// Two of the URLs are identical.
+								// Keep the one with the title if only one of them has one,
+								// keep the first one otherwise.
+								var URLIndexToRemove = URLIndex + remainingURLIndex;
+								if (typeof(URLInfo) !== 'object' && typeof(remainingURLInfo) === 'object') {
+									URLIndexToRemove = URLIndex;
+								}
+								indexesToRemove[URLIndexToRemove] = true;
+							}
+						}
+
+						// Check for duplicates among the DOIs.
+						for (var DOIIndex in data['md-doi']) {
+							if (URL.search(data['md-doi'][DOIIndex]) != -1) {
+								indexesToRemove[URLIndex] = true;
+								break;
+							}
+						}
+
 					}
-					
-					if (URLInfo.search(data['md-doi'][DOIIndex]) != -1) {
-						electronicURLs.splice(URLIndex, 1);
-						break;
+
+					// Remove the duplicate URLs.
+					var indexesToRemoveArray = [];
+					for (var i in indexesToRemove) {
+						if (indexesToRemove[i]) {
+							indexesToRemoveArray.push(i);
+						}
 					}
+					indexesToRemoveArray.sort( function(a, b) {return b - a;} )
+					for (var j in indexesToRemoveArray) {
+						URLs.splice(indexesToRemoveArray[j], 1);
+					}
+
+					// Re-order URLs so those with explicit labels appear at the beginning.
+					URLs.sort( function(a, b) {
+							if (typeof(a) === 'object' && typeof(b) !== 'object') {
+								return -1;
+							}
+							else if (typeof(a) !== 'object' && typeof(b) === 'object') {
+								return 1;
+							}
+							return 0;
+						}
+					);
 				}
+				
+				return URLs;
 			}
+
+
+
+			var electronicURLs = cleanURLList();
 
 			var URLsContainer;
 			if (electronicURLs && electronicURLs.length != 0) {

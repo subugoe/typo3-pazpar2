@@ -1463,19 +1463,23 @@ function triggerSearchForForm (form) {
 		var searchString = jQuery('#pz2-field-' + fieldName, form).val()
 		if (searchString && searchString != '') {
 			searchString = jQuery.trim(searchString);
-			if (fieldName != 'all') {
-				if (fieldName == 'title' && jQuery('#pz2-checkbox-journal:checked', form).length > 0) {
-					// Special case for title restricted to journals only.
-					searchString = 'journal=' + searchString;
-				}
-				else if (fieldName == 'person') {
-					// Special case for person search: do a phrase search.
-					searchString = fieldName + '="' + searchString + '"';
-				}
-				else {
-					searchString = fieldName + '=' + searchString;
+			if (fieldName == 'all') {
+				if (jQuery('#pz2-checkbox-fulltext:checked', form).length > 0) {
+					searchString = 'fulltext=' + searchString;
 				}
 			}
+			else if (fieldName == 'title' && jQuery('#pz2-checkbox-journal:checked', form).length > 0) {
+				// Special case for title restricted to journals only.
+				searchString = 'journal=' + searchString;
+			}
+			else if (fieldName == 'person') {
+				// Special case for person search: do a phrase search.
+				searchString = fieldName + '="' + searchString + '"';
+			}
+			else {
+				searchString = fieldName + '=' + searchString;
+			}
+			
 			array.push(searchString);
 		}
 	}

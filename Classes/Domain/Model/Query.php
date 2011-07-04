@@ -31,12 +31,14 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	 * Search query and reading accessors.
 	 */
 	protected $queryString;
+	protected $querySwitchFulltext;
 	protected $queryStringTitle;
 	protected $querySwitchJournalOnly;
 	protected $queryStringPerson;
 	protected $queryStringDate;
 
 	public function getQueryString () { return $this->queryString; }
+	public function getQuerySwitchFulltext () { return $this->querySwitchFulltext; }
 	public function getQueryStringTitle () { return $this->queryStringTitle; }
 	public function getQuerySwitchJournalOnly () { return $this->querySwitchJournalOnly; }
 	public function getQueryStringPerson () { return $this->queryStringPerson; }
@@ -61,6 +63,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	 */
 	public function setQueryFromArguments ($newArguments) {
 		$this->setQueryString(trim($newArguments['queryString']));
+		$this->querySwitchFulltext = ($newArguments['querySwitchFulltext'] != '');
 		$this->queryStringTitle = trim($newArguments['queryStringTitle']);
 		$this->querySwitchJournalOnly = ($newArguments['querySwitchJournalOnly'] != '');
 		$this->queryStringPerson = trim($newArguments['queryStringPerson']);
@@ -176,7 +179,16 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	private function fullQueryString () {
 		$queryParts = Array();
 
-		if ($this->queryString) { $queryParts[] = $this->queryString; }
+		// Main search can be default search or full text search.
+		if ($this->queryString) {
+			if (!$this->querySwitchFulltext) {
+				$queryParts[] = $this->queryString;
+			}
+			else {
+				$queryParts[] = 'fulltext=' . $this->queryString;
+			}
+			
+		}
 		// Title search can be proper title or journal title depending on the switch.
 		if ($this->queryStringTitle) {
 			if (!$this->querySwitchJournalOnly) {

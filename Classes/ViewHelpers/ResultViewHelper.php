@@ -266,10 +266,11 @@ private function renderDetails ($result) {
 			as author fields are used in its place then.
 	*/
 	$allResponsibility = '';
-	foreach ($result['md-title-responsibility'] as $responsibility) {
-		$allResponsibility .= $responsibility['values'][0] . '; ';
-	}
+	
 	if ($result['md-title-responsibility']) {
+		foreach ($result['md-title-responsibility'] as $responsibility) {
+			$allResponsibility .= $responsibility['values'][0] . '; ';
+		}
 		$authors = $result['md-author'];
 		if ($authors) {
 			$result['md-author-clean'] = Array();
@@ -538,47 +539,51 @@ private function URLSort ($a, $b) {
  * @return type Array subarray of $location without duplicates and sorted
  */
 private function cleanURLList ($location, $result) {
-
-$URLs = $location['md-electronic-url'];
+	$URLs = $location['md-electronic-url'];
 	
-	// Figure out which URLs are duplicates and collect indexes of those to remove.
-	$indexesToRemove = Array();
-	foreach ($URLs as $URLIndex => $URLInfo) {
-		$URL = $URLInfo['values'][0];
-		
-		// Check for duplicates in the electronic-urls field.
-		for ($remainingURLIndex = $URLIndex + 1; $remainingURLIndex < count($URLs); $remainingURLIndex++) {
-			$remainingURLInfo = $URLs[$remainingURLIndex];
-			$remainingURL = $remainingURLInfo['values'][0];
-			if ($URL == $remainingURL) {
-				// Two of the URLs are identical.
-				// Keep the one with the title if only one of them has one,
-				// keep the first one otherwise.
-				$URLIndexToRemove = $URLIndex + $remainingURLIndex;
-				if (!$URLInfo['attrs'] && $remainingURLInfo['attrs']) {
-					$URLIndexToRemove = $URLIndex;
+	if ($URLs) {
+		// Figure out which URLs are duplicates and collect indexes of those to remove.
+		$indexesToRemove = Array();
+		foreach ($URLs as $URLIndex => $URLInfo) {
+			$URL = $URLInfo['values'][0];
+
+			// Check for duplicates in the electronic-urls field.
+			for ($remainingURLIndex = $URLIndex + 1; $remainingURLIndex < count($URLs); $remainingURLIndex++) {
+				$remainingURLInfo = $URLs[$remainingURLIndex];
+				$remainingURL = $remainingURLInfo['values'][0];
+				if ($URL == $remainingURL) {
+					// Two of the URLs are identical.
+					// Keep the one with the title if only one of them has one,
+					// keep the first one otherwise.
+					$URLIndexToRemove = $URLIndex + $remainingURLIndex;
+					if (!$URLInfo['attrs'] && $remainingURLInfo['attrs']) {
+						$URLIndexToRemove = $URLIndex;
+					}
+					$indexesToRemove[$URLIndexToRemove] = true;
 				}
-				$indexesToRemove[$URLIndexToRemove] = true;
+			}
+			// Check for duplicates among the DOIs.
+			$DOIs = $result['md-doi'];
+			if ($DOIs) {
+				foreach ($DOIs as $DOI) {
+					if (strpos($DOI['values'][0], $URL) !== False) {
+						$indexesToRemove[$URLIndexToRemove] = true;
+						break;
+					}
+				}
 			}
 		}
-		// Check for duplicates among the DOIs.
-		foreach ($DOIs as $DOI) {
-			if (strpos($DOI['values'][0], $URL) !== False) {
-				$indexesToRemove[$URLIndexToRemove] = true;
-				break;
-			}
+
+		// Remove the duplicate URLs.
+		foreach (array_keys($indexesToRemove) as $index) {
+			$URLs[$index] = FALSE;
 		}
+		$URLs = array_filter($URLs);
+
+		// Re-order URLs so those with explicit labels appear at the beginning.
+		usort($URLs, Array($this, "URLSort"));
 	}
 	
-	// Remove the duplicate URLs.
-	foreach (array_keys($indexesToRemove) as $index) {
-		$URLs[$index] = FALSE;
-	}
-	$URLs = array_filter($URLs);
-
-	// Re-order URLs so those with explicit labels appear at the beginning.
-	usort($URLs, Array($this, "URLSort"));
-
 	return $URLs;
 }
 

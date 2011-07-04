@@ -75,6 +75,7 @@ var germanTerms = {
 	'detail-label-id': 'PPN',
 	'Ausgabe': 'Ausgabe',
 	'Google Books Vorschau': 'Google Books Vorschau',
+	'Vorschau schließen': 'Vorschau schließen',
 	'Umschlagbild': 'Umschlagbild',
 	// Short Display
 	'Ansehen und Ausleihen bei:': 'Ansehen und Ausleihen bei:',
@@ -162,6 +163,7 @@ var englishTerms = {
 	'detail-label-id': 'PPN',
 	'Ausgabe': 'Edition',
 	'Google Books Vorschau': 'Google Books Preview',
+	'Vorschau schließen': 'Close Preview',
 	'Umschlagbild': 'Book Cover',
 	// Short Display
 	'Ansehen und Ausleihen bei:': 'View catalogue record at:',

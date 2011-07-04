@@ -103,12 +103,6 @@ var germanTerms = {
 	// Search Form
 	'erweiterte Suche': 'erweiterte Suche',
 	'einfache Suche': 'einfache Suche',
-	'form-extended-label-title': 'Titel',
-	'form-extended-label-journalOnly': 'nur Zeitschriftentitel',
-	'form-extended-label-person': 'Person, Autor',
-	'form-extended-placeholder-person': 'z.B. Lincoln oder Wilde, Oscar',
-	'form-extended-label-date': 'Jahr',
-	'form-extended-placeholder-date': 'z.B. 2004, 2004-, -2004 oder 2004-2008',
 	// Status display
 	'Status:': 'Status:',
 	'Aktive Abfragen:': 'Aktive Abfragen:',
@@ -191,12 +185,6 @@ var englishTerms = {
 	// Search Form
 	'erweiterte Suche': 'Extended Search',
 	'einfache Suche': 'Basic Search',
-	'form-extended-label-title': 'Title',
-	'form-extended-label-journalOnly': 'journal titles only',
-	'form-extended-label-person': 'Person, Author',
-	'form-extended-placeholder-person': 'e.g. Lincoln or Wilde, Oscar',
-	'form-extended-label-date': 'Year',
-	'form-extended-placeholder-date': 'g.g. 2004, 2004-, -2004 or 2004-2008',
 	// Status display
 	'Status:': 'Status:',
 	'Aktive Abfragen:': 'Active Queries:',

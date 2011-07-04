@@ -59,7 +59,7 @@
 			<label index="detail-label-doi">DOI</label>
 			<label index="detail-label-acronym-doi">Document Object Identifier</label>
 			<label index="detail-label-doi-plural">DOIs</label>
-			<label index="detail-label-creator">erfaßt von</label>
+			<label index="detail-label-creator">erfasst von</label>
 			<label index="elektronisch">digital</label>
 			<label index="gedruckt">gedruckt</label>
 			<label index="Ausgabe">Ausgabe</label>

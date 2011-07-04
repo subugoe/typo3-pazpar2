@@ -68,7 +68,7 @@ var germanTerms = {
 	'detail-label-doi': 'DOI',
 	'detail-label-acronym-doi': 'Document Object Identifier: Mit dem Link zu dieser Nummer kann das Dokument im Netz gefunden werden.',
 	'detail-label-doi-plural': 'DOIs',
-	'detail-label-creator': 'erfaßt von',
+	'detail-label-creator': 'erfasst von',
 	'detail-label-verfügbarkeit': 'Verfügbarkeit',
 	'elektronisch': 'digital',
 	'gedruckt': 'gedruckt',

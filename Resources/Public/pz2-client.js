@@ -2716,65 +2716,29 @@ function renderDetails(recordID) {
 			output:	DOM anchor element pointing to the catalogue page.
 		*/
 		var catalogueLink = function () {
-			var targetURL = location['@id'];
-			var targetName = location['@name'];
 			var catalogueURL = location['md-catalogue-url'];
 			
-			if (!catalogueURL) {
-				var PPN = location['md-id'][0].replace(/[a-zA-Z]*([0-9]*)/, '$1');
-				if (targetURL.search(/z3950.gbv.de:20012\/subgoe_opc/) != -1) {
-					// Old GBV Z39.50 server for SUB Opac
-					if (clientIPAddress.match(/^134\.76\./)) {
-						/* Special case: If the database is Göttingen’s Opac and the user seems
-											to be in Göttingen, then link to SUB Göttingen Opac. */
-						catalogueURL = 'http://opac.sub.uni-goettingen.de/DB=1/PPN?PPN=' + PPN;
-					}
-					else {
-						// General case: Link to GVK.
-						catalogueURL = 'http://gso.gbv.de/DB=2.1/PPNSET?PPN=' + PPN;
-					}
+			if (catalogueURL && catalogueURL.length > 0) {
+				catalogueURL = catalogueURL[0];
+				
+				/* If the user does not have a Uni Göttingen IP address, redirect Opac links
+					to GVK which is a superset and offers better services for non-locals.
+				*/
+				if (clientIPAddress.search('134.76.') !== 0) {
+					var opacBaseURL = 'http://opac.sub.uni-goettingen.de/DB=1';
+					var GVKBaseURL = 'http://gso.gbv.de/DB=2.1';
+					catalogueURL = catalogueURL.replace(opacBaseURL, GVKBaseURL);
 				}
-				else if (targetURL.search(/sru.gbv.de\/natliz/) != -1) {
-					// match Nationallizenzen natliz and natzlizzss on new GBV SRU server: no link
-				}
-				else if (targetURL.search(/sru.gbv.de\//) != -1) {
-					// New GBV SRU server
-					var databaseName = targetURL.match(/sru.gbv.de\/([a-zA-Z0-9-]*)/)[1];
+			}
 
-					if (databaseName == 'opac-de-7' && clientIPAddress.match(/^134\.76\./)) {
-						/* Special case: If the database is Göttingen’s Opac and the user seems
-											to be in Göttingen, then link to SUB Göttingen Opac. */
-						catalogueURL = 'http://opac.sub.uni-goettingen.de/DB=1/PPN?PPN=' + PPN;
-					}
-					else {
-						// General case: Link to GVK.
-						var databaseID = GBVDatabaseIDs[databaseName];
-						if (databaseID) {
-							catalogueURL = 'http://gso.gbv.de/DB=' + databaseID + '/PPNSET?PPN=' + PPN;
-						}
-					}
-				}
-				else if (targetURL.search(/gso.gbv.de\/sru\/DB=1.5/) != -1) {
-					// match Nationallizenzen 1.50 and 1.55 on old GBV SRU server: no link
-				}
-				else if (targetURL.search(/gso.gbv.de\/sru\//) != -1) {
-					// Old GBV SRU server
-					catalogueURL = targetURL.replace(/(gso.gbv.de\/sru\/)(DB=[\.0-9]*)/,
-											'http://gso.gbv.de/$2/PPNSET?PPN=' + PPN);
-				}
-				else if (targetURL.search('134.76.176.48:2020/jfm') != -1) {
-					catalogueURL = 'http://www.emis.de/cgi-bin/jfmen/MATH/JFM/quick.html?first=1&maxdocs=1&type=html&format=complete&an=' + PPN;
-				}
-				else if (targetURL.search('134.76.176.48:2021/arxiv') != -1) {
-					if (location['md-electronic-url']) {
-						catalogueURL = location['md-electronic-url'][0];
-					}
-				}
+/*
 				else if (targetURL.search('pio.chadwyck.co.uk:210/pio') != -1) {
 					catalogueURL = 'http://gateway.proquest.com/openurl?url_ver=Z39.88-2004&res_dat=xri:pio:&rft_dat=xri:pio:article:' + PPN;
 				}
 			}
+*/
 
+var targetName = location['@name'];
 			if (catalogueURL && targetName) {
 				var linkElement = document.createElement('a');
 				linkElement.setAttribute('href', catalogueURL);
@@ -2787,6 +2751,7 @@ function renderDetails(recordID) {
 
 			return linkElement;
 		}
+
 
 
 		var locationDetails = [];
@@ -2908,42 +2873,6 @@ function recordIDForHTMLID (HTMLID) {
 	return HTMLID.replace(/-pd-/g, ' ').replace(/-pe-/g, '/').replace(/-pf-/g, '.');
 }
 
-
-
-
-/* GBV Database-Names to Database-IDs
-*/
-var GBVDatabaseIDs = {
-	'wao': '1.46',
-	'natliz': '1.50',
-	'natlizzss': '1.55',
-	'gvk': '2.1',
-	'opac-de-7': '2.1', /* map Göttingen Opac to GVK */
-	'olc': '2.3',
-	'olcssg-his': '2.35',
-	'olcssg-geo': '2.38',
-	'olcssg-ast': '2.43',
-	'olcssg-ang': '2.75',
-	'olcssg-mat': '2.77',
-	'fachopac-ast': '2.112',
-	'fachopac-fin': '2.113',
-	'fachopac-geo': '2.114',
-	'fachopac-mat': '2.122',
-	'zdb-1-amb': '2.910',
-	'zdb-1-wfr': '5.1',
-	'zdb-1-dfl': '5.2',
-	'zdb-1-elw': '5.3',
-	'zdb-1-ecc': '5.4',
-	'zdb-1-eeb': '5.5',
-	'zdb-1-mml': '5.6',
-	'zdb-1-mme': '5.7',
-	'zdb-1-eai': '5.8',
-	'zdb-1-nel': '5.9',
-	'zdb-1-rth': '5.10',
-	'zdb-1-soj': '5.62',
-	'zdb-1-cup': '5.72',
-	'zdb-1-pio': '5.55'
-};
 
 
 /* Localised Media Types

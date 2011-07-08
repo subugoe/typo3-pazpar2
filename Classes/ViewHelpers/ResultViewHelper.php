@@ -640,105 +640,25 @@ private function electronicURLs ($location, $result) {
 
 
 /**
- * @var array mapping GBV database names to their IDs.
- */
-protected $GBVDatabaseIDs = array(
-	'wao' => '1.46',
-	'natliz' => '1.50',
-	'natlizzss' => '1.55',
-	'gvk' => '2.1',
-	'opac-de-7' => '2.1', /* map Göttingen Opac to GVK */
-	'olc' => '2.3',
-	'olcssg-his' => '2.35',
-	'olcssg-geo' => '2.38',
-	'olcssg-ast' => '2.43',
-	'olcssg-ang' => '2.75',
-	'olcssg-mat' => '2.77',
-	'fachopac-ast' => '2.112',
-	'fachopac-fin' => '2.113',
-	'fachopac-geo' => '2.114',
-	'fachopac-mat' => '2.122',
-	'zdb-1-amb' => '2.910',
-	'zdb-1-wfr' => '5.1',
-	'zdb-1-dfl' => '5.2',
-	'zdb-1-elw' => '5.3',
-	'zdb-1-ecc' => '5.4',
-	'zdb-1-eeb' => '5.5',
-	'zdb-1-mml' => '5.6',
-	'zdb-1-mme' => '5.7',
-	'zdb-1-eai' => '5.8',
-	'zdb-1-nel' => '5.9',
-	'zdb-1-rth' => '5.10',
-	'zdb-1-soj' => '5.62',
-	'zdb-1-cup' => '5.72',
-	'zdb-1-pio' => '5.55'
-);
-
-
-
-/**
  * Returns a link for the current record that points to the catalogue page for that item.
  * @param array $locationAll
  * @return DOMElement
  */
 private function catalogueLink ($locationAll) {
-	$targetURL = $locationAll['attrs']['id'];
-	$targetName = $locationAll['attrs']['name'];
 	$catalogueURL = $locationAll['ch']['md-catalogue-url'][0]['values'][0];
-
 	if (!$catalogueURL) {
-		$PPN = preg_replace('/[a-zA-Z]*([0-9X]*)/', '$1', $locationAll['ch']['md-id'][0]['values'][0]);
-		$matches = Null;
-		if (strpos( $targetURL, 'z3950.gbv.de:20012/subgoe_opc') !== False) {
-			// Old GBV Z39.50 server for SUB Opac.
-			if (preg_match('/^134\.76\./', $_SERVER["REMOTE_ADDR"]) > 0) {
-				/* Special case: If the database is Göttingen’s Opac and the user seems
-									to be in Göttingen, then link to SUB Göttingen Opac. */
-				$catalogueURL = 'http://opac.sub.uni-goettingen.de/DB=1/PPN?PPN=' . $PPN;
-			}
-			else {
-				// General case: Link to GVK.
-				$catalogueURL = 'http://gso.gbv.de/DB=2.1/PPNSET?PPN=' . $PPN;
-			}
-		}
-		else if (strpos($targetURL, 'sru.gbv.de/natliz') !== False) {
-			// match Nationallizenzen natliz and natlizzss on new GBV SRU server: no link
-		}
-		else if (preg_match('/sru.gbv.de\/([a-zA-Z0-9-]*)/', $targetURL, $matches) > 0) {
-			// New GBV SRU server
-			$databaseName = $matches[1];
-			if ($databaseName == 'opac-de-7' && preg_match('/^134\.76\./', $_SERVER["REMOTE_ADDR"]) > 0) {
-				/* Special case: If the database is Göttingen’s Opac and the user seems
-									to be in Göttingen, then link to SUB Göttingen Opac. */
-				$catalogueURL = 'http://opac.sub.uni-goettingen.de/DB=1/PPN?PPN=' . $PPN;
-			}
-			else {
-				// General case: Link to GVK.
-				$databaseID = $this->GBVDatabaseIDs[$databaseName];
-				$catalogueURL = 'http://gso.gbv.de/' . $databaseID .'/PPNSET?PPN=' . $PPN;
-			}
-		}
-		else if (preg_match('/gso.gbv.de\/sru\/DB=1.5/', $targetURL) > 0) {
-			// match Nationallizenzen 1.50 and 1.55 on old GBV SRU server: no link
-		}
-		else if (strpos($targetURL, 'gso.gbv.de/sru/') !== False) {
-			// Old GBV SRU server
-			$catalogueURL = preg_replace('/(gso.gbv.de\/sru\/)(DB=[\.0-9]*)/', 'http://gso.gbv.de/$2/PPNSET?PPN=' . $PPN, $targetURL);
-		}
-		else if (strpos($targetURL, '134.76.176.48:2020/jfm') !== False) {
-			$catalogueURL = 'http://www.emis.de/cgi-bin/jfmen/MATH/JFM/quick.html?first=1&maxdocs=1&type=html&format=complete&an=' . $PPN;
-		}
-		else if (strpos($targetURL, '134.76.176.48:2021/arxiv') !== False) {
-			if ($locationAll['ch']['md-electronic-url']) {
-				$catalogueURL = $locationAll['ch']['md-electronic-url'][0];
-			}
-		}
-		else if (strpos($targetURL, 'pio.chadwyck.co.uk:210/pio') !== False) {
-			$catalogueURL = 'http://gateway.proquest.com/openurl?url_ver=Z39.88-2004&res_dat=xri:pio:&rft_dat=xri:pio:article:' . $PPN;
+		/* If the user does not have a Uni Göttingen IP address, redirect Opac links
+			to GVK which is a superset and offers better services for non-locals.
+		*/
+		if (strpos('134.76.', $_SERVER["REMOTE_ADDR"]) !== 0) {
+			$opacBaseURL = 'http://opac.sub.uni-goettingen.de/DB=1';
+			$GVKBaseURL = 'http://gso.gbv.de/DB=2.1';
+			$catalogueURL = str_replace($opacBaseURL, $GVKBaseURL, $catalogueURL);
 		}
 	}
-
+	
 	$linkElement = Null;
+	$targetName = $locationAll['attrs']['name'];
 	if ($catalogueURL && $targetName) {
 		$linkElement = $this->doc->createElement('a');
 		$linkElement->setAttribute('href', $catalogueURL);

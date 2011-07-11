@@ -633,7 +633,7 @@ function my_onshow (data) {
 				hit['md-filterDate'] = [];
 				for (var dateIndex in hit['md-date']) {
                     var dateParts = hit['md-date'][dateIndex].match(/[0-9]{4}/g);
-					if (dateParts.length > 0) {
+					if (dateParts && dateParts.length > 0) {
 						hit['md-filterDate'].push(dateParts[dateParts.length - 1]);
 					}
 				}

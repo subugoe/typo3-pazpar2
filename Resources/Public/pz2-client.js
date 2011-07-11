@@ -1083,7 +1083,7 @@ function facetListForType (type, preferOriginalFacets) {
 			var link = document.createElement('a');
 			item.appendChild(link);
 			link.setAttribute('href', '#');
-			link.onclick = new Function('limitResults("' + type + '","' + facetName + '");return false;');
+			link.onclick = new Function('limitResults("' + type + '","' + facetName.replace(/"/g, '\\"') + '");return false;');
 
 			// 'Progress bar'
 			var progressBar = document.createElement('div');
@@ -1136,7 +1136,7 @@ function facetListForType (type, preferOriginalFacets) {
 						item.appendChild(cancelLink);
 						cancelLink.setAttribute('href', '#');
 						jQuery(cancelLink).addClass('pz2-facetCancel');
-						cancelLink.onclick = new Function('delimitResults("' + type + '","' + facetName + '"); return false;');
+						cancelLink.onclick = new Function('delimitResults("' + type + '","' + facetName.replace(/"/g, '\\"') + '"); return false;');
 						cancelLink.appendChild(document.createTextNode(localise('Filter aufheben')));
 						break;
 					}

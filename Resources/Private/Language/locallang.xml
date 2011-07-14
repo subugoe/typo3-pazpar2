@@ -12,7 +12,7 @@
 		<languageKey index="default" type="array">
 			<!-- pazpar2 extended search form -->
 			<label index="form-extended-label-all">Alle Felder</label>
-			<label index="form-extended-label-fulltext">auch in zugehörigen Dokumenten suchen</label>
+			<label index="form-extended-label-fulltext">auch in Inhaltsverzeichnissen suchen</label>
 			<label index="form-extended-label-title">Titel</label>
 			<label index="form-extended-label-journalOnly">nur Zeitschriftentitel</label>
 			<label index="form-extended-label-person">Person, Autor</label>
@@ -104,7 +104,7 @@
 		<languageKey index="en" type="array">
 			<!-- pazpar2 extended search form -->
 			<label index="form-extended-label-all">All Fields</label>
-			<label index="form-extended-label-fulltext">also search related documents</label>
+			<label index="form-extended-label-fulltext">also search tables of contents</label>
 			<label index="form-extended-label-title">Title</label>
 			<label index="form-extended-label-journalOnly">journal titles only</label>
 			<label index="form-extended-label-person">Person, Author</label>

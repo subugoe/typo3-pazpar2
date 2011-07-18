@@ -77,8 +77,8 @@ class Tx_Pazpar2_Controller_Pazpar2gokmenuController extends Tx_Pazpar2_Controll
 		$jsCommand = 'function nkwgokMenuSelected(option) {
 	var searchTerm = option.getAttribute("query");
 	if (searchTerm) {
-		resetPage();
 		my_paz.search(searchTerm, fetchRecords, null, null);
+		resetPage();
 		curSearchTerm = searchTerm;
 	}
 }';

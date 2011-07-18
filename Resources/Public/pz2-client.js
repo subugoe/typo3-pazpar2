@@ -2731,14 +2731,7 @@ function renderDetails(recordID) {
 				}
 			}
 
-/*
-				else if (targetURL.search('pio.chadwyck.co.uk:210/pio') != -1) {
-					catalogueURL = 'http://gateway.proquest.com/openurl?url_ver=Z39.88-2004&res_dat=xri:pio:&rft_dat=xri:pio:article:' + PPN;
-				}
-			}
-*/
-
-var targetName = location['@name'];
+			var targetName = location['@name'];
 			if (catalogueURL && targetName) {
 				var linkElement = document.createElement('a');
 				linkElement.setAttribute('href', catalogueURL);

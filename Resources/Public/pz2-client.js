@@ -83,6 +83,7 @@ var germanTerms = {
 	'In': 'In',
 	// General Information
 	'Suche...': 'Suche …',
+	'keine Suchabfrage': 'keine Suchabfrage',
 	'keine Treffer gefunden': 'keine Treffer',
 	'In diesem Katalog gibt es noch # weitere Treffer.': 'In diesem Katalog gibt es noch # weitere Treffer, die wir nicht herunterladen und hier anzeigen können. Bitte wählen Sie einen spezifischeren Suchbegriff, um alle Treffer sehen zu können. Oder suchen Sie direkt im Katalog.',
 	// Pager
@@ -166,6 +167,7 @@ var englishTerms = {
 	'In': 'In',
 	// General Information
 	'Suche...': 'Searching…',
+	'keine Suchabfrage': 'no search query',
 	'keine Treffer gefunden': 'no matching records',
 	'In diesem Katalog gibt es noch # weitere Treffer.': 'There are # additional results available in this catalogue which we cannot download and display. Please choose a more specific search query or visit the website of the catalogue itself if you require the full set of results.',
 	// Pager
@@ -837,7 +839,10 @@ function display () {
 									+ String(displayHitList.length);
 				}
 				else {
-					if (my_paz.activeClients == 0) {
+					if (my_paz.currQuery == undefined) {
+						infoString = localise('keine Suchabfrage');
+					}
+					else if (my_paz.activeClients == 0) {
 						infoString = localise('keine Treffer gefunden');
 					}
 					else {

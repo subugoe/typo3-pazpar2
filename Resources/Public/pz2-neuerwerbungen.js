@@ -91,7 +91,6 @@ function saveFormStateAsCookie (form) {
  * input:	form - DOM form element in which to look for checked checkboxes
  */
 function runSearchForForm (form) {
-	resetPage();
 	setSortCriteriaFromString('author-a--title-a--date-d');
 	var linkElement = document.getElementById('pz2neuerwerbungen-atom-linkElement');
 
@@ -119,8 +118,13 @@ function runSearchForForm (form) {
 		if (linkElement) {
 			linkElement.parentNode.removeChild(linkElement);
 		}
+		
+		/* Manually set my_paz’ currQuery to the empty string. We can’t pass the empty
+			to my_paz.search because it throws an error. */
+		my_paz.currQuery = undefined;
 	}
 
+	resetPage();
 	saveFormStateAsCookie(form);
 }
 

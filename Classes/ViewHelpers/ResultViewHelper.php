@@ -602,24 +602,34 @@ private function electronicURLs ($location, $result) {
 		$URLsContainer = $this->doc->createElement('span');
 
 		foreach ($electronicURLs as $URLInfo) {
-			$linkText = 'Link'; // default link name
+			$linkTexts = Array();
 			$linkURL = $URLInfo['values'][0];
 
 			if ($URLInfo['attrs']['name']) {
-				$linkText = $URLInfo['attrs']['name'];
+				$linkTexts[] = $URLInfo['attrs']['name'];
+				if ($URLInfo['attrs']['note']) {
+					$linkTexts[] = $URLInfo['attrs']['note'];
+				}
 			}
 			else if ($URLInfo['attrs']['note']) {
-				$linkText = $URLInfo['attrs']['note'];
+				$linkTexts[] = $URLInfo['attrs']['note'];
 			}
 			else if ($URLInfo['attrs']['fulltextfile']) {
-				$linkText = 'Document';
+				$linkTexts[] = 'Document';
+			}
+			else {
+				$linkTexts[] = 'Link';
 			}
 			
-			$localisedLinkText = Tx_Extbase_Utility_Localization::translate('link-description-' . $linkText, 'Pazpar2');
-			if (!$localisedLinkText) {
-				$localisedLinkText = $linkText;
+			$localisedLinkTexts = Array();
+			foreach ($linkTexts as $linkText) {
+				$localisedLinkText = Tx_Extbase_Utility_Localization::translate('link-description-' . $linkText, 'Pazpar2');
+				if (!$localisedLinkText) {
+					$localisedLinkText = $linkText;
+				}
+				$localisedLinkTexts[] = $localisedLinkText; 
 			}
-			$linkText = '[' . $localisedLinkText . ']';
+			$linkText = '[' . implode(', ', $localisedLinkTexts) . ']';
 			
 			if ($URLsContainer->hasChildNodes()) {
 				$URLsContainer->appendChild($this->doc->createTextNode(', '));

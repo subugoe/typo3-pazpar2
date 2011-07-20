@@ -86,12 +86,19 @@
 
 			<!-- Link Descriptions -->
 			<label index="link-description-Contributor biographical information">Biographische Informationen</label>
+			<label index="link-description-Book review (H-Net)">Rezension</label>
+			<label index="link-description-Buchrezension (H-Soz-u-Kult)">Rezension</label>
+			<label index="link-description-Contributor biographical information">Biographische Informationen</label>
+			<label index="link-description-Deutschlandweit zugänglich">deutschlandweit zugänglich</label>
 			<label index="link-description-Document">Volltext</label>
+			<label index="link-description-Gesamtes Dokument">Volltext</label>
 			<label index="link-description-Inhaltsverzeichnis">Inhaltsverzeichnis</label>
 			<label index="link-description-kostenfrei">kostenfrei</label>
+			<label index="link-description-Leseprobe">Leseprobe</label>
 			<label index="link-description-Link">Link</label>
 			<label index="link-description-Publisher Description">Verlagsbeschreibung</label>
 			<label index="link-description-Repository">Repository</label>
+			<label index="link-description-Rezension">Rezension</label>
 			<label index="link-description-Table of Contents">Inhaltsverzeichnis</label>
 			<label index="link-description-Table of contents">Inhaltsverzeichnis</label>
 			<label index="link-description-Table of contents only">Inhaltsverzeichnis</label>
@@ -178,12 +185,19 @@
 
 			<!-- Link Descriptions -->
 			<label index="link-description-Contributor biographical information">Biographical Information</label>
+			<label index="link-description-Book review (H-Net)">Review</label>
+			<label index="link-description-Buchrezension (H-Soz-u-Kult)">Review</label>
+			<label index="link-description-Contributor biographical information">Biographical Information</label>
+			<label index="link-description-Deutschlandweit zugänglich">accessible in Germany</label>
 			<label index="link-description-Document">Full Text</label>
+			<label index="link-description-Gesamtes Dokument">Full Text</label>
 			<label index="link-description-Inhaltsverzeichnis">Table of Contents</label>
-			<label index="link-description-kostenfrei">freely accessible</label>
+			<label index="link-description-kostenfrei">free</label>
+			<label index="link-description-Leseprobe">Excerpt</label>
 			<label index="link-description-Link">Link</label>
 			<label index="link-description-Publisher Description">Publisher Description</label>
 			<label index="link-description-Repository">Repository</label>
+			<label index="link-description-Rezension">Review</label>
 			<label index="link-description-Table of Contents">Table of Contents</label>
 			<label index="link-description-Table of contents">Table of Contents</label>
 			<label index="link-description-Table of contents only">Table of Contents</label>

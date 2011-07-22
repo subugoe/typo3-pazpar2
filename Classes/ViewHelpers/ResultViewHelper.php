@@ -80,6 +80,9 @@ public function render ($result) {
 		$this->appendMarkupForFieldToContainer('date', $result,  $li, $spaceBefore, '.');
 	}
 
+	// Inster COinS information
+	$this->appendCOinSSpansToContainer($result, $li);
+	
 	// detailed information about the publication
 	$this->appendInfoToContainer($this->renderDetails($result), $li);
 	
@@ -230,7 +233,7 @@ private function authorInfo ($result) {
  * @param DOMElement $result
  * @param DOMElement $container to append the DOM element to
  */
-private function appendJournalInfoToContainer($result, $container) {
+private function appendJournalInfoToContainer ($result, $container) {
 	$outputElement = $this->doc->createElement('span');
 	$outputElement->setAttribute('class', 'pz2-journal');
 
@@ -238,6 +241,104 @@ private function appendJournalInfoToContainer($result, $container) {
 	if ($journalTitle) {
 		$this->appendMarkupForFieldToContainer('journal-subpart', $result, $journalTitle, ', ');
 		$journalTitle->appendChild($this->doc->createTextNode('.'));
+	}
+}
+
+
+
+/**
+ * Turns the array $data, containing arrays of strings for its keys into a
+ * string suitable for the title attribute of a COinS style element.
+ * @param array $data
+ * @return string
+ */
+private function COinSStringForObject ($data) {
+	$infoList = Array();
+	foreach ($data as $key => $info) {
+		if ($info) {
+			foreach ($info as $infoItem) {
+				$infoList[] = $key . '=' . rawurlencode($infoItem['values'][0]);
+			}
+		}
+	}
+	return implode('&', $infoList);
+}
+
+
+
+/**
+ * Appends DOM SPAN elements with COinS information for $result to $container.
+ * @param array $result
+ * @param DOMElement $container
+ */
+private function appendCOinSSpansToContainer ($result, $container) {
+	foreach ($result['location'] as $locationAll) {
+		$location = $locationAll['ch'];
+		$coinsData = Array('ctx_ver' => Array(Array('values' => Array('Z39.88-2004'))));
+		
+		// title
+		$title = '';
+		if ($location['md-title']) {
+			$title .= $location['md-title'][0]['values'][0];
+		}
+		if ($location['md-multivolume-title']) {
+			$title .= ' ' . $location['md-multivolume-title'][0]['values'][0];
+		}
+		if ($location['md-title-remainder']) {
+			$title .= ' ' . $location['md-title-remainder'][0]['values'][0];
+		}
+		
+		// format info
+		if ($location['md-medium'][0]['values']['0'] == 'article') {
+			$coinsData['rft_val_fmt'] = Array(Array('values' => Array('info:ofi/fmt:kev:mtx:journal')));
+			$coinsData['rft.genre'] = Array(Array('values' => Array('article')));
+			$coinsData['rft.atitle'] = Array(Array('values' => Array($title)));
+			$coinsData['rft.jtitle'] = $location['md-journal-title'];
+			$coinsData['rft.volume'] = $location['md-journal-subpart'];
+		}
+		else {
+			$coinsData['rft_val_fmt'] = Array(Array('values' =>Array('info:ofi/fmt:kev:mtx:book')));
+			$coinsData['rft.btitle'] = Array(Array('values' =>Array($title)));
+			if ($location['md-medium'][0]['values']['0'] == 'book') {
+				$coinsData['rft.genre'] = Array(Array('values' => Array('book')));
+			}
+			else {
+				$coinsData['rft.genre'] = Array(Array('values' => Array('document')));
+			}
+		}
+		
+		// authors
+		$coinsData['rft.au'] = Array();
+		if ($location['md-author']) {
+			$coinsData['rft.au'] = array_merge($coinsData['rft.au'], $location['md-author']);
+		}
+		if ($location['md-other-person']) {
+			$coinsData['rft.au'] = array_merge($coinsData['rft.au'], $location['md-other-person']);
+		}
+		
+		// further fields
+		$coinsData['rft.date'] = $location['md-date'];
+		$coinsData['rft.isbn'] = $location['md-isbn'];
+		$coinsData['rft.issn'] = $location['md-issn'];
+		$coinsData['rft.source'] = $location['md-catalogue-url'];
+		$coinsData['rft.pub'] = $location['md-publication-name'];
+		$coinsData['rft.place'] = $location['md-publication-place'];
+		$coinsData['rft.series'] = $location['md-series-title'];
+		$coinsData['rft.description'] = $location['md-description'];
+		$URLs = Array();
+		if ($location['md-doi']) {
+			$URLs[] = Array(Array('values' => Array('info:doi/' . $location['md-doi'][0]['values'][0])));
+		}
+		if ($location['md-electronic-url']) {
+			$URLs = array_merge($URLs, $location['md-electronic-url']);
+		}
+		$coinsData['rft_id'] = $URLs;
+		
+		$span = $this->doc->createElement('span');
+		$span->setAttribute('class', 'Z3988');
+		$coinsString = $this->COinSStringForObject($coinsData);
+		$span->setAttribute('title', $coinsString);
+		$container->appendChild($span);
 	}
 }
 

@@ -418,15 +418,8 @@ private function locationDetails ($result) {
 
 	foreach ($result['location'] as $locationAll) {
 		$location = $locationAll['ch'];
-		$localURL = $locationAll['attrs'][0]['id']; // ????
-		$localName = $locationAll['attrs'][0]['name']; // ????
-
-		$detailsHeading = $this->doc->createElement('dt');
-		$locationDetails[] = $detailsHeading;
-		$detailsHeading->appendChild($this->doc->createTextNode(Tx_Extbase_Utility_Localization::translate('Ausgabe', 'Pazpar2') . ':'));
 
 		$detailsData = $this->doc->createElement('dd');
-		$locationDetails[] = $detailsData;
 		if ($location['md-medium'][0]['values'][0] != 'article') {
 			$this->appendInfoToContainer( $this->detailInfoItem('edition', $location), $detailsData);
 			$this->appendInfoToContainer( $this->detailInfoItem('publication-name', $location), $detailsData);
@@ -439,8 +432,12 @@ private function locationDetails ($result) {
 		$this->appendInfoToContainer( $this->electronicURLs($location, $result), $detailsData);
 		$this->appendInfoToContainer( $this->catalogueLink($locationAll), $detailsData);
 
-		if (! $detailsData->hasChildNodes()) {
-			$locationDetails = Array();
+		// Only append location information if additional details exist
+		if ($detailsData->hasChildNodes()) {
+			$detailsHeading = $this->doc->createElement('dt');
+			$locationDetails[] = $detailsHeading;
+			$detailsHeading->appendChild($this->doc->createTextNode(Tx_Extbase_Utility_Localization::translate('Ausgabe', 'Pazpar2') . ':'));
+			$locationDetails[] = $detailsData;
 		}
 	}
 	

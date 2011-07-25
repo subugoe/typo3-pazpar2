@@ -25,12 +25,14 @@ function transform (&$errorMessage) {
 		'ris' => Array(
 			'xsl' => 'pz2-to-ris.xsl',
 			'content-type' => 'text',
-			'filename' => 'export.ris'
+			'filename' => 'export.ris',
+			'disposition' => 'inline'
 		),
 		'endnote' => Array(
 			'xsl' => 'pz2-to-ris.xsl',
 			'content-type' => 'application/x-research-info-systems',
-			'filename' => 'export.end'
+			'filename' => 'export.enw',
+			'disposition' => 'attachment'
 		)
 	);
 	
@@ -47,6 +49,9 @@ function transform (&$errorMessage) {
 			$xml = new DOMDocument();
 			if ($xml->loadXML($_GET['q'])) {
 				header('Content-Type: ' . $format['content-type'] . ';charset=utf-8');
+				if ($format['filename']) {
+					header('Content-Disposition: ' . $format['disposition'] . '; filename=' . $format['filename']);
+				}
 				echo($xsltproc->transformToXml($xml));
 			}
 			else {

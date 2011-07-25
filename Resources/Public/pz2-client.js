@@ -676,7 +676,7 @@ function display () {
 			deduplicate(fieldContent);
 			var span = document.createElement('span');
 			jQuery(span).addClass('pz2-' + fieldName);
-			span.appendChild(document.createTextNode(fieldContent));
+			span.appendChild(document.createTextNode(fieldContent.join('; ')));
 		
 			if (prepend) {
 				container.appendChild(document.createTextNode(prepend));

@@ -980,47 +980,53 @@ function display () {
 
 	for (var i = 0; i < numberOfRecordsOnPage; i++) {
 		var hit = displayHitList[firstIndex + i];
+		var LI = hit.li;
+		
+		if (!LI) {
+			// The LI element does not exist: create it and store it with the data.
+			LI = document.createElement('li');
+			LI.setAttribute('id', 'recdiv_' + HTMLIDForRecordData(hit));
 
-		var LI = document.createElement('li');
-		OL.appendChild(LI);
-		LI.setAttribute('id', 'recdiv_' + HTMLIDForRecordData(hit));
+			var linkElement = document.createElement('a');
+			LI.appendChild(linkElement);
+			linkElement.setAttribute('href', '#');
+			jQuery(linkElement).addClass('pz2-recordLink');
+			linkElement.onclick = new Function('toggleDetails(this.id);return false;');
+			linkElement.setAttribute('id', 'rec_' + HTMLIDForRecordData(hit));
 
-		var linkElement = document.createElement('a');
-		LI.appendChild(linkElement);
-		linkElement.setAttribute('href', '#');
-		jQuery(linkElement).addClass('pz2-recordLink');
-		linkElement.onclick = new Function('toggleDetails(this.id);return false;');
-		linkElement.setAttribute('id', 'rec_' + HTMLIDForRecordData(hit));
-
-		var iconElement = document.createElement('span');
-		linkElement.appendChild(iconElement);
-		var mediaClass = 'unknown';
-		if (hit['md-medium'].length == 1) {
-			mediaClass = hit['md-medium'][0];
-		}
-		else if (hit['md-medium'].length > 1) {
-			mediaClass = 'multiple';
-		}
-
-		jQuery(iconElement).addClass('pz2-mediaIcon ' + mediaClass);
-		iconElement.title = localise(mediaClass, mediaNames);
-
-		appendInfoToContainer(titleInfo(), linkElement);
-		var authors = authorInfo();
-		appendInfoToContainer(authors, linkElement);
-
-		if (hit['md-medium'] == 'article') {
-			appendJournalInfo();
-		}
-		else {
-			var spaceBefore = ' ';
-			if (authors) {
-				spaceBefore = ', ';
+			var iconElement = document.createElement('span');
+			linkElement.appendChild(iconElement);
+			var mediaClass = 'unknown';
+			if (hit['md-medium'].length == 1) {
+				mediaClass = hit['md-medium'][0];
 			}
-			markupForField('date', linkElement, spaceBefore, '.');
-		}
+			else if (hit['md-medium'].length > 1) {
+				mediaClass = 'multiple';
+			}
 
-		appendInfoToContainer(COinSInfo(), LI);
+			jQuery(iconElement).addClass('pz2-mediaIcon ' + mediaClass);
+			iconElement.title = localise(mediaClass, mediaNames);
+
+			appendInfoToContainer(titleInfo(), linkElement);
+			var authors = authorInfo();
+			appendInfoToContainer(authors, linkElement);
+
+			if (hit['md-medium'] == 'article') {
+				appendJournalInfo();
+			}
+			else {
+				var spaceBefore = ' ';
+				if (authors) {
+					spaceBefore = ', ';
+				}
+				markupForField('date', linkElement, spaceBefore, '.');
+			}
+
+			appendInfoToContainer(COinSInfo(), LI);
+			hit.li = LI;
+		}
+		
+		OL.appendChild(LI);
 
 		if (hit.detailsDivVisible) {
 			var detailsDiv = hit.detailsDiv;
@@ -1031,6 +1037,9 @@ function display () {
 			appendInfoToContainer(detailsDiv, LI);
 			jQuery(LI).addClass('pz2-detailsVisible');
 		}
+		
+		
+
 	}
 
 	// Replace old results list

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<location id="goedoc.uni-goettingen.de:8080/SRW/search/DSpace" name="GoeScholar">
+<md-id>http://resolver.sub.uni-goettingen.de/purl?goescholar/4143</md-id>
+<md-eissn>1432-1297</md-eissn>
+<md-pissn>0020-9910</md-pissn>
+<md-doi>10.1007/s00222-009-0214-6</md-doi>
+<md-author>Böhning, Christian</md-author>
+<md-author>Graf von Bothmer, Hans-Christian</md-author>
+<md-date>2009</md-date>
+<md-title>Rationality of the moduli spaces of plane curves of sufficiently large degree</md-title>
+<md-medium>article</md-medium>
+<md-publication-name>Springer-Verlag</md-publication-name>
+<md-description>Abstract
+      We prove that the moduli space of plane curves of degree d is rational for all sufficiently large d</md-description>
+<md-description>publishedVersion</md-description>
+<md-electronic-url fulltextfile="true">http://goedoc.uni-goettingen.de/goescholar/bitstream/handle//222_2009_Article_214.pdf</md-electronic-url>
+<md-journal-title>Inventiones mathematicae</md-journal-title>
+<md-journal-subpart>Vol. 179, No. 1 (2009), 159-173</md-journal-subpart>
+<md-journal-volume>179</md-journal-volume>
+<md-journal-issue>1</md-journal-issue>
+<md-journal-pages>159-173</md-journal-pages>
+<md-catalogue-url>http://resolver.sub.uni-goettingen.de/purl?goescholar/4143</md-catalogue-url>
+</location>

@@ -618,7 +618,7 @@ function my_onshow (data) {
 			var oldHit = hitList[hitID];
 			if (oldHit) {
 				hit.detailsDivVisible = oldHit.detailsDivVisible;
-				if (oldHit.location.count == hit.location.count) {
+				if (oldHit.location.length == hit.location.length) {
 					// preserve old details Div, if the location info hasn't changed
 					hit.detailsDiv = hitList[hitID].detailsDiv;
 				}

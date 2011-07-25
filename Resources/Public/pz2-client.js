@@ -526,22 +526,23 @@ function displayLists (list) {
 			output: Date object with year found in the pazpar2 record
 		*/
 		function dateForRecord (record) {
+			var year;
 			var dateArray = record['md-date'];
 			if (dateArray) {
 				var dateString = dateArray[0];
 				if (dateString) {
 					var yearsArray = dateString.split('-');
 					var lastYear = yearsArray[yearsArray.length - 1];
-					var date = new Date(lastYear, 1, 1);
+					year = parseInt(lastYear);
 				}
 			}
 
 			// Records without a date are treated as very old.
-			if (!date) {
-				date = new Date(1000, 0, 0);
+			if (!year) {
+				year = 1000;
 			}
 
-			return date;
+			return year;
 		}
 
 		
@@ -555,7 +556,7 @@ function displayLists (list) {
 				var date1 = dateForRecord(record1);
 				var date2 = dateForRecord(record2);
 				
-				result = (date1.getTime() - date2.getTime()) * direction;
+				result = (date1 - date2) * direction;
 			}
 			else {
 				var string1 = fieldContentInRecord(fieldName, record1, true);

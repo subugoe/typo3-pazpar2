@@ -673,6 +673,7 @@ function display () {
 		var fieldContent = hit['md-' + fieldName];
 
 		if (fieldContent !== undefined && container) {
+			deduplicate(fieldContent);
 			var span = document.createElement('span');
 			jQuery(span).addClass('pz2-' + fieldName);
 			span.appendChild(document.createTextNode(fieldContent));
@@ -1883,6 +1884,31 @@ function toggleDetails (prefixRecId) {
 
 
 
+/*	deduplicate
+	Removes duplicate entries from an array.
+	The first occurrence of any item is kept, later ones are removed.
+	This function works in place and alters the original array.
+	input:	information - array to remove duplicate entries from.
+*/
+var deduplicate = function (information) {
+	if (information) {
+		for (var i = 0; i < information.length; i++) {
+			var item = information[i].toLowerCase();
+			var isDuplicate = false;
+			for (var j = 0; j < i; j++) {
+				var jtem = information[j].toLowerCase();
+				if (item == jtem) {
+					isDuplicate = true;
+					information.splice(i, 1);
+					i--;
+					break;
+				}
+			}
+		}
+	}
+}
+
+
 
 /*	renderDetails
 	Create DIV with details information about the record passed.
@@ -1892,30 +1918,6 @@ function toggleDetails (prefixRecId) {
 	output:	DIV DOM element containing the details to be displayed
 */
 function renderDetails(recordID) {
-	/*	deduplicate
-		Removes duplicate entries from an array.
-		The first occurrence of any item is kept, later ones are removed.
-		This function works in place and alters the original array.
-		input:	information - array to remove duplicate entries from.
-	*/
-	var deduplicate = function (information) {
-		for (var i = 0; i < information.length; i++) {
-			var item = information[i];
-			var isDuplicate = false;
-			for (var j = 0; j < i; j++) {
-				var jtem = information[j];					
-				if ( item == jtem) {
-					isDuplicate = true;
-					information.splice(i, 1);
-					i--;
-					break;
-				}
-			}
-		}	
-	}
-
-
-
 	/*	markupInfoItems
 		Returns marked up version of the DOM items passed, putting them into a list if necessary:
 		input:	infoItems - array of DOM elements to insert

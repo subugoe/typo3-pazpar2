@@ -77,7 +77,8 @@ var germanTerms = {
 	'Vorschau schließen': 'Vorschau schließen',
 	'Umschlagbild': 'Umschlagbild',
 	// Download Links
-	'download-label-format-simple': 'als * laden',
+	'download-label-format-simple': 'Als * laden',
+	'download-label-format-all': 'Alle Ausgaben als * laden',
 	'download-label-endnote': 'RIS/EndNote',
 	'download-label-bibtex': 'BibTeX',
 	// Short Display
@@ -170,6 +171,7 @@ var englishTerms = {
 	'In': 'In',
 	// Download Links
 	'download-label-format-simple': 'Load as *',
+	'download-label-format-all': 'Load all Editions as *',
 	'download-label-endnote': 'RIS/EndNote',
 	'download-label-bibtex': 'BibTeX',
 	// General Information
@@ -816,7 +818,7 @@ function display () {
 
 		for (var locationIndex in hit.location) {
 			var location = hit.location[locationIndex];
-			var coinsData = { 'ctx_ver': ['Z39.88-2004'] };
+			var coinsData = {'ctx_ver': ['Z39.88-2004']};
 
 			// title
 			var title = '';
@@ -2892,169 +2894,6 @@ function renderDetails(recordID) {
 
 
 
-		/*	furtherLinks
-			Returns list of additional links provided for the current location.
-			output:	DOMElement - markup for additional links
-		*/
-		var furtherLinks = function () {
-			
-			/*	copyObjectContentTo
-				Copies the content of a JavaScript object to an XMLElement.
-					(non-recursive!)
-				Used to create XML markup for JavaScript data we have.
-			
-				input:	object - the object whose content is to be copied
-						target - XMLElement the object content is copied into
-			*/
-			var copyObjectContentTo = function (object, target) {
-				for (var fieldName in object) {
-					if (fieldName[0] === '@') {
-						// We are dealing with an attribute.
-						target.setAttribute(fieldName.substr(1), object[fieldName]);
-					}
-					else {
-						// We are dealing with a sub-element.
-						var fieldArray = object[fieldName];
-						for (var index in fieldArray) {
-							var child = fieldArray[index];
-							var targetChild = target.ownerDocument.createElement(fieldName);
-							target.appendChild(targetChild);
-							if (typeof(child) === Object) {
-								for (childPart in child) {
-									if (childPart === '#text') {
-										targetChild.appendChild(target.ownerDocument.createTextNode(child[childPart]));
-									}
-									else if (childPart[0] === '@') {
-										targetChild.setAttribute(childPart.substr(1), child[childPart]);
-									}
-								}
-							}
-							else {
-								targetChild.appendChild(target.ownerDocument.createTextNode(child))
-							}
-						}
-					}
-				}
-			}
-			
-			
-			
-
-			/*	dataConversionForm
-				Returns the form needed to submit data for converting the pazpar2
-				record for exporting in an end-user bibliographic format.
-				inputs:	location - pazpar2 location object
-						exportFormat - string
-						labelFormat - string
-				output:	DOMElement - form
-			*/
-			var dataConversionForm = function (location, exportFormat, labelFormat) {
-				
-				/*	serialiseXML
-					Serialises the passed XMLNode to a string.
-					input:	XMLNode
-					ouput:	string - serialisation of the XMLNode or null
-				*/
-				var serialiseXML = function (XMLNode) {
-					var result = null;
-					try {
-						// Gecko- and Webkit-based browsers (Firefox, Chrome), Opera.
-						result = (new XMLSerializer()).serializeToString(XMLNode);
-					}
-					catch (e) {
-						try {
-							// Internet Explorer.
-							result = XMLNode.xml;
-						}
-						catch (e) {
-							//Other browsers without XML Serializer
-							//alert('XMLSerializer not supported');
-						}
-					}
-					return result;
-				}
-
-	
-				// Convert location data to XML and serialise it to a string.
-				var recordXML = document.implementation.createDocument('', 'location', null);
-				var locationElement = recordXML.childNodes[0];
-				locationElement.setAttribute('id', location['@id']);
-				locationElement.setAttribute('name', location['@name']);
-				copyObjectContentTo(location, locationElement);
-				var XMLString = serialiseXML(locationElement);
-
-				var form;
-				if (XMLString) {
-					form = document.createElement('form');
-					form.method = 'POST';
-					var scriptPath = 'typo3conf/ext/pazpar2/Resources/Public/convert-pazpar2-record.php';
-					var scriptGetParameters = {'format': exportFormat}
-					if (pageLanguage !== undefined) {
-						scriptGetParameters.language = pageLanguage;
-					}
-					if (siteName !== undefined) {
-						scriptGetParameters.filename = siteName;
-					}
-					form.action = scriptPath + '?' + jQuery.param(scriptGetParameters);
-
-					var qInput = document.createElement('input');
-					qInput.name = 'q';
-					qInput.setAttribute('type', 'hidden');
-					qInput.setAttribute('value', XMLString);
-					form.appendChild(qInput);
-
-					var submitButton = document.createElement('input');
-					submitButton.setAttribute('type', 'submit');
-					var buttonText = localise('download-label-' + exportFormat);
-					if (labelFormat) {
-						buttonText = labelFormat.replace(/\*/, buttonText);
-					}
-					submitButton.setAttribute('value', buttonText);
-					form.appendChild(submitButton);
-				}
-				
-				return form;
-			}
-			
-			
-			
-			/*	exportItem
-				Returns a list item containing the form for export data conversion.
-				The parameters are passed to dataConversionForm.
-			
-				inputs:	location - pazpar2 location object
-						exportFormat - string
-						labelFormat - string
-				output:	DOMElement - li containing a form
-			*/
-			var exportItem = function (location, exportFormat, labelFormat) {
-				var form = dataConversionForm(location, exportFormat, labelFormat);
-				var item;
-				if (form) {
-					item = document.createElement('li');
-					item.appendChild(form);
-				}
-				
-				return item;
-			}
-			
-
-
-			var extraLinks = document.createElement('span');
-			jQuery(extraLinks).addClass('pz2-extraLinks');
-			extraLinks.appendChild(document.createTextNode(localise('mehr Links')));
-			var extraLinkList = document.createElement('ul');
-			extraLinks.appendChild(extraLinkList);
-			
-			var labelFormat = localise('download-label-format-simple');
-			extraLinkList.appendChild(exportItem(location, 'endnote', labelFormat));
-			extraLinkList.appendChild(exportItem(location, 'bibtex', labelFormat));
-			
-			return extraLinks;
-		}
-
-
-
 		var locationDetails = [];
 
 		for ( var locationNumber in data.location ) {
@@ -3080,13 +2919,189 @@ function renderDetails(recordID) {
 			}
 			appendInfoToContainer( electronicURLs(), detailsData);
 			appendInfoToContainer( catalogueLink(), detailsData);
-			appendInfoToContainer( furtherLinks(), detailsData);
 
 			if (detailsData.childNodes.length == 0) {locationDetails = [];}
 		}
 
 		return locationDetails;
 	}
+
+
+
+	/*	linkMenu
+		Returns list of additional links provided for the current location.
+		output:	DOMElement - markup for additional links
+	*/
+	var linkMenu = function () {
+
+		/*	copyObjectContentTo
+			Copies the content of a JavaScript object to an XMLElement.
+				(non-recursive!)
+			Used to create XML markup for JavaScript data we have.
+
+			input:	object - the object whose content is to be copied
+					target - XMLElement the object content is copied into
+		*/
+		var copyObjectContentTo = function (object, target) {
+			for (var fieldName in object) {
+				if (fieldName[0] === '@') {
+					// We are dealing with an attribute.
+					target.setAttribute(fieldName.substr(1), object[fieldName]);
+				}
+				else {
+					// We are dealing with a sub-element.
+					var fieldArray = object[fieldName];
+					for (var index in fieldArray) {
+						var child = fieldArray[index];
+						var targetChild = target.ownerDocument.createElement(fieldName);
+						target.appendChild(targetChild);
+						if (typeof(child) === Object) {
+							for (childPart in child) {
+								if (childPart === '#text') {
+									targetChild.appendChild(target.ownerDocument.createTextNode(child[childPart]));
+								}
+								else if (childPart[0] === '@') {
+									targetChild.setAttribute(childPart.substr(1), child[childPart]);
+								}
+							}
+						}
+						else {
+							targetChild.appendChild(target.ownerDocument.createTextNode(child))
+						}
+					}
+				}
+			}
+		}
+
+
+
+
+		/*	dataConversionForm
+			Returns the form needed to submit data for converting the pazpar2
+			record for exporting in an end-user bibliographic format.
+			inputs:	locations - pazpar2 location array
+					exportFormat - string
+					labelFormat - string
+			output:	DOMElement - form
+		*/
+		var dataConversionForm = function (locations, exportFormat, labelFormat) {
+
+			/*	serialiseXML
+				Serialises the passed XMLNode to a string.
+				input:	XMLNode
+				ouput:	string - serialisation of the XMLNode or null
+			*/
+			var serialiseXML = function (XMLNode) {
+				var result = null;
+				try {
+					// Gecko- and Webkit-based browsers (Firefox, Chrome), Opera.
+					result = (new XMLSerializer()).serializeToString(XMLNode);
+				}
+				catch (e) {
+					try {
+						// Internet Explorer.
+						result = XMLNode.xml;
+					}
+					catch (e) {
+						//Other browsers without XML Serializer
+						//alert('XMLSerializer not supported');
+					}
+				}
+				return result;
+			}
+
+
+			// Convert location data to XML and serialise it to a string.
+			var recordXML = document.implementation.createDocument('', 'locations', null);
+			var locationsElement = recordXML.childNodes[0];
+			for (var locationIndex in locations) {
+				var location = locations[locationIndex];
+				var locationElement = recordXML.createElement('location');
+				locationsElement.appendChild(locationElement);
+				copyObjectContentTo(location, locationElement);
+			}
+			var XMLString = serialiseXML(locationsElement);
+
+			var form;
+			if (XMLString) {
+				form = document.createElement('form');
+				form.method = 'POST';
+				var scriptPath = 'typo3conf/ext/pazpar2/Resources/Public/convert-pazpar2-record.php';
+				var scriptGetParameters = {'format': exportFormat}
+				if (pageLanguage !== undefined) {
+					scriptGetParameters.language = pageLanguage;
+				}
+				if (siteName !== undefined) {
+					scriptGetParameters.filename = siteName;
+				}
+				form.action = scriptPath + '?' + jQuery.param(scriptGetParameters);
+
+				var qInput = document.createElement('input');
+				qInput.name = 'q';
+				qInput.setAttribute('type', 'hidden');
+				qInput.setAttribute('value', XMLString);
+				form.appendChild(qInput);
+
+				var submitButton = document.createElement('input');
+				submitButton.setAttribute('type', 'submit');
+				var buttonText = localise('download-label-' + exportFormat);
+				if (labelFormat) {
+					buttonText = labelFormat.replace(/\*/, buttonText);
+				}
+				submitButton.setAttribute('value', buttonText);
+				form.appendChild(submitButton);
+			}
+
+			return form;
+		}
+
+
+
+		/*	exportItem
+			Returns a list item containing the form for export data conversion.
+			The parameters are passed to dataConversionForm.
+
+			inputs:	locations - pazpar2 location array
+					exportFormat - string
+					labelFormat - string
+			output:	DOMElement - li containing a form
+		*/
+		var exportItem = function (locations, exportFormat, labelFormat) {
+			var form = dataConversionForm(locations, exportFormat, labelFormat);
+			var item;
+			if (form) {
+				item = document.createElement('li');
+				item.appendChild(form);
+			}
+
+			return item;
+		}
+
+
+
+		var linkMenu = document.createElement('span');
+		jQuery(linkMenu).addClass('pz2-extraLinks');
+		linkMenu.appendChild(document.createTextNode(localise('mehr Links')));
+		var extraLinkList = document.createElement('ul');
+		linkMenu.appendChild(extraLinkList);
+
+		if (data.location.length == 1) {
+			var labelFormat = localise('download-label-format-simple');
+			extraLinkList.appendChild(exportItem(data.location, 'endnote', labelFormat));
+			extraLinkList.appendChild(exportItem(data.location, 'bibtex', labelFormat));
+		}
+		else {
+			var labelFormatAll = localise('download-label-format-all');
+			extraLinkList.appendChild(exportItem(data.location, 'endnote', labelFormatAll));
+			extraLinkList.appendChild(exportItem(data.location, 'bibtex', labelFormatAll));
+			
+			var submenuItem = document.createElement('li')
+		}
+		
+		return linkMenu;
+	}
+
+
 
 	
 	var data = hitList[recordID];
@@ -3138,9 +3153,11 @@ function renderDetails(recordID) {
 		appendInfoToContainer( detailLineAuto('creator'), detailsList );
 		appendInfoToContainer( locationDetails(), detailsList );
 		appendGoogleBooksElementTo(detailsList);
-		if ( useZDB == true ) {
+		if ( useZDB === true ) {
 			addZDBInfoIntoElement( detailsList );
 		}
+		appendInfoToContainer( linkMenu(), detailsList );
+
 	}
 
 	return detailsDiv;

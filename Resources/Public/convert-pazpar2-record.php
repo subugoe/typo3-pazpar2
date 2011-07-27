@@ -33,12 +33,18 @@ function transform (&$errorMessage) {
 			'content-type' => 'application/x-research-info-systems',
 			'filename' => 'export.enw',
 			'disposition' => 'attachment'
+		),
+		'bibtex' => Array(
+			'xsl' => 'pz2-to-bibtex.xsl',
+			'content-type' => 'application/x-bibtex',
+			'filename' => 'export.bib',
+			'disposition' => 'attachment'
 		)
 	);
 	
 	$errorMessage = Null;
-	if ($_GET['q'] && $_GET['format']) {
-		$format = $formats[$_GET['format']];
+	if ($_POST['q'] && $_POST['format']) {
+		$format = $formats[$_POST['format']];
 		if ($format !== Null) {
 			$xslPath = '../Private/XSL/' . $format['xsl'];
 			$xsl = new DOMDocument();
@@ -47,7 +53,7 @@ function transform (&$errorMessage) {
 			$xsltproc->importStylesheet($xsl);
 
 			$xml = new DOMDocument();
-			if ($xml->loadXML($_GET['q'])) {
+			if ($xml->loadXML($_POST['q'])) {
 				header('Content-Type: ' . $format['content-type'] . ';charset=utf-8');
 				if ($format['filename']) {
 					header('Content-Disposition: ' . $format['disposition'] . '; filename=' . $format['filename']);

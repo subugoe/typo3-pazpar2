@@ -1,11 +1,10 @@
-/* Adapted from Indexdata's js-client.js by ssp */
+/* 
+ * pz2-client.js
+ * 
+ * Adapted from Indexdata’s js-client.js by Sven-S. Porst
+ * for SUB Göttingen <porst@sub.uni-goettingen.de>
+ */
 
-/* A very simple client that shows a basic usage of pz2.js */
-
-/* Create a parameters array and pass it to the pz2's constructor.
- Then register the form submit event with the pz2.search function.
- autoInit is set to true on default.
-*/
 var usesessions = true;
 var pazpar2path = '/pazpar2/search.pz2';
 var showResponseType = '';
@@ -257,6 +256,7 @@ function localise (term, externalDictionary) {
 }
 
 
+
 function my_errorHandler (error) {
 	if (error.code == 1 && this.request.status == 417) {
 		// session has expired, create a new one
@@ -266,7 +266,10 @@ function my_errorHandler (error) {
 
 
 
-
+/*	Create a parameters array and pass it to the pz2's constructor.
+	Then register the form submit event with the pz2.search function.
+	autoInit is set to true on default.
+*/
 my_paz = new pz2( {"onshow": my_onshow,
 					"showtime": 1000,//each timer (show, stat, term, bytarget) can be specified this way
 					"pazpar2path": pazpar2path,

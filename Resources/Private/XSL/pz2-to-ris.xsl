@@ -21,7 +21,7 @@
 	<xsl:output method="text" encoding="UTF-8"/>
 
 
-	<xsl:template match="/location">
+	<xsl:template match="//location">
 		<!-- 
 			Record type:
 			Try to map our pazpar2 media types to corresponding RIS record types.
@@ -322,7 +322,7 @@
 			<xsl:with-param name="key">ER</xsl:with-param>
 			<xsl:with-param name="value"/>
 		</xsl:call-template>	
-
+		<xsl:text>&#13;&#10;</xsl:text>
 	</xsl:template>
 
 

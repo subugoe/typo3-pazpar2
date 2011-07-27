@@ -15,7 +15,7 @@
 	<xsl:output method="text" encoding="UTF-8"/>
 
 
-	<xsl:template match="/location">
+	<xsl:template match="//location">
 		<!--
 			Record type:
 			Try to map our pazpar2 media types to corresponding BibTeX record types.
@@ -394,7 +394,7 @@
 		
 		
 		<!-- Closing } to end BibTeX record. -->
-		<xsl:text>}&#10;</xsl:text>
+		<xsl:text>}&#10;&#10;</xsl:text>
 
 	</xsl:template>
 

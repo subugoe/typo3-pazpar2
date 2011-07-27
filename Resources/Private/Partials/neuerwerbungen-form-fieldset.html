@@ -1,3 +1,4 @@
+<f:if condition="{f:count(subject:section.subjects)} > 1">
 <fieldset class="pz2-fieldset-{sectionIndex}">
 	<legend>
 		<f:form.checkbox name="pz2subject-{sectionIndex}"
@@ -9,7 +10,7 @@
 			{section.name}
 		</label>
 	</legend>
-
+</f:if>
 	<ul>
 		<f:for each="{section.subjects}" as="sectionItem" key="itemIndex">
 			<li class="{f:if(condition:sectionItem.inline, then:'inline')} {f:if(condition:sectionItem.indent, then:'indent')}">
@@ -34,4 +35,6 @@
 			</li>
 		</f:for>
 	</ul>
+<f:if condition="{f:count(subject:section.subjects)} > 1">
 </fieldset>
+</f:if>

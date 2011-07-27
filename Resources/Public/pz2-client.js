@@ -2881,6 +2881,129 @@ function renderDetails(recordID) {
 
 
 
+		/*	furtherLinks
+			Returns list of additional links provided for the current location.
+			output:	DOMElement - markup for additional links
+		*/
+		var furtherLinks = function () {
+			
+			/*	copyObjectContentTo
+				Copies the content of a JavaScript object to an XMLElement.
+					(non-recursive!)
+				Used to create XML markup for JavaScript data we have.
+			
+				input:	object - the object whose content is to be copied
+						target - XMLElement the object content is copied into
+			*/
+			function copyObjectContentTo (object, target) {
+				for (var fieldName in object) {
+					if (fieldName[0] === '@') {
+						// We are dealing with an attribute.
+						target.setAttribute(fieldName.substr(1), object[fieldName]);
+					}
+					else {
+						// We are dealing with a sub-element.
+						var fieldArray = object[fieldName];
+						for (var index in fieldArray) {
+							var child = fieldArray[index];
+							var targetChild = target.ownerDocument.createElement(fieldName);
+							target.appendChild(targetChild);
+							if (typeof(child) === Object) {
+								for (childPart in child) {
+									if (childPart === '#text') {
+										targetChild.appendChild(target.ownerDocument.createTextNode(child[childPart]));
+									}
+									else if (childPart[0] === '@') {
+										targetChild.setAttribute(childPart.substr(1), child[childPart]);
+									}
+								}
+							}
+							else {
+								targetChild.appendChild(target.ownerDocument.createTextNode(child))
+							}
+						}
+					}
+				}
+			}
+			
+			
+			
+			/*	serialiseXML
+				Serialises the passed XMLNode to a string.
+				input:	XMLNode
+				ouput:	string - serialisation of the XMLNode or null
+			*/
+			function serialiseXML (XMLNode) {
+				var result = null;
+				try {
+					// Gecko- and Webkit-based browsers (Firefox, Chrome), Opera.
+					result = (new XMLSerializer()).serializeToString(XMLNode);
+				}
+				catch (e) {
+					try {
+						// Internet Explorer.
+						result = XMLNode.xml;
+					}
+					catch (e) {
+						//Other browsers without XML Serializer
+						//alert('XMLSerializer not supported');
+					}
+				}
+				return result;
+			}
+
+
+			var recordXML = document.implementation.createDocument('', 'location', null);
+			var locationElement = recordXML.childNodes[0];
+			locationElement.setAttribute('id', location['@id']);
+			locationElement.setAttribute('name', location['@name']);
+			copyObjectContentTo(location, locationElement);
+			var XMLString = serialiseXML(locationElement);
+			
+			var extraLinks = document.createElement('span');
+			jQuery(extraLinks).addClass('pz2-extraLinks');
+			extraLinks.appendChild(document.createTextNode(localise('mehr Links')));
+			var extraLinkList = document.createElement('ul');
+			extraLinks.appendChild(extraLinkList);
+			
+			if (XMLString) {
+				var RISForm = document.createElement('form');
+				RISForm.method = 'POST';
+				RISForm.action = 'typo3conf/ext/pazpar2/Resources/Public/convert-pazpar2-record.php';
+				var qInput = document.createElement('input');
+				qInput.name = 'q';
+				qInput.setAttribute('type', 'hidden');
+				qInput.setAttribute('value', XMLString);
+				RISForm.appendChild(qInput);
+				var RISFormatInput = document.createElement('input');
+				RISFormatInput.name = 'format';
+				RISFormatInput.setAttribute('type', 'hidden');
+				RISFormatInput.value = 'ris';
+				RISForm.appendChild(RISFormatInput);
+				var submitButton = document.createElement('input');
+				submitButton.setAttribute('type', 'submit');
+				submitButton.setAttribute('value', localise('RIS laden'));
+				RISForm.appendChild(submitButton);
+				
+				var RISItem = document.createElement('li');
+				extraLinkList.appendChild(RISItem);
+				RISItem.appendChild(RISForm);
+
+				var BibTeXForm = RISForm.cloneNode(true);
+				var jBibTeXForm = jQuery(BibTeXForm);
+				jQuery('input[name="format"]', BibTeXForm).attr('value', 'bibtex');
+				jQuery(':submit', BibTeXForm).attr('value', localise('BibTeX laden'));
+
+				var BibTeXItem = document.createElement('li');
+				extraLinkList.appendChild(BibTeXItem);
+				BibTeXItem.appendChild(BibTeXForm);
+			}
+			
+			return extraLinks;
+		}
+
+
+
 		var locationDetails = [];
 
 		for ( var locationNumber in data.location ) {
@@ -2906,6 +3029,7 @@ function renderDetails(recordID) {
 			}
 			appendInfoToContainer( electronicURLs(), detailsData);
 			appendInfoToContainer( catalogueLink(), detailsData);
+			appendInfoToContainer( furtherLinks(), detailsData);
 
 			if (detailsData.childNodes.length == 0) {locationDetails = [];}
 		}

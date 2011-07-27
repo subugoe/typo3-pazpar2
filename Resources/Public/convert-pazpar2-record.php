@@ -42,9 +42,11 @@ function transform (&$errorMessage) {
 		)
 	);
 	
+	$parameters = array_merge($_GET, $_POST);
+	
 	$errorMessage = Null;
-	if ($_POST['q'] && $_POST['format']) {
-		$format = $formats[$_POST['format']];
+	if ($parameters['q'] && $parameters['format']) {
+		$format = $formats[$parameters['format']];
 		if ($format !== Null) {
 			$xslPath = '../Private/XSL/' . $format['xsl'];
 			$xsl = new DOMDocument();
@@ -53,10 +55,17 @@ function transform (&$errorMessage) {
 			$xsltproc->importStylesheet($xsl);
 
 			$xml = new DOMDocument();
-			if ($xml->loadXML($_POST['q'])) {
+			if ($xml->loadXML($parameters['q'])) {
 				header('Content-Type: ' . $format['content-type'] . ';charset=utf-8');
-				if ($format['filename']) {
-					header('Content-Disposition: ' . $format['disposition'] . '; filename=' . $format['filename']);
+				if ($format['disposition']) {
+					$headerString = 'Content-Disposition: ' . $format['disposition'];
+					if ($parameters['filename']) {
+						$headerString .= '; filename=' . $parameters['filename'];
+					}
+					else if ($format['filename']) {
+						$headerString .= '; filename=' . $format['filename'];
+					}
+					header($headerString);
 				}
 				echo($xsltproc->transformToXml($xml));
 			}

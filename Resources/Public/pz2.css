@@ -438,7 +438,9 @@
 	color: #999;
 }
 
-#pz2-results .pz2-extraLinks ul {
+#pz2-results .pz2-extraLinks ul,
+#pz2-results .pz2-extraLinks ul li ul,
+#pz2-results .pz2-extraLinks:hover ul li ul{
 	position: absolute;
 	left: 100%;
 	top: 0;
@@ -446,10 +448,16 @@
 	margin: 0;
 	padding: 0;
 	border: 1px solid #999;
+	z-index: 500;
+	background: #fff;
 	display:none;
 }
 
-#pz2-results .pz2-extraLinks:hover ul {
+
+
+
+#pz2-results .pz2-extraLinks:hover ul,
+#pz2-results .pz2-extraLinks ul li:hover ul {
 	display: block;
 }
 
@@ -467,6 +475,7 @@
 #pz2-results .pz2-extraLinks ul li input:hover {
 	text-decoration: underline;
 }
+
 
 
 

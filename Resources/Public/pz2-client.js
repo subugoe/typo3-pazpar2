@@ -79,6 +79,8 @@ var germanTerms = {
 	// Download Links
 	'download-label-format-simple': 'Als * laden',
 	'download-label-format-all': 'Alle Ausgaben als * laden',
+	'download-label-submenu-format': 'Einzelne als * laden',
+	'download-label-submenu-index-format': 'Ausgabe *',
 	'download-label-endnote': 'RIS/EndNote',
 	'download-label-bibtex': 'BibTeX',
 	// Short Display
@@ -172,6 +174,8 @@ var englishTerms = {
 	// Download Links
 	'download-label-format-simple': 'Load as *',
 	'download-label-format-all': 'Load all Editions as *',
+	'download-label-submenu-format': 'Load as *',
+	'download-label-submenu-index-format': 'Record *',
 	'download-label-endnote': 'RIS/EndNote',
 	'download-label-bibtex': 'BibTeX',
 	// General Information
@@ -3077,7 +3081,43 @@ function renderDetails(recordID) {
 			return item;
 		}
 
+		var exportFormats = ['endnote', 'bibtex'];
+		
+		/*	appendExportItemsTo
+			Appends list items with an export form for each exportFormat to the container.
+			inputs:	locations - pazpar2 location array
+					labelFormat - string
+					container - DOMULElement the list items are appended to
+		*/
+		var appendExportItemsTo = function (locations, labelFormat, container) {
+			for (var formatIndex in exportFormats) {
+				container.appendChild(exportItem(locations, exportFormats[formatIndex], labelFormat));
+			}
+		}
 
+
+
+		/*	exportItemSubmenu
+			Returns a list item containing a list of export forms for each location in exportFormat.
+			inputs:	locations - pazpar2 location array
+					exportFormat - string
+			output:	DOMLIElement
+		*/
+		var exportItemSubmenu = function (locations, exportFormat) {
+			var submenuContainer = document.createElement('li');
+			jQuery(submenuContainer).addClass('pz2-extraLinks-hasSubmenu');
+			var formatName = localise('download-label-' + exportFormat);
+			var submenuName = localise('download-label-submenu-format').replace(/\*/, formatName);
+			submenuContainer.appendChild(document.createTextNode(submenuName));
+			var submenuList = document.createElement('ul');
+			submenuContainer.appendChild(submenuList);
+			for (var locationIndex in locations) {
+				var itemLabel = localise('download-label-submenu-index-format').replace(/\*/, parseInt(locationIndex) + 1);
+				submenuList.appendChild(exportItem([locations[locationIndex]], exportFormat, itemLabel));
+			}
+			
+			return submenuContainer;
+		}
 
 		var linkMenu = document.createElement('span');
 		jQuery(linkMenu).addClass('pz2-extraLinks');
@@ -3087,15 +3127,15 @@ function renderDetails(recordID) {
 
 		if (data.location.length == 1) {
 			var labelFormat = localise('download-label-format-simple');
-			extraLinkList.appendChild(exportItem(data.location, 'endnote', labelFormat));
-			extraLinkList.appendChild(exportItem(data.location, 'bibtex', labelFormat));
+			appendExportItemsTo(data.location, labelFormat, extraLinkList);
 		}
 		else {
 			var labelFormatAll = localise('download-label-format-all');
-			extraLinkList.appendChild(exportItem(data.location, 'endnote', labelFormatAll));
-			extraLinkList.appendChild(exportItem(data.location, 'bibtex', labelFormatAll));
+			appendExportItemsTo(data.location, labelFormatAll, extraLinkList);
 			
-			var submenuItem = document.createElement('li')
+			for (var formatIndex in exportFormats) {
+				extraLinkList.appendChild(exportItemSubmenu(data.location, exportFormats[formatIndex]));
+			}
 		}
 		
 		return linkMenu;

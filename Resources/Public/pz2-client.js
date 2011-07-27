@@ -315,12 +315,31 @@ var displayFilter = undefined;
 var hitList = {}; // local storage for the records sent from pazpar2
 var displayHitList = []; // filtered and sorted list used for display
 var displayHitListUpToDate = []; // list filtered for all conditions but the date used for drawing the date histogram
-var useGoogleBooks = false;
-var useZDB = false;
-var useHistogramForYearFacets = true;
-var ZDBUseClientIP = true;
 var targetStatus = {};
+
+
+/* Default settings that can be overwritten. */
+
+// Use Google Books for cover art when an ISBN or OCLC number is known?
+var useGoogleBooks = false;
+// Query ZDB-JOP for availability information based for items with ISSN?
+// ZDB-JOP needs to be reverse-proxied to /zdb/ (passing on the client IP)
+// or /zdb-local/ (passing on the server’s IP) depedning on ZDBUseClientIP.
+var useZDB = false;
+var ZDBUseClientIP = true;
+// Display year facets using a histogram graphic?
+var useHistogramForYearFacets = true;
+// Name of the site that can be used, e.g. for file names of downloaded files.
 var siteName = undefined;
+// Add COinS elements to our results list for the benefit of zotero >= 3?
+var provideCOinSExport = true;
+// List of export formats we provide links for. An empty list suppresses the
+// creation of export links.
+var exportFormats = ['endnote', 'bibtex'];
+// Offer submenus with items for each location in the export links?
+var showSingleLocationExportLinks = true;
+// Always map SUB Göttingen links to the Opac, rather than to GVK?
+var preferSUBOpac = false;
 
 
 
@@ -1040,7 +1059,9 @@ function display () {
 				markupForField('date', linkElement, spaceBefore, '.');
 			}
 
-			appendInfoToContainer(COinSInfo(), LI);
+			if (provideCOinSExport) {
+				appendInfoToContainer(COinSInfo(), LI);
+			}
 			hit.li = LI;
 		}
 		
@@ -2872,10 +2893,11 @@ function renderDetails(recordID) {
 			if (catalogueURL && catalogueURL.length > 0) {
 				catalogueURL = catalogueURL[0];
 				
-				/* If the user does not have a Uni Göttingen IP address, redirect Opac links
+				/*	If the user does not have a Uni Göttingen IP address
+					and we don’t generally prefer using the Opac, redirect Opac links
 					to GVK which is a superset and offers better services for non-locals.
 				*/
-				if (clientIPAddress.search('134.76.') !== 0) {
+				if (!preferSUBOpac && clientIPAddress.search('134.76.') !== 0) {
 					var opacBaseURL = 'http://opac.sub.uni-goettingen.de/DB=1';
 					var GVKBaseURL = 'http://gso.gbv.de/DB=2.1';
 					catalogueURL = catalogueURL.replace(opacBaseURL, GVKBaseURL);
@@ -2976,7 +2998,6 @@ function renderDetails(recordID) {
 				}
 			}
 		}
-
 
 
 
@@ -3081,7 +3102,7 @@ function renderDetails(recordID) {
 			return item;
 		}
 
-		var exportFormats = ['endnote', 'bibtex'];
+		
 		
 		/*	appendExportItemsTo
 			Appends list items with an export form for each exportFormat to the container.
@@ -3119,6 +3140,8 @@ function renderDetails(recordID) {
 			return submenuContainer;
 		}
 
+
+
 		var linkMenu = document.createElement('span');
 		jQuery(linkMenu).addClass('pz2-extraLinks');
 		linkMenu.appendChild(document.createTextNode(localise('mehr Links')));
@@ -3133,8 +3156,10 @@ function renderDetails(recordID) {
 			var labelFormatAll = localise('download-label-format-all');
 			appendExportItemsTo(data.location, labelFormatAll, extraLinkList);
 			
-			for (var formatIndex in exportFormats) {
-				extraLinkList.appendChild(exportItemSubmenu(data.location, exportFormats[formatIndex]));
+			if (showSingleLocationExportLinks) {
+				for (var formatIndex in exportFormats) {
+					extraLinkList.appendChild(exportItemSubmenu(data.location, exportFormats[formatIndex]));
+				}
 			}
 		}
 		
@@ -3193,11 +3218,12 @@ function renderDetails(recordID) {
 		appendInfoToContainer( detailLineAuto('creator'), detailsList );
 		appendInfoToContainer( locationDetails(), detailsList );
 		appendGoogleBooksElementTo(detailsList);
-		if ( useZDB === true ) {
+		if (useZDB === true) {
 			addZDBInfoIntoElement( detailsList );
 		}
-		appendInfoToContainer( linkMenu(), detailsList );
-
+		if (exportFormats.length > 0) {
+			appendInfoToContainer( linkMenu(), detailsList );
+		}
 	}
 
 	return detailsDiv;

@@ -77,6 +77,10 @@ var germanTerms = {
 	'Google Books Vorschau': 'Google Books Vorschau',
 	'Vorschau schließen': 'Vorschau schließen',
 	'Umschlagbild': 'Umschlagbild',
+	// Download Links
+	'download-label-format-simple': 'als * laden',
+	'download-label-endnote': 'RIS/EndNote',
+	'download-label-bibtex': 'BibTeX',
 	// Short Display
 	'Ansehen und Ausleihen bei:': 'Ansehen und Ausleihen bei:',
 	'von': 'von',
@@ -165,6 +169,10 @@ var englishTerms = {
 	'Ansehen und Ausleihen bei:': 'View catalogue record at:',
 	'von': 'of',
 	'In': 'In',
+	// Download Links
+	'download-label-format-simple': 'Load as *',
+	'download-label-endnote': 'RIS/EndNote',
+	'download-label-bibtex': 'BibTeX',
 	// General Information
 	'Suche...': 'Searching…',
 	'keine Suchabfrage': 'no search query',
@@ -303,7 +311,7 @@ var useZDB = false;
 var useHistogramForYearFacets = true;
 var ZDBUseClientIP = true;
 var targetStatus = {};
-
+var siteName = undefined;
 
 
 
@@ -2895,7 +2903,7 @@ function renderDetails(recordID) {
 				input:	object - the object whose content is to be copied
 						target - XMLElement the object content is copied into
 			*/
-			function copyObjectContentTo (object, target) {
+			var copyObjectContentTo = function (object, target) {
 				for (var fieldName in object) {
 					if (fieldName[0] === '@') {
 						// We are dealing with an attribute.
@@ -2928,76 +2936,116 @@ function renderDetails(recordID) {
 			
 			
 			
-			/*	serialiseXML
-				Serialises the passed XMLNode to a string.
-				input:	XMLNode
-				ouput:	string - serialisation of the XMLNode or null
+
+			/*	dataConversionForm
+				Returns the form needed to submit data for converting the pazpar2
+				record for exporting in an end-user bibliographic format.
+				inputs:	location - pazpar2 location object
+						exportFormat - string
+						labelFormat - string
+				output:	DOMElement - form
 			*/
-			function serialiseXML (XMLNode) {
-				var result = null;
-				try {
-					// Gecko- and Webkit-based browsers (Firefox, Chrome), Opera.
-					result = (new XMLSerializer()).serializeToString(XMLNode);
-				}
-				catch (e) {
+			var dataConversionForm = function (location, exportFormat, labelFormat) {
+				
+				/*	serialiseXML
+					Serialises the passed XMLNode to a string.
+					input:	XMLNode
+					ouput:	string - serialisation of the XMLNode or null
+				*/
+				var serialiseXML = function (XMLNode) {
+					var result = null;
 					try {
-						// Internet Explorer.
-						result = XMLNode.xml;
+						// Gecko- and Webkit-based browsers (Firefox, Chrome), Opera.
+						result = (new XMLSerializer()).serializeToString(XMLNode);
 					}
 					catch (e) {
-						//Other browsers without XML Serializer
-						//alert('XMLSerializer not supported');
+						try {
+							// Internet Explorer.
+							result = XMLNode.xml;
+						}
+						catch (e) {
+							//Other browsers without XML Serializer
+							//alert('XMLSerializer not supported');
+						}
 					}
+					return result;
 				}
-				return result;
+
+	
+				// Convert location data to XML and serialise it to a string.
+				var recordXML = document.implementation.createDocument('', 'location', null);
+				var locationElement = recordXML.childNodes[0];
+				locationElement.setAttribute('id', location['@id']);
+				locationElement.setAttribute('name', location['@name']);
+				copyObjectContentTo(location, locationElement);
+				var XMLString = serialiseXML(locationElement);
+
+				var form;
+				if (XMLString) {
+					form = document.createElement('form');
+					form.method = 'POST';
+					var scriptPath = 'typo3conf/ext/pazpar2/Resources/Public/convert-pazpar2-record.php';
+					var scriptGetParameters = {'format': exportFormat}
+					if (pageLanguage !== undefined) {
+						scriptGetParameters.language = pageLanguage;
+					}
+					if (siteName !== undefined) {
+						scriptGetParameters.filename = siteName;
+					}
+					form.action = scriptPath + '?' + jQuery.param(scriptGetParameters);
+
+					var qInput = document.createElement('input');
+					qInput.name = 'q';
+					qInput.setAttribute('type', 'hidden');
+					qInput.setAttribute('value', XMLString);
+					form.appendChild(qInput);
+
+					var submitButton = document.createElement('input');
+					submitButton.setAttribute('type', 'submit');
+					var buttonText = localise('download-label-' + exportFormat);
+					if (labelFormat) {
+						buttonText = labelFormat.replace(/\*/, buttonText);
+					}
+					submitButton.setAttribute('value', buttonText);
+					form.appendChild(submitButton);
+				}
+				
+				return form;
 			}
-
-
-			var recordXML = document.implementation.createDocument('', 'location', null);
-			var locationElement = recordXML.childNodes[0];
-			locationElement.setAttribute('id', location['@id']);
-			locationElement.setAttribute('name', location['@name']);
-			copyObjectContentTo(location, locationElement);
-			var XMLString = serialiseXML(locationElement);
 			
+			
+			
+			/*	exportItem
+				Returns a list item containing the form for export data conversion.
+				The parameters are passed to dataConversionForm.
+			
+				inputs:	location - pazpar2 location object
+						exportFormat - string
+						labelFormat - string
+				output:	DOMElement - li containing a form
+			*/
+			var exportItem = function (location, exportFormat, labelFormat) {
+				var form = dataConversionForm(location, exportFormat, labelFormat);
+				var item;
+				if (form) {
+					item = document.createElement('li');
+					item.appendChild(form);
+				}
+				
+				return item;
+			}
+			
+
+
 			var extraLinks = document.createElement('span');
 			jQuery(extraLinks).addClass('pz2-extraLinks');
 			extraLinks.appendChild(document.createTextNode(localise('mehr Links')));
 			var extraLinkList = document.createElement('ul');
 			extraLinks.appendChild(extraLinkList);
 			
-			if (XMLString) {
-				var RISForm = document.createElement('form');
-				RISForm.method = 'POST';
-				RISForm.action = 'typo3conf/ext/pazpar2/Resources/Public/convert-pazpar2-record.php';
-				var qInput = document.createElement('input');
-				qInput.name = 'q';
-				qInput.setAttribute('type', 'hidden');
-				qInput.setAttribute('value', XMLString);
-				RISForm.appendChild(qInput);
-				var RISFormatInput = document.createElement('input');
-				RISFormatInput.name = 'format';
-				RISFormatInput.setAttribute('type', 'hidden');
-				RISFormatInput.value = 'ris';
-				RISForm.appendChild(RISFormatInput);
-				var submitButton = document.createElement('input');
-				submitButton.setAttribute('type', 'submit');
-				submitButton.setAttribute('value', localise('RIS laden'));
-				RISForm.appendChild(submitButton);
-				
-				var RISItem = document.createElement('li');
-				extraLinkList.appendChild(RISItem);
-				RISItem.appendChild(RISForm);
-
-				var BibTeXForm = RISForm.cloneNode(true);
-				var jBibTeXForm = jQuery(BibTeXForm);
-				jQuery('input[name="format"]', BibTeXForm).attr('value', 'bibtex');
-				jQuery(':submit', BibTeXForm).attr('value', localise('BibTeX laden'));
-
-				var BibTeXItem = document.createElement('li');
-				extraLinkList.appendChild(BibTeXItem);
-				BibTeXItem.appendChild(BibTeXForm);
-			}
+			var labelFormat = localise('download-label-format-simple');
+			extraLinkList.appendChild(exportItem(location, 'endnote', labelFormat));
+			extraLinkList.appendChild(exportItem(location, 'bibtex', labelFormat));
 			
 			return extraLinks;
 		}

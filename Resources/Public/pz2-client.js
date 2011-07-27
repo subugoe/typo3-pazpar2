@@ -326,7 +326,7 @@ function my_oninit() {
 */
 var appendInfoToContainer = function (info, container) {
 	if (info != undefined && container != undefined ) {
-		if (typeof(info.length) === 'undefined') {
+		if (info.constructor !== Array) {
 			// info is a single item
 			container.appendChild(info);
 		}

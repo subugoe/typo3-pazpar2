@@ -40,6 +40,28 @@ function pz2neuerwerbungenDOMReady () {
  *
  */
 function restoreCookieState () {
+	var cookieInfo = getPz2NeuerwerbungenCookie();
+	for (var fieldName in cookieInfo) {
+		jQuery('.pz2-searchForm :checkbox[value="' + fieldName + '"]').attr({'checked': true});
+	}
+}
+
+
+
+/**
+ * getPz2NeuerwerbungenCookie
+ * 
+ * Returns the content of our cookie as an object with a property for each
+ * checkbox that should be active.
+ * 
+ * As the same cookie is used across all pages, it may contain information about
+ * checkboxes that are not currently present.
+ * 
+ * output:	object with a property for each active search query
+ */
+function getPz2NeuerwerbungenCookie () {
+	var cookieInfo = {};
+	
 	var cookies = document.cookie.split('; ');
 	for (var cookieIndex in cookies) {
 		var cookie = cookies[cookieIndex];
@@ -51,33 +73,51 @@ function restoreCookieState () {
 				var fieldNames = cookieValue.split(':');
 				for (var fieldNameIndex in fieldNames) {
 					var fieldName = fieldNames[fieldNameIndex];
-					jQuery('.pz2-searchForm :checkbox[value="' + fieldName + '"]').attr({'checked': true});
+					cookieInfo[fieldName] = true;
 				}
 				break;
 			}
 		}
-		var cookieParts = cookies[cookieIndex].split
 	}
+	
+	return cookieInfo;
 }
 
 
 
-/*
- * saveFormStateAsCookie
+/**
+ * saveFormStateInCookie
  *
  * Get the checked checkboxes from the passed form and concatenate their values
- *	with colon (:) separators. Store the result in the 'pz2neuerwerbungen-previousQuery' cookie.
+ * with colon (:) separators. Store the result in the
+ * 'pz2neuerwerbungen-previousQuery' cookie.
  *
  * input:	form - DOM form element in which to look for checked checkboxes
  */
-function saveFormStateAsCookie (form) {
-	var selectedValues = [];
-	jQuery(':checked', form).each( function (index) {
-			selectedValues.push(this.value);
+function saveFormStateInCookie (form) {
+	var cookieInfo = getPz2NeuerwerbungenCookie();
+	var formStatus = searchFormStatus();
+	
+	for (var statusItem in formStatus) {
+		if (formStatus[statusItem]) {
+			// This search query is active, add it to the cookie.
+			cookieInfo[statusItem] = true;
 		}
-	)
-
-	document.cookie = 'pz2neuerwerbungen-previousQuery=' +  selectedValues.join(':');
+		else {
+			// This search query is inactive, remove it from the cookie.
+			delete cookieInfo[statusItem];
+		}
+	}
+	
+	var cookieTerms = [];
+	for (var cookieItem in cookieInfo) {
+		cookieTerms.push(cookieItem);
+	}
+	var termsString = 'pz2neuerwerbungen-previousQuery=' + cookieTerms.join(':') + '; '
+	var expires = new Date((new Date).getTime() + 1000*60*60*24*365);
+	var expiresString = 'expires=' + expires.toGMTString() + '; ';
+	var pathString = 'path=/;'
+	document.cookie = termsString + expiresString + pathString;
 }
 
 
@@ -125,7 +165,6 @@ function runSearchForForm (form) {
 	}
 
 	resetPage();
-	saveFormStateAsCookie(form);
 }
 
 
@@ -140,6 +179,7 @@ function runSearchForForm (form) {
  */
 function checkboxChanged (checkbox) {
 	toggleParentCheckboxOf(checkbox);
+	saveFormStateInCookie(checkbox.form);
 	runSearchForForm(checkbox.form);
 }
 
@@ -155,6 +195,7 @@ function checkboxChanged (checkbox) {
  */
 function groupCheckboxChanged (checkbox) {
 	toggleChildCheckboxesOf(checkbox);
+	saveFormStateInCookie(checkbox.form);
 	runSearchForForm(checkbox.form);
 }
 
@@ -196,12 +237,12 @@ function toggleChildCheckboxesOf (checkbox) {
 
 
 
-/*
+/**
  * selectedQueriesInFormWithWildcard
  *
- * For a given form returns an array of all GOKs in the values of the checked
- *	checkboxes. Each checkbox' value can contain several GOKs, separated by a
- *	comma (,). A wildcard is appended to each GOKs if required.
+ * For a given form returns an array of all GOKs in the values of the active
+ * checkboxes. Each checkbox’ value can contain several GOKs, separated by a
+ * comma (,). A wildcard is appended to each GOK if required.
  *
  * inputs:	form - DOM element of the form to get the data from
  *			wildcard - string to be appended to each extracted GOK
@@ -209,23 +250,69 @@ function toggleChildCheckboxesOf (checkbox) {
  */
 function selectedQueriesInFormWithWildcard (form, wildcard) {
 	var GOKs = [];
+	var formStatus = searchFormStatus();
 
-	jQuery('fieldset', form).each( function (index) {
-			if ( jQuery('legend>label :checked', this)[0]
-					&& jQuery('legend>label :checked', this)[0].value !== 'CHILDREN') {
-				var searchTerms = jQuery('legend>label :checked', this)[0].value.split(',');
-				addSearchTermsToList(searchTerms, GOKs, wildcard);
+	for (var searchTerms in formStatus) {
+		if (formStatus[searchTerms]) {
+			addSearchTermsToList(searchTerms.split(','), GOKs, wildcard);
+		}
+	}
+
+	return GOKs;
+}
+
+
+
+/**
+ * searchFormStatus
+ * 
+ * Returns an object with a boolean property for each search term in the given
+ * form. The property’s value reflects whether the search term should be used.
+ * This value is not necessarily the checked status of the checkbox as
+ * the search term of checkboxes inside a fieldset may be unused in case the
+ * fieldset’s super-checkbox is active and provides a more general search term
+ * covering those of all its sub-checkboxes.
+ * 
+ * input:	form - DOM element of the form to get the data from
+ * output:	object - a boolean property for each search term indicating whether it is used
+ */
+function searchFormStatus (form) {
+	var status = {};
+
+	// Loop over fieldsets and quasi-fieldsets.
+	jQuery('fieldset, .pz2-fieldset-replacement', form).each( function (index) {
+			var legendCheckbox = jQuery('legend :checkbox', this);
+			
+			if (legendCheckbox.length > 0
+					&& legendCheckbox[0].checked
+					&& legendCheckbox[0].value !== 'CHILDREN') {
+				// This is a checked super-checkbox in a fieldset which has a custom search term:
+				// 1. Mark its search term as active.
+				status[legendCheckbox[0].value] = true;
+				// 2. Mark the search term of all child-checkboxes as inactive.
+				jQuery('ul :checkbox', this).each( function (index) {
+						status[this.value] = false;
+					}
+				);
 			}
 			else {
-				jQuery('ul :checked', this).each( function (index) {
-						addSearchTermsToList(this.value.split(','), GOKs, wildcard);
+				// This is an unchecked fieldset:
+				// 1. Mark the fieldset’s search term as inactive.
+				if (legendCheckbox.length > 0
+						&& !legendCheckbox[0].checked
+						&& legendCheckbox[0].value !== 'CHILDREN') {
+					status[legendCheckbox[0].value] = false;
+				}
+				// 2. Mark the search terms of child-checkboxes according to their status.
+				jQuery('ul :checkbox', this).each( function (index) {
+						status[this.value] = this.checked;
 					}
 				);
 			}
 		}
 	);
-
-	return GOKs;
+	
+	return status;
 }
 
 

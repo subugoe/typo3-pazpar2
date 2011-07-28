@@ -1,15 +1,20 @@
 <f:if condition="{f:count(subject:section.subjects)} > 1">
-<fieldset class="pz2-fieldset-{sectionIndex}">
-	<legend>
-		<f:form.checkbox name="pz2subject-{sectionIndex}"
-						value="<f:for each='{section.GOKs}' as='GOK' key='GOKIndex'><f:if condition='{GOKIndex} != 0'>,</f:if>{GOK}</f:for>"
-						checked="{section.selected}"
-						onclick="groupCheckboxChanged(this);"
-						id="neuerwerbungen-group-checkbox-{sectionIndex}"/>
-		<label for="neuerwerbungen-group-checkbox-{sectionIndex}">
-			{section.name}
-		</label>
-	</legend>
+	<f:then>
+		<fieldset class="pz2-fieldset-{sectionIndex}">
+			<legend>
+				<f:form.checkbox name="pz2subject-{sectionIndex}"
+								value="<f:for each='{section.GOKs}' as='GOK' key='GOKIndex'><f:if condition='{GOKIndex} != 0'>,</f:if>{GOK}</f:for>"
+								checked="{section.selected}"
+								onclick="groupCheckboxChanged(this);"
+								id="neuerwerbungen-group-checkbox-{sectionIndex}"/>
+				<label for="neuerwerbungen-group-checkbox-{sectionIndex}">
+					{section.name}
+				</label>
+			</legend>
+	</f:then>
+	<f:else>
+		<div class="pz2-fieldset-replacement">
+	</f:else>
 </f:if>
 	<ul>
 		<f:for each="{section.subjects}" as="sectionItem" key="itemIndex">
@@ -36,5 +41,10 @@
 		</f:for>
 	</ul>
 <f:if condition="{f:count(subject:section.subjects)} > 1">
-</fieldset>
+	<f:then>
+		</fieldset>
+	</f:then>
+	<f:else>
+		</div>
+	</f:else>
 </f:if>

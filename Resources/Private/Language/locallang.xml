@@ -25,7 +25,7 @@
 			
 			<!-- pazpar2neuerwerbungen form -->
 			<label index="Anzeigen">Anzeigen</label>
-			<label index="Die aktuelle Liste als RSS-Feed abonnieren.">Diese Auswahl als Feed abonnieren.</label>
+			<label index="Die aktuelle Liste als RSS-Feed abonnieren.">Neuerwerbungen als Feed abonnieren.</label>
 			<label index="unvollständig">unvollständig</label>
 
 			<!-- Sort controls -->
@@ -124,7 +124,7 @@
 			
 			<!-- pazpar2neuerwerbungen form -->
 			<label index="Anzeigen">Show</label>
-			<label index="Die aktuelle Liste als RSS-Feed abonnieren.">Subscribe to these subjects as a feed.</label>
+			<label index="Die aktuelle Liste als RSS-Feed abonnieren.">Subscribe to new acquisitions as a feed.</label>
 			<label index="unvollständig">incomplete</label>
 			
 			<!-- Sort controls -->

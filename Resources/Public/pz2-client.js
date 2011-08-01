@@ -2956,11 +2956,11 @@ function renderDetails(recordID) {
 
 
 
-	/*	linkMenu
+	/*	exportLinks
 		Returns list of additional links provided for the current location.
 		output:	DOMElement - markup for additional links
 	*/
-	var linkMenu = function () {
+	var exportLinks = function () {
 
 		/*	copyObjectContentTo
 			Copies the content of a JavaScript object to an XMLElement.
@@ -3144,11 +3144,11 @@ function renderDetails(recordID) {
 
 
 
-		var linkMenu = document.createElement('span');
-		jQuery(linkMenu).addClass('pz2-extraLinks');
-		linkMenu.appendChild(document.createTextNode(localise('mehr Links')));
+		var exportLinks = document.createElement('span');
+		jQuery(exportLinks).addClass('pz2-extraLinks');
+		exportLinks.appendChild(document.createTextNode(localise('mehr Links')));
 		var extraLinkList = document.createElement('ul');
-		linkMenu.appendChild(extraLinkList);
+		exportLinks.appendChild(extraLinkList);
 
 		if (data.location.length == 1) {
 			var labelFormat = localise('download-label-format-simple');
@@ -3165,7 +3165,7 @@ function renderDetails(recordID) {
 			}
 		}
 		
-		return linkMenu;
+		return exportLinks;
 	}
 
 
@@ -3224,7 +3224,7 @@ function renderDetails(recordID) {
 			addZDBInfoIntoElement( detailsList );
 		}
 		if (exportFormats.length > 0) {
-			appendInfoToContainer( linkMenu(), detailsList );
+			appendInfoToContainer( exportLinks(), detailsList );
 		}
 	}
 

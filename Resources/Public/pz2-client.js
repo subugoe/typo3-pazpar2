@@ -1001,7 +1001,7 @@ function display () {
 					infoString += ' ' + localise('gefiltert');
 				}
 
-				var jRecordCount = jQuery('a.pz2-recordCount');
+				var jRecordCount = jQuery('.pz2-recordCount');
 				jRecordCount.empty()
 				jRecordCount.append(infoString);
 			}

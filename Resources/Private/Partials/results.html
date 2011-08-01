@@ -4,7 +4,7 @@
 	<div class="pz2-pager">
 		<div class="pz2-progressIndicator"></div>
 		<div class="pz2-pageNumbers"></div>
-		<a class="pz2-recordCount" onclick="toggleStatus();">
+		<span class="pz2-recordCount" onclick="toggleStatus();">
 			<f:if condition="{f:count(subject: results)} > 0">
 				<f:count subject="{results}"/>
 				<f:if condition="{f:count(subject: results)} == 1">
@@ -15,7 +15,7 @@
 					(<f:translate key="of"/> {totalResultCount})
 				</f:if>
 			</f:if>
-		</a>
+		</span>
 
 		<div id="pz2-targetView" style="display: none">
 				<f:translate key="No information available yet."/>

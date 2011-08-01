@@ -77,6 +77,7 @@ var germanTerms = {
 	'Vorschau schließen': 'Vorschau schließen',
 	'Umschlagbild': 'Umschlagbild',
 	// Download Links
+	'mehr Links': 'mehr Links',
 	'download-label-format-simple': 'Als * laden',
 	'download-label-format-all': 'Alle Ausgaben als * laden',
 	'download-label-submenu-format': 'Einzelne als * laden',
@@ -172,6 +173,7 @@ var englishTerms = {
 	'von': 'of',
 	'In': 'In',
 	// Download Links
+	'mehr Links': 'additional Links',
 	'download-label-format-simple': 'Load as *',
 	'download-label-format-all': 'Load all Editions as *',
 	'download-label-submenu-format': 'Load as *',

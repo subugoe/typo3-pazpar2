@@ -337,7 +337,7 @@ var provideCOinSExport = true;
 // creation of export links.
 var exportFormats = ['endnote', 'bibtex'];
 // Offer submenus with items for each location in the export links?
-var showSingleLocationExportLinks = true;
+var showExportLinksForEachLocation = false;
 // Always map SUB Göttingen links to the Opac, rather than to GVK?
 var preferSUBOpac = false;
 
@@ -3156,7 +3156,7 @@ function renderDetails(recordID) {
 			var labelFormatAll = localise('download-label-format-all');
 			appendExportItemsTo(data.location, labelFormatAll, extraLinkList);
 			
-			if (showSingleLocationExportLinks) {
+			if (showExportLinksForEachLocation) {
 				for (var formatIndex in exportFormats) {
 					extraLinkList.appendChild(exportItemSubmenu(data.location, exportFormats[formatIndex]));
 				}

@@ -67,37 +67,6 @@
 				</TCEforms>
 			</settings.useHistogramForYearFacets>
 
-			<settings.CSSPath>
-				<TCEforms>
-					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang-flexform.xml:settings.CSSPath</label>
-					<config>
-						<type>input</type>
-						<size>40</size>
-					</config>
-				</TCEforms>
-			</settings.CSSPath>
-
-			<settings.pz2JSPath>
-				<TCEforms>
-					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang-flexform.xml:settings.pz2JSPath</label>
-					<config>
-						<type>input</type>
-						<size>40</size>
-					</config>
-				</TCEforms>
-			</settings.pz2JSPath>
-
-			<settings.pz2-clientJSPath>
-				<TCEforms>
-					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang-flexform.xml:settings.pz2-clientJSPath</label>
-					<config>
-						<type>input</type>
-						<size>40</size>
-					</config>
-				</TCEforms>
-			</settings.pz2-clientJSPath>
-
-
 			<settings.neuerwerbungen-subjects>
 				<TCEforms>
 					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang-flexform.xml:settings.neuerwerbungen-subjects</label>

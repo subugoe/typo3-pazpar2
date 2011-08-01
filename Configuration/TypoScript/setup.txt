@@ -20,3 +20,31 @@ pazpar2searchplugin {
 		charset = utf-8
 	}
 }
+
+
+plugin.tx_pazpar2 {
+	settings {
+		# exposed through flexform
+		serviceID = 
+		useHistogramForYearFacets = 1
+		useGoogleBooks = 1
+		useZDB = 1
+		ZDBIP = 0
+
+		# only settable via TypoScript
+		siteName =
+		preferSUBOpac = 0
+		provideCOinSExport = 1
+		showExportLinksForEachLocation = 0
+		exportFormats {
+			endnote = 1
+			bibtex = 1
+		}
+
+		CSSPath = EXT:pazpar2/Resources/Public/pz2.css
+		pz2JSPath = EXT:pazpar2/Resources/Public/pz2.js
+		pz2-clientJSPath = EXT:pazpar2/Resources/Public/pz2-client.js
+		flotJSPath = EXT:pazpar2/Resources/Public/flot/jquery.flot.js
+		flotSelectionJSPath = EXT:pazpar2/Resources/Public/flot/jquery.flot.selection.js
+	}
+}

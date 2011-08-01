@@ -41,44 +41,23 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 	 * @return void
 	 */
 	public function initializeAction () {
-		$defaults = $this->defaultSettings();
-
-		foreach ( $defaults as $key => $value ) {
-			// If a setting is present and non-empty, use it. Otherwise use the default value.
-			if( $this->settings[$key] !== null && $this->settings[$key] !== '' ) {
-				$this->conf[$key] = $this->settings[$key];
-			} else {
-				$this->conf[$key] = $value;
+		foreach ( $this->settings as $key => $value ) {
+			// Transfer settings to conf
+			$this->conf[$key] = $value;
+			
+			if (strpos($key, 'Path') !== False) {
+				// Let TYPO3 try to process path settings as a path, so we can
+				// use EXT: in the paths.
+				$processedPath = $GLOBALS['TSFE']->tmpl->getFileName($value);
+				if ($processedPath) {
+					$this->conf[$key] = $processedPath;
+				}
 			}
 		}
 
 		$this->query = t3lib_div::makeInstance('Tx_Pazpar2_Domain_Model_Query');
 		$this->query->setServiceName($this->conf['serviceID']);
 		$this->query->setQueryFromArguments($this->request->getArguments());
-	}
-
-
-
-	/**
-	 * defaultSettings: Return array with default settings.
-	 *
-	 * @return array
-	 */
-	protected function defaultSettings () {
-		$defaults = array(
-			'serviceID' => '',
-			'CSSPath' => t3lib_extMgm::siteRelPath('pazpar2') . 'Resources/Public/pz2.css',
-			'pz2JSPath' => t3lib_extMgm::siteRelPath('pazpar2') . 'Resources/Public/pz2.js',
-			'pz2-clientJSPath' => t3lib_extMgm::siteRelPath('pazpar2') . 'Resources/Public/pz2-client.js',
-			'flotJSPath' => t3lib_extMgm::siteRelPath('pazpar2') . 'Resources/Public/flot/jquery.flot.js',
-			'flotSelectionJSPath' => t3lib_extMgm::siteRelPath('pazpar2') . 'Resources/Public/flot/jquery.flot.selection.js',
-			'useHistogramForYearFacets' => '1',
-			'useGoogleBooks' => '1',
-			'useZDB' => '1',
-			'ZDBIP' => '0'
-		);
-
-		return $defaults;
 	}
 
 
@@ -107,6 +86,7 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 			$this->view->assign('totalResultCount', $totalResultCount);
 			$this->view->assign('results', $this->query->getResults());
 		}
+		$this->view->assign('conf', $this->conf);
 	}
 
 
@@ -162,12 +142,33 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		$scriptTag->forceClosingTag(true);
 		$this->response->addAdditionalHeaderData( $scriptTag->render() );
 
-		// Add settings for pz2-client.js to <head>.
-		$jsCommand = 'useGoogleBooks = ' . (($this->conf['useGoogleBooks']) ? 'true' : 'false') . '; ';
-		$jsCommand .= 'useZDB = ' . (($this->conf['useZDB']) ? 'true' : 'false') . '; ';
-		$jsCommand .= 'ZDBUseClientIP = ' . ((!$this->conf['ZDBIP']) ? 'true' : 'false') . '; ';
-		$jsCommand .= 'useHistogramForYearFacets = ' . (($this->conf['useHistogramForYearFacets'] == '1') ? 'true' : 'false') . ';';
-		$jsCommand .= 'clientIPAddress = "' . $_SERVER["REMOTE_ADDR"] . '";';
+		// Add various settings for pz2-client.js to <head>.
+		$jsVariables = array(
+			'useGoogleBooks' => (($this->conf['useGoogleBooks']) ? 'true' : 'false'),
+			'useZDB' => (($this->conf['useZDB']) ? 'true' : 'false'),
+			'ZDBUseClientIP' => ((!$this->conf['ZDBIP']) ? 'true' : 'false'),
+			'useHistogramForYearFacets' => (($this->conf['useHistogramForYearFacets'] == '1') ? 'true' : 'false'),
+			'clientIPAddress' => '"' . $_SERVER['REMOTE_ADDR'] . '"',
+			'preferSUBOpac' => (($this->conf['preferSUBOpac']) ? 'true' : 'false'),
+			'provideCOinSExport' => (($this->conf['provideCOinSExport']) ? 'true' : 'false'),
+			'showExportLinksForEachLocation' => (($this->conf['showExportLinksForEachLocation']) ? 'true' : 'false')
+		);
+		if ($this->conf['exportFormats']) {
+			$exportFormats = array();
+			foreach ($this->conf['exportFormats'] as $name => $status) {
+				if ($status) {
+					$exportFormats[] = $name;
+				}
+			}
+			$jsVariables['exportFormats'] = '["' . implode('", "', $exportFormats) . '"]';
+		}
+		if ($this->conf['siteName']) {
+			$jsVariables['siteName'] = "'" . $this->conf['siteName'] . "'";
+		}
+		$jsCommand = '';
+		foreach ($jsVariables as $name => $value) {
+			$jsCommand .= $name . ' = ' . $value . ";\n";
+		}
 		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
 		$scriptTag->addAttribute('type', 'text/javascript');
 		$scriptTag->setContent($jsCommand);

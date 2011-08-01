@@ -30,7 +30,6 @@
  */
 class Tx_Pazpar2_ViewHelpers_ResultViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
-
 /**
  * DOMDocument used by all functions in this class to create DOMElements.
  *
@@ -39,12 +38,38 @@ class Tx_Pazpar2_ViewHelpers_ResultViewHelper extends Tx_Fluid_Core_ViewHelper_A
 private $doc;
 
 
+/**
+ * Configuration array containing rendering options, in particular:
+ * * preferSUBOpac (int)
+ * * provideCOinSExport (int)
+ * * exportFormats (array of strings)
+ * 
+ * @var array
+ */
+private $conf;
+
+
 
 /**
- * @param array $results
+ * Registers own arguments.
+ */
+public function initializeArguments() {
+	parent::initializeArguments();
+	$this->registerArgument('result', 'array', 'The pazpar2 result to render', true);
+	$this->registerArgument('conf', 'array', 'Configuration array', true);
+}
+
+
+
+/**
+ * Main function called by Fluid.
+ * 
  * @return string
  */
-public function render ($result) {
+public function render () {
+	$result = $this->arguments['result'];
+	$this->conf = $this->arguments['conf'];
+	
 	$this->doc = DOMImplementation::createDocument();
 	$li = $this->doc->createElement('li');
 	$this->doc->appendChild($li);
@@ -80,8 +105,10 @@ public function render ($result) {
 		$this->appendMarkupForFieldToContainer('date', $result,  $li, $spaceBefore, '.');
 	}
 
-	// Inster COinS information
-	$this->appendCOinSSpansToContainer($result, $li);
+	if ($this->conf['provideCOinSExport'] == 1) {
+		// Insert COinS information
+		$this->appendCOinSSpansToContainer($result, $li);
+	}
 	
 	// detailed information about the publication
 	$this->appendInfoToContainer($this->renderDetails($result), $li);
@@ -407,6 +434,9 @@ private function renderDetails ($result) {
 
 	$this->appendInfoToContainer( $this->locationDetails($result), $detailsList);
 	$this->addZDBInfoIntoElement( $detailsList, $result );
+	if (count($this->conf['exportFormats']) > 0) {
+		$this->appendInfoToContainer( $this->exportLinks($result), $detailsList);
+	}
 	
 	return $div;
 }
@@ -754,11 +784,13 @@ private function electronicURLs ($location, $result) {
  */
 private function catalogueLink ($locationAll) {
 	$catalogueURL = $locationAll['ch']['md-catalogue-url'][0]['values'][0];
-	if (!$catalogueURL) {
-		/* If the user does not have a Uni Göttingen IP address, redirect Opac links
-			to GVK which is a superset and offers better services for non-locals.
-		*/
-		if (strpos('134.76.', $_SERVER["REMOTE_ADDR"]) !== 0) {
+	if ($catalogueURL) {
+		/** Replace links to the Göttingen Opac by GVK-links if:
+		 *	1) the user does not have a Göttingen IP and
+		 *	2) we are not set up to always server SUB Opace links
+		 */
+		if (strpos('134.76.', $_SERVER["REMOTE_ADDR"]) !== 0
+				&& $this->conf['preferSUBOpac'] == 0) {
 			$opacBaseURL = 'http://opac.sub.uni-goettingen.de/DB=1';
 			$GVKBaseURL = 'http://gso.gbv.de/DB=2.1';
 			$catalogueURL = str_replace($opacBaseURL, $GVKBaseURL, $catalogueURL);

@@ -18,10 +18,6 @@
 			<label index="settings.ZDBIPUser">Abfrage für die IP Adresse des Nutzers machen (Proxy unter /zdb/)</label>
 			<label index="settings.ZDBIPLocal">Abfrage für die IP Adresse des Servers machen (Proxy unter /zdb-local/)</label>
 			<label index="settings.useHistogramForYearFacets">Verteilung der Erscheinungsjahre als Histogramm anzeigen</label>
-			<label index="settings.CSSPath">Pfad zum eigenem Stylesheet (ersetzt das eingebaute)</label>
-			<label index="settings.pz2JSPath">Pfad zu eigenem pz2.js (ersetzt das aus dem pazpar2 Paket)</label>
-			<label index="settings.pz2-clientJSPath">Pfad zu eigenem pz2-client.js, das eine domReady()-Funktion zur Verfügung stellt (ersetzt das eingebaute)</label>
-
 			<label index="settings.neuerwerbungen-subjects">Fachgebietsauswahl für pazpar2-Neuerwerbungen: (benötigt GOK)</label>
 
 		</languageKey>
@@ -36,10 +32,6 @@
 			<label index="settings.ZDBIPUser">Query with the user’s IP address (using service at /zdb/)</label>
 			<label index="settings.ZDBIPLocal">Query with the server’s IP address (using service at /zdb-local/)</label>
 			<label index="settings.useHistogramForYearFacets">Draw a histogram to visualise the distribution of publication dates</label>
-			<label index="settings.CSSPath">Path to stylesheet (replaces built-in stylesheet)</label>
-			<label index="settings.pz2JSPath">Path to pz2.js (replaces the built-in one from pazpar2 distribution)</label>
-			<label index="settings.pz2-clientJSPath">Path to pz2-client.js which provides a domReady() function (replaces built-in script)</label>
-
 			<label index="settings.neuerwerbungen-subjects">Subject list for pazapar2-neuerwerbungen: (requires GOK)</label>
 
 		</languageKey>

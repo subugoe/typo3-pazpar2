@@ -373,8 +373,12 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	 * @return int total result number
 	 */
 	protected function fetchResults () {
-		$maxResults = 1200; // limit results to 1200 to avoid hitting the memory limit
-		$recordsToFetch = 500;
+		$maxResults = 1000; // limit results
+		if (count($this->conf['exportFormats']) > 0) {
+			// limit results even more if we are creating export data
+			$maxResults = $maxResults / (count($this->conf['exportFormats']) + 1);
+		}
+		$recordsToFetch = 350;
 		$firstRecord = 0;
 		$totalResultCount = Null;
 

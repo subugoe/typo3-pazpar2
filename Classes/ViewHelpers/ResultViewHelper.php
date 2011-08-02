@@ -855,6 +855,161 @@ private function addZDBInfoIntoElement ($container, $result) {
 
 
 /**
+ * Returns markup for links to each active export format.
+ * 
+ * @param array $result
+ * @return DOMElement
+ */
+private function exportLinks ($result) {
+	$exportLinks = $this->doc->createElement('span');
+	$exportLinks->setAttribute('class', 'pz2-extraLinks');
+	$exportLinks->appendChild($this->doc->createTextNode(Tx_Extbase_Utility_Localization::translate('mehr Links', 'Pazpar2')));
+	$extraLinkList = $this->doc->createElement('ul');
+	$exportLinks->appendChild($extraLinkList);
+	$labelFormat = Tx_Extbase_Utility_Localization::translate('download-label-format-simple', 'Pazpar2');
+	if (count($result['location']) > 1) {
+		$labelFormat = Tx_Extbase_Utility_Localization::translate('download-label-format-all', 'Pazpar2');
+	}
+
+	$this->appendExportItemsTo($result['location'], $labelFormat, $extraLinkList);
+	// Separate submenus for individual locations not implemented in the PHP version.
+	
+	return $exportLinks;
+}
+
+
+
+/**
+ * Appends list items with an export form for each exportFormat to the container.
+ * 
+ * @param array $locations
+ * @param string $labelFormat
+ * @param DOMElement $container
+ */
+private function appendExportItemsTo ($locations, $labelFormat, $container) {
+	foreach ($this->conf['exportFormats'] as $name => $active) {
+		if ($active) {
+			$container->appendChild($this->exportItem($locations, $name, $labelFormat));
+		}
+	}
+}
+
+
+
+/**
+ * Returns a list item containing the form for export data conversion.
+ * The parameters are passed to dataConversionForm.
+ * 
+ * @param arrray $locations
+ * @param string $exportFormat
+ * @param string $labelFormat
+ * @return DOMElement
+ */
+private function exportItem ($locations, $exportFormat, $labelFormat) {
+	$form = $this->dataConversionForm($locations, $exportFormat, $labelFormat);
+	$item = Null;
+	if ($form) {
+		$item = $this->doc->createElement('li');
+		$item->appendChild($form);
+	}
+	
+	return $item;
+}
+
+
+
+/**
+ * Returns form Element containing the record information to initiate data conversion.
+ * @param array $locations
+ * @param string $exportFormat
+ * @param string $labelFormat
+ * @return DOMElement
+ */
+private function dataConversionForm ($locations, $exportFormat, $labelFormat) {
+	$recordXML = $this->XMLForLocations($locations);
+	$XMLString = $recordXML->saveXML();
+
+	$form = Null;
+	if ($XMLString) {
+		$form = $this->doc->createElement('form');
+		$form->setAttribute('method', 'POST');
+		$scriptPath = 'typo3conf/ext/pazpar2/Resources/Public/convert-pazpar2-record.php';
+		$scriptGetParameters = Array('format' => $exportFormat);
+		if ($GLOBALS['TSFE']->lang) {
+			$scriptGetParameters['language'] = $GLOBALS['TSFE']->lang;
+		}
+		if ($this->conf['siteName']) {
+			$scriptGetParameters['filename'] = $this->conf['siteName'];
+		}
+		$form->setAttribute('action', $scriptPath . '?' . http_build_query($scriptGetParameters));
+		
+		$qInput = $this->doc->createElement('input');
+		$qInput->setAttribute('name', 'q');
+		$qInput->setAttribute('type', 'hidden');
+		$qInput->setAttribute('value', $XMLString);
+		$form->appendChild($qInput);
+		
+		$submitButton = $this->doc->createElement('input');
+		$submitButton->setAttribute('type', 'submit');
+		$buttonText = Tx_Extbase_Utility_Localization::translate('download-label-' . $exportFormat, 'Pazpar2');
+		if ($labelFormat) {
+			$buttonText = str_replace('*', $buttonText, $labelFormat);
+		}
+		$submitButton->setAttribute('value', $buttonText);
+		$form->appendChild($submitButton);
+	}
+	
+	return $form;
+}
+
+
+
+/**
+ * Returns XML representing the passed locations.
+ * @param type $locations
+ * @return DOMDocument
+ */
+private function XMLForLocations ($locations) {
+	$XML = new DOMDocument();
+	$locationsElement = $XML->createElement('locations');
+	$XML->appendChild($locationsElement);
+
+	foreach ($locations as $location) {
+		$locationElement = $XML->createElement('location');
+		$locationsElement->appendChild($locationElement);
+
+		// copy attributes
+		if (array_key_exists('attrs', $location)) {
+			foreach ($location['attrs'] as $attributeName => $attributeContent) {
+				$locationElement->setAttribute($attributeName, $attributeContent);
+			}
+		}
+
+		// copy child elements
+		if (array_key_exists('ch', $location)) {
+			foreach ($location['ch'] as $fieldName => $fields) {
+				foreach ($fields as $field) {
+					$childElement = $XML->createElement($fieldName);
+					$locationElement->appendChild($childElement);
+					$childElement->appendChild($XML->createTextNode($field['values'][0]));
+
+					// copy attributes of child elements
+					if (array_key_exists('attr', $field)) {
+						foreach ($field['attr'] as $attributeName => $attributeContent) {
+							$childElement->setAttribute($attributeName, $attributeContent);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return $XML;
+}
+
+
+
+/**
  * Removes duplicate entries from an array of pazpar2 result values.
  * 
  * @param array $array of pazpar2 result values (each being an array with the element 'values' containing a 1-element array with the actual string

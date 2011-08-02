@@ -131,7 +131,7 @@ function saveFormStateInCookie (form) {
  * input:	form - DOM form element in which to look for checked checkboxes
  */
 function runSearchForForm (form) {
-	setSortCriteriaFromString('author-a--title-a--date-d');
+	setSortCriteriaFromString('date-d--author-a--title-a');
 	var linkElement = document.getElementById('pz2neuerwerbungen-atom-linkElement');
 
 	var query = searchQueryWithEqualsAndWildcard(form, '=', '');

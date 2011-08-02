@@ -25,7 +25,7 @@ pazpar2searchplugin {
 plugin.tx_pazpar2 {
 	settings {
 		# exposed through flexform
-		serviceID = 
+		serviceID =
 		useHistogramForYearFacets = 1
 		useGoogleBooks = 1
 		useZDB = 1
@@ -47,4 +47,10 @@ plugin.tx_pazpar2 {
 		flotJSPath = EXT:pazpar2/Resources/Public/flot/jquery.flot.js
 		flotSelectionJSPath = EXT:pazpar2/Resources/Public/flot/jquery.flot.selection.js
 	}
+}
+
+plugin.tx_pazpar2_pazpar2neuerwerbungen.settings {
+	pz2-neuerwerbungenJSPath = EXT:pazpar2/Resources/Public/pz2-neuerwerbungen.js
+	pz2-neuerwerbungenCSSPath = EXT:pazpar2/Resources/Public/pz2-neuerwerbungen.css
+	neuerwerbungen-subjects = 
 }

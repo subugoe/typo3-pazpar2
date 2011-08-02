@@ -39,23 +39,6 @@ class Tx_Pazpar2_Controller_Pazpar2neuerwerbungenController extends Tx_Pazpar2_C
 
 	
 	/**
-	 * defaultSettings: Return array with default settings.
-	 * Add own default settings to those set by the superclass.
-	 *
-	 * @return Array
-	 */
-	protected function defaultSettings () {
-		$defaults = parent::defaultSettings();
-		$defaults['pz2-neuerwerbungenJSPath'] = t3lib_extMgm::siteRelPath('pazpar2') . 'Resources/Public/pz2-neuerwerbungen.js';
-		$defaults['pz2-neuerwerbungenCSSPath'] = t3lib_extMgm::siteRelPath('pazpar2') . 'Resources/Public/pz2-neuerwerbungen.css';
-		$defaults['neuerwerbungen-subjects'] = '';
-
-		return $defaults;
-	}
-
-
-	
-	/**
 	 * Initialiser.
 	 * 
 	 * Initialises parent class and sets up model object.

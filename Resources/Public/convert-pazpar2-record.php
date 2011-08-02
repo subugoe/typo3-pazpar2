@@ -45,7 +45,7 @@ function transform (&$errorMessage) {
 	$parameters = array_merge($_GET, $_POST);
 	
 	$errorMessage = Null;
-	if ($parameters['q'] && $parameters['format']) {
+	if (array_key_exists('q', $parameters) && array_key_exists('format', $parameters)) {
 		$format = $formats[$parameters['format']];
 		if ($format !== Null) {
 			$xslPath = '../Private/XSL/' . $format['xsl'];
@@ -57,12 +57,12 @@ function transform (&$errorMessage) {
 			$xml = new DOMDocument();
 			if ($xml->loadXML($parameters['q'])) {
 				header('Content-Type: ' . $format['content-type'] . ';charset=utf-8');
-				if ($format['disposition']) {
+				if (array_key_exists('disposition', $format)) {
 					$headerString = 'Content-Disposition: ' . $format['disposition'];
-					if ($parameters['filename']) {
+					if (array_key_exists('filename', $parameters)) {
 						$headerString .= '; filename=' . $parameters['filename'];
 					}
-					else if ($format['filename']) {
+					else if (array_key_exists ('filename', $format)) {
 						$headerString .= '; filename=' . $format['filename'];
 					}
 					header($headerString);

@@ -313,7 +313,6 @@ var filterArray = {};
 var displaySort =  [{'fieldName': 'date', 'direction': 'descending'},
 						{'fieldName': 'author', 'direction': 'ascending'},
 						{'fieldName': 'title', 'direction': 'ascending'}];
-var displayFilter = undefined;
 var hitList = {}; // local storage for the records sent from pazpar2
 var displayHitList = []; // filtered and sorted list used for display
 var displayHitListUpToDate = []; // list filtered for all conditions but the date used for drawing the date histogram
@@ -468,7 +467,7 @@ function fieldContentsInRecord (fieldName, record) {
 	Converts a given list of data to thes list used for display by:
 		1. applying filters
 		2. sorting
-	according to the setup in the displaySort and displayFilter variables.
+	according to the setup in the displaySort and filterArray variables.
 */
 function displayLists (list) {
 	
@@ -984,6 +983,12 @@ function display () {
 									+ String(firstIndex + numberOfRecordsOnPage)
 									+ ' ' + localise('von') + ' '
 									+ String(displayHitList.length);
+					// Use for loop to determine whether the filterArray object
+					// has properties. If it does, mark the results as filtered.
+					for  (var filterIndex  in filterArray) {
+						infoString += ' [' + localise('gefiltert') + ']';
+						break;
+					}
 				}
 				else {
 					if (my_paz.currQuery == undefined) {
@@ -997,11 +1002,6 @@ function display () {
 					}
 				}
 
-				if (displayFilter) {
-					infoString += ' ' + localise('gefiltert');
-				}
-
-				var jRecordCount = jQuery('.pz2-recordCount');
 				jRecordCount.empty()
 				jRecordCount.append(infoString);
 			}

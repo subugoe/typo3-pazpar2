@@ -92,7 +92,8 @@ var germanTerms = {
 	'Suche...': 'Suche …',
 	'keine Suchabfrage': 'keine Suchabfrage',
 	'keine Treffer gefunden': 'keine Treffer',
-	'In diesem Katalog gibt es noch # weitere Treffer.': 'In diesem Katalog gibt es noch # weitere Treffer, die wir nicht herunterladen und hier anzeigen können. Bitte wählen Sie einen spezifischeren Suchbegriff, um alle Treffer sehen zu können. Oder suchen Sie direkt im Katalog.',
+	'Es können nicht alle # Treffer geladen werden.': 'Es können nicht alle # Treffer geladen werden. Bitte verwenden Sie einen spezifischeren Suchbegriff, um die Trefferzahl zu reduzieren. Die betroffenen Kataloge sind mit einem + markiert.',
+	'In diesem Katalog gibt es noch # weitere Treffer.': 'In diesem Katalog gibt es noch # weitere Treffer, die wir nicht herunterladen und hier anzeigen können. Bitte verwenden Sie einen spezifischeren Suchbegriff, um die Trefferzahl zu reduzieren. Oder suchen Sie direkt im Katalog.',
 	// Pager
 	'Vorige Trefferseite anzeigen': 'Vorige Trefferseite anzeigen',
 	'Nächste Trefferseite anzeigen': 'Nächste Trefferseite anzeigen',
@@ -184,7 +185,8 @@ var englishTerms = {
 	'Suche...': 'Searching…',
 	'keine Suchabfrage': 'no search query',
 	'keine Treffer gefunden': 'no matching records',
-	'In diesem Katalog gibt es noch # weitere Treffer.': 'There are # additional results available in this catalogue which we cannot download and display. Please choose a more specific search query or visit the website of the catalogue itself if you require the full set of results.',
+	'Es können nicht alle # Treffer geladen werden.': 'There are # results, not all of which can be loaded. Please use a more specific search query to reduce the number of results. The affected catalogues are marked with a +.',
+	'In diesem Katalog gibt es noch # weitere Treffer.': 'There are # additional results available in this catalogue which we cannot download and display. Please use a more specific search query or visit the website of the catalogue itself if you require the full set of results.',
 	// Pager
 	'Vorige Trefferseite anzeigen': 'Show next page of results',
 	'Nächste Trefferseite anzeigen': 'Show previous page of results',
@@ -976,6 +978,7 @@ function display () {
 				nextLink.appendChild(document.createTextNode('»'));
 				pageNumbersContainer.appendChild(nextLink);
 
+				var jRecordCount = jQuery('.pz2-recordCount');
 				// Add record count information
 				var infoString;
 				if (displayHitList.length > 0) {
@@ -983,6 +986,31 @@ function display () {
 									+ String(firstIndex + numberOfRecordsOnPage)
 									+ ' ' + localise('von') + ' '
 									+ String(displayHitList.length);
+
+					// Determine whether we can get hold of all results
+					var overflow = false;
+					var totalResultCount = 0;
+					for (var targetIndex in targetStatus) {
+						var target = targetStatus[targetIndex];
+
+						if (!isNaN(target['hits'])) {
+							totalResultCount += parseInt(target['hits']);
+						}
+						if (target['state'] == 'Client_Idle'
+								&& target['hits'] > target['records']) {
+							overflow = true;
+						}
+					}
+					if (overflow) {
+						infoString += '+';
+						var overflowMessage = localise('Es können nicht alle # Treffer geladen werden.');
+						overflowMessage = overflowMessage.replace('#', totalResultCount);
+						jRecordCount.attr('title', overflowMessage);
+					}
+					else {
+						jRecordCount.attr('title', '');
+					}
+
 					// Use for loop to determine whether the filterArray object
 					// has properties. If it does, mark the results as filtered.
 					for  (var filterIndex  in filterArray) {

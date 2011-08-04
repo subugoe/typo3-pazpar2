@@ -1011,11 +1011,13 @@ function display () {
 						jRecordCount.attr('title', '');
 					}
 
-					// Use for loop to determine whether the filterArray object
-					// has properties. If it does, mark the results as filtered.
+					// Mark results as filtered if the filterArray has a
+					// non-trivial property.
 					for  (var filterIndex  in filterArray) {
-						infoString += ' [' + localise('gefiltert') + ']';
-						break;
+						if (filterArray[filterIndex] !== undefined) {
+							infoString += ' [' + localise('gefiltert') + ']';
+							break;
+						}
 					}
 				}
 				else {

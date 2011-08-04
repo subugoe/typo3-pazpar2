@@ -920,126 +920,6 @@ function display () {
 
 
 
-	/* 	updatePagers
-		Updates pagers and record counts shown in .pz2-pager elements.
-	*/
-	var updatePagers = function () {
-		jQuery('div.pz2-pager').each( function(index) {
-				var pages = Math.ceil(displayHitList.length / recPerPage);
-
-				// Update pager
-				var jPageNumbersContainer = jQuery('.pz2-pageNumbers', this);
-				jPageNumbersContainer.removeClass().addClass('pz2-pageNumbers pz2-pageCount-' + pages);
-				jPageNumbersContainer.empty();
-				var pageNumbersContainer = jPageNumbersContainer[0];
-				
-				var previous = document.createElement('span');
-				if (curPage > 1) {
-					previous = document.createElement('a');
-					previous.setAttribute('href', '#');
-					previous.onclick = new Function('pagerPrev();return false;');
-					previous.title = localise('Vorige Trefferseite anzeigen');
-				}
-				jQuery(previous).addClass('pz2-prev');
-				previous.appendChild(document.createTextNode('«'));
-				pageNumbersContainer.appendChild(previous);
-
-				var pageList = document.createElement('ol');
-				jQuery(pageList).addClass('pz2-pages');
-				pageNumbersContainer.appendChild(pageList);
-		
-				var dotsItem = document.createElement('li');
-				dotsItem.appendChild(document.createTextNode('…'));
-		
-				for(var pageNumber = 1; pageNumber <= pages; pageNumber++) {
-					var pageItem = document.createElement('li');
-					pageList.appendChild(pageItem);
-					if(pageNumber != curPage) {
-						var linkElement = document.createElement('a');
-						linkElement.setAttribute('href', '#');
-						linkElement.onclick = new Function('showPage(' + pageNumber + ');return false;');
-						linkElement.appendChild(document.createTextNode(pageNumber));
-						pageItem.appendChild(linkElement);
-					}
-					else {
-						jQuery(pageItem).addClass('pz2-currentPage');
-						pageItem.appendChild(document.createTextNode(pageNumber));
-					}
-				}
-
-				var nextLink = document.createElement('span');
-				if (pages - curPage > 0) {
-					nextLink = document.createElement('a');
-					nextLink.setAttribute('href', '#');
-					nextLink.onclick = new Function('pagerNext();return false;');
-					nextLink.title = localise('Nächste Trefferseite anzeigen');
-				}
-				jQuery(nextLink).addClass('pz2-next');
-				nextLink.appendChild(document.createTextNode('»'));
-				pageNumbersContainer.appendChild(nextLink);
-
-				var jRecordCount = jQuery('.pz2-recordCount');
-				// Add record count information
-				var infoString;
-				if (displayHitList.length > 0) {
-					infoString = String(firstIndex + 1) + '-'
-									+ String(firstIndex + numberOfRecordsOnPage)
-									+ ' ' + localise('von') + ' '
-									+ String(displayHitList.length);
-
-					// Determine whether we can get hold of all results
-					var overflow = false;
-					var totalResultCount = 0;
-					for (var targetIndex in targetStatus) {
-						var target = targetStatus[targetIndex];
-
-						if (!isNaN(target['hits'])) {
-							totalResultCount += parseInt(target['hits']);
-						}
-						if (target['state'] == 'Client_Idle'
-								&& target['hits'] > target['records']) {
-							overflow = true;
-						}
-					}
-					if (overflow) {
-						infoString += '+';
-						var overflowMessage = localise('Es können nicht alle # Treffer geladen werden.');
-						overflowMessage = overflowMessage.replace('#', totalResultCount);
-						jRecordCount.attr('title', overflowMessage);
-					}
-					else {
-						jRecordCount.attr('title', '');
-					}
-
-					// Mark results as filtered if the filterArray has a
-					// non-trivial property.
-					for  (var filterIndex  in filterArray) {
-						if (filterArray[filterIndex] !== undefined) {
-							infoString += ' [' + localise('gefiltert') + ']';
-							break;
-						}
-					}
-				}
-				else {
-					if (my_paz.currQuery == undefined) {
-						infoString = localise('keine Suchabfrage');
-					}
-					else if (my_paz.activeClients == 0) {
-						infoString = localise('keine Treffer gefunden');
-					}
-					else {
-						infoString = localise('Suche...');
-					}
-				}
-
-				jRecordCount.empty()
-				jRecordCount.append(infoString);
-			}
-		);	
-	}
-
-
-
 	// Create results list.
 	var OL = document.createElement('ol');
 	var firstIndex = recPerPage * (curPage - 1);
@@ -1128,6 +1008,128 @@ function display () {
 
 
 
+/* 	updatePagers
+	Updates pagers and record counts shown in .pz2-pager elements.
+*/
+function updatePagers () {
+	jQuery('div.pz2-pager').each( function(index) {
+			var pages = Math.ceil(displayHitList.length / recPerPage);
+
+			// Update pager
+			var jPageNumbersContainer = jQuery('.pz2-pageNumbers', this);
+			jPageNumbersContainer.removeClass().addClass('pz2-pageNumbers pz2-pageCount-' + pages);
+			jPageNumbersContainer.empty();
+			var pageNumbersContainer = jPageNumbersContainer[0];
+
+			var previous = document.createElement('span');
+			if (curPage > 1) {
+				previous = document.createElement('a');
+				previous.setAttribute('href', '#');
+				previous.onclick = new Function('pagerPrev();return false;');
+				previous.title = localise('Vorige Trefferseite anzeigen');
+			}
+			jQuery(previous).addClass('pz2-prev');
+			previous.appendChild(document.createTextNode('«'));
+			pageNumbersContainer.appendChild(previous);
+
+			var pageList = document.createElement('ol');
+			jQuery(pageList).addClass('pz2-pages');
+			pageNumbersContainer.appendChild(pageList);
+
+			var dotsItem = document.createElement('li');
+			dotsItem.appendChild(document.createTextNode('…'));
+
+			for(var pageNumber = 1; pageNumber <= pages; pageNumber++) {
+				var pageItem = document.createElement('li');
+				pageList.appendChild(pageItem);
+				if(pageNumber != curPage) {
+					var linkElement = document.createElement('a');
+					linkElement.setAttribute('href', '#');
+					linkElement.onclick = new Function('showPage(' + pageNumber + ');return false;');
+					linkElement.appendChild(document.createTextNode(pageNumber));
+					pageItem.appendChild(linkElement);
+				}
+				else {
+					jQuery(pageItem).addClass('pz2-currentPage');
+					pageItem.appendChild(document.createTextNode(pageNumber));
+				}
+			}
+
+			var nextLink = document.createElement('span');
+			if (pages - curPage > 0) {
+				nextLink = document.createElement('a');
+				nextLink.setAttribute('href', '#');
+				nextLink.onclick = new Function('pagerNext();return false;');
+				nextLink.title = localise('Nächste Trefferseite anzeigen');
+			}
+			jQuery(nextLink).addClass('pz2-next');
+			nextLink.appendChild(document.createTextNode('»'));
+			pageNumbersContainer.appendChild(nextLink);
+
+			var jRecordCount = jQuery('.pz2-recordCount');
+			// Add record count information
+			var infoString;
+			if (displayHitList.length > 0) {
+				var firstIndex = recPerPage * (curPage - 1);
+				var numberOfRecordsOnPage = Math.min(displayHitList.length - firstIndex, recPerPage);
+				infoString = String(firstIndex + 1) + '-'
+								+ String(firstIndex + numberOfRecordsOnPage)
+								+ ' ' + localise('von') + ' '
+								+ String(displayHitList.length);
+
+				// Determine whether we can get hold of all results
+				var overflow = false;
+				var totalResultCount = 0;
+				for (var targetIndex in targetStatus) {
+					var target = targetStatus[targetIndex];
+
+					if (!isNaN(target['hits'])) {
+						totalResultCount += parseInt(target['hits']);
+					}
+					if (target['state'] == 'Client_Idle'
+							&& target['hits'] > target['records']) {
+						overflow = true;
+					}
+				}
+				if (overflow) {
+					infoString += '+';
+					var overflowMessage = localise('Es können nicht alle # Treffer geladen werden.');
+					overflowMessage = overflowMessage.replace('#', totalResultCount);
+					jRecordCount.attr('title', overflowMessage);
+				}
+				else {
+					jRecordCount.attr('title', '');
+				}
+
+				// Mark results as filtered if the filterArray has a
+				// non-trivial property.
+				for  (var filterIndex  in filterArray) {
+					if (filterArray[filterIndex] !== undefined) {
+						infoString += ' [' + localise('gefiltert') + ']';
+						break;
+					}
+				}
+			}
+			else {
+				if (my_paz.currQuery == undefined) {
+					infoString = localise('keine Suchabfrage');
+				}
+				else if (my_paz.activeClients == 0) {
+					infoString = localise('keine Treffer gefunden');
+				}
+				else {
+					infoString = localise('Suche...');
+				}
+			}
+
+			jRecordCount.empty()
+			jRecordCount.append(infoString);
+		}
+	);
+}
+
+
+
 /*	my_onstat
 	Callback for pazpar2 status information. Updates status display.
 	input:	data - object with status information from pazpar2
@@ -1137,6 +1139,9 @@ function my_onstat(data) {
 	var progress = (data.clients - data.activeclients) / data.clients * 100;
 	var opacityValue = (progress == 100) ? 0 : 1;
 	jQuery('.pz2-pager .pz2-progressIndicator').animate({'width': progress + '%', 'opacity': opacityValue}, 'slow');
+
+	// Update result count
+	updatePagers();
 
 	// Write out status information.
 	var statDiv = document.getElementById('pz2-stat');

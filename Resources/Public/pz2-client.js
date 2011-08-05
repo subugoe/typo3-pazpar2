@@ -1719,13 +1719,11 @@ function triggerSearchForForm (form, additionalQueryTerms) {
 		addSearchStringForFieldToArray('person', searchChunks);
 		addSearchStringForFieldToArray('date', searchChunks);
 		searchChunks = searchChunks.concat(curAdditionalQueryTerms)
-console.log(searchChunks);
 		var searchTerm = searchChunks.join(' and ');
 		if ( searchTerm != '' && searchTerm != curSearchTerm ) {
 			loadSelectsFromForm(myForm);
 			my_paz.search(searchTerm, fetchRecords, curSort, curFilter);
 			curSearchTerm = searchTerm;
-	console.log(curSearchTerm);
 			resetPage();
 		}
 	}

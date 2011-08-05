@@ -45,17 +45,4 @@ Tx_Extbase_Utility_Extension::configurePlugin (
 	)
 );
 
-Tx_Extbase_Utility_Extension::configurePlugin (
-	$_EXTKEY,
-	'pazpar2gokmenu', // Name used internally by Typo3
-	// Array holding the controller-action-combinations that are accessible
-	array(
-		// The first controller and its first action will be the default
-		'Pazpar2gokmenu' => 'index'
-	),
-	// Array holding non-cachable controller-action-combinations
-	array(
-		'Pazpar2gokmenu' => 'index'
-	)
-);
 ?>

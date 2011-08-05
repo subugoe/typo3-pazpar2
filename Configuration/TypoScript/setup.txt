@@ -46,6 +46,10 @@ plugin.tx_pazpar2 {
 		pz2-clientJSPath = EXT:pazpar2/Resources/Public/pz2-client.js
 		flotJSPath = EXT:pazpar2/Resources/Public/flot/jquery.flot.js
 		flotSelectionJSPath = EXT:pazpar2/Resources/Public/flot/jquery.flot.selection.js
+
+		triggeredByNKWGOKMenu = 0
+		showSearchForm = 1
+		allowExtendedSearch = 1
 	}
 }
 

@@ -310,6 +310,7 @@ var curDetRecData = null;
 var curSort = [];
 var curFilter = null;
 var curSearchTerm = null;
+var curAdditionalQueryTerms = [];
 var facetData = {}; // stores faceting information as sent by pazpar2
 var filterArray = {};
 var displaySort =  [{'fieldName': 'date', 'direction': 'descending'},
@@ -1660,8 +1661,9 @@ function resetPage() {
 	Trigger pazpar2 search.
 	Called when my_paz is initialised and when the search button is clicked.
 	input:	form - DOM element of the form used to trigger the search
+			additionalQueryTerms - array of query terms not entered in the form [optional]
 */
-function triggerSearchForForm (form) {
+function triggerSearchForForm (form, additionalQueryTerms) {
 
 	/*	addSearchStringForFieldToArray
 		Creates the appropriate search string for the passed field name and
@@ -1672,15 +1674,15 @@ function triggerSearchForForm (form) {
 				array - array containing the search strings
 	*/
 	var addSearchStringForFieldToArray = function (fieldName, array) {
-		var searchString = jQuery('#pz2-field-' + fieldName, form).val()
+		var searchString = jQuery('#pz2-field-' + fieldName, myForm).val()
 		if (searchString && searchString != '') {
 			searchString = jQuery.trim(searchString);
 			if (fieldName == 'all') {
-				if (jQuery('#pz2-checkbox-fulltext:checked', form).length > 0) {
+				if (jQuery('#pz2-checkbox-fulltext:checked', myForm).length > 0) {
 					searchString = 'fulltext=' + searchString;
 				}
 			}
-			else if (fieldName == 'title' && jQuery('#pz2-checkbox-journal:checked', form).length > 0) {
+			else if (fieldName == 'title' && jQuery('#pz2-checkbox-journal:checked', myForm).length > 0) {
 				// Special case for title restricted to journals only.
 				searchString = 'journal=' + searchString;
 			}
@@ -1696,6 +1698,19 @@ function triggerSearchForForm (form) {
 		}
 	}
 
+	var myForm = form;
+	// If no form is passed use the first .pz2-mainForm.
+	if (myForm === undefined) {
+		var mainForms = jQuery('.pz2-mainForm form');
+		if (mainForms.length > 0) {
+			myForm = mainForms[0];
+		}
+	}
+
+	// Deal with additional query terms if there are any.
+	if (additionalQueryTerms !== undefined) {
+		curAdditionalQueryTerms = additionalQueryTerms;
+	}
 
 	if (domReadyFired && pz2Initialised) {
 		var searchChunks = [];
@@ -1703,12 +1718,14 @@ function triggerSearchForForm (form) {
 		addSearchStringForFieldToArray('title', searchChunks);
 		addSearchStringForFieldToArray('person', searchChunks);
 		addSearchStringForFieldToArray('date', searchChunks);
-
+		searchChunks = searchChunks.concat(curAdditionalQueryTerms)
+console.log(searchChunks);
 		var searchTerm = searchChunks.join(' and ');
 		if ( searchTerm != '' && searchTerm != curSearchTerm ) {
-			loadSelectsFromForm(form);
+			loadSelectsFromForm(myForm);
 			my_paz.search(searchTerm, fetchRecords, curSort, curFilter);
 			curSearchTerm = searchTerm;
+	console.log(curSearchTerm);
 			resetPage();
 		}
 	}

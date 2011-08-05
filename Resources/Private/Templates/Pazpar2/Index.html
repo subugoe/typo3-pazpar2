@@ -1,11 +1,14 @@
 <f:layout name="layout"/>
-
+{conf}
 <f:section name="form">
-	<f:render partial="form" arguments="{queryString: queryString,
+	<f:if condition="{conf.showSearchForm}==1">
+		<f:render partial="form" arguments="{queryString: queryString,
 												queryStringTitle: queryStringTitle,
 												querySwitchJournalOnly: querySwitchJournalOnly,
 												queryStringPerson: queryStringPerson,
 												queryStringDate: queryStringDate,
-												extended: extended}"
-	/>
+												extended: extended,
+												conf: conf}"
+		/>
+	</f:if>
 </f:section>

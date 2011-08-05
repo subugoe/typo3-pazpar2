@@ -29,18 +29,11 @@ Tx_Extbase_Utility_Extension::registerPlugin (
 	'pazpar2 Neuerwerbungen' // Name shown in the backend dropdown field.
 );
 
-Tx_Extbase_Utility_Extension::registerPlugin (
-	$_EXTKEY,
-	'pazpar2gokmenu', // Name used internally by Typo3
-	'pazpar2 GOK Menü' // Name shown in the backend dropdown field.
-);
-
 
 // Add flexform for both plug-ins.
 $plugInFlexForms = Array (
 	Array( 'plugIn' => 'pazpar2', 'flexForm' => 'Pazpar2'),
 	Array( 'plugIn' => 'pazpar2neuerwerbungen', 'flexForm' => 'Pazpar2'),
-	Array( 'plugIn' => 'pazpar2gokmenu', 'flexForm' => 'Pazpar2'),
 );
 
 $extensionName = strtolower(t3lib_div::underscoredToUpperCamelCase($_EXTKEY));

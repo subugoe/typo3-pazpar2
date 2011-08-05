@@ -72,7 +72,6 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 	 */
 	public function indexAction () {
 		$this->addResourcesToHead();
-
 		$arguments = $this->request->getArguments();
 
 		$this->view->assign('extended', $arguments['extended']);
@@ -113,37 +112,9 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		$scriptTag->forceClosingTag(true);
 		$this->response->addAdditionalHeaderData( $scriptTag->render() );
 
-		// Set up pazpar2 service ID.
-		$jsCommand = 'my_serviceID = "' . $this->conf['serviceID'] . '";';
-		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
-		$scriptTag->addAttribute('type', 'text/javascript');
-		$scriptTag->setContent($jsCommand);
-		$this->response->addAdditionalHeaderData( $scriptTag->render() );
-
-		// Load flot graphing library if needed.
-		if ( $this->conf['useHistogramForYearFacets'] ) {
-			$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
-			$scriptTag->addAttribute('type', 'text/javascript');
-			$scriptTag->addAttribute('src', $this->conf['flotJSPath']) ;
-			$scriptTag->forceClosingTag(true);
-			$this->response->addAdditionalHeaderData( $scriptTag->render() );
-
-			$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
-			$scriptTag->addAttribute('type', 'text/javascript');
-			$scriptTag->addAttribute('src', $this->conf['flotSelectionJSPath']) ;
-			$scriptTag->forceClosingTag(true);
-			$this->response->addAdditionalHeaderData( $scriptTag->render() );
-		}
-		
-		// Add pz2-client.js to <head>.
-		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
-		$scriptTag->addAttribute('type', 'text/javascript');
-		$scriptTag->addAttribute('src', $this->conf['pz2-clientJSPath']) ;
-		$scriptTag->forceClosingTag(true);
-		$this->response->addAdditionalHeaderData( $scriptTag->render() );
-
-		// Add various settings for pz2-client.js to <head>.
+		// Create various settings for pz2.js and pz2-client.js to.
 		$jsVariables = array(
+			'my_serviceID' => '"' . $this->conf['serviceID'] . '"',
 			'useGoogleBooks' => (($this->conf['useGoogleBooks']) ? 'true' : 'false'),
 			'useZDB' => (($this->conf['useZDB']) ? 'true' : 'false'),
 			'ZDBUseClientIP' => ((!$this->conf['ZDBIP']) ? 'true' : 'false'),
@@ -165,22 +136,54 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		if ($this->conf['siteName']) {
 			$jsVariables['siteName'] = "'" . $this->conf['siteName'] . "'";
 		}
+
 		$jsCommand = '';
 		foreach ($jsVariables as $name => $value) {
 			$jsCommand .= $name . ' = ' . $value . ";\n";
 		}
+		
+		// Set up JavaScript function that is called by nkwgok if asked to do so.
+		if ($this->conf['triggeredByNKWGOKMenu']) {
+			$jsCommand .= 'function nkwgokMenuSelected(option) {
+	var searchTerm = option.getAttribute("query");
+	if (searchTerm) {
+		triggerSearchForForm(undefined, ["(" +  searchTerm + ")"]);
+	}
+}
+';
+		}
+
+		// Add the JavaScript setup commands to <head>.
 		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
 		$scriptTag->addAttribute('type', 'text/javascript');
 		$scriptTag->setContent($jsCommand);
 		$this->response->addAdditionalHeaderData( $scriptTag->render() );
 
-		// Make jQuery initialise pazpar2 when the DOM is ready.
-		$jsCommand = 'jQuery(document).ready(domReady);';
+		// Add pz2-client.js to <head>.
 		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
 		$scriptTag->addAttribute('type', 'text/javascript');
-		$scriptTag->setContent($jsCommand);
+		$scriptTag->addAttribute('src', $this->conf['pz2-clientJSPath']) ;
+		$scriptTag->forceClosingTag(true);
 		$this->response->addAdditionalHeaderData( $scriptTag->render() );
-		
+
+		// Load flot graphing library if needed.
+		if ( $this->conf['useHistogramForYearFacets'] ) {
+			$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
+			$scriptTag->addAttribute('type', 'text/javascript');
+			$scriptTag->addAttribute('src', $this->conf['flotJSPath']) ;
+			$scriptTag->forceClosingTag(true);
+			$this->response->addAdditionalHeaderData( $scriptTag->render() );
+
+			$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
+			$scriptTag->addAttribute('type', 'text/javascript');
+			$scriptTag->addAttribute('src', $this->conf['flotSelectionJSPath']) ;
+			$scriptTag->forceClosingTag(true);
+			$this->response->addAdditionalHeaderData( $scriptTag->render() );
+		}
+
+		// Make jQuery initialise pazpar2 when the DOM is ready.
+		$jsCommand = "jQuery(document).ready(domReady);\n";
+
 		// Add Google Books support if asked to do so.
 		if ( $this->conf['useGoogleBooks'] ) {
 			// Structurally this might be better in a separate extension?
@@ -189,13 +192,15 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 			$scriptTag->addAttribute('src',  'https://www.google.com/jsapi');
 			$scriptTag->forceClosingTag(true);
 			$this->response->addAdditionalHeaderData( $scriptTag->render() );
-			
-			$jsCommand = 'google.load("books", "0");';
-			$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
-			$scriptTag->addAttribute('type', 'text/javascript');
-			$scriptTag->setContent($jsCommand);
-			$this->response->addAdditionalHeaderData( $scriptTag->render() );
+
+			$jsCommand .= "google.load('books', '0');\n";
 		}
+
+		// Add further JavaScript initialisation commands to <head>.
+		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
+		$scriptTag->addAttribute('type', 'text/javascript');
+		$scriptTag->setContent($jsCommand);
+		$this->response->addAdditionalHeaderData( $scriptTag->render() );
 
 	}
 

@@ -121,9 +121,10 @@ var germanTerms = {
 	'Code': 'Statuscode',
 	'Status': 'Status',
 	'Geladen': 'Geladen',
-	'Client_Working': 'Client arbeitet',
-	'Client_Idle': 'Client inaktiv',
-	'Client_Error': 'Fehler'
+	'Client_Working': 'arbeitet',
+	'Client_Idle': 'inaktiv',
+	'Client_Error': 'Fehler',
+	'Client_Disconnected': 'Verbindungsabbruch'
 };
 
 
@@ -214,9 +215,10 @@ var englishTerms = {
 	'Code': 'Status Code',
 	'Status': 'Status',
 	'Gesamt': 'Loaded',
-	'Client_Working': 'Client working',
-	'Client_Idle': 'Client inactive',
-	'Client_Error': 'Client error'
+	'Client_Working': 'working',
+	'Client_Idle': 'idle',
+	'Client_Error': 'Error',
+	'Client_Disconnected': 'disconnected'
 };
 
 
@@ -1563,9 +1565,6 @@ function my_onbytarget(data) {
 	td.appendChild(document.createTextNode(localise('Treffer')));
 	td = document.createElement('td');
 	tr.appendChild(td);
-	td.appendChild(document.createTextNode(localise('Code')));
-	td = document.createElement('td');
-	tr.appendChild(td);
 	jQuery(td).addClass('pz2-target-status');
 	td.appendChild(document.createTextNode(localise('Status')));
 	
@@ -1584,13 +1583,17 @@ function my_onbytarget(data) {
 		td.appendChild(document.createTextNode(data[i].records));
 		td = document.createElement('td');
 		tr.appendChild(td);
-		td.appendChild(document.createTextNode(data[i].hits));
-		td = document.createElement('td');
-		tr.appendChild(td);
-		td.appendChild(document.createTextNode(data[i].diagnostic));
+		var hitCount = data[i].hits;
+		if (hitCount == -1) {
+			hitCount = '?';
+		}
+		td.appendChild(document.createTextNode(hitCount));
 		td = document.createElement('td');
 		tr.appendChild(td);
 		td.appendChild(document.createTextNode(localise(data[i].state)));
+		if (data[i].diagnostic != 0) {
+			td.setAttribute('title', localise('Code') + ': ' + data[i].diagnostic);
+		}
 
 		targetStatus[data[i].name] = data[i];
 	}

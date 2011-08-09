@@ -648,13 +648,6 @@ pz2.prototype =
                                 bytarget[i][nodeName] = nodeText;
                             }
                         }
-                        if (bytarget[i]["state"]=="Client_Disconnected") {
-                          bytarget[i]["hits"] = "Error";
-                        } else if (bytarget[i]["state"]=="Client_Error") {
-                          bytarget[i]["hits"] = "Error";                          
-                        } else if (bytarget[i]["state"]=="Client_Working") {
-                          bytarget[i]["hits"] = "...";
-                        }
                         if (bytarget[i].diagnostic == "1") {
                           bytarget[i].diagnostic = "Permanent system error";
                         } else if (bytarget[i].diagnostic == "2") {

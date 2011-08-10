@@ -70,12 +70,14 @@
 			<label index="of">von</label>
 			<label index="Erscheint in separatem Fenster.">Erscheint in separatem Fenster.</label>
 
-			<!-- Download Links -->
+			<!-- Download/Extra Links -->
 			<label index="mehr Links">mehr Links</label>
 			<label index="download-label-format-simple">Als * laden</label>
 			<label index="download-label-format-all">Alle Ausgaben als * laden</label>
 			<label index="download-label-endnote">RIS/EndNote</label>
 			<label index="download-label-bibtex">BibTeX</label>
+			<label index="deutschlandweit im KVK suchen">deutschlandweit im KVK suchen</label>
+			<label index="&amp;lang=de">&amp;lang=de</label>
 
 			<!-- Media Types -->
 			<label index="media-type-article">Aufsatz</label>
@@ -176,12 +178,14 @@
 			<label index="of">of</label>
 			<label index="Erscheint in separatem Fenster.">Link opens in a new Window.</label>
 
-			<!-- Download Links -->
+			<!-- Download/Extra Links -->
 			<label index="mehr Links">additional Links</label>
 			<label index="download-label-format-simple">Load as *</label>
 			<label index="download-label-format-all">Load all editions as *</label>
 			<label index="download-label-endnote">RIS/EndNote</label>
 			<label index="download-label-bibtex">BibTeX</label>
+			<label index="deutschlandweit im KVK suchen">search for this title throughout Germany (KVK)</label>
+			<label index="&amp;lang=de">&amp;lang=en</label>
 
 			<!-- Media Types -->
 			<label index="media-type-article">Article</label>

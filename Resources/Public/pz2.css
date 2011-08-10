@@ -432,9 +432,10 @@
 }
 
 #pz2-results .pz2-extraLinks {
-	display: inline;
-	position: relative;
-	margin-left: 1em;
+	position: absolute;
+	right: 10px;
+	bottom: -10px;
+	padding: 15px 3px 15px 0px;
 	color: #999;
 }
 
@@ -446,15 +447,12 @@
 	top: 0;
 	list-style-type: none;
 	margin: 0;
-	padding: 0;
-	border: 1px solid #999;
+	padding: 5px;
+	border: 1px solid #bbb;
 	z-index: 500;
 	background: #fff;
 	display:none;
 }
-
-
-
 
 #pz2-results .pz2-extraLinks:hover ul,
 #pz2-results .pz2-extraLinks ul li:hover ul {
@@ -462,8 +460,9 @@
 }
 
 #pz2-results ol li .pz2-extraLinks ul li {
-	padding: 0;
 	margin: 0;
+	padding: 0 0 0 1em;
+	text-indent: -1em;
 }
 
 #pz2-results .pz2-extraLinks ul li input {
@@ -472,7 +471,8 @@
 	cursor: pointer;
 }
 
-#pz2-results .pz2-extraLinks ul li input:hover {
+#pz2-results .pz2-extraLinks ul li input:hover,
+#pz2-results .pz2-extraLinks ul li a:hover {
 	text-decoration: underline;
 }
 

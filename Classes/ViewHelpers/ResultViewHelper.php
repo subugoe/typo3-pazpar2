@@ -377,13 +377,13 @@ private function appendCOinSSpansToContainer ($result, $container) {
  * @return DOMElement
  */
 private function renderDetails ($result) {
-	$div = $this->doc->createElement('div');
-	$div->setAttribute('class', 'pz2-details');
+	$detailsDiv = $this->doc->createElement('div');
+	$detailsDiv->setAttribute('class', 'pz2-details');
 	
 	$detailsList = $this->doc->createElement('dl');
-	$div->appendChild($detailsList);
+	$detailsDiv->appendChild($detailsList);
 	$clearSpan = $this->doc->createElement('span');
-	$div->appendChild($clearSpan);
+	$detailsDiv->appendChild($clearSpan);
 	$clearSpan->setAttribute('class', 'pz2-clear');
 
 	/*	A somewhat sloppy heuristic to create cleaned up author and other-person
@@ -435,10 +435,10 @@ private function renderDetails ($result) {
 	$this->appendInfoToContainer( $this->locationDetails($result), $detailsList);
 	$this->addZDBInfoIntoElement( $detailsList, $result );
 	if (count($this->conf['exportFormats']) > 0) {
-		$this->appendInfoToContainer( $this->exportLinks($result), $detailsList);
+		$this->appendInfoToContainer( $this->exportLinks($result), $detailsDiv);
 	}
 	
-	return $div;
+	return $detailsDiv;
 }
 
 
@@ -873,7 +873,14 @@ private function exportLinks ($result) {
 
 	$this->appendExportItemsTo($result['location'], $labelFormat, $extraLinkList);
 	// Separate submenus for individual locations not implemented in the PHP version.
-	
+
+	foreach ($result['md-medium'] as $medium) {
+		if ($medium['values'][0] === 'book') {
+			$extraLinkList->appendChild($this->KVKLinkItem($result));
+			break;
+		}
+	}
+
 	return $exportLinks;
 }
 
@@ -1005,6 +1012,64 @@ private function XMLForLocations ($locations) {
 	}
 
 	return $XML;
+}
+
+
+
+/**
+ * Returns a list item containing a link to a KVK catalogue search for data.
+ * Uses ISBN or title/author data for the search.
+ * @param array $result
+ * @return DOMElement
+ */
+private function KVKLinkItem ($result) {
+	$KVKLinkURL = 'http://kvk.ubka.uni-karlsruhe.de/hylib-bin/kvk/nph-kvk2.cgi?input-charset=utf-8&Timeout=120';
+	$KVKLinkURL .= Tx_Extbase_Utility_Localization::translate('&lang=de', 'Pazpar2');
+	$KVKLinkURL .= 'kataloge=SWB&kataloge=BVB&kataloge=NRW&kataloge=HEBIS&kataloge=KOBV_SOLR&kataloge=GBV';
+
+	// Check if there are ISBNs and use the first one we find.
+	// (KVK does not seem to support searches for multiple ISBNs.)
+	$ISBN = Null;
+	foreach ($result['location'] as $locationAll) {
+		if (array_key_exists('md-isbn', $locationAll['ch'])) {
+			$ISBN = $locationAll['ch']['md-isbn'][0]['values'][0];
+			// Trim parenthetical information from ISBN which may be in
+			// Marc Field 020 $a
+			$ISBN = preg_replace('/(\s*\(.*\))/', '', $ISBN);
+			break;
+		}
+	}
+
+	$query = '';
+	// Search for ISBN if it exists, otherwise use title and author (sur)names.
+	if ($ISBN) {
+		$query .= '&SB=' . $ISBN;
+	}
+	else {
+		if (array_key_exists('md-title', $result)) {
+			$query .= '&TI=' . rawurlencode($result['md-title'][0]['values'][0]);
+		}
+		if (array_key_exists('md-author', $result)) {
+			$authors = Array();
+			foreach ($result['md-author'] as $author) {
+				$authors[] = $author['values'][0];
+			}
+			$query .= '&AU=' . implode(' ', $authors);
+		}
+	}
+
+	if ($query !== '') {
+		$KVKLink = $this->doc->createElement('a');
+		$KVKLink->setAttribute('href', $KVKLinkURL . $query);
+		$label = Tx_Extbase_Utility_Localization::translate('deutschlandweit im KVK suchen', 'Pazpar2');
+		$KVKLink->appendChild($this->doc->createTextNode($label));
+		$this->turnIntoNewWindowLink($KVKLink);
+
+		$KVKItem = $this->doc->createElement('li');
+		$KVKItem->appendChild($KVKLink);
+	}
+
+	return $KVKItem;
 }
 
 

@@ -76,7 +76,7 @@ var germanTerms = {
 	'Google Books Vorschau': 'Google Books Vorschau',
 	'Vorschau schließen': 'Vorschau schließen',
 	'Umschlagbild': 'Umschlagbild',
-	// Download Links
+	// Download/Extra Links
 	'mehr Links': 'mehr Links',
 	'download-label-format-simple': 'Als * laden',
 	'download-label-format-all': 'Alle Ausgaben als * laden',
@@ -84,6 +84,8 @@ var germanTerms = {
 	'download-label-submenu-index-format': 'Ausgabe *',
 	'download-label-endnote': 'RIS/EndNote',
 	'download-label-bibtex': 'BibTeX',
+	'deutschlandweit im KVK suchen': 'deutschlandweit im KVK suchen',
+	'&lang=de': '&lang=de',
 	// Short Display
 	'Ansehen und Ausleihen bei:': 'Ansehen und Ausleihen bei:',
 	'von': 'von',
@@ -174,7 +176,7 @@ var englishTerms = {
 	'Ansehen und Ausleihen bei:': 'View catalogue record at:',
 	'von': 'of',
 	'In': 'In',
-	// Download Links
+	// Download/Extra Links
 	'mehr Links': 'additional Links',
 	'download-label-format-simple': 'Load as *',
 	'download-label-format-all': 'Load all Editions as *',
@@ -182,6 +184,8 @@ var englishTerms = {
 	'download-label-submenu-index-format': 'Record *',
 	'download-label-endnote': 'RIS/EndNote',
 	'download-label-bibtex': 'BibTeX',
+	'deutschlandweit im KVK suchen': 'search for this title throughout Germany (KVK)',
+	'&lang=de': '&lang=en',
 	// General Information
 	'Suche...': 'Searching…',
 	'keine Suchabfrage': 'no search query',
@@ -3197,7 +3201,68 @@ function renderDetails(recordID) {
 
 
 
-		var exportLinks = document.createElement('span');
+		/*	KVKLinkItem
+			Returns a list item containing a link to a KVK catalogue search for data.
+			Uses ISBN or title/author data for the search.
+			input:	data - pazpar2 record
+			output:	DOMLIElement
+		*/
+		var KVKLinkItem = function (data) {
+			var KVKItem = undefined;
+
+			var KVKLinkURL = 'http://kvk.ubka.uni-karlsruhe.de/hylib-bin/kvk/nph-kvk2.cgi?input-charset=utf-8&Timeout=120';
+			KVKLinkURL += localise('&lang=de');
+			KVKLinkURL += 'kataloge=SWB&kataloge=BVB&kataloge=NRW&kataloge=HEBIS&kataloge=KOBV_SOLR&kataloge=GBV';
+			// Check if there are ISBNs and use the first one we find.
+			// (KVK does not seem to support searches for multiple ISBNs.)
+			var ISBN = undefined;
+			for (var locationIndex in data.location) {
+				var location = data.location[locationIndex];
+				if (location['md-isbn']) {
+					ISBN = location['md-isbn'][0];
+					// Trim parenthetical information from ISBN which may be in
+					// Marc Field 020 $a
+					ISBN = ISBN.replace(/(\s*\(.*\))/, '');
+					break;
+				}
+			}
+
+			var query = '';
+			// Search for ISBN if it exists, otherwise use title and author (sur)names.
+			if (ISBN) {
+				query += '&SB=' + ISBN;
+			}
+			else {
+				if (data['md-title']) {
+					query += '&TI=' + encodeURIComponent(data['md-title'][0]);
+				}
+				if (data['md-author']) {
+					var authors = [];
+					for (var authorIndex in data['md-author']) {
+						var author = data['md-author'][authorIndex];
+						authors.push(author.split(',')[0]);
+					}
+					query += '&AU=' + encodeURIComponent(authors.join(' '));
+				}
+			}
+
+			if (query !== '') {
+				var KVKLink = document.createElement('a');
+				KVKLink.href = KVKLinkURL + query;
+				var label = localise('deutschlandweit im KVK suchen');
+				KVKLink.appendChild(document.createTextNode(label));
+				turnIntoNewWindowLink(KVKLink);
+
+				KVKItem = document.createElement('li');
+				KVKItem.appendChild(KVKLink);
+			}
+
+			return KVKItem;
+		}
+
+
+
+		var exportLinks = document.createElement('div');
 		jQuery(exportLinks).addClass('pz2-extraLinks');
 		exportLinks.appendChild(document.createTextNode(localise('mehr Links')));
 		var extraLinkList = document.createElement('ul');
@@ -3217,7 +3282,15 @@ function renderDetails(recordID) {
 				}
 			}
 		}
-		
+
+		for (var mediumIndex in data['md-medium']) {
+			var medium = data['md-medium'][mediumIndex];
+			if (medium === 'book') {
+				extraLinkList.appendChild(KVKLinkItem(data));
+				break;
+			}
+		}
+
 		return exportLinks;
 	}
 
@@ -3277,7 +3350,7 @@ function renderDetails(recordID) {
 			addZDBInfoIntoElement( detailsList );
 		}
 		if (exportFormats.length > 0) {
-			appendInfoToContainer( exportLinks(), detailsList );
+			appendInfoToContainer( exportLinks(), detailsDiv );
 		}
 	}
 

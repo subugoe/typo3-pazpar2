@@ -401,23 +401,25 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 					$this->queryIsRunning = False;
 					$hits = $showReply['hit'];
 
-					foreach ($hits as $hit) {
-						$myHit = $hit['ch'];
-						$key = $myHit['recid'][0]['values'][0];
-						
-						// Make sure the 'medium' field exists by setting it to 'other' if necessary.
-						if (!array_key_exists('md-medium', $myHit)) {
-							$myHit['md-medium'] = Array(0 => Array('values' => Array(0 => 'other')));
+					if ($hits) {
+						foreach ($hits as $hit) {
+							$myHit = $hit['ch'];
+							$key = $myHit['recid'][0]['values'][0];
+
+							// Make sure the 'medium' field exists by setting it to 'other' if necessary.
+							if (!array_key_exists('md-medium', $myHit)) {
+								$myHit['md-medium'] = Array(0 => Array('values' => Array(0 => 'other')));
+							}
+
+							// If there is no title information but series information, use the
+							// first series field for the title.
+							if (!(array_key_exists('md-title', $myHit) || array_key_exists('md-multivolume-title', $myHit))
+									&& array_key_exists('md-series-title', $myHit)) {
+								$myHit['md-multivolume-title'] = Array($myHit['md-series-title'][0]);
+							}
+
+							$this->results[$key] = $myHit;
 						}
-						
-						// If there is no title information but series information, use the
-						// first series field for the title.
-						if (!(array_key_exists('md-title', $myHit) || array_key_exists('md-multivolume-title', $myHit))
-								&& array_key_exists('md-series-title', $myHit)) {
-							$myHit['md-multivolume-title'] = Array($myHit['md-series-title'][0]);
-						}
-						
-						$this->results[$key] = $myHit;
 					}
 				}
 				else {

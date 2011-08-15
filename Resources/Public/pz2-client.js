@@ -3040,7 +3040,7 @@ function renderDetails(recordID) {
 						var child = fieldArray[index];
 						var targetChild = target.ownerDocument.createElement(fieldName);
 						target.appendChild(targetChild);
-						if (typeof(child) === Object) {
+						if (typeof(child) === 'object') {
 							for (childPart in child) {
 								if (childPart === '#text') {
 									targetChild.appendChild(target.ownerDocument.createTextNode(child[childPart]));

@@ -44,7 +44,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	public function getQueryStringPerson () { return $this->queryStringPerson; }
 	public function getQueryStringDate () { return $this->queryStringDate; }
 
-	
+
 
 	/**
 	 * Setter for the main query string.
@@ -55,7 +55,22 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 		$this->queryString = $newQueryString;
 	}
 
-	
+
+	/**
+	 * Array containing the sort conditions to use. Each of its elements
+	 *	is an array with the fields:
+	 *  'fieldName' - a string containing the name of the pazpar2 field to sort by
+	 *  'direction' - the string 'ascending' or 'descending'
+	 *
+	 * @var Array
+	 */
+	protected $sortOrder;
+
+	public function getSortOrder () { return $this->sortOrder; }
+	public function setSortOrder ($newSortOrder) { $this->sortOrder = $newSortOrder; }
+
+
+
 	/**
 	 * Set search query elements from the request’s arguments array.
 	 * 
@@ -257,7 +272,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	 * The parameters can be used to give the the start record
 	 * as well as the number of records required.
 	 * 
-	 * Typo3 typically starts running into out of memory errors when fetching
+	 * TYPO3 typically starts running into out of memory errors when fetching
 	 * around 1000 records in one go with a 128MB memory limit for PHP.
 	 *
 	 * @param int $start index of first record to retrieve (optional, default: 0)
@@ -269,11 +284,29 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 		$URL .= '&session=' . $this->pazpar2SessionID;
 		$URL .= '&query=' . urlencode($this->fullQueryString());
 		$URL .= '&start=' . $start . '&num=' . $num;
-		$URL .= '&sort=date%3A0%2Cauthor%3A1%2Ctitle%3A1';
+		$URL .= '&sort=' . urlencode($this->sortOrderString());
 		$URL .= '&block=1'; // unclear how this is advantagous but the JS client adds it
-
 		return $URL;
 	}
+
+
+
+	/**
+	 * Returns a string encoding the sort order formatted for use by pazpar2.
+	 *
+	 * @return string
+	 */
+	private function sortOrderString () {
+		$sortOrderComponents = Array();
+		foreach ($this->getSortOrder() as $sortCriterion) {
+			$sortOrderComponents[] = $sortCriterion['fieldName'] . ':'
+									. (($sortCriterion['direction'] === 'descending') ? '0' : '1');
+		}
+		$sortOrderString = implode(',', $sortOrderComponents);
+
+		return $sortOrderString;
+	}
+
 
 
 	/**
@@ -309,7 +342,6 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	/**
 	 * Start a pazpar2 Query.
 	 * Requires $pazpar2SessionID to be set.
-	 * 
 	 */
 	protected function startQuery () {
 		$this->initialiseSession();

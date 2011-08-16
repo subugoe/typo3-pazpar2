@@ -48,7 +48,14 @@ plugin.tx_pazpar2 {
 		flotSelectionJSPath = EXT:pazpar2/Resources/Public/flot/jquery.flot.selection.js
 
 		useSortMenu = 0
-		sortOrder = 
+		sortOrder {
+			1.fieldName = date
+			1.direction = descending
+			2.fieldName = author
+			2.direction = ascending
+			3.fieldName = title
+			3.direction = ascending
+		}
 		triggeredByNKWGOKMenu = 0
 		showSearchForm = 1
 		allowExtendedSearch = 1

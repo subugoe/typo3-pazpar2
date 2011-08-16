@@ -56,8 +56,6 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		}
 
 		$this->query = t3lib_div::makeInstance('Tx_Pazpar2_Domain_Model_Query');
-		$this->query->setServiceName($this->conf['serviceID']);
-		$this->query->setQueryFromArguments($this->request->getArguments());
 	}
 
 
@@ -81,12 +79,48 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		$this->view->assign('queryStringPerson', $this->query->getQueryStringPerson());
 		$this->view->assign('queryStringDate', $this->query->getQueryStringDate());
 		if ($arguments['useJS'] != 'yes') {
+			$this->query->setServiceName($this->conf['serviceID']);
+			$this->query->setQueryFromArguments($arguments);
+			$this->query->setSortOrder($this->determineSortCriteria($arguments));
 			$totalResultCount = $this->query->run();
 			$this->view->assign('totalResultCount', $totalResultCount);
 			$this->view->assign('results', $this->query->getResults());
 		}
 		$this->view->assign('conf', $this->conf);
 	}
+
+
+
+	/**
+	 * Determine which sort criteria to use and return them as an array whose
+	 *	elements are arrays with two elements: 'fieldName' and 'direction'.
+	 * @param Array $arguments
+	 * @return Array
+	 */
+	private function determineSortCriteria ($arguments) {
+		$sortCriteria = Array();
+		
+		if (array_key_exists('sort', $arguments)) {
+			// Sort order has been set by select on the page.
+			$criteria = explode('--', $arguments['sort']);
+			foreach ($criteria as $criterion) {
+				$parts = explode('-', $criterion);
+				if (count($parts) == 2) {
+					$sortCriteria[] = Array (
+						'fieldName' => $parts[0],
+						'direction' => ($parts[1] == 'd') ? 'descending' : 'ascending'
+					);
+				}
+			}
+		}
+		else {
+			// Use default sort order.
+			$sortCriteria = $this->conf['sortOrder'];
+		}
+		
+		return $sortCriteria;
+	}
+
 
 
 

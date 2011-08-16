@@ -328,10 +328,8 @@ var targetStatus = {};
 
 /* Default settings that can be overwritten. */
 
-// Set up the default sort order.
-var displaySort =  [{'fieldName': 'date', 'direction': 'descending'},
-						{'fieldName': 'author', 'direction': 'ascending'},
-						{'fieldName': 'title', 'direction': 'ascending'}];
+// Default sort order.
+var displaySort =  [];
 // Use Google Books for cover art when an ISBN or OCLC number is known?
 var useGoogleBooks = false;
 // Query ZDB-JOP for availability information based for items with ISSN?

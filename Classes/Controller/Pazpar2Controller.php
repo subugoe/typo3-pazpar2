@@ -112,32 +112,43 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		$scriptTag->forceClosingTag(true);
 		$this->response->addAdditionalHeaderData( $scriptTag->render() );
 
-		// Create various settings for pz2.js and pz2-client.js to.
+		// Set up the service name.
+		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
+		$scriptTag->addAttribute('type', 'text/javascript');
+		$jsCommand = "\nmy_serviceID = '" . $this->conf['serviceID'] . "';\n";
+		$scriptTag->setContent($jsCommand);
+		$this->response->addAdditionalHeaderData( $scriptTag->render() );
+
+		// Add pz2-client.js to <head>.
+		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
+		$scriptTag->addAttribute('type', 'text/javascript');
+		$scriptTag->addAttribute('src', $this->conf['pz2-clientJSPath']) ;
+		$scriptTag->forceClosingTag(true);
+		$this->response->addAdditionalHeaderData( $scriptTag->render() );
+
+
+		// Create additional settings that are needed by pz-client.js.
 		$jsVariables = array(
-			'my_serviceID' => '"' . $this->conf['serviceID'] . '"',
 			'useGoogleBooks' => (($this->conf['useGoogleBooks']) ? 'true' : 'false'),
 			'useZDB' => (($this->conf['useZDB']) ? 'true' : 'false'),
 			'ZDBUseClientIP' => ((!$this->conf['ZDBIP']) ? 'true' : 'false'),
 			'useHistogramForYearFacets' => (($this->conf['useHistogramForYearFacets'] == '1') ? 'true' : 'false'),
-			'clientIPAddress' => '"' . $_SERVER['REMOTE_ADDR'] . '"',
+			'clientIPAddress' => json_encode($_SERVER['REMOTE_ADDR']),
 			'preferSUBOpac' => (($this->conf['preferSUBOpac']) ? 'true' : 'false'),
 			'provideCOinSExport' => (($this->conf['provideCOinSExport']) ? 'true' : 'false'),
 			'showExportLinksForEachLocation' => (($this->conf['showExportLinksForEachLocation']) ? 'true' : 'false')
 		);
 		if ($this->conf['exportFormats']) {
-			$exportFormats = array();
-			foreach ($this->conf['exportFormats'] as $name => $status) {
-				if ($status) {
-					$exportFormats[] = $name;
-				}
-			}
-			$jsVariables['exportFormats'] = '["' . implode('", "', $exportFormats) . '"]';
+			$jsVariables['exportFormats'] = json_encode(array_keys($this->conf['exportFormats']));
 		}
 		if ($this->conf['siteName']) {
-			$jsVariables['siteName'] = "'" . $this->conf['siteName'] . "'";
+			$jsVariables['siteName'] = json_encode($this->conf['siteName']);
+		}
+		if ($this->conf['sortOrder']) {
+			$jsVariables['displaySort'] = json_encode(array_values(array_filter($this->conf['sortOrder'])));
 		}
 
-		$jsCommand = '';
+		$jsCommand = "\n";
 		foreach ($jsVariables as $name => $value) {
 			$jsCommand .= $name . ' = ' . $value . ";\n";
 		}
@@ -157,13 +168,6 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
 		$scriptTag->addAttribute('type', 'text/javascript');
 		$scriptTag->setContent($jsCommand);
-		$this->response->addAdditionalHeaderData( $scriptTag->render() );
-
-		// Add pz2-client.js to <head>.
-		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
-		$scriptTag->addAttribute('type', 'text/javascript');
-		$scriptTag->addAttribute('src', $this->conf['pz2-clientJSPath']) ;
-		$scriptTag->forceClosingTag(true);
 		$this->response->addAdditionalHeaderData( $scriptTag->render() );
 
 		// Load flot graphing library if needed.

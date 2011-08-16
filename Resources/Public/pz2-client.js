@@ -319,9 +319,7 @@ var curSearchTerm = null;
 var curAdditionalQueryTerms = [];
 var facetData = {}; // stores faceting information as sent by pazpar2
 var filterArray = {};
-var displaySort =  [{'fieldName': 'date', 'direction': 'descending'},
-						{'fieldName': 'author', 'direction': 'ascending'},
-						{'fieldName': 'title', 'direction': 'ascending'}];
+
 var hitList = {}; // local storage for the records sent from pazpar2
 var displayHitList = []; // filtered and sorted list used for display
 var displayHitListUpToDate = []; // list filtered for all conditions but the date used for drawing the date histogram
@@ -330,6 +328,10 @@ var targetStatus = {};
 
 /* Default settings that can be overwritten. */
 
+// Set up the default sort order.
+var displaySort =  [{'fieldName': 'date', 'direction': 'descending'},
+						{'fieldName': 'author', 'direction': 'ascending'},
+						{'fieldName': 'title', 'direction': 'ascending'}];
 // Use Google Books for cover art when an ISBN or OCLC number is known?
 var useGoogleBooks = false;
 // Query ZDB-JOP for availability information based for items with ISSN?
@@ -382,26 +384,6 @@ var appendInfoToContainer = function (info, container) {
 			}
 		}
 	}
-}
-
-
-
-/*	fieldContentInRecord
-	Returns a record's md-fieldName field.
-		* Concatenated when several instances of the field are present.
-	input:	fieldName - name of the field to use
-			record - pazpar2 record
-			lowerCase (optional) - boolean indicating whether to transform the string to lower case
-	output: string with content of the field in the record
-*/
-function fieldContentInRecord (fieldName, record, lowerCase) {
-	var result = String(fieldContentsInRecord(fieldName, record));
-
-	if (lowerCase) {
-		result.toLowerCase();
-	}
-
-	return result;
 }
 
 
@@ -591,7 +573,25 @@ function displayLists (list) {
 			return year;
 		}
 
-		
+
+
+		/*	fieldContentForSorting
+			Returns a record's md-fieldName field, suitable for sorting.
+				* Concatenated when several instances of the field are present.
+				* All lowercase.
+			input:	fieldName - name of the field to use
+					record - pazpar2 record
+			output: string with content of the field in the record
+		*/
+		function fieldContentForSorting (fieldName, record) {
+			var result = String(fieldContentsInRecord(fieldName, record));
+			result = result.replace(/^[\W]/,'');
+			result = result.toLowerCase();
+
+			return result;
+		}
+
+
 		var result = 0;
 
 		for (var sortCriterionIndex in displaySort) {
@@ -605,8 +605,8 @@ function displayLists (list) {
 				result = (date1 - date2) * direction;
 			}
 			else {
-				var string1 = fieldContentInRecord(fieldName, record1, true);
-				var string2 = fieldContentInRecord(fieldName, record2, true);
+				var string1 = fieldContentForSorting(fieldName, record1);
+				var string2 = fieldContentForSorting(fieldName, record2);
 				
 				if (string1 == string2) {
 					result = 0;
@@ -1801,28 +1801,39 @@ function removeExtendedSearchForLink (event) {
 		and labels and value inside the criteria separated by -,
 			[this strange format is owed to escaping problems when creating a Flow3 template for the form]
 		parses them and sets the displaySort and curSort variables accordingly.
-	input:	curSortString - string giving the sort format
-*/
-function setSortCriteriaFromString (curSortString) {
-	var sortCriteria = curSortString.split('--');
+	If the sort form is not present, the sort order stored in displaySort is used.
 
-	displaySort = [];
+	input:	sortString - string giving the sort format
+*/
+function setSortCriteriaFromString (sortString) {
 	var curSortArray = [];
 
-	for ( var criterionIndex in sortCriteria ) {
-		var criterionParts = sortCriteria[criterionIndex].split('-');
-		if (criterionParts.length == 2) {
-			var fieldName = criterionParts[0];
-			var direction = criterionParts[1];
-			displaySort.push({'fieldName': fieldName,
-								'direction': ((direction == 'd') ? 'descending' : 'ascending')});
-			curSortArray.push(fieldName + ':' + ((direction == 'd') ? '0' : '1') );
+	if (sortString) {
+		// The sort string exists: we get our settings from the menu.
+		displaySort = [];
+		var sortCriteria = sortString.split('--');
+
+		for (var criterionIndex in sortCriteria) {
+			var criterionParts = sortCriteria[criterionIndex].split('-');
+			if (criterionParts.length == 2) {
+				var fieldName = criterionParts[0];
+				var direction = criterionParts[1];
+				displaySort.push({'fieldName': fieldName,
+									'direction': ((direction == 'd') ? 'descending' : 'ascending')});
+				curSortArray.push(fieldName + ':' + ((direction == 'd') ? '0' : '1') );
+			}
+		}
+	}
+	else {
+		// Use the default sort order set in displaySort.
+		for (var displaySortIndex in displaySort) {
+			var sortCriterion = displaySort[displaySortIndex];
+			curSortArray.push(sortCriterion.fieldName + ':' + ((sortCriterion.direction == 'descending') ? '0' : '1'));
 		}
 	}
 
 	curSort = curSortArray.join(',');
 }
-
 
 
 
@@ -1833,7 +1844,7 @@ function setSortCriteriaFromString (curSortString) {
 function loadSelectsFromForm (form) {
 	var sortOrderString = jQuery('.pz2-sort option:selected', form).val();
 	setSortCriteriaFromString(sortOrderString);
-
+	
 	recPerPage = jQuery('.pz2-perPage option:selected', form).val();
 }
 

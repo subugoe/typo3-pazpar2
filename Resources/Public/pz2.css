@@ -57,21 +57,28 @@
 	float: left;
 	width: 130px;
 	text-align: right;
-}
-
-.pz2-searchForm.pz2-basic label, .pz2-searchForm.pz2-basic .pz2-extraFields {
 	display: none;
 }
 
-.pz2-basic .pz2-fulltext {
+.pz2-fulltext,
+.pz2-extraFields {
 	display: none;
+}
+
+.pz2-extended .pz2-extraFields {
+	display: block;
+}
+
+.pz2-extended .pz2-fulltext,
+.pz2-extended label {
+	display: inline;
 }
 
 .pz2-submitButton {
 	display: block;
 	float: left;
-	height: 32px;
-	background: url(button_shade_large.png) repeat-x scroll 0 100% #f3f6fb;
+	height: 23px;
+	background: url(button_shade_small.png) repeat-x scroll 0 100% #f3f6fb;
 	border-style: solid;
 	border-width: 1px;
 	border-color: #d4d4d4 #b4b4b4 #b4b4b4 #d4d4d4;
@@ -81,23 +88,30 @@
 	font-weight: bold;
 	line-height: 100%;
 	padding: 3px 12px;
+	margin-top: -1px;
 	text-align: center;
 	text-decoration: none;
 	text-shadow: 0 1px rgba(255, 255, 255, 0.75);
 	text-transform: uppercase;
 }
 
-.pz2-submitButton:active {
-    background: url(button_shade_large_click.png) repeat-x scroll 0 100% #e7e9ed;
-}
-
+.pz2-basic .pz2-submitButton,
 .pz2-extended .pz2-submitButton {
-	height: 23px;
-	background-image: url(button_shade_small.png);
+	margin-top: 0px;
 }
 
-.pz2-extended .pz2-submitButton:active {
+.pz2-submitButton:active {
 	background-image: url(button_shade_small_click.png);
+	background-color: #e7e9ed;
+}
+
+.pz2-basic .pz2-submitButton {
+	height: 32px;
+	background-image: url(button_shade_large.png);
+}
+
+.pz2-basic .pz2-submitButton:active {
+    background-image: url(button_shade_large_click.png);
 }
 
 .pz2-extendedLink {
@@ -110,7 +124,6 @@
 .pz2-searchForm.pz2-extended {
 	line-height: 25px;
 }
-
 
 .pz2-form-animating .pz2-extraFields {
 	display:block;

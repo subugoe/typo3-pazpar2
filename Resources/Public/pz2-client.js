@@ -583,7 +583,7 @@ function displayLists (list) {
 		*/
 		function fieldContentForSorting (fieldName, record) {
 			var result = String(fieldContentsInRecord(fieldName, record));
-			result = result.replace(/^[\W]/,'');
+			result = result.replace(/^\W*/,'');
 			result = result.toLowerCase();
 
 			return result;

@@ -91,10 +91,14 @@ var germanTerms = {
 	'von': 'von',
 	'In': 'In',
 	// General Information
-	'Suche...': 'Suche …',
+	'Suche...': 'Suche\u2026',
 	'keine Suchabfrage': 'keine Suchabfrage',
 	'keine Treffer gefunden': 'keine Treffer',
-	'Es können nicht alle # Treffer geladen werden.': 'Es können nicht alle # Treffer geladen werden. Bitte verwenden Sie einen spezifischeren Suchbegriff, um die Trefferzahl zu reduzieren. Die betroffenen Kataloge sind mit einem + markiert.',
+	'+': '+',
+	'Es können nicht alle # Treffer geladen werden.': '+: Es können nicht alle # Treffer geladen werden. Bitte verwenden Sie einen spezifischeren Suchbegriff, um die Trefferzahl zu reduzieren.',
+	'...': '\u2026',
+	'Error indicator': '\u2022',
+	'Bei der Übertragung von Daten aus # der abgefragten Kataloge ist ein Fehler aufgetreten.': '\u2022: Bei der Übertragung von Daten aus # der abgefragten Kataloge ist ein Fehler aufgetreten.',
 	'In diesem Katalog gibt es noch # weitere Treffer.': 'In diesem Katalog gibt es noch # weitere Treffer, die wir nicht herunterladen und hier anzeigen können. Bitte verwenden Sie einen spezifischeren Suchbegriff, um die Trefferzahl zu reduzieren. Oder suchen Sie direkt im Katalog.',
 	// Pager
 	'Vorige Trefferseite anzeigen': 'Vorige Trefferseite anzeigen',
@@ -124,7 +128,7 @@ var germanTerms = {
 	'Status': 'Status',
 	'Geladen': 'Geladen',
 	'Client_Working': 'arbeitet',
-	'Client_Idle': 'inaktiv',
+	'Client_Idle': 'fertig',
 	'Client_Error': 'Fehler',
 	'Client_Disconnected': 'Verbindungsabbruch'
 };
@@ -187,11 +191,14 @@ var englishTerms = {
 	'deutschlandweit im KVK suchen': 'search for this title throughout Germany (KVK)',
 	'&lang=de': '&lang=en',
 	// General Information
-	'Suche...': 'Searching…',
-	'keine Suchabfrage': 'no search query',
+	'Suche...': 'Searching\u2026',
 	'keine Treffer gefunden': 'no matching records',
-	'Es können nicht alle # Treffer geladen werden.': 'There are # results, not all of which can be loaded. Please use a more specific search query to reduce the number of results. The affected catalogues are marked with a +.',
-	'In diesem Katalog gibt es noch # weitere Treffer.': 'There are # additional results available in this catalogue which we cannot download and display. Please use a more specific search query or visit the website of the catalogue itself if you require the full set of results.',
+	'keine Suchabfrage': 'no search query',
+	'+': '+',
+	'Es können nicht alle # Treffer geladen werden.': '+: There are # results, not all of which can be loaded. Please use a more specific search query to reduce the number of results.',
+	'...': '\u2026',
+	'Error indicator': '\u2022',
+	'In diesem Katalog gibt es noch # weitere Treffer.': 'There are # additional results available in this catalogue which we cannot download and display. Please use a more specific search query.',
 	// Pager
 	'Vorige Trefferseite anzeigen': 'Show next page of results',
 	'Nächste Trefferseite anzeigen': 'Show previous page of results',
@@ -220,7 +227,7 @@ var englishTerms = {
 	'Status': 'Status',
 	'Gesamt': 'Loaded',
 	'Client_Working': 'working',
-	'Client_Idle': 'idle',
+	'Client_Idle': 'done',
 	'Client_Error': 'Error',
 	'Client_Disconnected': 'disconnected'
 };
@@ -1082,29 +1089,50 @@ function updatePagers () {
 								+ ' ' + localise('von') + ' '
 								+ String(displayHitList.length);
 
-				// Determine whether we can get hold of all results
-				var overflow = false;
+				// Determine transfer status and append indicators about it to
+				// the result count: + for overflow, … while we are busy and
+				// · for errors.
+				var transfersBusy = [];
+				var resultOverflow = [];
+				var hasError = [];
 				var totalResultCount = 0;
+				var statusIndicator = '';
+
 				for (var targetIndex in targetStatus) {
 					var target = targetStatus[targetIndex];
 
-					if (!isNaN(target['hits'])) {
-						totalResultCount += parseInt(target['hits']);
+					if (!isNaN(target.hits)) {
+						totalResultCount += parseInt(target.hits);
 					}
-					if (target['state'] == 'Client_Idle'
-							&& target['hits'] > target['records']) {
-						overflow = true;
+
+					if (target.state === 'Client_Working') {
+						transfersBusy.push(target);
+					}
+					else if (target.state === 'Client_Idle') {
+						if (target.hits > target.records) {
+							resultOverflow.push(target);
+						}
+					}
+					else if (target.state === 'Client_Error' || target.state === 'Client_Disconnected') {
+						hasError.push(target);
 					}
 				}
-				if (overflow) {
-					infoString += '+';
+
+				var titleText = [];
+				if (resultOverflow.length > 0) {
+					infoString += localise('+');
 					var overflowMessage = localise('Es können nicht alle # Treffer geladen werden.');
-					overflowMessage = overflowMessage.replace('#', totalResultCount);
-					jRecordCount.attr('title', overflowMessage);
+					titleText.push(overflowMessage.replace('#', totalResultCount));
 				}
-				else {
-					jRecordCount.attr('title', '');
+				if (transfersBusy.length > 0) {
+					infoString += localise('...');
 				}
+				if (hasError.length > 0) {
+					infoString += localise('Error indicator');
+					var errorMessage = localise('Bei der Übertragung von Daten aus # der abgefragten Kataloge ist ein Fehler aufgetreten.');
+					titleText.push(errorMessage.replace('#', hasError.length));
+				}
+				jRecordCount.attr('title', titleText.join('\n'));
 
 				// Mark results as filtered if the filterArray has a
 				// non-trivial property.
@@ -1140,9 +1168,10 @@ function updatePagers () {
 	input:	data - object with status information from pazpar2
 */
 function my_onstat(data) {
-	// Display progress bar.
-	var progress = (data.clients - data.activeclients) / data.clients * 100;
-	var opacityValue = (progress == 100) ? 0 : 1;
+	// Display progress bar, with a minimum of 5% progress.
+	var progress = (data.clients[0] - data.activeclients[0]) / data.clients[0] * 100;
+	progress = Math.max(progress, 5);
+	var opacityValue = (progress === 100) ? 0 : 1;
 	jQuery('.pz2-pager .pz2-progressIndicator').animate({'width': progress + '%', 'opacity': opacityValue}, 'slow');
 
 	// Update result count
@@ -1320,13 +1349,27 @@ function facetListForType (type, preferOriginalFacets) {
 			link.appendChild(count);
 			jQuery(count).addClass('pz2-facetCount');
 			count.appendChild(document.createTextNode(terms[i].freq));
-			if (type == 'xtargets' && targetStatus[facetName]) {
-				var hitOverflow = targetStatus[facetName].hits - targetStatus[facetName].records;
-				if (hitOverflow > 0) {
-					count.appendChild(document.createTextNode('+'));
-					var titleString = localise('In diesem Katalog gibt es noch # weitere Treffer.');
-					titleString = titleString.replace('#', hitOverflow);
-					item.title = titleString;
+			var target = targetStatus[facetName];
+			if (type === 'xtargets' && target) {
+				if (target.state === 'Client_Idle') {
+					// When the client is finished with data transfers, check whether
+					// we need to add the overflow indicator.
+					var hitOverflow = target.hits - target.records;
+					if (hitOverflow > 0) {
+						count.appendChild(document.createTextNode(localise('+')));
+						var titleString = localise('In diesem Katalog gibt es noch # weitere Treffer.');
+						titleString = titleString.replace('#', hitOverflow);
+						item.title = titleString;
+					}
+				}
+				else if (target.state === 'Client_Working') {
+					// While transfers from the target are still running, append an
+					// ellipsis to indicate that we are busy.
+					count.appendChild(document.createTextNode(localise('...')));
+				}
+				else if (target.state === 'Client_Error' || target.state === 'Client_Disconnected') {
+					// If an error occurred for the target, indicate that.
+					count.appendChild(document.createTextNode(localise('Error indicator')));
 				}
 			}
 
@@ -1512,14 +1555,16 @@ function facetListForType (type, preferOriginalFacets) {
 */
 function updateFacetLists () {
 	var container = document.getElementById('pz2-termLists');
-	jQuery(container).empty();
+	if (container) {
+		jQuery(container).empty();
 
-	var mainHeading = document.createElement('h4');
-	container.appendChild(mainHeading);
-	mainHeading.appendChild(document.createTextNode(localise('Facetten')));
+		var mainHeading = document.createElement('h4');
+		container.appendChild(mainHeading);
+		mainHeading.appendChild(document.createTextNode(localise('Facetten')));
 
-	for (facetType in termLists ) {
-		container.appendChild(facetListForType(facetType));
+		for (var facetType in termLists ) {
+			container.appendChild(facetListForType(facetType));
+		}
 	}
 }
 
@@ -1527,12 +1572,11 @@ function updateFacetLists () {
 
 /*	my_onterm
 	pazpar2 callback for receiving facet data.
-		Stores faces data and recreates facets on page.
+		Stores facet data and recreates facets on page.
 	input:	data - Array with facet information.
 */
 function my_onterm (data) {
 	facetData = data;
-	updateFacetLists();
 }
 
 
@@ -1599,6 +1643,15 @@ function my_onbytarget(data) {
 
 		targetStatus[data[i].name] = data[i];
 	}
+
+	if (my_paz.activeClients === 0) {
+		// Update the facet when no more clients are active, to ensure result
+		// counts and overflow indicators are up to date.
+		updateFacetLists();
+		// Update result count
+		updatePagers();
+	}
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////

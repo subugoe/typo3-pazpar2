@@ -1778,6 +1778,7 @@ function triggerSearchForForm (form, additionalQueryTerms) {
 		addSearchStringForFieldToArray('date', searchChunks);
 		searchChunks = searchChunks.concat(curAdditionalQueryTerms)
 		var searchTerm = searchChunks.join(' and ');
+		searchTerm = searchTerm.replace('*', '?')
 		if ( searchTerm != '' && searchTerm != curSearchTerm ) {
 			loadSelectsFromForm(myForm);
 			my_paz.search(searchTerm, fetchRecords, curSort, curFilter);

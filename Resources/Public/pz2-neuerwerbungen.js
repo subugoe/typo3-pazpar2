@@ -136,7 +136,7 @@ function runSearchForForm (form) {
 
 	var query = searchQueryWithEqualsAndWildcard(form, '=', '');
 	if (query) {
-		my_paz.search(query, 2000, null, null);
+		my_paz.search(query.replace('*', '?'), 2000, null, null);
 
 		var myAtomURL = atomURL(form);
 		// Update clickable link to Atom feed.

@@ -218,6 +218,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 		if ($this->queryStringDate) { $queryParts[] = 'date=' . $this->queryStringDate; }
 
 		$query = implode(' and ', $queryParts);
+		$query = str_replace('*', '?', $query);
 		return $query;
 	}
 

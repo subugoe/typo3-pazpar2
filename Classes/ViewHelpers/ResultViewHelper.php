@@ -861,9 +861,12 @@ private function addZDBInfoIntoElement ($container, $result) {
  * @return DOMElement
  */
 private function exportLinks ($result) {
-	$exportLinks = $this->doc->createElement('span');
+	$exportLinks = $this->doc->createElement('div');
 	$exportLinks->setAttribute('class', 'pz2-extraLinks');
-	$exportLinks->appendChild($this->doc->createTextNode(Tx_Extbase_Utility_Localization::translate('mehr Links', 'Pazpar2')));
+	$exportLinksLabel = $this->doc->createElement('span');
+	$exportLinks->appendChild($exportLinksLabel);
+	$exportLinksLabel->setAttribute('class', 'pz2-extraLinksLabel');
+	$exportLinksLabel->appendChild($this->doc->createTextNode(Tx_Extbase_Utility_Localization::translate('mehr Links', 'Pazpar2')));
 	$extraLinkList = $this->doc->createElement('ul');
 	$exportLinks->appendChild($extraLinkList);
 	$labelFormat = Tx_Extbase_Utility_Localization::translate('download-label-format-simple', 'Pazpar2');
@@ -874,12 +877,7 @@ private function exportLinks ($result) {
 	$this->appendExportItemsTo($result['location'], $labelFormat, $extraLinkList);
 	// Separate submenus for individual locations not implemented in the PHP version.
 
-	foreach ($result['md-medium'] as $medium) {
-		if ($medium['values'][0] === 'book') {
-			$extraLinkList->appendChild($this->KVKLinkItem($result));
-			break;
-		}
-	}
+	$this->appendInfoToContainer($this->KVKItem($result), $extraLinkList);
 
 	return $exportLinks;
 }
@@ -957,13 +955,14 @@ private function dataConversionForm ($locations, $exportFormat, $labelFormat) {
 		$form->appendChild($qInput);
 		
 		$submitButton = $this->doc->createElement('input');
+		$form->appendChild($submitButton);
 		$submitButton->setAttribute('type', 'submit');
 		$buttonText = Tx_Extbase_Utility_Localization::translate('download-label-' . $exportFormat, 'Pazpar2');
-		if ($labelFormat) {
-			$buttonText = str_replace('*', $buttonText, $labelFormat);
-		}
 		$submitButton->setAttribute('value', $buttonText);
-		$form->appendChild($submitButton);
+		if ($labelFormat) {
+			$labelText = str_replace('*', $buttonText, $labelFormat);
+			$submitButton->setAttribute('title', $labelText);
+		}
 	}
 	
 	return $form;
@@ -1022,12 +1021,10 @@ private function XMLForLocations ($locations) {
  * @param array $result
  * @return DOMElement
  */
-private function KVKLinkItem ($result) {
-	$KVKLinkURL = 'http://kvk.ubka.uni-karlsruhe.de/hylib-bin/kvk/nph-kvk2.cgi?input-charset=utf-8&Timeout=120';
-	$KVKLinkURL .= Tx_Extbase_Utility_Localization::translate('&lang=de', 'Pazpar2');
-	$KVKLinkURL .= 'kataloge=SWB&kataloge=BVB&kataloge=NRW&kataloge=HEBIS&kataloge=KOBV_SOLR&kataloge=GBV';
+private function KVKItem ($result) {
+	$KVKItem = Null;
 
-	// Check if there are ISBNs and use the first one we find.
+	// Check whether there are ISBNs and use the first one we find.
 	// (KVK does not seem to support searches for multiple ISBNs.)
 	$ISBN = Null;
 	foreach ($result['location'] as $locationAll) {
@@ -1041,28 +1038,45 @@ private function KVKLinkItem ($result) {
 	}
 
 	$query = '';
-	// Search for ISBN if it exists, otherwise use title and author (sur)names.
 	if ($ISBN) {
+		// Search for ISBN if we found one.
 		$query .= '&SB=' . $ISBN;
 	}
 	else {
-		if (array_key_exists('md-title', $result)) {
-			$query .= '&TI=' . rawurlencode($result['md-title'][0]['values'][0]);
-		}
-		if (array_key_exists('md-author', $result)) {
-			$authors = Array();
-			foreach ($result['md-author'] as $author) {
-				$authors[] = $author['values'][0];
+		// If there is no ISBN only proceed when we are dealing with a book
+		// and create a search for the title and author.
+		$wantKVKLink = False;
+		foreach ($result['md-medium'] as $medium) {
+			if ($medium['values'][0] === 'book') {
+				$wantKVKLink = True;
+				break;
 			}
-			$query .= '&AU=' . implode(' ', $authors);
+		}
+
+		if ($wantKVKLink) {
+			if (array_key_exists('md-title', $result)) {
+				$query .= '&TI=' . rawurlencode($result['md-title'][0]['values'][0]);
+			}
+			if (array_key_exists('md-author', $result)) {
+				$authors = Array();
+				foreach ($result['md-author'] as $author) {
+					$authors[] = $author['values'][0];
+				}
+				$query .= '&AU=' . implode(' ', $authors);
+			}
 		}
 	}
 
 	if ($query !== '') {
 		$KVKLink = $this->doc->createElement('a');
+		$KVKLinkURL = 'http://kvk.ubka.uni-karlsruhe.de/hylib-bin/kvk/nph-kvk2.cgi?input-charset=utf-8&Timeout=120';
+		$KVKLinkURL .= Tx_Extbase_Utility_Localization::translate('&lang=de', 'Pazpar2');
+		$KVKLinkURL .= 'kataloge=SWB&kataloge=BVB&kataloge=NRW&kataloge=HEBIS&kataloge=KOBV_SOLR&kataloge=GBV';
 		$KVKLink->setAttribute('href', $KVKLinkURL . $query);
-		$label = Tx_Extbase_Utility_Localization::translate('deutschlandweit im KVK suchen', 'Pazpar2');
+		$label = Tx_Extbase_Utility_Localization::translate('KVK', 'Pazpar2');
 		$KVKLink->appendChild($this->doc->createTextNode($label));
+		$title = Tx_Extbase_Utility_Localization::translate('deutschlandweit im KVK suchen', 'Pazpar2');
+		$KVKLink->setAttribute('title', $title);
 		$this->turnIntoNewWindowLink($KVKLink);
 
 		$KVKItem = $this->doc->createElement('li');

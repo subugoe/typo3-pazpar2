@@ -78,12 +78,13 @@ var germanTerms = {
 	'Umschlagbild': 'Umschlagbild',
 	// Download/Extra Links
 	'mehr Links': 'mehr Links',
-	'download-label-format-simple': 'Als * laden',
+	'download-label-format-simple': 'Bibliographische Daten für diesen Treffer als * laden',
 	'download-label-format-all': 'Alle Ausgaben als * laden',
 	'download-label-submenu-format': 'Einzelne als * laden',
 	'download-label-submenu-index-format': 'Ausgabe *',
 	'download-label-ris': 'RIS',
 	'download-label-bibtex': 'BibTeX',
+	'KVK': 'KVK',
 	'deutschlandweit im KVK suchen': 'deutschlandweit im KVK suchen',
 	'&lang=de': '&lang=de',
 	// Short Display
@@ -182,13 +183,14 @@ var englishTerms = {
 	'In': 'In',
 	// Download/Extra Links
 	'mehr Links': 'additional Links',
-	'download-label-format-simple': 'Load as *',
+	'download-label-format-simple': 'Load bibliographic data for this result as *',
 	'download-label-format-all': 'Load all Editions as *',
 	'download-label-submenu-format': 'Load as *',
 	'download-label-submenu-index-format': 'Record *',
 	'download-label-ris': 'RIS',
 	'download-label-bibtex': 'BibTeX',
-	'deutschlandweit im KVK suchen': 'search for this title throughout Germany (KVK)',
+	'KVK': 'KVK',
+	'deutschlandweit im KVK suchen': 'search for this title in union catalogues throughout Germany (KVK)',
 	'&lang=de': '&lang=en',
 	// General Information
 	'Suche...': 'Searching\u2026',
@@ -3190,13 +3192,14 @@ function renderDetails(recordID) {
 				form.appendChild(qInput);
 
 				var submitButton = document.createElement('input');
+				form.appendChild(submitButton);
 				submitButton.setAttribute('type', 'submit');
 				var buttonText = localise('download-label-' + exportFormat);
-				if (labelFormat) {
-					buttonText = labelFormat.replace(/\*/, buttonText);
-				}
 				submitButton.setAttribute('value', buttonText);
-				form.appendChild(submitButton);
+				if (labelFormat) {
+					var labelText = labelFormat.replace(/\*/, buttonText);
+					submitButton.setAttribute('title', labelText);
+				}
 			}
 
 			return form;
@@ -3264,19 +3267,16 @@ function renderDetails(recordID) {
 
 
 
-		/*	KVKLinkItem
+		/*	KVKItem
 			Returns a list item containing a link to a KVK catalogue search for data.
 			Uses ISBN or title/author data for the search.
 			input:	data - pazpar2 record
 			output:	DOMLIElement
 		*/
-		var KVKLinkItem = function (data) {
+		var KVKItem = function (data) {
 			var KVKItem = undefined;
 
-			var KVKLinkURL = 'http://kvk.ubka.uni-karlsruhe.de/hylib-bin/kvk/nph-kvk2.cgi?input-charset=utf-8&Timeout=120';
-			KVKLinkURL += localise('&lang=de');
-			KVKLinkURL += 'kataloge=SWB&kataloge=BVB&kataloge=NRW&kataloge=HEBIS&kataloge=KOBV_SOLR&kataloge=GBV';
-			// Check if there are ISBNs and use the first one we find.
+			// Check whether there are ISBNs and use the first one we find.
 			// (KVK does not seem to support searches for multiple ISBNs.)
 			var ISBN = undefined;
 			for (var locationIndex in data.location) {
@@ -3291,29 +3291,47 @@ function renderDetails(recordID) {
 			}
 
 			var query = '';
-			// Search for ISBN if it exists, otherwise use title and author (sur)names.
 			if (ISBN) {
+				// Search for ISBN if we found one.
 				query += '&SB=' + ISBN;
 			}
 			else {
-				if (data['md-title']) {
-					query += '&TI=' + encodeURIComponent(data['md-title'][0]);
-				}
-				if (data['md-author']) {
-					var authors = [];
-					for (var authorIndex in data['md-author']) {
-						var author = data['md-author'][authorIndex];
-						authors.push(author.split(',')[0]);
+				// If there is no ISBN only proceed when we are dealing with a book
+				// and create a search for the title and author.
+				var wantKVKLink = false;
+				for (var mediumIndex in data['md-medium']) {
+					var medium = data['md-medium'][mediumIndex];
+					if (medium === 'book') {
+						wantKVKLink = true;
+						break;
 					}
-					query += '&AU=' + encodeURIComponent(authors.join(' '));
+				}
+
+				if (wantKVKLink) {
+					if (data['md-title']) {
+						query += '&TI=' + encodeURIComponent(data['md-title'][0]);
+					}
+					if (data['md-author']) {
+						var authors = [];
+						for (var authorIndex in data['md-author']) {
+							var author = data['md-author'][authorIndex];
+							authors.push(author.split(',')[0]);
+						}
+						query += '&AU=' + encodeURIComponent(authors.join(' '));
+					}
 				}
 			}
 
 			if (query !== '') {
 				var KVKLink = document.createElement('a');
+				var KVKLinkURL = 'http://kvk.ubka.uni-karlsruhe.de/hylib-bin/kvk/nph-kvk2.cgi?input-charset=utf-8&Timeout=120';
+				KVKLinkURL += localise('&lang=de');
+				KVKLinkURL += 'kataloge=SWB&kataloge=BVB&kataloge=NRW&kataloge=HEBIS&kataloge=KOBV_SOLR&kataloge=GBV';
 				KVKLink.href = KVKLinkURL + query;
-				var label = localise('deutschlandweit im KVK suchen');
+				var label = localise('KVK');
 				KVKLink.appendChild(document.createTextNode(label));
+				var title = localise('deutschlandweit im KVK suchen');
+				KVKLink.setAttribute('title', title);
 				turnIntoNewWindowLink(KVKLink);
 
 				KVKItem = document.createElement('li');
@@ -3327,7 +3345,10 @@ function renderDetails(recordID) {
 
 		var exportLinks = document.createElement('div');
 		jQuery(exportLinks).addClass('pz2-extraLinks');
-		exportLinks.appendChild(document.createTextNode(localise('mehr Links')));
+		var exportLinksLabel = document.createElement('span');
+		exportLinks.appendChild(exportLinksLabel);
+		jQuery(exportLinksLabel).addClass('pz2-extraLinksLabel');
+		exportLinksLabel.appendChild(document.createTextNode(localise('mehr Links')));
 		var extraLinkList = document.createElement('ul');
 		exportLinks.appendChild(extraLinkList);
 
@@ -3346,13 +3367,7 @@ function renderDetails(recordID) {
 			}
 		}
 
-		for (var mediumIndex in data['md-medium']) {
-			var medium = data['md-medium'][mediumIndex];
-			if (medium === 'book') {
-				extraLinkList.appendChild(KVKLinkItem(data));
-				break;
-			}
-		}
+		appendInfoToContainer(KVKItem(data), extraLinkList);
 
 		return exportLinks;
 	}

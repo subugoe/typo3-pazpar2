@@ -448,40 +448,44 @@
 	position: absolute;
 	right: 10px;
 	bottom: -10px;
-	padding: 15px 3px 15px 0px;
-	color: #999;
 }
 
-#pz2-results .pz2-extraLinks ul,
-#pz2-results .pz2-extraLinks ul li ul,
-#pz2-results .pz2-extraLinks:hover ul li ul{
-	position: absolute;
-	left: 100%;
-	top: 0;
+#pz2-results .pz2-extraLinksLabel {
+	display: none;
+}
+
+#pz2-results .pz2-extraLinks ul {
+	text-align: right;
 	list-style-type: none;
-	margin: 0;
-	padding: 5px;
-	border: 1px solid #bbb;
-	z-index: 500;
-	background: #fff;
-	display:none;
 }
 
-#pz2-results .pz2-extraLinks:hover ul,
-#pz2-results .pz2-extraLinks ul li:hover ul {
-	display: block;
+#pz2-results .pz2-extraLinks ul li {
+	display: inline;
+	padding: 0px;
 }
 
-#pz2-results ol li .pz2-extraLinks ul li {
-	margin: 0;
-	padding: 0 0 0 1em;
-	text-indent: -1em;
+#pz2-results .pz2-extraLinks form,
+#pz2-results .pz2-extraLinks input {
+	display: inline;
 }
 
 #pz2-results .pz2-extraLinks ul li input {
 	border: 0px none;
 	background: transparent;
 	cursor: pointer;
+}
+
+#pz2-results .pz2-extraLinks ul li input,
+#pz2-results .pz2-extraLinks ul li a {
+	color: #666;
+	text-decoration: none;
+	font-weight: normal;
+	font-size: 1em;
+}
+
+#pz2-results .pz2-extraLinks:hover ul li input,
+#pz2-results .pz2-extraLinks:hover ul li a {
+	color: #000;
 }
 
 #pz2-results .pz2-extraLinks ul li input:hover,

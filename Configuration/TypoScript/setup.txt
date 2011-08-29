@@ -37,7 +37,7 @@ plugin.tx_pazpar2 {
 		provideCOinSExport = 1
 		showExportLinksForEachLocation = 0
 		exportFormats {
-			endnote = 1
+			ris = 1
 			bibtex = 1
 		}
 

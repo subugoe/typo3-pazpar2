@@ -82,7 +82,7 @@ var germanTerms = {
 	'download-label-format-all': 'Alle Ausgaben als * laden',
 	'download-label-submenu-format': 'Einzelne als * laden',
 	'download-label-submenu-index-format': 'Ausgabe *',
-	'download-label-endnote': 'RIS/EndNote',
+	'download-label-ris': 'RIS',
 	'download-label-bibtex': 'BibTeX',
 	'deutschlandweit im KVK suchen': 'deutschlandweit im KVK suchen',
 	'&lang=de': '&lang=de',
@@ -186,7 +186,7 @@ var englishTerms = {
 	'download-label-format-all': 'Load all Editions as *',
 	'download-label-submenu-format': 'Load as *',
 	'download-label-submenu-index-format': 'Record *',
-	'download-label-endnote': 'RIS/EndNote',
+	'download-label-ris': 'RIS',
 	'download-label-bibtex': 'BibTeX',
 	'deutschlandweit im KVK suchen': 'search for this title throughout Germany (KVK)',
 	'&lang=de': '&lang=en',
@@ -352,7 +352,7 @@ var siteName = undefined;
 var provideCOinSExport = true;
 // List of export formats we provide links for. An empty list suppresses the
 // creation of export links.
-var exportFormats = ['endnote', 'bibtex'];
+var exportFormats = ['ris', 'bibtex'];
 // Offer submenus with items for each location in the export links?
 var showExportLinksForEachLocation = false;
 // Always map SUB Göttingen links to the Opac, rather than to GVK?

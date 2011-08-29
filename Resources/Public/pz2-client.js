@@ -1898,8 +1898,11 @@ function setSortCriteriaFromString (sortString) {
 function loadSelectsFromForm (form) {
 	var sortOrderString = jQuery('.pz2-sort option:selected', form).val();
 	setSortCriteriaFromString(sortOrderString);
-	
-	recPerPage = jQuery('.pz2-perPage option:selected', form).val();
+
+	var jPerPageSelect = jQuery('.pz2-perPage option:selected', form);
+	if (jPerPageSelect.length > 0) {
+		recPerPage = jPerPageSelect.val();
+	}
 }
 
 
@@ -3352,6 +3355,8 @@ function renderDetails(recordID) {
 		var extraLinkList = document.createElement('ul');
 		exportLinks.appendChild(extraLinkList);
 
+		appendInfoToContainer(KVKItem(data), extraLinkList);
+
 		if (data.location.length == 1) {
 			var labelFormat = localise('download-label-format-simple');
 			appendExportItemsTo(data.location, labelFormat, extraLinkList);
@@ -3366,8 +3371,6 @@ function renderDetails(recordID) {
 				}
 			}
 		}
-
-		appendInfoToContainer(KVKItem(data), extraLinkList);
 
 		return exportLinks;
 	}

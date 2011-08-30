@@ -1530,7 +1530,9 @@ function facetListForType (type, preferOriginalFacets) {
 	jQuery(container).addClass('pz2-termList pz2-termList-' + type);
 
 	var terms = facetInformationForType(type);
-	if (terms.length >= termLists[type].minDisplay) {
+	if (terms.length >= termLists[type].minDisplay || filterArray[type]) {
+		// Always display facet list if it is filtered. Otherwise require
+		// at least .minDisplay facet elements.
 		var heading = document.createElement('h5')
 		container.appendChild(heading);
 		var headingText = localise('facet-title-'+type);

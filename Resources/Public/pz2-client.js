@@ -1015,9 +1015,11 @@ function display () {
 	updatePagers();
 	
 	// Let Zotero know about updated content
-	var zoteroNotification = document.createEvent('HTMLEvents');
-	zoteroNotification.initEvent('ZoteroItemUpdated', true, true);
-	document.dispatchEvent(zoteroNotification);
+	if (!jQuery.browser.msie) {
+		var zoteroNotification = document.createEvent('HTMLEvents');
+		zoteroNotification.initEvent('ZoteroItemUpdated', true, true);
+		document.dispatchEvent(zoteroNotification);
+	}
 }
 
 

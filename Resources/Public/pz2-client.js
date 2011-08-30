@@ -3257,8 +3257,8 @@ function renderDetails(recordID) {
 				form.appendChild(qInput);
 
 				var submitButton = document.createElement('input');
-				form.appendChild(submitButton);
 				submitButton.setAttribute('type', 'submit');
+				form.appendChild(submitButton);
 				var buttonText = localise('download-label-' + exportFormat);
 				submitButton.setAttribute('value', buttonText);
 				if (labelFormat) {

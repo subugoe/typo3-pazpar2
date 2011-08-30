@@ -3473,7 +3473,7 @@ function renderDetails(recordID) {
 			for (var authorIndex in data['md-author']) {
 				var authorName = jQuery.trim(data['md-author'][authorIndex].split(',')[0]);
 				if (allResponsibility.match(authorName) == null) {
-						data['md-author-clean'].push(data['md-author'][authorIndex]);
+					data['md-author-clean'].push(data['md-author'][authorIndex]);
 				}
 			}
 		}
@@ -3481,7 +3481,7 @@ function renderDetails(recordID) {
 		for (var personIndex in data['md-other-person']) {
 			var personName = jQuery.trim(data['md-other-person'][personIndex].split(',')[0]);
 			if (allResponsibility.match(personName) == null) {
-					data['md-other-person-clean'].push(data['md-other-person'][personIndex]);
+				data['md-other-person-clean'].push(data['md-other-person'][personIndex]);
 			}
 		}
 		

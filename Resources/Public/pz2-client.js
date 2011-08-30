@@ -2619,13 +2619,17 @@ function renderDetails(recordID) {
 		for (locationNumber in data.location) {
 			var numberField = String(data.location[locationNumber]['md-isbn']);
 			var matches = numberField.replace(/-/g,'').match(/[0-9]{9,12}[0-9xX]/g);
-			for (var ISBNMatchNumber in matches) {
-				searchTerms.push('ISBN:' + matches[ISBNMatchNumber]);
+			if (matches) {
+				for (var ISBNMatchNumber = 0; ISBNMatchNumber < matches.length; ISBNMatchNumber++) {
+					searchTerms.push('ISBN:' + matches[ISBNMatchNumber]);
+				}
 			}
 			numberField = String(data.location[locationNumber]['md-oclc-number']);
 			matches = numberField.match(/[0-9]{4,}/g);
-			for (var OCLCMatchNumber in matches) {
-				searchTerms.push('OCLC:' + matches[OCLCMatchNumber]);
+			if (matches) {
+				for (var OCLCMatchNumber = 0; OCLCMatchNumber < matches.length; OCLCMatchNumber++) {
+					searchTerms.push('OCLC:' + matches[OCLCMatchNumber]);
+				}
 			}
 		}
 

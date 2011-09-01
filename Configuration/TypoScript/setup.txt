@@ -59,6 +59,7 @@ plugin.tx_pazpar2 {
 		}
 		triggeredByNKWGOKMenu = 0
 		showSearchForm = 1
+		mainSearchFieldPlaceholder = 0
 		allowExtendedSearch = 1
 	}
 }

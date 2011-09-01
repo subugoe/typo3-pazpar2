@@ -10,7 +10,10 @@
 	<data type="array">
 
 		<languageKey index="default" type="array">
-			<!-- pazpar2 extended search form -->
+			<label index="form-main-placeholder-0"></label>
+			<label index="form-main-placeholder-1">Suchbegriff</label>
+			<label index="form-main-placeholder-2">zusätzlicher Suchbegriff</label>
+			<!-- extended search form -->
 			<label index="form-extended-label-all">Alle Felder</label>
 			<label index="form-extended-label-fulltext">auch in Inhaltsverzeichnissen suchen</label>
 			<label index="form-extended-label-title">Titel</label>
@@ -119,6 +122,9 @@
 
 
 		<languageKey index="en" type="array">
+			<label index="form-main-placeholder-0"></label>
+			<label index="form-main-placeholder-1">Search term</label>
+			<label index="form-main-placeholder-2">add a search term</label>
 			<!-- pazpar2 extended search form -->
 			<label index="form-extended-label-all">All Fields</label>
 			<label index="form-extended-label-fulltext">also search tables of contents</label>

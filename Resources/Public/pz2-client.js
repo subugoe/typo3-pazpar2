@@ -121,6 +121,7 @@ var germanTerms = {
 	'erweiterte Suche': 'erweiterte Suche',
 	'einfache Suche': 'einfache Suche',
 	// Status display
+	'Übertragungsstatus': 'Übertragungsstatus',
 	'Status:': 'Status:',
 	'Aktive Abfragen:': 'Aktive Abfragen:',
 	'Geladene Datensätze:': 'Geladene Datensätze:',
@@ -221,6 +222,7 @@ var englishTerms = {
 	'erweiterte Suche': 'Extended Search',
 	'einfache Suche': 'Basic Search',
 	// Status display
+	'Übertragungsstatus': 'Status Information',
 	'Status:': 'Status:',
 	'Aktive Abfragen:': 'Active Queries:',
 	'Geladene Datensätze:': 'Loaded Records:',
@@ -1601,6 +1603,10 @@ function my_onbytarget(data) {
 
 	var table = document.createElement('table');
 	targetDiv.appendChild(table);
+
+	var caption = document.createElement('caption');
+	table.appendChild(caption);
+	caption.appendChild(document.createTextNode(localise('Übertragungsstatus')))
 
 	var thead = document.createElement('thead');
 	table.appendChild(thead);

@@ -598,7 +598,8 @@ pz2-client.js removes this once it it loaded.
 	text-align: left;
 }
 
-#pz2-targetView thead tr {
+#pz2-targetView thead,
+#pz2-targetView caption {
 	background: #eee;
 	font-weight: bold;
 }

@@ -12,7 +12,7 @@
 					</f:if>
 				</span>
 			</f:if>
-			<span class="pz2-fulltext">
+			<span class="pz2-checkbox pz2-fulltext">
 				<f:form.checkbox id="pz2-checkbox-fulltext" name="querySwitchFulltext" value="1" checked="{querySwitchFulltext}"/>
 				<label for="pz2-checkbox-fulltext"><f:translate key="form-extended-label-fulltext"/></label>
 			</span>
@@ -23,8 +23,10 @@
 				<div class="pz2-fieldContainer pz2-field-title">
 					<label class="pz2-textFieldLabel" for="pz2-field-title"><f:translate key="form-extended-label-title"/></label>
 					<f:form.textbox id="pz2-field-title" class="pz2-searchField" name="queryStringTitle" value="{queryStringTitle}"/>
-					<f:form.checkbox id="pz2-checkbox-journal" name="querySwitchJournalOnly" value="1" checked="{querySwitchJournalOnly}"/>
-					<label for="pz2-checkbox-journal"><f:translate key="form-extended-label-journalOnly"/></label>
+					<span class="pz2-checkbox pz2-journal-only">
+						<f:form.checkbox id="pz2-checkbox-journal" name="querySwitchJournalOnly" value="1" checked="{querySwitchJournalOnly}"/>
+						<label for="pz2-checkbox-journal"><f:translate key="form-extended-label-journalOnly"/></label>
+					</span>
 				</div>
 
 				<div class="pz2-fieldContainer pz2-field-person">

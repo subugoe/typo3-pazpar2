@@ -52,15 +52,18 @@
 	margin-left: 20px;
 }
 
-.pz2-mainForm label.pz2-textFieldLabel {
+.pz2-mainForm label {
+	display: none;
+}
+
+.pz2-extended .pz2-mainForm label.pz2-textFieldLabel {
 	display: block;
 	float: left;
 	width: 130px;
 	text-align: right;
-	display: none;
 }
 
-.pz2-fulltext,
+.pz2-checkbox,
 .pz2-extraFields {
 	display: none;
 }
@@ -69,8 +72,8 @@
 	display: block;
 }
 
-.pz2-extended .pz2-fulltext,
-.pz2-extended label {
+.pz2-extended .pz2-checkbox,
+.pz2-extended .pz2-checkbox label {
 	display: inline;
 }
 

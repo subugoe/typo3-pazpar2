@@ -1815,7 +1815,7 @@ function addExtendedSearchForLink (event) {
 
 	// switch the link to a simple search link
 	jQuery(this).unbind().click(removeExtendedSearchForLink).empty().text(localise('einfache Suche'));
-	jQuery('.pz2-extraFields').slideDown('fast');
+	jQuery('.pz2-extraFields').show();
 
 	return false;
 }
@@ -1833,7 +1833,6 @@ function addExtendedSearchForLink (event) {
 function removeExtendedSearchForLink (event) {
 	// switch form type
 	var formContainer = jQuery('.pz2-mainForm');
-	formContainer.addClass('pz2-form-animating');
 	formContainer.parent('form').removeClass('pz2-extended').addClass('pz2-basic');
 
 	// move the controls
@@ -1844,10 +1843,7 @@ function removeExtendedSearchForLink (event) {
 	jQuery(this).unbind().click(addExtendedSearchForLink).empty().text(localise('erweiterte Suche'));
 
 	// remove extended search fields
-	jQuery('.pz2-extraFields', formContainer).slideUp('fast', function() {
-		formContainer.removeClass('pz2-form-animating');
-	});
-
+	jQuery('.pz2-extraFields', formContainer).hide();
 
 	return false;
 }

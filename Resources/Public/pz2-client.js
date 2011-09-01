@@ -3423,8 +3423,10 @@ function renderDetails(recordID) {
 		var extraLinkList = document.createElement('ul');
 		exportLinks.appendChild(extraLinkList);
 
-		appendInfoToContainer(KVKItem(data), extraLinkList);
-
+		if (showKVKLink == 1) {
+			appendInfoToContainer(KVKItem(data), extraLinkList);
+		}
+		
 		if (data.location.length == 1) {
 			var labelFormat = localise('download-label-format-simple');
 			appendExportItemsTo(data.location, labelFormat, extraLinkList);

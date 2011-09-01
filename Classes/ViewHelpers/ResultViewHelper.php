@@ -874,8 +874,9 @@ private function exportLinks ($result) {
 		$labelFormat = Tx_Extbase_Utility_Localization::translate('download-label-format-all', 'Pazpar2');
 	}
 
-	$this->appendInfoToContainer($this->KVKItem($result), $extraLinkList);
-
+	if ($this->conf['showKVKLink'] == 1) {
+		$this->appendInfoToContainer($this->KVKItem($result), $extraLinkList);
+	}
 	$this->appendExportItemsTo($result['location'], $labelFormat, $extraLinkList);
 	// Separate submenus for individual locations not implemented in the PHP version.
 

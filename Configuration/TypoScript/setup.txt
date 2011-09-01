@@ -40,6 +40,7 @@ plugin.tx_pazpar2 {
 			ris = 1
 			bibtex = 1
 		}
+		showKVKLink = 1
 
 		CSSPath = EXT:pazpar2/Resources/Public/pz2.css
 		pz2JSPath = EXT:pazpar2/Resources/Public/pz2.js

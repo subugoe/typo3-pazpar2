@@ -308,12 +308,12 @@
 .pz2-pager {
 	margin: 20px 0;
 	position: relative;
-	text-align: center;
 }
 
 .pz2-pager .pz2-pageNumbers {
 	position: relative;
 	margin-right: 240px;
+	text-align: center;
 }
 
 .pz2-next, .pz2-prev {
@@ -451,6 +451,16 @@
 	position: absolute;
 	right: 10px;
 	bottom: -10px;
+}
+
+* html #pz2-results .pz2-extraLinks {
+	position: static;
+	text-align: right;
+}
+
+* html #pz2-results .pz2-extraLinks * {
+	display: inline;
+	position: relative;
 }
 
 #pz2-results .pz2-extraLinksLabel {

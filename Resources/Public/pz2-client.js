@@ -1615,16 +1615,20 @@ function my_onbytarget(data) {
 	var td = document.createElement('th');
 	tr.appendChild(td);
 	td.appendChild(document.createTextNode(localise('Datenbank')));
-	td = document.createElement('td');
+	td.id = 'pz2-target-name';
+	td = document.createElement('th');
 	tr.appendChild(td);
 	td.appendChild(document.createTextNode(localise('Geladen')));
-	td = document.createElement('td');
+	td.id = 'pz2-target-loaded';
+	td = document.createElement('th');
 	tr.appendChild(td);
 	td.appendChild(document.createTextNode(localise('Treffer')));
-	td = document.createElement('td');
+	td.id = 'pz2-target-hits';
+	td = document.createElement('th');
 	tr.appendChild(td);
 	jQuery(td).addClass('pz2-target-status');
 	td.appendChild(document.createTextNode(localise('Status')));
+	td.id = 'pz2-target-status';
 	
 	var tbody = document.createElement('tbody');
 	table.appendChild(tbody);
@@ -1636,9 +1640,11 @@ function my_onbytarget(data) {
 		tr.appendChild(td);
 		td.appendChild(document.createTextNode(data[i].name));
 		td.title = data[i].id;
+		td.setAttribute('headers', 'pz2-target-name');
 		td = document.createElement('td');
 		tr.appendChild(td);
 		td.appendChild(document.createTextNode(data[i].records));
+		td.setAttribute('headers', 'pz2-target-loaded');
 		td = document.createElement('td');
 		tr.appendChild(td);
 		var hitCount = data[i].hits;
@@ -1646,12 +1652,14 @@ function my_onbytarget(data) {
 			hitCount = '?';
 		}
 		td.appendChild(document.createTextNode(hitCount));
+		td.setAttribute('headers', 'pz2-target-hits');
 		td = document.createElement('td');
 		tr.appendChild(td);
 		td.appendChild(document.createTextNode(localise(data[i].state)));
 		if (data[i].diagnostic != 0) {
 			td.setAttribute('title', localise('Code') + ': ' + data[i].diagnostic);
 		}
+		td.setAttribute('headers', 'pz2-target-status');
 
 		targetStatus[data[i].name] = data[i];
 	}

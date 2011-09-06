@@ -2649,22 +2649,47 @@ function renderDetails(recordID) {
 						+ '&jscmd=viewapi&callback=?';
 			jQuery.getJSON(googleBooksURL,
 				function(data) {
+					/*	bookScore
+						Returns a score for given book to help determine which book
+						to use on the page if several results exist.
+					
+						Preference is given existing previews and books that are
+						embeddable are preferred if there is a tie.
+					
+						input: book - Google Books object
+						output: integer
+					*/
+					function bookScore (book) {
+						var score = 0;
+
+						if (book.preview === 'full') {
+							score += 10;
+						}
+						else if (book.preview === 'partial') {
+							score += 5;
+						}
+						if (book.embeddable === true) {
+							score += 1;
+						}
+
+						return score;
+					}
+
+
 					/*
-						If there are multiple results choose the one we want:
-							1. If available the first one with 'full' preview capabilities,
-							2. otherwise the first one with 'partial' preview capabilities,
-							3. undefined if none of the results has preview capabilities.
-						Usually the first item in the list is also the newest one.
+						If there are multiple results choose the first one with
+						the maximal score. Ignore books without a preview.
 					*/
 					var selectedBook;
 					jQuery.each(data,
 						function(bookNumber, book) {
-							if (book.preview === 'full') {
-								selectedBook = book;
-								return false;
-							}
-							else if (book.preview === 'partial' && selectedBook === undefined) {
-								selectedBook = book;
+							var score = bookScore(book);
+							book.score = score;
+
+							if (selectedBook === undefined || book.score > selectedBook.score) {
+								if (book.preview !== 'noview') {
+									selectedBook = book;
+								}
 							}
 						}
 					);
@@ -2677,7 +2702,9 @@ function renderDetails(recordID) {
 						var bookLink = document.createElement('a');
 						dd.appendChild(bookLink);
 						bookLink.setAttribute('href', selectedBook.preview_url);
-						bookLink.onclick = openPreview;
+						if (selectedBook.embeddable === true) {
+							bookLink.onclick = openPreview;
+						}
 
 						var language = jQuery('html').attr('lang');
 						if (language === undefined) {

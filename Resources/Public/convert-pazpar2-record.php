@@ -26,13 +26,13 @@ function transform (&$errorMessage) {
 			'xsl' => 'pz2-to-ris.xsl',
 			'content-type' => 'text',
 			'filename' => 'export.ris',
-			'disposition' => 'inline'
+			'disposition' => 'attachment'
 		),
-		'endnote' => Array(
+		'ris-inline' => Array(
 			'xsl' => 'pz2-to-ris.xsl',
 			'content-type' => 'application/x-research-info-systems',
 			'filename' => 'export.enw',
-			'disposition' => 'attachment'
+			'disposition' => 'inline'
 		),
 		'bibtex' => Array(
 			'xsl' => 'pz2-to-bibtex.xsl',

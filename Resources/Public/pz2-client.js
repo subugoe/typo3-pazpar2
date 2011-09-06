@@ -73,7 +73,10 @@ var germanTerms = {
 	'gedruckt': 'gedruckt',
 	'detail-label-id': 'PPN',
 	'Ausgabe': 'Ausgabe',
-	'Google Books Vorschau': 'Google Books Vorschau',
+	/* Google Books status Strings from
+		http://code.google.com/intl/de-DE/apis/books/examples/translated-branding-elements.html	*/
+	'Google Books: Vollständige Ansicht': 'Google Books: Vollständige Ansicht',
+	'Google Books: Eingeschränkte Vorschau': 'Google Books: Eingeschränkte Vorschau',
 	'Vorschau schließen': 'Vorschau schließen',
 	'Umschlagbild': 'Umschlagbild',
 	// Download/Extra Links
@@ -175,7 +178,10 @@ var englishTerms = {
 	'gedruckt': 'printed',
 	'detail-label-id': 'PPN',
 	'Ausgabe': 'Edition',
-	'Google Books Vorschau': 'Google Books Preview',
+	/* Google Books status Strings from
+		http://code.google.com/intl/de-DE/apis/books/examples/translated-branding-elements.html	*/
+	'Google Books: Vollständige Ansicht': 'Google Books: Full view',
+	'Google Books: Eingeschränkte Vorschau': 'Google Books: Limited Preview',
 	'Vorschau schließen': 'Close Preview',
 	'Umschlagbild': 'Book Cover',
 	// Short Display
@@ -2714,7 +2720,14 @@ function renderDetails(recordID) {
 
 						var buttonImage = document.createElement('img');
 						buttonImage.setAttribute('src', buttonImageURL);
-						buttonImage.setAttribute('alt', localise('Google Books Vorschau'));
+						var buttonAltText = 'Google Books';
+						if (selectedBook.preview === 'full') {
+							buttonAltText = localise('Google Books: Vollständige Ansicht');
+						}
+						else if (selectedBook.preview === 'partial') {
+							buttonAltText = localise('Google Books: Eingeschränkte Vorschau');
+						}
+						buttonImage.setAttribute('alt', buttonAltText);
 						bookLink.appendChild(buttonImage);
 
 						if (selectedBook.thumbnail_url !== undefined) {

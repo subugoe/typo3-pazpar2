@@ -31,7 +31,7 @@ function transform (&$errorMessage) {
 		'ris-inline' => Array(
 			'xsl' => 'pz2-to-ris.xsl',
 			'content-type' => 'application/x-research-info-systems',
-			'filename' => 'export.enw',
+			'filename' => 'export.ris',
 			'disposition' => 'inline'
 		),
 		'bibtex' => Array(

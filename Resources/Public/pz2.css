@@ -436,6 +436,7 @@
 
 .pz2-details ul {
 	padding-left: 1.5em;
+	margin: 0;
 }
 
 #pz2-results ol.pz2-resultList .pz2-details li {

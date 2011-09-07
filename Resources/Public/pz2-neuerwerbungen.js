@@ -172,7 +172,7 @@ function runSearchForForm (form) {
 /*
  * checkboxChanged
  *
- * Callback for the lowest-level checkboxes' onclick handler.
+ * Called by lowest-level checkboxes’ onclick handler.
  * Toggles parent checkbox if necessary, then starts the query.
  *
  * input:	checkbox - DOM element of the clicked checkbox
@@ -188,7 +188,7 @@ function checkboxChanged (checkbox) {
 /*
  * groupCheckboxChanged
  *
- * Callbock for the top-level checkboxes' onlick handler.
+ * Called by top-level checkboxes’ onclick handler.
  * Toggles the child checboxes, then starts the query.
  *
  * input:	checkbox - DOM element of the clicked checkbox
@@ -197,6 +197,21 @@ function groupCheckboxChanged (checkbox) {
 	toggleChildCheckboxesOf(checkbox);
 	saveFormStateInCookie(checkbox.form);
 	runSearchForForm(checkbox.form);
+}
+
+
+
+/*
+ * monthChanged
+ *
+ * Called by the month select’s onchange handler.
+ * Starts a new search with the selected month.
+ *
+ * input:	select - DOM Element of the month select
+ *
+ */
+function monthChanged (select) {
+	runSearchForForm(select.form);
 }
 
 

@@ -217,19 +217,19 @@
 			Article information.
 			Distinguish two cases:
 				a) we do have detailed volume/issue/pages information:
-					md-journal-volume -> Volume
-					md-journal-issue -> Number
-					md-journal-pages -> Pages
+					md-volume-number -> Volume
+					md-issue-number -> Number
+					md-pages -> Pages
 				b) we don’t have detailed volume/issue/pages information,
 					(wrongly) map all we have to the volume field:
 					md-journal-subpart -> Volume
 		-->
 		<xsl:choose>
-			<xsl:when test="md-journal-volume">
+			<xsl:when test="md-volume-number">
 				<xsl:call-template name="BibTeXLineMaker">
 					<xsl:with-param name="key">Volume</xsl:with-param>
 					<xsl:with-param name="value">
-						<xsl:for-each select="md-journal-volume">
+						<xsl:for-each select="md-volume-number">
 							<xsl:if test="position()&gt;1">
 								<xsl:text>, </xsl:text>
 							</xsl:if>
@@ -241,7 +241,7 @@
 				<xsl:call-template name="BibTeXLineMaker">
 					<xsl:with-param name="key">Number</xsl:with-param>
 					<xsl:with-param name="value">
-						<xsl:for-each select="md-journal-issue">
+						<xsl:for-each select="md-issue-number">
 							<xsl:if test="position()&gt;1">
 								<xsl:text>, </xsl:text>
 							</xsl:if>
@@ -253,7 +253,7 @@
 				<xsl:call-template name="BibTeXLineMaker">
 					<xsl:with-param name="key">Pages</xsl:with-param>
 					<xsl:with-param name="value">
-						<xsl:for-each select="md-journal-pages">
+						<xsl:for-each select="md-pages">
 							<xsl:if test="position()&gt;1">
 								<xsl:text>, </xsl:text>
 							</xsl:if>

@@ -2355,19 +2355,19 @@ function renderDetails(recordID) {
 				parameters += '&date=' + yearNumber;
 			}
 
-			var volume = data['md-journal-volume'];
+			var volume = data['md-volume-number'];
 			if (volume) {
 				var volumeNumber = parseInt(volume, 10);
 				parameters += '&volume=' + volumeNumber;
 			}
 
-			var issue = data['md-journal-issue'];
+			var issue = data['md-issue-number'];
 			if (issue) {
 				var issueNumber = parseInt(issue, 10);
 				parameters += '&issue=' + issueNumber;
 			}
 
-			var pages = data['md-journal-pages'];
+			var pages = data['md-pages'];
 			if (pages) {
 				parameters += '&pages=' + pages;
 			}

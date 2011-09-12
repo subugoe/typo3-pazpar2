@@ -176,21 +176,21 @@
 					(wrongly) map all we have to the volume field:
 					md-journal-subpart -> VL
 				b) we do have detailed volume/issue/pages information:
-					md-journal-volume -> VL
-					md-journal-issue -> IS
-					md-journal-pages -> SP/EP
+					md-volume-number -> VL
+					md-issue-number -> IS
+					md-pages -> SP/EP
 					
 		-->
 		<xsl:choose>
-			<xsl:when test="md-journal-volume">
-				<xsl:for-each select="md-journal-volume">
+			<xsl:when test="md-volume-number">
+				<xsl:for-each select="md-volume-number">
 					<xsl:call-template name="RISLineMaker">
 						<xsl:with-param name="key">VL</xsl:with-param>
 						<xsl:with-param name="value" select="."/>
 					</xsl:call-template>
 				</xsl:for-each>
 
-				<xsl:for-each select="md-journal-issue">
+				<xsl:for-each select="md-issue-number">
 					<xsl:call-template name="RISLineMaker">
 						<xsl:with-param name="key">IS</xsl:with-param>
 						<xsl:with-param name="value" select="."/>
@@ -198,25 +198,25 @@
 				</xsl:for-each>
 				
 				<!--
-					If there is a hyphen - in md-journal-pages, use it to split 
+					If there is a hyphen - in md-pages, use it to split 
 					the field up and create SP and EP fields. Otherwise write 
 					the whole field into SP.
 				-->
 				<xsl:choose>
-					<xsl:when test="contains(md-journal-pages, '-')">
+					<xsl:when test="contains(md-pages, '-')">
 						<xsl:call-template name="RISLineMaker">
 							<xsl:with-param name="key">SP</xsl:with-param>
-							<xsl:with-param name="value" select="substring-before(md-journal-pages, '-')"/>
+							<xsl:with-param name="value" select="substring-before(md-pages, '-')"/>
 						</xsl:call-template>
 						<xsl:call-template name="RISLineMaker">
 							<xsl:with-param name="key">EP</xsl:with-param>
-							<xsl:with-param name="value" select="substring-after(md-journal-pages, '-')"/>
+							<xsl:with-param name="value" select="substring-after(md-pages, '-')"/>
 						</xsl:call-template>	
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:call-template name="RISLineMaker">
 							<xsl:with-param name="key">SP</xsl:with-param>
-							<xsl:with-param name="value" select="md-journal-pages"/>
+							<xsl:with-param name="value" select="md-pages"/>
 						</xsl:call-template>	
 					</xsl:otherwise>
 				</xsl:choose>

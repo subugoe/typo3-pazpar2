@@ -182,7 +182,7 @@
 					
 		-->
 		<xsl:choose>
-			<xsl:when test="md-volume-number">
+			<xsl:when test="md-volume-number|md-pages-number">
 				<xsl:for-each select="md-volume-number">
 					<xsl:call-template name="RISLineMaker">
 						<xsl:with-param name="key">VL</xsl:with-param>
@@ -198,7 +198,7 @@
 				</xsl:for-each>
 				
 				<!--
-					If there is a hyphen - in md-pages, use it to split 
+					If there is a hyphen - in md-pages-number, use it to split
 					the field up and create SP and EP fields. Otherwise write 
 					the whole field into SP.
 				-->

@@ -225,7 +225,7 @@
 					md-journal-subpart -> Volume
 		-->
 		<xsl:choose>
-			<xsl:when test="md-volume-number">
+			<xsl:when test="md-volume-number|md-pages-number">
 				<xsl:call-template name="BibTeXLineMaker">
 					<xsl:with-param name="key">Volume</xsl:with-param>
 					<xsl:with-param name="value">

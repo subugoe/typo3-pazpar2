@@ -321,7 +321,22 @@ private function appendCOinSSpansToContainer ($result, $container) {
 			$coinsData['rft.genre'] = Array(Array('values' => Array('article')));
 			$coinsData['rft.atitle'] = Array(Array('values' => Array($title)));
 			$coinsData['rft.jtitle'] = $location['md-journal-title'];
-			$coinsData['rft.volume'] = $location['md-journal-subpart'];
+			if ($location['md-volume-number'] || $location['md-pages-number']) {
+				// We have structured volume or pages information: use that instead of journal-subpart.
+				$coinsData['rft.volume'] = $location['md-volume-number'];
+				$coinsData['rft.issue'] = $location['md-issue-number'];
+				if ($location['md-pages-number']) {
+					$pageInfo = explode('-', $location['md-pages-number'][0]['values'][0]);
+					$coinsData['rft.spage'] = Array(Array('values' => Array($pageInfo[0])));
+					if (count($pageInfo) >= 2) {
+						$coinsData['rft.epage'] = $pageInfo[1];
+					}
+				}
+			}
+			else {
+				// We lack structured volume information: use the journal-subpart field.
+				$coinsData['rft.volume'] = $location['md-journal-subpart'];
+			}
 		}
 		else {
 			$coinsData['rft_val_fmt'] = Array(Array('values' =>Array('info:ofi/fmt:kev:mtx:book')));
@@ -496,7 +511,7 @@ private function detailLine ($title, $informationElements) {
 			$labelNode = $this->doc->createTextNode($headingText . ":");
 			$acronym = Tx_Extbase_Utility_Localization::translate('detail-label-acronym-' . $title, 'Pazpar2');
 			if ($acronym) {
-				$acronymElement = $this->doc->createElement('acronym');
+				$acronymElement = $this->doc->createElement('abbr');
 				$acronymElement->setAttribute('title', $acronym);
 				$acronymElement->appendChild($labelNode);
 				$labelNode = $acronymElement;

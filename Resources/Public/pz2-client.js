@@ -886,11 +886,22 @@ function display () {
 				coinsData['rft.genre'] = ['article'];
 				coinsData['rft.atitle'] = [title];
 				coinsData['rft.jtitle'] = location['md-journal-title'];
-				/* TODO: not abuse the volume field for the complete 'subpart' information
-				 * which contains volume, issue, year and pages.
-				 * Unfortunately this is the best information we can get right now.
-				 */
-				coinsData['rft.volume'] = location['md-journal-subpart'];
+				if (location['md-volume-number'] || location['md-pages-number']) {
+					// We have structured volume or pages information: use that instead of journal-subpart.
+					coinsData['rft.volume'] = location['md-volume-number'];
+					coinsData['rft.issue'] = location['md-issue-number'];
+					if (location['md-pages-number']) {
+						var pageInfo = (location['md-pages-number'][0]).split('-');
+						coinsData['rft.spage'] = [pageInfo[0]];
+						if (pageInfo.length >= 2) {
+							coinsData['rft.epage'] = [pageInfo[1]];
+						}
+					}
+				}
+				else {
+					// We lack structured volume information: use the journal-subpart field.
+					coinsData['rft.volume'] = location['md-journal-subpart'];
+				}
 			}
 			else {
 				coinsData['rft_val_fmt'] = ['info:ofi/fmt:kev:mtx:book'];
@@ -2195,7 +2206,7 @@ function renderDetails(recordID) {
 				var acronymKey = 'detail-label-acronym-' + title;
 				if (localise(acronymKey) !== acronymKey) {
 					// acronym: add acronym element
-					var acronymElement = document.createElement('acronym');
+					var acronymElement = document.createElement('abbr');
 					acronymElement.title = localise(acronymKey);
 					acronymElement.appendChild(labelNode);
 					labelNode = acronymElement;

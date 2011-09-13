@@ -219,7 +219,7 @@
 				a) we do have detailed volume/issue/pages information:
 					md-volume-number -> Volume
 					md-issue-number -> Number
-					md-pages -> Pages
+					md-pages-number -> Pages
 				b) we don’t have detailed volume/issue/pages information,
 					(wrongly) map all we have to the volume field:
 					md-journal-subpart -> Volume
@@ -253,7 +253,7 @@
 				<xsl:call-template name="BibTeXLineMaker">
 					<xsl:with-param name="key">Pages</xsl:with-param>
 					<xsl:with-param name="value">
-						<xsl:for-each select="md-pages">
+						<xsl:for-each select="md-pages-number">
 							<xsl:if test="position()&gt;1">
 								<xsl:text>, </xsl:text>
 							</xsl:if>

@@ -178,7 +178,7 @@
 				b) we do have detailed volume/issue/pages information:
 					md-volume-number -> VL
 					md-issue-number -> IS
-					md-pages -> SP/EP
+					md-pages-number -> SP/EP
 					
 		-->
 		<xsl:choose>
@@ -203,20 +203,20 @@
 					the whole field into SP.
 				-->
 				<xsl:choose>
-					<xsl:when test="contains(md-pages, '-')">
+					<xsl:when test="contains(md-pages-number, '-')">
 						<xsl:call-template name="RISLineMaker">
 							<xsl:with-param name="key">SP</xsl:with-param>
-							<xsl:with-param name="value" select="substring-before(md-pages, '-')"/>
+							<xsl:with-param name="value" select="substring-before(md-pages-number, '-')"/>
 						</xsl:call-template>
 						<xsl:call-template name="RISLineMaker">
 							<xsl:with-param name="key">EP</xsl:with-param>
-							<xsl:with-param name="value" select="substring-after(md-pages, '-')"/>
+							<xsl:with-param name="value" select="substring-after(md-pages-number, '-')"/>
 						</xsl:call-template>	
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:call-template name="RISLineMaker">
 							<xsl:with-param name="key">SP</xsl:with-param>
-							<xsl:with-param name="value" select="md-pages"/>
+							<xsl:with-param name="value" select="md-pages-number"/>
 						</xsl:call-template>	
 					</xsl:otherwise>
 				</xsl:choose>

@@ -2367,7 +2367,7 @@ function renderDetails(recordID) {
 				parameters += '&issue=' + issueNumber;
 			}
 
-			var pages = data['md-pages'];
+			var pages = data['md-pages-number'];
 			if (pages) {
 				parameters += '&pages=' + pages;
 			}

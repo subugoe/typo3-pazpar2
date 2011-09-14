@@ -2268,9 +2268,8 @@ function renderDetails(recordID) {
 			var theData = data['md-' + title];
 			deduplicate(theData);
 
-			// run loop backwards as pazpar2 seems to reverse the order of metadata items
-			for (var dataNumber = theData.length - 1; dataNumber >= 0; dataNumber--) {
-				var rawDatum = theData[dataNumber];
+			for (var dataIndex in theData) {
+				var rawDatum = theData[dataIndex];
 				var wrappedDatum;
 				switch	(title) {
 					case 'doi':

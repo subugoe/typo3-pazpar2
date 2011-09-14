@@ -91,6 +91,7 @@
 			<label index="media-type-journal">Zeitschrift</label>
 			<label index="media-type-map">Karte</label>
 			<label index="media-type-microform">Mikroform</label>
+			<label index="media-type-multivolume">Mehrbändig</label>
 			<label index="media-type-music-score">Noten</label>
 			<label index="media-type-other">Andere</label>
 			<label index="media-type-recording">Aufnahme</label>
@@ -203,6 +204,7 @@
 			<label index="media-type-journal">Journal</label>
 			<label index="media-type-map">Map</label>
 			<label index="media-type-microform">Microform</label>
+			<label index="media-type-multivolume">Multivolume</label>
 			<label index="media-type-music-score">Music Score</label>
 			<label index="media-type-other">Other</label>
 			<label index="media-type-recording">Recording</label>

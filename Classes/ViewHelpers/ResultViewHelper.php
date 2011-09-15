@@ -284,7 +284,7 @@ private function COinSStringForObject ($data) {
 	foreach ($data as $key => $info) {
 		if ($info) {
 			foreach ($info as $infoItem) {
-				$infoList[] = $key . '=' . rawurlencode($infoItem['values'][0]);
+				$infoList[] = $key . '=' . rawurlencode($infoItem[0]['values'][0]);
 			}
 		}
 	}
@@ -329,7 +329,7 @@ private function appendCOinSSpansToContainer ($result, $container) {
 					$pageInfo = explode('-', $location['md-pages-number'][0]['values'][0]);
 					$coinsData['rft.spage'] = Array(Array('values' => Array($pageInfo[0])));
 					if (count($pageInfo) >= 2) {
-						$coinsData['rft.epage'] = $pageInfo[1];
+						$coinsData['rft.epage'] = Array(Array('values' => Array($pageInfo[1])));
 					}
 				}
 			}

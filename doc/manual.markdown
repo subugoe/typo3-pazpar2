@@ -1,0 +1,178 @@
+# pazpar2 TYPO3 extension
+
+A TYPO3 extension for including a bibliographic metasearch.
+
+The extension only makes sense if you are running Indexdata’s [pazpar2][] bibliographics metasearch software on your server.
+
+2010-2011 by [Sven-S. Porst](http://earthlingsoft.net/ssp/), [SUB Göttingen][sub] <[porst@sub.uni-goettingen.de](mailto:ssp@sub.uni-goettingen.de?subject=pazpar2%20TYPO3%20Extension)>
+
+The extension includes the [flot][] JavaScript library for drawing graphs.
+
+Feel free to send in comments or contribute improvements. You can fork the extension’s [repository at github](https://github.com/ssp/typo3-pazpar2).
+
+
+
+## Introduction
+[pazpar2][] is a bibliographic metasearch software by Indexdata for querying multiple Solr, SRU and Z39.50 servers, normalising, merging and deduplicating the results and providing them for presentation.
+
+The pazpar2 TYPO3 extension provides two plug-ins for content elements that let the user initiate search queries and display the results:
+
+* _pazpar2_ offering a standard search interface with a search field and extended search options
+* _pazpar2neuerwerbungen_ which offers checkboxes, the state of which determines the search queries (this has been designed for the specific needs of SUB Göttingen, relies on the nkwgok TYPO3 extension and is unlikely to be useful elsewhere)
+
+You can see the extension in use at the Library of Anglo-American Culture site which uses the _pazpar2_ plug-in on its [home page](http://aac.sub.uni-goettingen.de/) and the _pazpar2neuerwerbungen_ plug-in on its [New Acquisitions page](http://aac.sub.uni-goettingen.de/new/).
+
+
+
+## Requirements
+To run the extension’s code, you need:
+
+* TYPO3 4.5.3
+* with Extbase/Fluid 1.3
+* the t3jquery extension injecting at least jQuery 1.6 into the pages
+
+For the pazpar2-neuerwerbungen plug-in to be useful you additionally need:
+
+* nkwgok extension
+* subject hierarchies that are children of the PPN »NE« imported into the nkwgok extension
+
+### pazpar2
+For searches to work and results to be displayed correctly you need
+
+* pazpar2 1.6.2 or above
+* … running at or proxied to the path /pazpar2/search.pz2 on your server (see [Indexdata’s instructions on how to proxy it there](http://www.indexdata.com/pazpar2/doc/installation.apache2proxy.html))
+* See below for more details on the assumptions the extension makes regarding pazpar2’s search key and metadata normalisation setup.
+
+
+
+
+## Setup
+Insert the pazpar2 [Neuerwerbungen] content element where you need it and make sure the pazpar2 Settings static include is added on the relevant pages.
+
+### Flexform
+Fields of the flexform for the content element in the backend offers the following options. The name of the corresponding TypoScript parameter is noted in [].
+
+* pazpar2 service ID [serviceID]: needs to be the name of a service set up on your pazpar2 server or empty if there is only a single unnamed service running
+* Google Books [useGoogleBooks]: Choose whether the extension should try to look up all records with ISBN and OCLC numbers on Google books once the full record is revealed and try to display the cover art and offer the book preview if possible. If this option is turned on, the plug-in will load and run a JavaScript from Google’s servers on the page the content element is inserted in.
+* Journals Online &amp; Print [useZDB]: Choose whether the extension should try to look up all records with ISSN numbers using ZDB’s Journals Online &amp; Print (JOP) service. If this option is turned on, the plug-in will load information about journal availability from the ZDB Proxy on your server(see the next option) to display the availability of the journal.
+* ZDB Proxy [ZDBIP]: You can set up two distinct proxies for the ZDB JOP service if you plan to use it. The one available at the path /zdb/ on your server should pass the user’s IP address to the ZDB JOP service, thus returning the journal availability for the user’s current location. The one available at /zdb-local/ will do the lookup for the server’s IP address – with the intention to provide availability information for the institution running the server. This option lets you pick which of the proxies will be used for the ZDB JOP lookup. [[Apache configuration file for setting up the proxies](https://raw.github.com/ssp/pazpar2-extras/master/fileadmin/apache/zdb.conf)]
+* Histogram [useHistogramForYearFacets]: The extension displays year facets if results from more than a few years are displayed. Choose whether the year facets should be displayed graphically using a histogram rather than as an (incomplete) list of year numbers in modern browsers. Activating this option will load the [flot][] JavaScript library from your server on the relevant pages.
+* Subject for pazpar2 Neuerwerbungen [neuerwerbungen-subjects]: A subject has to be picked in the popup menu if you want to use the pazpar2 Neuerwerbungen plug-in. The popup menu is populated using child elements of the PPN »NA« in the subject hierarchy of the nkwgok extension. This is probably useful for SUB Göttingen use only.
+
+### Typo Script
+In addition to the options exposed in the flexform, a number of additional options can be set using TypoScript in plugin.tx_pazpar2.settings. The default value is noted inside [] after the option name.
+
+* Search form:
+	* showSearchForm [1]: if 1, the search form is shown in the pazpar2 plug-in; turning off the search form still provides the pazpar2 search and result display capabilities which you may want to trigger from your own component
+	* triggeredByNKWGOKMenu [0]: if 1, search will be triggered by selections from menus displayed by the nkwgok extension (probably useful for SUB Göttingen setup only)
+	* allowExtendedSearch [1]: if 1, the link to show the extended search form is displayed
+	* mainSearchFieldPlaceholder [0]: HTML5 placeholder string to be put into the main search field; available options are: 0 -> blank, 1 -> Search Term, 2 -> additional Search term
+	* useSortMenu [0]: if 1 a HTML select element letting the user pick the sort order is included in the search form
+	* sortOrder [{1.fieldName = date \n 1.direction = descending \n 2.fieldName = author \n 2.direction = ascending \n 3.fieldName = title \n 3.direction = ascending}]
+* Results display:
+	* provideCOinSExport [1]: if 1, causes invisible [COinS](http://ocoins.info/) metadata to be inserted into the result lists. It will be used by [Zotero](http://www.zotero.org/) to automatically find bibliographics records displayed in the page. Note that Zotero 3 is the first version capable of discovering COinS data that are dynamically added to the page.
+	* exportFormats [{ris = 1\n bibtex = 1}]: an array with export format names as keys set to the value 1. Based on this list links to downloads of bibliographic metadata are added to the detail view of records. You can empty this array to remove the export links from the detail view. Permitted keys are: ris, bibtex, ris-inline and bibtex-inline for [RIS](http://www.refman.com/support/risformat_intro.asp) and BibTeX formats. The plain names cause a download of the file, the -inline name replace the current page with the bibliographic data.
+	* showKVKLink [1]: for records with an ISBN or media type book a link to the metasearch across German union catalogues in [Karlsruhe Virtual Catalogue](http://www.ubka.uni-karlsruhe.de/kvk.html) (KVK) is added along with the export links
+	* preferSUBOpac [0]: if 1, links to GVK catalogue pages are mapped to the SUB Göttingen Opac for people with 134.76.* IP addresses, to provide greater convenience for Göttingen user
+* included files:
+	* CSSPath [EXT:pazpar2/Resources/Public/pz2.css]: CSS file included to style the search form and search results
+	* pz2JSPath [EXT:pazpar2/Resources/Public/pz2.js]: Indexdata’s [pz2.js](http://git.indexdata.com/?p=pazpar2.git;a=blob_plain;f=js/pz2.js;hb=HEAD) library to communicate with the pazar2  service
+	* pz2-clientJSPath [EXT:pazpar2/Resources/Public/pz2-client.js]: JavaScript handling the user interaction and display of results; a lot of the customisation is in here
+	* flotJSPath [EXT:pazpar2/Resources/Public/flot/jquery.flot.js]: flot graphing library
+	* flotSelectionJSPath [EXT:pazpar2/Resources/Public/flot/jquery.flot.selection.js]: selection component of flot graphing library
+	* pz2-neuerwerbungenCSSPath [EXT:pazpar2/Resources/Public/pz2-neuerwerbungen.css]: Additional CSS file included if the pazpar2-neuerwerbungen plug-in is used
+	* pz2-neuerwerbungenJSPath [EXT:pazpar2/Resources/Public/pz2-neuerwerbungen.js]: Additional JavaScript included if the pazpar2-neuerwerbungen plug-in is used
+
+
+
+
+
+
+## pazpar2 Setup
+pazpar2 services used by the extesion need to have specific settings for the search keys as well as for the metadata they provide for the searches to work and the quality of the displayed data to be reasonable.
+
+### Search keys ###
+The search forms provided by pazpar2 use the following search keys which must be set up in the pazpar2 service:
+
+* term - for default search
+* fulltext - for fulltext/toc search (use same as term if not available)
+* title
+* journal - for journal title search
+* person
+* date
+* nel - month index required by pazpar2 Neuewerbungen only (required format: YYYYMM)
+
+### Metadata format ###
+The metadata expected by the extension to display results are based on the metadata fields created by Indexdata’s powerful [tmarc.xsl](http://git.indexdata.com/?p=pazpar2.git;a=blob_plain;f=etc/tmarc.xsl;hb=HEAD) style file for extracting information from Marc records. A few additions and changes to the standard output of that stylesheet have been made to improve the display quality.
+
+Fields used to display data:
+
+* date
+* medium
+* title
+* title-remainder
+* title-number-section
+* multivolume-title (not part of standard tmarc.xsl)
+* series-title
+* title-responsibility
+* author
+* other-person (not part of standard tmarc.xsl)
+* journal-title
+* journal-subpart
+* volume-number
+* issue-number
+* pages-number
+* isbn
+* issn
+* pissn (not part of standard tmarc.xsl)
+* eissn (not part of standard tmarc.xsl)
+* oclc-number
+* doi (not part of standard tmarc.xsl)
+* electronic-url
+* edition
+* publication-name
+* publication-place
+* physical extent
+* description
+* id
+* language - ISO 639-2/B language code (not part of standard tmarc.xsl), German and English language names are included in the JavaScript
+* abstract (not part of standard tmarc.xsl)
+* creator (used for Guide links)
+* catalogue-url (URL linking to the catalogue web page for that record, built using the stylesheets ard setup for the various targets.)
+
+For the 'medium' field, the supported types (with a localised name and icon) are:
+
+* article
+* audio-visual
+* book
+* electronic
+* multivolume (extended tmarc.xsl to recognise these)
+* journal
+* map
+* microform
+* music-score
+* recording
+* website (used for websites as found in SUB’s SSG-FI Guides, not coming from tmarc.xsl)
+* multiple (used for merged records of varying media types)
+
+To get a better idea of the general setup, take a look at [our setup files](https://github.com/ssp/pazpar2-SUB), particularly the [AAC service](https://github.com/ssp/pazpar2-SUB/blob/master/services/AAC.xml) and the [gbv-sru-neu target](https://github.com/ssp/pazpar2-SUB/blob/master/settings/gbv-sru-neu.xml). Some of [our stylesheets](https://github.com/ssp/pazpar2-SUB/tree/master/xsl) may be helpful as well, particularly those for [ISO 639-2 cleaning](https://raw.github.com/ssp/pazpar2-SUB/master/xsl/language-code-cleaner.xsl) and [ISO 639-1 to 639-2/B conversion](https://raw.github.com/ssp/pazpar2-SUB/master/xsl/iso-639-1-to-639-2b.xsl).
+
+
+
+
+## Bibliographic data export
+To create proper downloads these are created in a slightly involved way by sending the pazpar2 metadata back to server where the script Resources/Public/convert-pazpar2-record.php is run.
+
+Conversions done by that script use the stylesheets in Resources/Private/XSL. The conversion quality achieved by those scripts is somewhat limited on a syntactic level due to the inadequacies (RIS is defined to be [non-Unicode](http://www.refman.com/support/risformat_fields_02.asp) but we, like many others, send UTF-8 to accomodate non-Latin references as well) or complexities (getting BibTeX escaping right is a major effort [and occasionally undesirable as some mathematical sites includ TeX code which benefits from not being escaped] so the lazy compromise is to send UTF-8 as well).
+
+Support for additional formats can be added to the extension by adding a stylesheet to the Resources/Private/XSL folder, registering it for a format name in the Array the beginning of Resources/Public/convert-pazpar2-record.php and adding the display strings for that format to Resources/Public/pz2-client.js as well as to Resources/Private/Language/locallang.xml
+
+
+## Acknowledgements ##
+Many thanks go to [Indexdata](http://www.indexdata.com/) for their powerful pazpar2 software and quick bug fixes, to my colleague Ingo Pfennigstorf for his TYPO3 expertise and to [Henrik Cederblad](http://cederbladdesign.com/) who created the media type icons.
+
+
+
+[pazpar2]: http://www.indexdata.com/pazpar2/
+[sub]: http://www.sub.uni-goettingen.de/
+[flot]: http://code.google.com/p/flot/

@@ -39,6 +39,12 @@ function transform (&$errorMessage) {
 			'content-type' => 'application/x-bibtex',
 			'filename' => 'export.bib',
 			'disposition' => 'attachment'
+		),
+		'bibtex-inline' => Array(
+			'xsl' => 'pz2-to-bibtex.xsl',
+			'content-type' => 'application/x-bibtex',
+			'filename' => 'export.bib',
+			'disposition' => 'inline'
 		)
 	);
 	

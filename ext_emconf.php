@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "pazpar2".
 #
-# Auto generated 19-09-2011 09:55
+# Auto generated 19-09-2011 10:41
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -14,7 +14,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'title' => 'pazpar2',
 	'description' => 'Interface to indexdata’s pazpar2 metasearch middleware',
 	'category' => 'fe',
-	'version' => '0.9.0',
+	'version' => '1.0.0',
 	'state' => 'beta',
 	'author' => 'Sven-S. Porst',
 	'author_email' => 'porst@sub.uni-goettingen.de',

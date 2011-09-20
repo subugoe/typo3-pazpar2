@@ -27,8 +27,8 @@ You can see the extension in use at the Library of Anglo-American Culture site w
 ## Requirements
 To run the extension’s code, you need:
 
-* TYPO3 4.5.3
-* with Extbase/Fluid 1.3
+* TYPO3 ≥ 4.5.3
+* with Extbase/Fluid ≥ 1.3
 * the t3jquery extension injecting at least jQuery 1.6 into the pages
 
 For the pazpar2-neuerwerbungen plug-in to be useful you additionally need:
@@ -176,6 +176,11 @@ Many thanks go to [Indexdata](http://www.indexdata.com/) for their powerful pazp
 [pazpar2]: http://www.indexdata.com/pazpar2/
 [sub]: http://www.sub.uni-goettingen.de/
 [flot]: http://code.google.com/p/flot/
+
+
+## Version History ##
+*	1.0.1 (2011-09-20), add icon; fix problem with losing the user’s data after sending the form; preserve the fulltext setting
+*	1.0.0 (2011-09-19), initial release to TER
 
 
 ## License ##

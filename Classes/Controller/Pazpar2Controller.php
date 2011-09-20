@@ -84,6 +84,7 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 	public function indexAction () {
 		$this->addResourcesToHead();
 		$arguments = $this->request->getArguments();
+		$this->query->setQueryFromArguments($arguments);
 
 		$this->view->assign('extended', $arguments['extended']);
 		$this->view->assign('queryString', $this->query->getQueryString());
@@ -93,7 +94,6 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		$this->view->assign('queryStringDate', $this->query->getQueryStringDate());
 		if ($arguments['useJS'] != 'yes') {
 			$this->query->setServiceName($this->conf['serviceID']);
-			$this->query->setQueryFromArguments($arguments);
 			$this->query->setSortOrder($this->determineSortCriteria($arguments));
 			$totalResultCount = $this->query->run();
 			$this->view->assign('totalResultCount', $totalResultCount);

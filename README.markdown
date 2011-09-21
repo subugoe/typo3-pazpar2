@@ -31,23 +31,24 @@ To run the extension’s code, you need:
 * with Extbase/Fluid ≥ 1.3
 * the t3jquery extension injecting at least jQuery 1.6 into the pages
 
+### pazpar2
+For searches to work and results to be displayed correctly you need
+
+* pazpar2 ≥ 1.6.2
+* … running at or proxied to the path /pazpar2/search.pz2 on your server (see [Indexdata’s instructions on how to proxy it there](http://www.indexdata.com/pazpar2/doc/installation.apache2proxy.html))
+* See below for more details on the assumptions the extension makes regarding pazpar2’s search key and metadata normalisation setup.
+
+### pazpar2 Neuerwerbungen ###
 For the pazpar2-neuerwerbungen plug-in to be useful you additionally need:
 
 * nkwgok extension
 * subject hierarchies that are children of the PPN »NE« imported into the nkwgok extension
-
-### pazpar2
-For searches to work and results to be displayed correctly you need
-
-* pazpar2 1.6.2 or above
-* … running at or proxied to the path /pazpar2/search.pz2 on your server (see [Indexdata’s instructions on how to proxy it there](http://www.indexdata.com/pazpar2/doc/installation.apache2proxy.html))
-* See below for more details on the assumptions the extension makes regarding pazpar2’s search key and metadata normalisation setup.
-
+* if you want to provide RSS feeds for new acquisitions, a script accepting queries in the »q« parameter is expected at the path /opac.atom. See the [https://github.com/ssp/Opac-2-Atom Opac-2-Atom] project for an example script converting Göttingen’s Pica Opac output to Atom.
 
 
 
 ## Setup
-Insert the pazpar2 [Neuerwerbungen] content element where you need it and make sure the pazpar2 Settings static include is added on the relevant pages.
+Insert the pazpar2 [Neuerwerbungen] content element where you need it and make sure the pazpar2 Settings static include is added for the relevant pages.
 
 ### Flexform
 Fields of the flexform for the content element in the backend offers the following options. The name of the corresponding TypoScript parameter is noted in [].
@@ -86,7 +87,6 @@ In addition to the options exposed in the flexform, a number of additional optio
 	* flotSelectionJSPath [EXT:pazpar2/Resources/Public/flot/jquery.flot.selection.js]: selection component of flot graphing library
 	* pz2-neuerwerbungenCSSPath [EXT:pazpar2/Resources/Public/pz2-neuerwerbungen.css]: Additional CSS file included if the pazpar2-neuerwerbungen plug-in is used
 	* pz2-neuerwerbungenJSPath [EXT:pazpar2/Resources/Public/pz2-neuerwerbungen.js]: Additional JavaScript included if the pazpar2-neuerwerbungen plug-in is used
-
 
 
 
@@ -183,8 +183,9 @@ Many thanks go to [Indexdata](http://www.indexdata.com/) for their powerful pazp
 
 
 ## Version History ##
-*	1.0.1 (2011-09-20), add icon; fix problem with losing the user’s data after sending the form; preserve the fulltext setting
-*	1.0.0 (2011-09-19), initial release to TER
+*	1.0.2 (2011-09-21): add feed link to README; make Neuerwerbungen feed link optional; make fulltext checkbox in extended search form configurable; make date field in extended search form configurable; fix problem with passed parameters in Neuerwerbungen no-JS mode; make catalogue names localisable
+*	1.0.1 (2011-09-20): add icon; fix problem with losing the user’s data after sending the form; preserve the fulltext setting
+*	1.0.0 (2011-09-19): initial release to TER
 
 
 ## License ##

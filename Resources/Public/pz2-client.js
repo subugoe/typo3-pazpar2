@@ -1842,7 +1842,7 @@ function addExtendedSearchForLink (event) {
 
 	// move the controls
 	var controls = jQuery('.pz2-formControls', formContainer);
-	jQuery('.pz2-field-date').append(controls);
+	jQuery('.pz2-fieldContainer:last').append(controls);
 
 	// switch the link to a simple search link
 	jQuery(this).unbind().click(removeExtendedSearchForLink).empty().text(localise('einfache Suche'));

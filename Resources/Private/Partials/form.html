@@ -39,17 +39,19 @@
 						additionalAttributes="{placeholder: '{f:translate(key:\"form-extended-placeholder-person\")}'}"/>
 				</div>
 
-				<div class="pz2-fieldContainer pz2-field-date">
-					<label class="pz2-textFieldLabel" for="pz2-field-date"><f:translate key="form-extended-label-date" >date</f:translate></label>
-					<f:form.textbox id="pz2-field-date" class="pz2-searchField" name="queryStringDate" value="{queryStringDate}"
-						additionalAttributes="{placeholder: '{f:translate(key:\"form-extended-placeholder-date\")}'}"/>
-					<f:if condition="{extended}==1">
-						<span class="pz2-formControls">
-							<f:form.submit class="pz2-submitButton" value="{f:translate(key:'Find')}"/>
-							<f:link.action arguments="{extended: 0}" class="pz2-extendedLink"><f:translate key="einfache Suche"/></f:link.action>
-						</span>
-					</f:if>
-				</div>
+				<f:if condition="{conf.dateSearch}==1">
+					<div class="pz2-fieldContainer pz2-field-date">
+						<label class="pz2-textFieldLabel" for="pz2-field-date"><f:translate key="form-extended-label-date" >date</f:translate></label>
+						<f:form.textbox id="pz2-field-date" class="pz2-searchField" name="queryStringDate" value="{queryStringDate}"
+							additionalAttributes="{placeholder: '{f:translate(key:\"form-extended-placeholder-date\")}'}"/>
+						<f:if condition="{extended}==1">
+							<span class="pz2-formControls">
+								<f:form.submit class="pz2-submitButton" value="{f:translate(key:'Find')}"/>
+								<f:link.action arguments="{extended: 0}" class="pz2-extendedLink"><f:translate key="einfache Suche"/></f:link.action>
+							</span>
+						</f:if>
+					</div>
+				</f:if>
 			</div>
 
 			<f:if condition="{extended}">

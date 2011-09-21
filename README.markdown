@@ -68,6 +68,7 @@ In addition to the options exposed in the flexform, a number of additional optio
 	* allowExtendedSearch [1]: if 1, the link to show the extended search form is displayed
 	* fulltextSearch [2]: configure checkbox to do full text search in the extended search form; 0 -> not shown, 1 -> labelled for full text search, 2 -> labelled for table of contents search
 	* journalTitleOnlySearch [1]: if 1, the checkbox to search journal titles only is displayed in the extended search form
+	* dateSearch [1]: if 1, the date field is displayed in the extended search form
 	* mainSearchFieldPlaceholder [0]: HTML5 placeholder string to be put into the main search field; available options are: 0 -> blank, 1 -> Search Term, 2 -> additional Search term
 	* useSortMenu [0]: if 1 a HTML select element letting the user pick the sort order is included in the search form
 	* sortOrder [{1.fieldName = date \n 1.direction = descending \n 2.fieldName = author \n 2.direction = ascending \n 3.fieldName = title \n 3.direction = ascending}]

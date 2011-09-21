@@ -831,7 +831,13 @@ private function catalogueLink ($locationAll) {
 		$linkElement->setAttribute('class', 'pz2-detail-catalogueLink');
 		$linkTitle = Tx_Extbase_Utility_Localization::translate('Im Katalog ansehen', 'Pazpar2');
 		$linkElement->setAttribute('title', $linkTitle);
-		$linkElement->appendChild($this->doc->createTextNode($targetName));
+		/* Try to localise catalogue name, fall back to original target name
+			if no localisation is available */
+		$linkText = Tx_Extbase_Utility_Localization::translate($targetName, 'Pazpar2');
+		if ($linkText === Null) {
+			$linkText = $targetName;
+		}
+		$linkElement->appendChild($this->doc->createTextNode($linkText));
 	}
 
 	return $linkElement;

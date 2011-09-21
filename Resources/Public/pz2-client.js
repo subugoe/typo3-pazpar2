@@ -1356,7 +1356,10 @@ function facetListForType (type, preferOriginalFacets) {
 
 			// Facet Display Name
 			var facetDisplayName = facetName;
-			if (type === 'language') {
+			if (type === 'xtargets') {
+				facetDisplayName = localise(facetName, catalogueNames);
+			}
+			else if (type === 'language') {
 				facetDisplayName = localise(facetName, languageNames);
 			}
 			else if (type === 'medium') {
@@ -1655,7 +1658,7 @@ function my_onbytarget(data) {
 		tbody.appendChild(tr);
 		td = document.createElement('th');
 		tr.appendChild(td);
-		td.appendChild(document.createTextNode(data[i].name));
+		td.appendChild(document.createTextNode(localise(data[i].name, catalogueNames)));
 		td.title = data[i].id;
 		td.setAttribute('headers', 'pz2-target-name');
 		td = document.createElement('td');
@@ -3099,7 +3102,7 @@ function renderDetails(recordID) {
 				}
 			}
 
-			var targetName = location['@name'];
+			var targetName = localise(location['@name'], catalogueNames);
 			if (catalogueURL && targetName) {
 				var linkElement = document.createElement('a');
 				linkElement.setAttribute('href', catalogueURL);
@@ -3634,6 +3637,19 @@ var mediaNames = {
 		'multiple': 'Mixed Media Types'
 	}
 };
+
+
+/*	Localised Catalogue names
+*/
+var catalogueNames = {
+	'de': {
+
+	},
+	'en': {
+		'Geschichte Aufsätze': 'Essays: History',
+		'Anglistik Aufsätze': 'Essays: Literature'
+	}
+}
 
 
 

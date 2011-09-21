@@ -120,6 +120,7 @@
 			<label index="link-description-TOC">Inhaltsverzeichnis</label>
 			<label index="link-description-Volltext">Volltext</label>
 
+			<!-- Catalogue Names which need localisation -->
 		</languageKey>
 
 
@@ -233,7 +234,11 @@
 			<label index="link-description-Table of contents only">Table of Contents</label>
 			<label index="link-description-TOC">Table of Contents</label>
 			<label index="link-description-Volltext">Full Text</label>
-			
+
+			<!-- Catalogue Names which need localisation -->
+			<label index="Geschichte Aufsätze">Essays: History</label>
+			<label index="Anglistik Aufsätze">Essays: Literature</label>
+
 		</languageKey>
 
 	</data>

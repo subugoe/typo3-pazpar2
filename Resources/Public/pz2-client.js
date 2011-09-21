@@ -72,7 +72,6 @@ var germanTerms = {
 	'detail-label-verfügbarkeit': 'Verfügbarkeit',
 	'elektronisch': 'digital',
 	'gedruckt': 'gedruckt',
-	'detail-label-id': 'PPN',
 	'Ausgabe': 'Ausgabe',
 	/* Google Books status Strings from
 		http://code.google.com/intl/de-DE/apis/books/examples/translated-branding-elements.html	*/
@@ -177,7 +176,6 @@ var englishTerms = {
 	'detail-label-verfügbarkeit': 'Availability',
 	'elektronisch': 'electronic',
 	'gedruckt': 'printed',
-	'detail-label-id': 'PPN',
 	'Ausgabe': 'Edition',
 	/* Google Books status Strings from
 		http://code.google.com/intl/de-DE/apis/books/examples/translated-branding-elements.html	*/

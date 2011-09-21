@@ -61,6 +61,7 @@ plugin.tx_pazpar2 {
 		showSearchForm = 1
 		mainSearchFieldPlaceholder = 0
 		allowExtendedSearch = 1
+		fulltextSearch = 2
 	}
 }
 

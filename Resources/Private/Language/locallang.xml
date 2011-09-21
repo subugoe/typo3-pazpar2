@@ -15,7 +15,8 @@
 			<label index="form-main-placeholder-2">zusätzlicher Suchbegriff</label>
 			<!-- extended search form -->
 			<label index="form-extended-label-all">Alle Felder</label>
-			<label index="form-extended-label-fulltext">auch in Inhaltsverzeichnissen</label>
+			<label index="form-extended-label-fulltext-1">Volltextsuche</label>
+			<label index="form-extended-label-fulltext-2">auch in Inhaltsverzeichnissen</label>
 			<label index="form-extended-label-title">Titel</label>
 			<label index="form-extended-label-journalOnly">nur Zeitschriftentitel</label>
 			<label index="form-extended-label-person">Person, Autor</label>
@@ -128,7 +129,8 @@
 			<label index="form-main-placeholder-2">add a search term</label>
 			<!-- pazpar2 extended search form -->
 			<label index="form-extended-label-all">All Fields</label>
-			<label index="form-extended-label-fulltext">include tables of contents</label>
+			<label index="form-extended-label-fulltext-1">full text search</label>
+			<label index="form-extended-label-fulltext-2">include tables of contents</label>
 			<label index="form-extended-label-title">Title</label>
 			<label index="form-extended-label-journalOnly">journal titles only</label>
 			<label index="form-extended-label-person">Person, Author</label>

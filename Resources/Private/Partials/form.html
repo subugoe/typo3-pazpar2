@@ -12,10 +12,12 @@
 					</f:if>
 				</span>
 			</f:if>
-			<span class="pz2-checkbox pz2-fulltext">
-				<f:form.checkbox id="pz2-checkbox-fulltext" name="querySwitchFulltext" value="1" checked="{querySwitchFulltext}"/>
-				<label for="pz2-checkbox-fulltext"><f:translate key="form-extended-label-fulltext"/></label>
-			</span>
+			<f:if condition="{conf.fulltextSearch} > 0">
+				<span class="pz2-checkbox pz2-fulltext">
+					<f:form.checkbox id="pz2-checkbox-fulltext" name="querySwitchFulltext" value="1" checked="{querySwitchFulltext}"/>
+					<label for="pz2-checkbox-fulltext"><f:translate key="form-extended-label-fulltext-{conf.fulltextSearch}"/></label>
+				</span>
+			</f:if>
 		</div>
 
 		<f:if condition="{conf.allowExtendedSearch}==1">

@@ -66,6 +66,7 @@ In addition to the options exposed in the flexform, a number of additional optio
 	* showSearchForm [1]: if 1, the search form is shown in the pazpar2 plug-in; turning off the search form still provides the pazpar2 search and result display capabilities which you may want to trigger from your own component
 	* triggeredByNKWGOKMenu [0]: if 1, search will be triggered by selections from menus displayed by the nkwgok extension (probably useful for SUB Göttingen setup only)
 	* allowExtendedSearch [1]: if 1, the link to show the extended search form is displayed
+	* fulltextSearch [2]: configure checkbox to do full text search in the extended search form; 0 -> not shown, 1 -> labelled for full text search, 2 -> labelled for table of contents search
 	* mainSearchFieldPlaceholder [0]: HTML5 placeholder string to be put into the main search field; available options are: 0 -> blank, 1 -> Search Term, 2 -> additional Search term
 	* useSortMenu [0]: if 1 a HTML select element letting the user pick the sort order is included in the search form
 	* sortOrder [{1.fieldName = date \n 1.direction = descending \n 2.fieldName = author \n 2.direction = ascending \n 3.fieldName = title \n 3.direction = ascending}]

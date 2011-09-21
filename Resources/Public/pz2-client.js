@@ -47,6 +47,7 @@ var germanTerms = {
 	'facet-title-subject': 'Themengebiete',
 	'facet-title-filterDate': 'Jahre',
 	// Detail display
+	'Im Katalog ansehen': 'Im Katalog ansehen.',
 	'detail-label-title': 'Titel',
 	'detail-label-author': 'Autor',
 	'detail-label-author-plural': 'Autoren',
@@ -91,7 +92,6 @@ var germanTerms = {
 	'deutschlandweit im KVK suchen': 'deutschlandweit im KVK suchen',
 	'&lang=de': '&lang=de',
 	// Short Display
-	'Ansehen und Ausleihen bei:': 'Ansehen und Ausleihen bei:',
 	'von': 'von',
 	'In': 'In',
 	// General Information
@@ -152,6 +152,7 @@ var englishTerms = {
 	'facet-title-subject': 'Subjects',
 	'facet-title-filterDate': 'Years',
 	// Detail display
+	'Im Katalog ansehen': 'View in catalogue.',
 	'detail-label-title': 'Title',
 	'detail-label-author': 'Author',
 	'detail-label-author-plural': 'Authors',
@@ -185,7 +186,6 @@ var englishTerms = {
 	'Vorschau schließen': 'Close Preview',
 	'Umschlagbild': 'Book Cover',
 	// Short Display
-	'Ansehen und Ausleihen bei:': 'View catalogue record at:',
 	'von': 'of',
 	'In': 'In',
 	// Download/Extra Links
@@ -3105,7 +3105,7 @@ function renderDetails(recordID) {
 				linkElement.setAttribute('href', catalogueURL);
 				turnIntoNewWindowLink(linkElement);
 				jQuery(linkElement).addClass('pz2-detail-catalogueLink')
-				var linkTitle = localise('Ansehen und Ausleihen bei:') + ' ' + targetName;
+				var linkTitle = localise('Im Katalog ansehen');
 				linkElement.title = linkTitle;
 				linkElement.appendChild(document.createTextNode(targetName));
 			}

@@ -829,7 +829,7 @@ private function catalogueLink ($locationAll) {
 		$linkElement->setAttribute('href', $catalogueURL);
 		$this->turnIntoNewWindowLink($linkElement);
 		$linkElement->setAttribute('class', 'pz2-detail-catalogueLink');
-		$linkTitle = Tx_Extbase_Utility_Localization::translate('Ansehen und Ausleihen bei:', 'Pazpar2') . ' ' . $targetName;
+		$linkTitle = Tx_Extbase_Utility_Localization::translate('Im Katalog ansehen', 'Pazpar2');
 		$linkElement->setAttribute('title', $linkTitle);
 		$linkElement->appendChild($this->doc->createTextNode($targetName));
 	}

@@ -67,5 +67,6 @@ plugin.tx_pazpar2 {
 plugin.tx_pazpar2_pazpar2neuerwerbungen.settings {
 	pz2-neuerwerbungenJSPath = EXT:pazpar2/Resources/Public/pz2-neuerwerbungen.js
 	pz2-neuerwerbungenCSSPath = EXT:pazpar2/Resources/Public/pz2-neuerwerbungen.css
-	neuerwerbungen-subjects = 
+	neuerwerbungen-subjects =
+	useAtomFeed = 1
 }

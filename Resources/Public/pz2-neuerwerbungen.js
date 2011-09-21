@@ -132,33 +132,37 @@ function saveFormStateInCookie (form) {
  */
 function runSearchForForm (form) {
 	setSortCriteriaFromString('date-d--author-a--title-a');
+	var jAtomLink = jQuery('.pz2-atomLink', form);
 	var linkElement = document.getElementById('pz2neuerwerbungen-atom-linkElement');
 
 	var query = searchQueryWithEqualsAndWildcard(form, '=', '');
 	if (query) {
 		my_paz.search(query.replace('*', '?'), 2000, null, null);
 
-		var myAtomURL = atomURL(form);
-		// Update clickable link to Atom feed.
-		jQuery('.pz2-atomLink', form).attr('href', myAtomURL);
+		// Only manipulate Atom link if it is present already.
+		if (jAtomLink.length > 0) {
+			var myAtomURL = atomURL(form);
+			// Update clickable link to Atom feed.
+			jAtomLink.attr('href', myAtomURL);
 
-		// Add Atom <link> element if it is not present, then set the link.
-		if (!linkElement) {
-			linkElement = document.createElement('link');
-			linkElement.setAttribute('id', 'pz2neuerwerbungen-atom-linkElement');
-			linkElement.setAttribute('rel', 'alternate');
-			linkElement.setAttribute('type', 'application/atom+xml');
-			document.head.appendChild(linkElement);
+			// Add Atom <link> element if it is not present, then set the link.
+			if (!linkElement) {
+				linkElement = document.createElement('link');
+				linkElement.setAttribute('id', 'pz2neuerwerbungen-atom-linkElement');
+				linkElement.setAttribute('rel', 'alternate');
+				linkElement.setAttribute('type', 'application/atom+xml');
+				document.head.appendChild(linkElement);
+			}
+			linkElement.setAttribute('href', myAtomURL);
 		}
-		linkElement.setAttribute('href', myAtomURL);
 	}
 	else {
 		// There is no query: Remove the clickable Atom link and the Atom <link> element.
-		jQuery('.pz2-atomLink', form).removeAttr('href');
+		jAtomLink.removeAttr('href');
 		if (linkElement) {
 			linkElement.parentNode.removeChild(linkElement);
 		}
-		
+
 		/* Manually set my_paz’ currQuery to the empty string. We can’t pass the empty
 			to my_paz.search because it throws an error. */
 		my_paz.currQuery = undefined;

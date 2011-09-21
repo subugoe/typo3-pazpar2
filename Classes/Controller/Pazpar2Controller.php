@@ -69,6 +69,7 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		}
 
 		$this->query = t3lib_div::makeInstance('Tx_Pazpar2_Domain_Model_Query');
+		$this->query->setQueryFromArguments($this->request->getArguments());
 	}
 
 
@@ -84,7 +85,6 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 	public function indexAction () {
 		$this->addResourcesToHead();
 		$arguments = $this->request->getArguments();
-		$this->query->setQueryFromArguments($arguments);
 
 		$this->view->assign('extended', $arguments['extended']);
 		$this->view->assign('queryString', $this->query->getQueryString());

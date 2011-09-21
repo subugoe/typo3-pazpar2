@@ -62,6 +62,7 @@ plugin.tx_pazpar2 {
 		mainSearchFieldPlaceholder = 0
 		allowExtendedSearch = 1
 		fulltextSearch = 2
+		journalTitleOnlySearch = 1
 	}
 }
 

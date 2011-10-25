@@ -2047,10 +2047,12 @@ function toggleDetails (prefixRecId) {
 	var recordID = recordIDForHTMLID(recordIDHTML);
 	var record = hitList[recordID];
 	var detailsElement = document.getElementById('det_' + recordIDHTML);
+	var extraLinks = jQuery('.pz2-extraLinks', record.detailsDiv);
 	var parent = document.getElementById('recdiv_'+ recordIDHTML);
 
 	if (record.detailsDivVisible) {
 		// Detailed record information is present: remove it
+		extraLinks.fadeOut('fast');
 		jQuery(detailsElement).slideUp('fast');
 		record.detailsDivVisible = false;
 		jQuery(parent).removeClass('pz2-detailsVisible');
@@ -2067,11 +2069,14 @@ function toggleDetails (prefixRecId) {
 			parent.appendChild(record.detailsDiv);
 		}
 
+		extraLinks.hide();
 		if (!jQuery.browser.msie || jQuery.browser.version > 7) {
 			jQuery(record.detailsDiv).slideDown('fast');
+			extraLinks.fadeIn('fast');
 		}
 		else {
 			jQuery(record.detailsDiv).show();
+			extraLinks.show();
 		}
 
 		record.detailsDivVisible = true;

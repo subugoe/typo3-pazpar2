@@ -150,13 +150,16 @@ private function appendInfoToContainer ($info, $container) {
 
 /**
  * Add a target attribute to open in our target window and add a note
- * to the title about this fact.
- * The link’s title element should be set before calling this function.
+ * to the title as well as class about this fact.
+ * The link’s title and class elements should be set before calling this method.
  * @param DOMElement $link
  */
 private function turnIntoNewWindowLink ($link) {
 	if ($link) {
 		$link->setAttribute('target', 'pz2-linkTarget');
+		$oldClass = $link->getAttribute('class');
+		$newClass = trim($oldClass . ' pz2-newWindowLink');
+		$link->setAttribute('class', $newClass);
 
 		$newTitle = Tx_Extbase_Utility_Localization::translate('Erscheint in separatem Fenster.', 'Pazpar2');
 		if ($link->hasAttribute('title')) {
@@ -827,8 +830,8 @@ private function catalogueLink ($locationAll) {
 	if ($catalogueURL && $targetName) {
 		$linkElement = $this->doc->createElement('a');
 		$linkElement->setAttribute('href', $catalogueURL);
-		$this->turnIntoNewWindowLink($linkElement);
 		$linkElement->setAttribute('class', 'pz2-detail-catalogueLink');
+		$this->turnIntoNewWindowLink($linkElement);
 		$linkTitle = Tx_Extbase_Utility_Localization::translate('Im Katalog ansehen', 'Pazpar2');
 		$linkElement->setAttribute('title', $linkTitle);
 		/* Try to localise catalogue name, fall back to original target name

@@ -411,6 +411,7 @@ var appendInfoToContainer = function (info, container) {
 function turnIntoNewWindowLink (link) {
 	if (link) {
 		link.setAttribute('target', 'pz2-linkTarget');
+		jQuery(link).addClass('pz2-newWindowLink');
 
 		var newTitle = localise('Erscheint in separatem Fenster.');
 		if (link.title) {
@@ -879,7 +880,7 @@ function display () {
 			}
 			
 			// format info
-			if (location['md-medium'][0] == 'article') {
+			if (location['md-medium'] && location['md-medium'][0] == 'article') {
 				coinsData['rft_val_fmt'] = ['info:ofi/fmt:kev:mtx:journal'];
 				coinsData['rft.genre'] = ['article'];
 				coinsData['rft.atitle'] = [title];
@@ -904,11 +905,11 @@ function display () {
 			else {
 				coinsData['rft_val_fmt'] = ['info:ofi/fmt:kev:mtx:book'];
 				coinsData['rft.btitle'] = [title];
-				if (location['md-medium'][0] == 'book')  {
+				if (location['md-medium'] && location['md-medium'][0] == 'book')  {
 					coinsData['rft.genre'] = ['book'];
 				}
 				else {
-				coinsData['rft.genre'] = ['document'];
+					coinsData['rft.genre'] = ['document'];
 				}
 			}
 			

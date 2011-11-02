@@ -683,7 +683,9 @@ private function URLSort ($a, $b) {
 	else if (!$a['attrs'] && $b['attrs']) {
 		return 1;
 	}
-	return 0;
+	else {debugster($a);
+		return $a['attrs']['originalPosition'] - $b['attrs']['originalPosition'];
+	}
 }
 
 
@@ -700,7 +702,8 @@ private function cleanURLList ($location, $result) {
 	if ($URLs) {
 		// Figure out which URLs are duplicates and collect indexes of those to remove.
 		$indexesToRemove = Array();
-		foreach ($URLs as $URLIndex => $URLInfo) {
+		foreach ($URLs as $URLIndex => &$URLInfo) {
+			$URLInfo['attrs']['originalPosition'] = $URLIndex;
 			$URL = $URLInfo['values'][0];
 
 			// Check for duplicates in the electronic-urls field.

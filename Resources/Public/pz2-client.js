@@ -2972,6 +2972,7 @@ function renderDetails(recordID) {
 					var indexesToRemove = {};
 					for (var URLIndex = 0; URLIndex < URLs.length; URLIndex++) {
 						var URLInfo = URLs[URLIndex];
+						URLInfo.originalPosition = URLIndex;
 						var URL = URLInfo;
 						if (typeof(URLInfo) === 'object' && URLInfo['#text']) {
 							URL = URLInfo['#text'];
@@ -3027,7 +3028,9 @@ function renderDetails(recordID) {
 							else if (typeof(a) !== 'object' && typeof(b) === 'object') {
 								return 1;
 							}
-							return 0;
+							else {
+								return a.originalPosition - b.originalPosition;
+							}
 						}
 					);
 				}

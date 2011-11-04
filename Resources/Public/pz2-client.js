@@ -1954,7 +1954,9 @@ function trackPiwik (action, info) {
 		if (info) {
 			pageURL += '/' + info;
 		}
-		piwikTracker.trackLink(pageURL, 'link');
+		piwikTracker.setCustomUrl(pageURL);
+		piwikTracker.trackPageView('pazpar2 action');
+		piwikTracker.setCustomUrl(document.URL);
 	}
 }
 

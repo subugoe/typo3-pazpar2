@@ -206,7 +206,7 @@ pz2.prototype =
                                 context.keepAlive
                             );
                         if ( context.initCallback )
-                            context.initCallback();
+                            context.initCallback(data);
                     }
                     else
                         context.throwError('Init failed. Malformed WS resonse.',

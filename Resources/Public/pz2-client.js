@@ -103,6 +103,7 @@ var germanTerms = {
 	'Error indicator': '\u2022',
 	'Bei der Übertragung von Daten aus # der abgefragten Kataloge ist ein Fehler aufgetreten.': '\u2022: Bei der Übertragung von Daten aus # der abgefragten Kataloge ist ein Fehler aufgetreten.',
 	'In diesem Katalog gibt es noch # weitere Treffer.': 'In diesem Katalog gibt es noch # weitere Treffer, die wir nicht herunterladen und hier anzeigen können. Bitte verwenden Sie einen spezifischeren Suchbegriff, um die Trefferzahl zu reduzieren. Oder suchen Sie direkt im Katalog.',
+	'Not all databases are active.': 'Von Ihrem aktuellen Internetzugang haben sie nicht Zugriff auf alle Datenbanken. Aus einem deutschen Universitätsnetzwerk könnte Ihre Abfrage zu zusätzlichen Ergebnissen führen.',
 	// Pager
 	'Vorige Trefferseite anzeigen': 'Vorige Trefferseite anzeigen',
 	'Nächste Trefferseite anzeigen': 'Nächste Trefferseite anzeigen',
@@ -206,6 +207,7 @@ var englishTerms = {
 	'...': '\u2026',
 	'Error indicator': '\u2022',
 	'In diesem Katalog gibt es noch # weitere Treffer.': 'There are # additional results available in this catalogue which we cannot download and display. Please use a more specific search query.',
+	'Not all databases are active.': 'You do not have permission to access all catalogues at your current location. Please run the search from a German university network for more complete results.',
 	// Pager
 	'Vorige Trefferseite anzeigen': 'Show next page of results',
 	'Nächste Trefferseite anzeigen': 'Show previous page of results',
@@ -319,10 +321,12 @@ my_paz = new pz2( {"onshow": my_onshow,
 
 
 
-// some state vars
+// Status variables
 var domReadyFired = false;
 var pz2Initialised = false;
 var pageLanguage = undefined;
+var institutionName = undefined;
+var allTargetsActive = true;
 var curPage = 1;
 var recPerPage = 100;
 var fetchRecords = 1500;
@@ -371,10 +375,23 @@ var preferSUBOpac = false;
 /*	my_oninit
 	Callback for pz2.js called when initialisation is complete.
 */
-function my_oninit() {
+function my_oninit(data) {
 	my_paz.stat();
 	my_paz.bytarget();
 	pz2Initialised = true;
+	if (data) {
+		var allServersTags = data.getElementsByTagName('allServers');
+		if (allServersTags.length > 0) {
+			allTargetsActive = (allServersTags[0].textContent == 1);
+		}
+		var institutionTags = data.getElementsByTagName('institution');
+		if (institutionTags.length > 0) {
+			var institution = institutionTags[0].textContent;
+			if (institution) {
+				institutionName = institution;
+			}
+		}
+	}
 	triggerSearchForForm(null);
 }
 
@@ -1153,6 +1170,9 @@ function updatePagers () {
 					infoString += localise('Error indicator');
 					var errorMessage = localise('Bei der Übertragung von Daten aus # der abgefragten Kataloge ist ein Fehler aufgetreten.');
 					titleText.push(errorMessage.replace('#', hasError.length));
+				}
+				if (allTargetsActive !== true) {
+					titleText.push(localise('Not all databases are active.'));
 				}
 				jRecordCount.attr('title', titleText.join('\n'));
 
@@ -1955,7 +1975,7 @@ function trackPiwik (action, info) {
 			pageURL += '/' + info;
 		}
 		piwikTracker.setCustomUrl(pageURL);
-		piwikTracker.trackPageView('pazpar2 action');
+		piwikTracker.trackPageView('pazpar2: ' + action);
 		piwikTracker.setCustomUrl(document.URL);
 	}
 }

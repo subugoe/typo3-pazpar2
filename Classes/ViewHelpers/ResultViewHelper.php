@@ -683,7 +683,7 @@ private function URLSort ($a, $b) {
 	else if (!$a['attrs'] && $b['attrs']) {
 		return 1;
 	}
-	else {debugster($a);
+	else {
 		return $a['attrs']['originalPosition'] - $b['attrs']['originalPosition'];
 	}
 }

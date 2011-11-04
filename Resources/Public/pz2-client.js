@@ -1823,6 +1823,7 @@ function triggerSearchForForm (form, additionalQueryTerms) {
 			my_paz.search(searchTerm, fetchRecords, curSort, curFilter);
 			curSearchTerm = searchTerm;
 			resetPage();
+			trackPiwik('search', searchTerm);
 		}
 	}
 }
@@ -1850,6 +1851,7 @@ function addExtendedSearchForLink (event) {
 	jQuery(this).unbind().click(removeExtendedSearchForLink).empty().text(localise('einfache Suche'));
 	jQuery('.pz2-extraFields').show();
 
+	trackPiwik('extendedsearch/show');
 	return false;
 }
 
@@ -1878,6 +1880,7 @@ function removeExtendedSearchForLink (event) {
 	// remove extended search fields
 	jQuery('.pz2-extraFields', formContainer).hide();
 
+	trackPiwik('extendedsearch/hide');
 	return false;
 }
 
@@ -1940,6 +1943,23 @@ function loadSelectsFromForm (form) {
 
 
 
+/*	trackPiwik
+	Logs a user action with Piwik if it is available.
+	inputs:	action - string of the user’s action, possibly in the style of a Unix file path
+			info - string with additional information regarding the action [optional]
+*/
+function trackPiwik (action, info) {
+	if (piwikTracker) {
+		var pageURL = document.URL.replace(/\/$/,'') + '/pazpar2/' + action;
+		if (info) {
+			pageURL += '/' + info;
+		}
+		piwikTracker.trackLink(pageURL, 'link');
+	}
+}
+
+
+
 /*	limitResults
 	Adds a filter for term for the data of type kind. Then redisplays.
 	input:	* kind - string with name of facet type
@@ -1958,6 +1978,8 @@ function limitResults(kind, term) {
 	curPage = 1;
 	updateAndDisplay();
 	updateFacetLists();
+
+	trackPiwik('facet/limit', kind);
 }
 
 
@@ -1989,6 +2011,8 @@ function delimitResults(kind, term) {
 		updateAndDisplay();
 		updateFacetLists();
 	}
+
+	trackPiwik('facet/delimit', kind);
 }
 
 
@@ -2001,6 +2025,7 @@ function delimitResults(kind, term) {
 function showPage (pageNum) {
 	curPage = Math.min( Math.max(0, pageNum), Math.ceil(displayHitList.length / recPerPage) );
 	display();
+	trackPiwik('page', pageNum);
 }
 
 
@@ -2032,6 +2057,7 @@ function toggleStatus() {
 	var jTargetView = jQuery('#pz2-targetView');
 	jQuery('#pazpar2 .pz2-recordCount').after(jTargetView);
 	jTargetView.slideToggle('fast');
+	trackPiwik('status/toggle');
 	return false;
 }
 
@@ -2057,6 +2083,7 @@ function toggleDetails (prefixRecId) {
 		jQuery(detailsElement).slideUp('fast');
 		record.detailsDivVisible = false;
 		jQuery(parent).removeClass('pz2-detailsVisible');
+		trackPiwik('details/hide');
 	}
 	else {
 		// Create detail view if it doesn’t exist yet.
@@ -2082,6 +2109,7 @@ function toggleDetails (prefixRecId) {
 
 		record.detailsDivVisible = true;
 		jQuery(parent).addClass('pz2-detailsVisible');
+		trackPiwik('details/show');
 	}
 }
 

@@ -3395,6 +3395,7 @@ function renderDetails(recordID) {
 					var labelText = labelFormat.replace(/\*/, buttonText);
 					submitButton.setAttribute('title', labelText);
 				}
+				submitButton.onclick = new Function('trackPiwik("export/' + exportFormat + '"); return true;');
 			}
 
 			return form;

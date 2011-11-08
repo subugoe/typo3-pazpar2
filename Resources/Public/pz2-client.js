@@ -436,6 +436,10 @@ function turnIntoNewWindowLink (link) {
 			newTitle = oldTitle + ' (' + newTitle + ')';
 		}
 		link.title = newTitle;
+
+		if (piwikTracker) {
+			piwikTracker.addListener(link);
+		}
 	}
 }
 

@@ -2858,7 +2858,7 @@ function renderDetails(recordID) {
 				closeBoxLink.setAttribute('href', '#');
 				
 				
-				closeBoxLink.onclick = new Function('javascript:jQuery("#' + previewContainerDivName + '").hide(200);return false;');
+				closeBoxLink.onclick = new Function('javascript:jQuery("#' + previewContainerDivName + '").hide(200); trackPiwik("googlebooks/close"); return false;');
 				closeBoxLink.appendChild(document.createTextNode(localise('Vorschau schließen')));
 
 				previewDiv = document.createElement('div');
@@ -2871,6 +2871,8 @@ function renderDetails(recordID) {
 
 			var viewer = new google.books.DefaultViewer(previewDiv);
 			viewer.load(this.href);
+
+			trackPiwik('googlebooks/open');
 
 			return false;
 		}

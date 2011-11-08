@@ -137,7 +137,8 @@ function runSearchForForm (form) {
 
 	var query = searchQueryWithEqualsAndWildcard(form, '=', '');
 	if (query) {
-		my_paz.search(query.replace('*', '?'), 2000, null, null);
+		query = query.replace('*', '?');
+		my_paz.search(query, 2000, null, null);
 
 		// Only manipulate Atom link if it is present already.
 		if (jAtomLink.length > 0) {
@@ -155,6 +156,8 @@ function runSearchForForm (form) {
 			}
 			linkElement.setAttribute('href', myAtomURL);
 		}
+
+		trackPiwik('search', query);
 	}
 	else {
 		// There is no query: Remove the clickable Atom link and the Atom <link> element.

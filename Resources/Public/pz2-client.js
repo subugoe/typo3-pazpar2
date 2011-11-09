@@ -437,7 +437,7 @@ function turnIntoNewWindowLink (link) {
 		}
 		link.title = newTitle;
 
-		if (piwikTracker) {
+		if (typeof(piwikTracker) !== 'undefined') {
 			piwikTracker.addListener(link);
 		}
 	}
@@ -1973,7 +1973,7 @@ function loadSelectsFromForm (form) {
 			info - string with additional information regarding the action [optional]
 */
 function trackPiwik (action, info) {
-	if (piwikTracker) {
+	if (typeof(piwikTracker) !== 'undefined') {
 		var pageURL = document.URL.replace(/\/$/,'') + '/pazpar2/' + action;
 		if (info) {
 			pageURL += '/' + info;

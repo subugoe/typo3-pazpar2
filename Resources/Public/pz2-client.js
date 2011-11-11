@@ -532,7 +532,7 @@ function displayLists (list) {
 					else if (facetType === 'filterDate' && filterValue.constructor == Object) {
 						matchesEverythingNotTheDate = true;
 						for (var dateIndex in record['md-filterDate']) {
-							var recordDate = parseInt(record['md-filterDate'][dateIndex].substr(0,4));
+							var recordDate = record['md-filterDate'][dateIndex];
 							matches = (filterValue.from <= recordDate) && (recordDate <= filterValue.to);
 							if (matches) {break;}
 						}
@@ -693,6 +693,32 @@ function updateAndDisplay () {
 	input:	data - result data passed from pazpar2
 */
 function my_onshow (data) {
+
+	/*	extractNewestDates
+		Looks for the 'date' array in the passed record and returns an array
+		of integers containing the numbers represented by the last four
+		consecutive digits in each member.
+		input:	array (possibly a pazpar2 record or a record’s location element
+		output:	array of integers
+	*/
+	var extractNewestDates = function (record) {
+		var result = [];
+
+		if (record['md-date']) {
+			for (var dateIndex in record['md-date']) {
+				var dateParts = record['md-date'][dateIndex].match(/[0-9]{4}/g);
+				if (dateParts && dateParts.length > 0) {
+					var parsedDate = parseInt(dateParts[dateParts.length - 1]);
+					if (!isNaN(parsedDate)) {
+						result.push(parsedDate);
+					}
+				}
+			}
+		}
+		return result;
+	}
+
+
 	for (var hitNumber in data.hits) {
 		var hit = data.hits[hitNumber];
 		var hitID = hit.recid[0];
@@ -711,22 +737,33 @@ function my_onshow (data) {
 				hit['md-medium'] = ['other'];
 			}
 			
-			// Create a 'filterDate' field which uses the last consecutive four digits
-			// of the date and is used for faceting.
-			if (hit['md-date']) {
-				hit['md-filterDate'] = [];
-				for (var dateIndex in hit['md-date']) {
-                    var dateParts = hit['md-date'][dateIndex].match(/[0-9]{4}/g);
-					if (dateParts && dateParts.length > 0) {
-						hit['md-filterDate'].push(dateParts[dateParts.length - 1]);
-					}
-				}
-			}
+			// Create the integer 'filterDate' field for faceting.
+			hit['md-filterDate'] = extractNewestDates(hit);
+
 			// If there is no title information but series information, use the
 			// first series field for the title.
 			if (!(hit['md-title'] || hit['md-multivolume-title']) && hit['md-series-title']) {
 				hit['md-multivolume-title'] = [hit['md-series-title'][0]];
 			}
+
+			// Sort the location array to have the newest item first
+			hit.location.sort(function (a, b) {
+					var aDates = extractNewestDates(a);
+					var bDates = extractNewestDates(b);
+
+					if (aDates.length > 0 && bDates.length > 0) {
+						return bDates[0] - aDates[0];
+					}
+					else if (aDates.length > 0 && bDates.length === 0) {
+						return -1;
+					}
+					else if (aDates.length === 0 && bDates.length > 0) {
+						return -1
+					}
+					else {
+						return 0;
+					}
+				});
 			
 			hitList[hitID] = hit;
 		}
@@ -1979,7 +2016,8 @@ function trackPiwik (action, info) {
 			pageURL += '/' + info;
 		}
 		piwikTracker.setCustomUrl(pageURL);
-		piwikTracker.trackPageView('pazpar2: ' + action);
+//		piwikTracker.trackPageView('pazpar2: ' + action);
+		_paq.push(['trackPageView', 'pazpar2: ' + action]);
 		piwikTracker.setCustomUrl(document.URL);
 	}
 }
@@ -3397,7 +3435,7 @@ function renderDetails(recordID) {
 					var labelText = labelFormat.replace(/\*/, buttonText);
 					submitButton.setAttribute('title', labelText);
 				}
-				submitButton.onclick = new Function('trackPiwik("export/' + exportFormat + '"); return true;');
+				form.onsubmit = new Function('trackPiwik("export/' + exportFormat + '"); return true;');
 			}
 
 			return form;

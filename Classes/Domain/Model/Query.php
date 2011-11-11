@@ -411,6 +411,61 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 
 
 	/**
+	 * Attempts to extract dates from $record and returns an array
+	 * containing numbers from the 'date' fields as integers.
+	 *
+	 * @param Array $record location or full pazpar2 record
+	 * @return Array of integers
+	 */
+	private function extractNewestDates ($record) {
+		$result = Array();
+
+		if (array_key_exists('md-date', $record['ch'])) {
+			foreach($record['ch']['md-date'] as $date) {
+				$dateParts = preg_match_all('/[0-9]{4}/', $date['values'][0], $matches, PREG_SET_ORDER);
+				if ($matches && count($matches) > 0 ) {
+					$parsedDate = $matches[count($matches)-1][0];
+					if (is_numeric($parsedDate)) {
+						$result[] = (int)$parsedDate;
+					}
+				}
+			}
+		}
+		return $result;
+	}
+
+
+	
+	/**
+	 * Auxiliary sort function for sorting records and locations based
+	 * on their 'date' field with the newest item being first and undefined
+	 * dates last.
+	 *
+	 * @param Array $a location or full pazpar2 record
+	 * @param Array $b location or full pazpar2 record
+	 * @return integer
+	 */
+	private function yearSort($a, $b) {
+		$aDates = $this->extractNewestDates($a);
+		$bDates = $this->extractNewestDates($b);
+
+		if (count($aDates) > 0 && count($bDates) > 0) {
+			return $bDates[0] - $aDates[0];
+		}
+		else if (count($aDates) > 0 && count($bDates) === 0) {
+			return -1;
+		}
+		else if (count($aDates) === 0 && count($bDates) > 0) {
+			return 1;
+		}
+		else {
+			return 0;
+		}
+	}
+
+
+
+	/**
 	 * Fetches results from pazpar2.
 	 * Requires an established session.
 	 *
@@ -463,6 +518,9 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 									&& array_key_exists('md-series-title', $myHit)) {
 								$myHit['md-multivolume-title'] = Array($myHit['md-series-title'][0]);
 							}
+
+							// Sort the location array to have the newest item first
+							usort($myHit['location'], Array($this, "yearSort"));
 
 							$this->results[$key] = $myHit;
 						}

@@ -2,6 +2,22 @@
 	<div class="pz2-JSNote">
 		<f:translate key="Search is better with JavaScript."/>
 	</div>
+	<div class="pz2-accessNote"
+		<f:if condition="{query.allTargetsActive} != '1'">
+			 title='<f:translate key="Nicht alle Datenbanken verfügbar."/>'
+		</f:if>>
+		<f:if condition="{query.institutionName}">
+			<f:if condition="{query.institutionName} == 'GAST'">
+				<f:then>
+					<f:translate key="Gastzugang"/>
+				</f:then>
+				<f:else>
+					<f:translate key="Zugang über:"/>
+					{query.institutionName}
+				</f:else>
+			</f:if>
+		</f:if>
+	</div>
 
 	<f:render section="form"/>
 	<div class="pz2-clear"></div>

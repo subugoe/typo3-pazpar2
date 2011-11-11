@@ -123,6 +123,38 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	}
 
 
+	/**
+	 * Name of the institution proving database access (as determined by
+	 * the pazpar2-access.php proxy service).
+	 *
+	 * @var string|Null $institutionName
+	 */
+	protected $institutionName;
+
+	/**
+	 * @return string|Null
+	 */
+	public function getInstitutionName () {
+		return $this->institutionName;
+	}
+
+
+	/**
+	 * Indicates whether all targets in the service are active (as determined
+	 * by the pazpar2-access.php proxy service).
+	 *
+	 * @var string|Null $allTargetsActive
+	 */
+	protected $allTargetsActive;
+
+	/**
+	 * @return string|Null
+	 */
+	public function getAllTargetsActive () {
+		return $this->allTargetsActive;
+	}
+
+
 	
 	/**
 	 * URL of the pazpar2 service used.
@@ -340,6 +372,13 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 				}
 				else {
 					t3lib_div::devLog('did not receive pazpar2 session ID', 'pazpar2', 3);
+				}
+
+				// Extract access rights information if it is available.
+				if (array_key_exists('accessRights', $initReply)) {
+					$accessRights = $initReply['accessRights'];
+					$this->institutionName = $accessRights['institutionName'];
+					$this->allTargetsActive = $accessRights['allTargetsActive'];
 				}
 			}
 			else {

@@ -355,6 +355,9 @@
 	cursor: pointer;
 }
 
+.pz2-noJS .pz2-recordCount:hover {
+	cursor: auto;
+}
 
 
 /* RESULT ITEMS */
@@ -608,4 +611,15 @@ pz2-client.js removes this once it it loaded.
 
 #pz2-targetView .pz2-target-status {
 	min-width: 120px; 
+}
+
+
+#pazpar2 .pz2-accessNote {
+	position: absolute;
+	right: 0px;
+	top: 10px;
+	width: 220px;
+	font-style: italic;
+	text-align: right;
+	color: #999;
 }

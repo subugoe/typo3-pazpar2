@@ -99,6 +99,7 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 			$totalResultCount = $this->query->run();
 			$this->view->assign('totalResultCount', $totalResultCount);
 			$this->view->assign('results', $this->query->getResults());
+			$this->view->assign('query', $this->query);
 		}
 		$this->view->assign('conf', $this->conf);
 	}

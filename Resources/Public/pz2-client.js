@@ -1595,7 +1595,8 @@ function facetListForType (type, preferOriginalFacets) {
 			},
 			'selection': {
 				'mode': 'x',
-				'color': '#009'
+				'color': '#009',
+				'minSize': 0.1
 			}
 		};
 

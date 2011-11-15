@@ -96,8 +96,6 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		if ($arguments['useJS'] != 'yes') {
 			$this->query->setServiceName($this->conf['serviceID']);
 			$this->query->setSortOrder($this->determineSortCriteria($arguments));
-			$totalResultCount = $this->query->run();
-			$this->view->assign('totalResultCount', $totalResultCount);
 			$this->view->assign('results', $this->query->getResults());
 			$this->view->assign('query', $this->query);
 		}

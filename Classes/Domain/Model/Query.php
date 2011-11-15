@@ -208,6 +208,22 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 
 
 	/**
+	 * The total number of results (including the ones that could not be fetched.
+	 *
+	 * @var integer
+	 */
+	private $totalResultCount;
+
+	/**
+	 * @return integer
+	 */
+	public function getTotalResultCount () {
+		return $this->totalResultCount;
+	}
+
+
+
+	/**
 	 * VARIABLES FOR INTERNAL USE
 	 */
 	
@@ -439,6 +455,10 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 			// Casting it to int gives 0 as long as the value is < 1.
 			$progress = (int)$statReply['progress'];
 			$result = ($progress == 1);
+			if ($result === True) {
+				// We are done: get the record count.
+				$this->totalResultCount = $statReply['hits'];
+			}
 		}
 		else {
 			t3lib_div::devLog('could not parse pazpar2 stat reply', 'pazpar2', 3);
@@ -508,9 +528,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	 * Fetches results from pazpar2.
 	 * Requires an established session.
 	 *
-	 * Stores the results in $results.
-	 *
-	 * @return int total result number
+	 * Stores the results in $results and the total result count in $totalResultCount.
 	 */
 	protected function fetchResults () {
 		$maxResults = 1000; // limit results
@@ -520,7 +538,6 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 		}
 		$recordsToFetch = 350;
 		$firstRecord = 0;
-		$totalResultCount = Null;
 
 		// get records in chunks of $recordsToFetch to avoid running out of memory
 		// in t3lib_div::xml2tree. We seem to typically need ~100KB per record (?).
@@ -535,8 +552,6 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 
 			if ($showReply) {
 				$status = $showReply['status'][0]['values'][0];
-				$totalResultCount = $showReply['total'][0]['values'][0];
-				$maxResults = (int)$totalResultCount;
 				if ($status == 'OK') {
 					$this->queryIsRunning = False;
 					$hits = $showReply['hit'];
@@ -570,11 +585,9 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 				}
 			}
 			else {
-				t3lib_div::devLog('could not parse pazpar2 search reply', 'pazpar2', 3);
+				t3lib_div::devLog('could not parse pazpar2 show reply', 'pazpar2', 3);
 			}
 		}
-
-		return $totalResultCount;
 	}
 
 
@@ -584,12 +597,8 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	 * If the query string is empty, don’t do anything.
 	 * 
 	 * The results of the query are available via getResults() after this function returns.
-	 *
-	 * @return int number of results
 	 */
 	public function run () {
-		$totalResultCount = Null;
-
 		if ($this->fullQueryString() !== '') {
 			$this->startQuery();
 			// Fetching results can take a while. Increase our time limit.
@@ -603,10 +612,8 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 				}
 			}
 
-			$totalResultCount = $this->fetchResults();
+			$this->fetchResults();
 		}
-
-		return $totalResultCount;
 	}
 
 }

@@ -264,10 +264,11 @@
 	font-weight: bold;
 }
 
-.pz2-termList li a.pz2-facetCancel, .pz2-facetCancel {
+.pz2-termList li a.pz2-facetCancel {
 	padding-left: 0.3em;
 	text-indent: 0;
 	color: #f00;
+	font-weight: bold;
 }
 
 .pz2-termList span {

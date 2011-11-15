@@ -1532,8 +1532,11 @@ function facetListForType (type, preferOriginalFacets) {
 			cancelLink.setAttribute('href', '#');
 			jQuery(cancelLink).addClass('pz2-facetCancel pz2-activeFacet');
 			cancelLink.onclick = new Function('delimitResults("filterDate"); return false;');
-			var yearRange = filterArray['filterDate'][0].from + '-' + filterArray['filterDate'][0].to;
-			var cancelLinkText = localise('Filter # aufheben').replace('#', yearRange);
+			var yearString = filterArray['filterDate'][0].from;
+			if (filterArray['filterDate'][0].from != filterArray['filterDate'][0].to - 1) {
+				yearString += '-' + (filterArray['filterDate'][0].to - 1);
+			}
+			var cancelLinkText = localise('Filter # aufheben').replace('#', yearString);
 			cancelLink.appendChild(document.createTextNode(cancelLinkText));
 		}
 

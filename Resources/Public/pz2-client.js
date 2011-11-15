@@ -1908,9 +1908,12 @@ function triggerSearchForForm (form, additionalQueryTerms) {
 	if (domReadyFired && pz2Initialised) {
 		var searchChunks = [];
 		addSearchStringForFieldToArray('all', searchChunks);
-		addSearchStringForFieldToArray('title', searchChunks);
-		addSearchStringForFieldToArray('person', searchChunks);
-		addSearchStringForFieldToArray('date', searchChunks);
+		var isExtendedSearch = jQuery(myForm).hasClass('pz2-extended');
+		if (isExtendedSearch) {
+			addSearchStringForFieldToArray('title', searchChunks);
+			addSearchStringForFieldToArray('person', searchChunks);
+			addSearchStringForFieldToArray('date', searchChunks);
+		}
 		searchChunks = searchChunks.concat(curAdditionalQueryTerms)
 		var searchTerm = searchChunks.join(' and ');
 		searchTerm = searchTerm.replace('*', '?')

@@ -570,7 +570,10 @@ function displayLists (list) {
 						matchesEverythingNotTheDate = true;
 						for (var dateIndex in record['md-filterDate']) {
 							var recordDate = record['md-filterDate'][dateIndex];
-							matches = (filterValue.from <= recordDate) && (recordDate <= filterValue.to);
+							// The filterValue for date contains two years, both are assumed to
+							// to designate January 1st. I.e. {from:2009, to:2010} gives
+							// all records from 2009.
+							matches = (filterValue.from <= recordDate) && (recordDate < filterValue.to);
 							if (matches) {break;}
 						}
 					}

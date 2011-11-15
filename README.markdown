@@ -2,7 +2,7 @@
 
 A TYPO3 extension for including a bibliographic metasearch.
 
-The extension only makes sense if you are running Indexdata’s [pazpar2][] bibliographics metasearch software on your server.
+The extension only makes sense if you are running Indexdata’s [pazpar2][] bibliographic metasearch software on your server.
 
 2010-2011 by [Sven-S. Porst](http://earthlingsoft.net/ssp/), [SUB Göttingen][sub] <[porst@sub.uni-goettingen.de](mailto:porst@sub.uni-goettingen.de?subject=pazpar2%20TYPO3%20Extension)>
 
@@ -36,6 +36,7 @@ For searches to work and results to be displayed correctly you need
 
 * pazpar2 ≥ 1.6.2
 * … running at or proxied to the path /pazpar2/search.pz2 on your server (see [Indexdata’s instructions on how to proxy it there](http://www.indexdata.com/pazpar2/doc/installation.apache2proxy.html))
+** the implementation also supports displaying additional access information which is provided by the [pazpar2-access proxy](https://github.com/ssp/pazpar2-access)
 * See below for more details on the assumptions the extension makes regarding pazpar2’s search key and metadata normalisation setup.
 
 ### pazpar2 Neuerwerbungen ###
@@ -183,6 +184,7 @@ Many thanks go to [Indexdata](http://www.indexdata.com/) for their powerful pazp
 
 
 ## Version History ##
+* 1.1 (2011-11-?): support Piwik tracking; support for pazpar2-access proxy; improve URL sorting; improve location sorting; better total result count in non-JavaScript version; leaner Fluid templates; single year selection in year histogram
 * 1.0.3 (2011-09-22): add class pz2-neuerwerbungen to container when using Neuerwerbungen
 * 1.0.2 (2011-09-21): add information about feed link to README; make Neuerwerbungen feed link optional; make fulltext checkbox in extended search form configurable; make date field in extended search form configurable; fix problem with passed parameters in Neuerwerbungen no-JS mode; make catalogue names localisable
 * 1.0.1 (2011-09-20): add icon; fix problem with losing the user’s data after sending the form; preserve the fulltext setting

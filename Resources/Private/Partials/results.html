@@ -5,14 +5,14 @@
 		<div class="pz2-progressIndicator"></div>
 		<div class="pz2-pageNumbers"></div>
 		<span class="pz2-recordCount" onclick="toggleStatus();">
-			<f:if condition="{f:count(subject: results)} > 0">
-				<f:count subject="{results}"/>
-				<f:if condition="{f:count(subject: results)} == 1">
+			<f:if condition="{f:count(subject: query.results)} > 0">
+				<f:count subject="{query.results}"/>
+				<f:if condition="{f:count(subject: query.results)} == 1">
 					<f:then><f:translate key="Result"/></f:then>
 					<f:else><f:translate key="Results"/></f:else>
 				</f:if>
-				<f:if condition="{f:count(subject: results)} != {totalResultCount}">
-					(<f:translate key="of"/> {totalResultCount})
+				<f:if condition="{f:count(subject: query.results)} < {query.totalResultCount}">
+					(<f:translate key="of"/> {query.totalResultCount})
 				</f:if>
 			</f:if>
 		</span>
@@ -25,16 +25,16 @@
 	<div id="pz2-navi"></div>
 	<div id="pz2-termLists"></div>
 	<div id="pz2-results">
-		<f:if condition="{f:count(subject: results)} > 0">
+		<f:if condition="{f:count(subject: query.results)} > 0">
 			<f:then>
 				<ol class="pz2-resultList">
-					<f:for each="{results}" as="result">
+					<f:for each="{query.results}" as="result">
 						<pz2:result result="{result}" conf="{conf}"/>
 					</f:for>
 				</ol>
 			</f:then>
 			<f:else>
-				<f:if condition="{queryString}">
+				<f:if condition="{query.queryString}">
 					<f:translate key="No Results"/>
 				</f:if>
 			</f:else>

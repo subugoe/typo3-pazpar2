@@ -87,17 +87,11 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		$arguments = $this->request->getArguments();
 
 		$this->view->assign('extended', $arguments['extended']);
-		$this->view->assign('queryString', $this->query->getQueryString());
-		$this->view->assign('querySwitchFulltext', $this->query->getQuerySwitchFulltext());
-		$this->view->assign('queryStringTitle', $this->query->getQueryStringTitle());
-		$this->view->assign('querySwitchJournalOnly', $this->query->getQuerySwitchJournalOnly());
-		$this->view->assign('queryStringPerson', $this->query->getQueryStringPerson());
-		$this->view->assign('queryStringDate', $this->query->getQueryStringDate());
+		$this->view->assign('query', $this->query);
 		if ($arguments['useJS'] != 'yes') {
 			$this->query->setServiceName($this->conf['serviceID']);
 			$this->query->setSortOrder($this->determineSortCriteria($arguments));
-			$this->view->assign('results', $this->query->getResults());
-			$this->view->assign('query', $this->query);
+			$this->query->run();
 		}
 		$this->view->assign('conf', $this->conf);
 	}

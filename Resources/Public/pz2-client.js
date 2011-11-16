@@ -3245,7 +3245,7 @@ function renderDetails(recordID) {
 					to GVK which is a superset and offers better services for non-locals.
 				*/
 				if (!preferSUBOpac && clientIPAddress.search('134.76.') !== 0) {
-					var opacBaseURL = 'http://opac.sub.uni-goettingen.de/DB=1';
+					var opacBaseURL = 'https?://opac.sub.uni-goettingen.de/DB=1';
 					var GVKBaseURL = 'http://gso.gbv.de/DB=2.1';
 					catalogueURL = catalogueURL.replace(opacBaseURL, GVKBaseURL);
 				}

@@ -822,7 +822,7 @@ private function catalogueLink ($locationAll) {
 		 */
 		if (strpos('134.76.', $_SERVER["REMOTE_ADDR"]) !== 0
 				&& $this->conf['preferSUBOpac'] == 0) {
-			$opacBaseRegexp = '/https?:\/\/opac.sub.uni-goettingen.de\/DB=1/';
+			$opacBaseRegexp = '/https?\:\/\/opac\.sub\.uni\-goettingen.de\/DB\=1/';
 			$GVKBaseURL = 'http://gso.gbv.de/DB=2.1';
 			$catalogueURL = preg_replace($opacBaseRegexp, $GVKBaseURL, $catalogueURL);
 		}

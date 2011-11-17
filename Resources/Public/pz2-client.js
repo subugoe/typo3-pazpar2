@@ -301,8 +301,12 @@ function my_errorHandler (error) {
 		// session has expired, create a new one
 		my_paz.init(undefined, my_paz.serviceId);
 	}
-	// Clear the current search term, so the user can click the search button again.
-	currSearchTerm = null;
+
+	// If  the error happens while loading, clear the current search term,
+	// to allow restarting the search.
+	if (my_paz.activeClients > 0) {
+		curSearchTerm = null;
+	}
 }
 
 

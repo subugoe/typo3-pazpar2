@@ -184,7 +184,8 @@ Many thanks go to [Indexdata](http://www.indexdata.com/) for their powerful pazp
 
 
 ## Version History ##
-* 1.1 (2011-11-?): support Piwik tracking; support for pazpar2-access proxy; improve URL sorting; improve location sorting; better total result count in non-JavaScript version; leaner Fluid templates; single year selection in year histogram
+* 1.1.1 (2011-11-17): recognise Göttingen Opac https URLs; fix recognition of Guest access; improve automatic restarting of searches on session loss
+* 1.1 (2011-11-15): support Piwik tracking; support for pazpar2-access proxy; improve URL sorting; improve location sorting; better total result count in non-JavaScript version; leaner Fluid templates; single year selection in year histogram
 * 1.0.3 (2011-09-22): add class pz2-neuerwerbungen to container when using Neuerwerbungen
 * 1.0.2 (2011-09-21): add information about feed link to README; make Neuerwerbungen feed link optional; make fulltext checkbox in extended search form configurable; make date field in extended search form configurable; fix problem with passed parameters in Neuerwerbungen no-JS mode; make catalogue names localisable
 * 1.0.1 (2011-09-20): add icon; fix problem with losing the user’s data after sending the form; preserve the fulltext setting

@@ -301,6 +301,8 @@ function my_errorHandler (error) {
 		// session has expired, create a new one
 		my_paz.init(undefined, my_paz.serviceId);
 	}
+	// Clear the current search term, so the user can click the search button again.
+	currSearchTerm = null;
 }
 
 
@@ -408,7 +410,7 @@ function my_oninit(data) {
 
 		if (institutionName !== undefined) {
 			var accessMessage = undefined;
-			if (institutionName === 'GAST') {
+			if (institutionName === 'Gastzugang') {
 				accessMessage = localise('Gastzugang');
 			}
 			else {

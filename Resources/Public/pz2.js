@@ -710,7 +710,7 @@ pz2.prototype =
 ********************************************************************************
 */
 var pzHttpRequest = function ( url, errorHandler ) {
-        this.maxUrlLength = 2048;
+        this.maxUrlLength = 512;
         this.request = null;
         this.url = url;
         this.errorHandler = errorHandler || null;

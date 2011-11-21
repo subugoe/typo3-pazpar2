@@ -2070,8 +2070,7 @@ function trackPiwik (action, info) {
 			pageURL += '/' + info;
 		}
 		piwikTracker.setCustomUrl(pageURL);
-//		piwikTracker.trackPageView('pazpar2: ' + action);
-		_paq.push(['trackPageView', 'pazpar2: ' + action]);
+		piwikTracker.trackPageView('pazpar2: ' + action);
 		piwikTracker.setCustomUrl(document.URL);
 	}
 }

@@ -152,6 +152,31 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 		$this->institutionName = $newInstitutionName;
 	}
 
+
+
+	/**
+	 * False by default, True when the Query finished running.
+	 *
+	 * @var Boolean
+	 */
+	protected $didRun = False;
+
+	/**
+	 * @return Boolean
+	 */
+	public function getDidRun () {
+		return $this->didRun;
+	}
+
+	/**
+	 * @param Boolean $newDidRun
+	 */
+	private function setDidRun ($newDidRun) {
+		$this->didRun = $newDidRun;
+	}
+
+
+
 	/**
 	 * Indicates whether all targets in the service are active (as determined
 	 * by the pazpar2-access.php proxy service).
@@ -483,7 +508,8 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 			$progress = (int)$statReply['progress'];
 			$result = ($progress === 1);
 			if ($result === True) {
-				// We are done: get the record count.
+				// We are done: note that and get the record count.
+				$this->setDidRun(True);
 				$this->setTotalResultCount($statReply['hits']);
 			}
 		}

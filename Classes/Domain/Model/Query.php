@@ -41,15 +41,20 @@
 class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEntity {
 
 	/**
-	 * Search query and reading accessors.
+	 * Search query parts.
+	 * 
+	 * @var string|Null
 	 */
-	protected $queryString;
-	protected $querySwitchFulltext;
-	protected $queryStringTitle;
-	protected $querySwitchJournalOnly;
-	protected $queryStringPerson;
-	protected $queryStringDate;
+	protected $queryString = Null;
+	protected $querySwitchFulltext = Null;
+	protected $queryStringTitle = Null;
+	protected $querySwitchJournalOnly = Null;
+	protected $queryStringPerson = Null;
+	protected $queryStringDate = Null;
 
+	/**
+	 * @return string|Null
+	 */
 	public function getQueryString () { return $this->queryString; }
 	public function getQuerySwitchFulltext () { return $this->querySwitchFulltext; }
 	public function getQueryStringTitle () { return $this->queryStringTitle; }
@@ -69,6 +74,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	}
 
 
+
 	/**
 	 * Array containing the sort conditions to use. Each of its elements
 	 *	is an array with the fields:
@@ -77,7 +83,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	 *
 	 * @var Array
 	 */
-	protected $sortOrder;
+	protected $sortOrder = Array();
 
 	public function getSortOrder () { return $this->sortOrder; }
 	public function setSortOrder ($newSortOrder) { $this->sortOrder = $newSortOrder; }
@@ -105,7 +111,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	 *
 	 * @var string|Null
 	 */
-	protected $serviceName;
+	protected $serviceName = Null;
 
 	/**
 	 * @return string
@@ -123,13 +129,14 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	}
 
 
+
 	/**
 	 * Name of the institution proving database access (as determined by
 	 * the pazpar2-access.php proxy service).
 	 *
 	 * @var string|Null $institutionName
 	 */
-	protected $institutionName;
+	protected $institutionName = Null;
 
 	/**
 	 * @return string|Null
@@ -138,20 +145,33 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 		return $this->institutionName;
 	}
 
+	/**
+	 * @param string $newInstitutionName
+	 */
+	private function setInstitutionName ($newInstitutionName) {
+		$this->institutionName = $newInstitutionName;
+	}
 
 	/**
 	 * Indicates whether all targets in the service are active (as determined
 	 * by the pazpar2-access.php proxy service).
 	 *
-	 * @var string|Null $allTargetsActive
+	 * @var Boolean|Null
 	 */
 	protected $allTargetsActive;
 
 	/**
-	 * @return string|Null
+	 * @return Boolean|Null
 	 */
 	public function getAllTargetsActive () {
 		return $this->allTargetsActive;
+	}
+
+	/**
+	 * @param Boolean $newAllTargetsActive
+	 */
+	private function setAllTargetsActive ($newAllTargetsActive) {
+		$this->allTargetsActive = $newAllTargetsActive;
 	}
 
 
@@ -219,6 +239,13 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	 */
 	public function getTotalResultCount () {
 		return $this->totalResultCount;
+	}
+
+	/**
+	 * @param integer $newTotalResultCount
+	 */
+	private function setTotalResultCount ($newTotalResultCount) {
+		$this->totalResultCount = $newTotalResultCount;
 	}
 
 
@@ -393,8 +420,8 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 				// Extract access rights information if it is available.
 				if (array_key_exists('accessRights', $initReply)) {
 					$accessRights = $initReply['accessRights'];
-					$this->institutionName = $accessRights['institutionName'];
-					$this->allTargetsActive = $accessRights['allTargetsActive'];
+					$this->setInstitutionName($accessRights['institutionName']);
+					$this->setAllTargetsActive($accessRights['allTargetsActive'] === '1');
 				}
 			}
 			else {
@@ -454,10 +481,10 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 			// 0.00 and 1.00. 
 			// Casting it to int gives 0 as long as the value is < 1.
 			$progress = (int)$statReply['progress'];
-			$result = ($progress == 1);
+			$result = ($progress === 1);
 			if ($result === True) {
 				// We are done: get the record count.
-				$this->totalResultCount = $statReply['hits'];
+				$this->setTotalResultCount($statReply['hits']);
 			}
 		}
 		else {

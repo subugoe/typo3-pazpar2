@@ -29,7 +29,7 @@ To run the extension’s code, you need:
 
 * TYPO3 ≥ 4.5.3
 * with Extbase/Fluid ≥ 1.3
-* the t3jquery extension injecting at least jQuery 1.6 into the pages
+* the t3jquery extension injecting at least jQuery 1.6 into the pages (jQuery 1.7.0 is buggy and will not work well, use at least 1.7.1 if you need 1.7)
 
 ### pazpar2
 For searches to work and results to be displayed correctly you need
@@ -184,6 +184,7 @@ Many thanks go to [Indexdata](http://www.indexdata.com/) for their powerful pazp
 
 
 ## Version History ##
+* 1.1.4 (2011-11-22): make automatic query starting more reliable in Neuerwerbungen; prevent incorrect usage of the no-JavaScript codepath
 * 1.1.3 (2011-11-21): reduce maximum GET query length for pz2.js to 512 (the default limit set by Suhosin on SLES 11); improve Content-Type header information for export formats
 * 1.1.2 (2011-11-21): do not add access information to Fluid template when the query did not run in PHP
 * 1.1.1 (2011-11-17): recognise Göttingen Opac https URLs; fix recognition of Guest access; improve automatic restarting of searches on session loss

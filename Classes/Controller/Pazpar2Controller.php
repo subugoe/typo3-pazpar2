@@ -227,7 +227,7 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		}
 
 		// Make jQuery initialise pazpar2 when the DOM is ready.
-		$jsCommand = "jQuery(document).ready(domReady);\n";
+		$jsCommand = "jQuery(document).ready(pz2ClientDomReady);\n";
 
 		// Add Google Books support if asked to do so.
 		if ( $this->conf['useGoogleBooks'] ) {
@@ -246,7 +246,6 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		$scriptTag->addAttribute('type', 'text/javascript');
 		$scriptTag->setContent($jsCommand);
 		$this->response->addAdditionalHeaderData( $scriptTag->render() );
-
 	}
 
 }

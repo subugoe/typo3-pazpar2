@@ -1810,10 +1810,10 @@ function my_onbytarget(data) {
 
 
 
-/*	domReady
+/*	pz2ClientDomReady
 	Called when the page is loaded. Sets up JavaScript-based search mechanism.
 */
-function domReady ()  {
+function pz2ClientDomReady ()  {
 	domReadyFired = true;
 
 	jQuery('.pz2-searchForm').each( function(index, form) {

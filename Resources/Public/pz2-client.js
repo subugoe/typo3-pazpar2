@@ -794,6 +794,12 @@ function my_onshow (data) {
 				hit['md-multivolume-title'] = [hit['md-series-title'][0]];
 			}
 
+			// If there is no language information, set the language code to zzz
+			// (undefined) to ensure we get a facet for this case as well.
+			if (!hit['md-language']) {
+				hit['md-language'] = ['zzz'];
+			}
+
 			// Sort the location array to have the newest item first
 			hit.location.sort(function (a, b) {
 					var aDates = extractNewestDates(a);
@@ -1418,9 +1424,9 @@ function facetListForType (type, preferOriginalFacets) {
 				// Note the maximum number
 				termList['maximumNumber'] = termList[0].freq;
 
-				// Special case for dates when displaying them as a list:
-				// take the most frequent items and sort by date if we are not using the histogram.
 				if (type === 'filterDate' && !useHistogramForYearFacets) {
+					// Special treatment for dates when displaying them as a list:
+					// take the most frequent items and sort by date if we are not using the histogram.
 					var maximumDateFacetCount = termLists['filterDate'].maxFetch;
 					if (termList.length > maximumDateFacetCount) {
 						termList.splice(maximumDateFacetCount, termList.length - maximumDateFacetCount);
@@ -1429,6 +1435,16 @@ function facetListForType (type, preferOriginalFacets) {
 							return (term1.name < term2.name) ? 1 : -1;
 						}
 					);
+				}
+				else if (type === 'language') {
+					// Special case for languages: put 'unknown' at the end of the list.
+					for (var termIndex in termList) {
+						var termItem = termList[termIndex];
+						if (termItem.name === 'zzz') {
+							termList.splice(termIndex, 1);
+							termList.push(termItem);
+						}
+					}
 				}
 			}
 		}
@@ -4383,7 +4399,7 @@ var languageNames = {
 		'rom': 'Zigeunersprache, Romani',
 		'zul': 'Zulu',
 		'zun': 'Zuni',
-		'zzz': 'Ohne Sprachschlüssel'
+		'zzz': 'unbekannt'
 	},
 
 	'en': {
@@ -4870,6 +4886,6 @@ var languageNames = {
 		'zha': 'Zhuang',
 		'zul': 'Zulu',
 		'zun': 'Zuni',
-		'zzz': 'Without language code'
+		'zzz': 'unknown'
 	}
 };

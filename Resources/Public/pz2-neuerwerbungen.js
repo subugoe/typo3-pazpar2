@@ -123,14 +123,14 @@ function saveFormStateInCookie (form) {
 
 
 /*
- * runSearchForForm
+ * neuerwerbungenRunSearchForForm
  *
  * Build search query from the selected checkboxes. If it is non-empty,use it
  *	to kick off pazpar2 and set the Atom subscription URL.
  *
  * input:	form - DOM form element in which to look for checked checkboxes
  */
-function runSearchForForm (form) {
+function neuerwerbungenRunSearchForForm (form) {
 	setSortCriteriaFromString('date-d--author-a--title-a');
 	var jAtomLink = jQuery('.pz2-atomLink', form);
 	var linkElement = document.getElementById('pz2neuerwerbungen-atom-linkElement');
@@ -187,7 +187,7 @@ function runSearchForForm (form) {
 function checkboxChanged (checkbox) {
 	toggleParentCheckboxOf(checkbox);
 	saveFormStateInCookie(checkbox.form);
-	runSearchForForm(checkbox.form);
+	neuerwerbungenRunSearchForForm(checkbox.form);
 }
 
 
@@ -203,7 +203,7 @@ function checkboxChanged (checkbox) {
 function groupCheckboxChanged (checkbox) {
 	toggleChildCheckboxesOf(checkbox);
 	saveFormStateInCookie(checkbox.form);
-	runSearchForForm(checkbox.form);
+	neuerwerbungenRunSearchForForm(checkbox.form);
 }
 
 
@@ -218,7 +218,7 @@ function groupCheckboxChanged (checkbox) {
  *
  */
 function monthChanged (select) {
-	runSearchForForm(select.form);
+	neuerwerbungenRunSearchForForm(select.form);
 }
 
 

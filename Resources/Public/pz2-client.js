@@ -381,6 +381,8 @@ var exportFormats = ['ris', 'bibtex'];
 var showExportLinksForEachLocation = false;
 // Always map SUB Göttingen links to the Opac, rather than to GVK?
 var preferSUBOpac = false;
+// Function used to trigger search (to be overwritten by pazpar2-neuwerbungen).
+var triggerSearchFunction = triggerSearchForForm;
 
 
 
@@ -435,7 +437,7 @@ function my_oninit(data) {
 				});
 		}
 	}
-	triggerSearchForForm(null);
+	triggerSearchFunction(null);
 }
 
 
@@ -1825,7 +1827,7 @@ function pz2ClientDomReady ()  {
 	jQuery('.pz2-sort, .pz2-perPage').attr('onchange', 'onSelectDidChange');
 	jQuery('#pazpar2').removeClass('pz2-noJS');
 
-	triggerSearchForForm(null);
+	triggerSearchFunction(null);
 }
 
 
@@ -1834,7 +1836,7 @@ function pz2ClientDomReady ()  {
 	Called when the search button is pressed.
 */
 function onFormSubmitEventHandler () {
-	triggerSearchForForm(this);
+	triggerSearchFunction(this);
 	return false;
 }
 
@@ -1873,7 +1875,6 @@ function resetPage() {
 			additionalQueryTerms - array of query terms not entered in the form [optional]
 */
 function triggerSearchForForm (form, additionalQueryTerms) {
-
 	/*	addSearchStringForFieldToArray
 		Creates the appropriate search string for the passed field name and
 			adds it to the passed array.

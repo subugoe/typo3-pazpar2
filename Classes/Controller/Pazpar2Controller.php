@@ -85,10 +85,9 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 	public function indexAction () {
 		$this->addResourcesToHead();
 		$arguments = $this->request->getArguments();
-
 		$this->view->assign('extended', $arguments['extended']);
 		$this->view->assign('query', $this->query);
-		if ($arguments['useJS'] != 'yes') {
+		if (array_key_exists('useJS', $arguments) && $arguments['useJS'] !== 'yes') {
 			$this->query->setServiceName($this->conf['serviceID']);
 			$this->query->setSortOrder($this->determineSortCriteria($arguments));
 			$this->query->run();

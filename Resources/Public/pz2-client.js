@@ -3489,7 +3489,12 @@ function renderDetails(recordID) {
 					var labelText = labelFormat.replace(/\*/, buttonText);
 					submitButton.setAttribute('title', labelText);
 				}
-				form.onsubmit = new Function('trackPiwik("export/' + exportFormat + '"); return true;');
+
+				var trackOnSubmit = function () {
+					setTimeout('trackPiwik("export/' + exportFormat + '");', 500);
+					return true;
+				}
+				form.onsubmit = trackOnSubmit;
 			}
 
 			return form;

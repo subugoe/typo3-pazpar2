@@ -21,7 +21,7 @@
  * Restores state from cookies and kicks off the search.
  */
 function pz2neuerwerbungenDOMReady () {
-	jQuery('.pz2-searchForm input[type="submit"]').hide();
+	jQuery('.pz2-neuerwerbungenForm input[type="submit"]').hide();
 	// Overwrite pz-client.js search trigger function with our own.
 	triggerSearchFunction = neuerwerbungenRunSearchForForm;
 	triggerSearchFunction();
@@ -44,7 +44,7 @@ function pz2neuerwerbungenDOMReady () {
 function restoreCookieState () {
 	var cookieInfo = getPz2NeuerwerbungenCookie();
 	for (var fieldName in cookieInfo) {
-		jQuery('.pz2-searchForm :checkbox[value="' + fieldName + '"]').attr({'checked': true});
+		jQuery('.pz2-neuerwerbungenForm :checkbox[value="' + fieldName + '"]').attr({'checked': true});
 	}
 }
 

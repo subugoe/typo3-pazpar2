@@ -18,7 +18,7 @@ var showResponseType = '';
 var termLists = {
 	'xtargets': {'maxFetch': 25, 'minDisplay': 1},
 	'medium': {'maxFetch': 12, 'minDisplay': 1},
-	'language': {'maxFetch': 6, 'minDisplay': 1},
+	'language': {'maxFetch': 5, 'minDisplay': 1}, // excluding the unknown item and with +2 'wiggle room'
 	// 'author': {'maxFetch': 10, 'minDisplay': 1},
 	'filterDate': {'maxFetch': 10, 'minDisplay': 5}
 };
@@ -46,6 +46,7 @@ var germanTerms = {
 	'facet-title-language': 'Sprache',
 	'facet-title-subject': 'Themengebiete',
 	'facet-title-filterDate': 'Jahre',
+	'# weitere anzeigen': '# weitere anzeigen',
 	// Detail display
 	'Im Katalog ansehen': 'Im Katalog ansehen.',
 	'detail-label-title': 'Titel',
@@ -154,6 +155,7 @@ var englishTerms = {
 	'facet-title-language': 'Languages',
 	'facet-title-subject': 'Subjects',
 	'facet-title-filterDate': 'Years',
+	'# weitere anzeigen': 'Show # more items',
 	// Detail display
 	'Im Katalog ansehen': 'View in catalogue.',
 	'detail-label-title': 'Title',
@@ -1358,7 +1360,7 @@ function facetListForType (type, preferOriginalFacets) {
 		Creates list with facet information.
 			* information is collected from the filtered hit list.
 			* list is sorted by term frequency.
-		output:	list of Objects with properties 'name' and 'freq'(ency)
+		output:	list of Objects with properties 'name' and 'freq'(uency)
 					(these are analogous to the Objects passed to the callback by pz2.js)
 	*/
 	var facetInformationForType = function (type) {
@@ -1456,36 +1458,54 @@ function facetListForType (type, preferOriginalFacets) {
 
 	var facetDisplayTermsForType = function (terms, type) {
 		var list = document.createElement('ol');
-		
+		list.setAttribute('facetType', type);
+
+		// Determine whether facets need to be hidden.
+		// Avoid hiding less than 3 facets.
+		var needToHideFacets = (terms.length > termLists[type].maxFetch + 2)
+								&& (termLists[type].showAll !== true);
+		var invisibleCount = 0;
+
+
 		// Loop through list of terms for the type and create an item with link for each one.
-		for (var i = 0; i < terms.length && i < termLists[type].maxFetch; i++) {
-			var facetName = terms[i].name;
+		for (var facetIndex = 0; facetIndex < terms.length; facetIndex++) {
+			var facet = terms[facetIndex];
 			var item = document.createElement('li');
+			var jItem = jQuery(item);
 			list.appendChild(item);
+
+			// Make items beyond the display limit invisible unless otherwise
+			// requested. Be a bit wiggly about this to avoid hiding less than 3
+			// items
+			if (needToHideFacets && facetIndex >= termLists[type].maxFetch
+					&& !(type === 'language' && facet.name === 'zzz')) {
+				jItem.addClass('pz2-facet-hidden');
+				invisibleCount++;
+			}
 
 			// Link
 			var link = document.createElement('a');
 			item.appendChild(link);
 			link.setAttribute('href', '#');
-			link.onclick = new Function('limitResults("' + type + '","' + facetName.replace(/"/g, '\\"') + '");return false;');
+			link.onclick = new Function('limitResults("' + type + '","' + facet.name.replace(/"/g, '\\"') + '");return false;');
 
 			// 'Progress bar'
 			var progressBar = document.createElement('div');
 			link.appendChild(progressBar);
-			var progress = terms[i].freq / terms['maximumNumber'] * 100;
+			var progress = facet.freq / terms['maximumNumber'] * 100;
 			progressBar.setAttribute('style', 'width:' + progress + '%;');
 			jQuery(progressBar).addClass('pz2-progressIndicator');
 
 			// Facet Display Name
-			var facetDisplayName = facetName;
+			var facetDisplayName = facet.name;
 			if (type === 'xtargets') {
-				facetDisplayName = localise(facetName, catalogueNames);
+				facetDisplayName = localise(facet.name, catalogueNames);
 			}
 			else if (type === 'language') {
-				facetDisplayName = localise(facetName, languageNames);
+				facetDisplayName = localise(facet.name, languageNames);
 			}
 			else if (type === 'medium') {
-				facetDisplayName = localise(facetName, mediaNames);
+				facetDisplayName = localise(facet.name, mediaNames);
 			}
 			var textSpan = document.createElement('span');
 			link.appendChild(textSpan);
@@ -1496,8 +1516,8 @@ function facetListForType (type, preferOriginalFacets) {
 			var count = document.createElement('span');
 			link.appendChild(count);
 			jQuery(count).addClass('pz2-facetCount');
-			count.appendChild(document.createTextNode(terms[i].freq));
-			var target = targetStatus[facetName];
+			count.appendChild(document.createTextNode(facet.freq));
+			var target = targetStatus[facet.name];
 			if (type === 'xtargets' && target) {
 				if (target.state === 'Client_Idle') {
 					// When the client is finished with data transfers, check whether
@@ -1525,19 +1545,19 @@ function facetListForType (type, preferOriginalFacets) {
 			if (type === 'medium') {
 				var mediaIcon = document.createElement('span');
 				link.appendChild(mediaIcon);
-				jQuery(mediaIcon).addClass('pz2-mediaIcon ' + facetName);
+				jQuery(mediaIcon).addClass('pz2-mediaIcon ' + facet.name);
 			}
 
 			// Mark facets which are currently active and add button to remove faceting.
 			if (isFilteredForType(type)) {
 				for (var filterIndex in filterArray[type]) {
-					if (facetName === filterArray[type][filterIndex]) {
-						jQuery(item).addClass('pz2-activeFacet');
+					if (facet.name === filterArray[type][filterIndex]) {
+						jItem.addClass('pz2-activeFacet');
 						var cancelLink = document.createElement('a');
 						item.appendChild(cancelLink);
 						cancelLink.setAttribute('href', '#');
 						jQuery(cancelLink).addClass('pz2-facetCancel');
-						cancelLink.onclick = new Function('delimitResults("' + type + '","' + facetName.replace(/"/g, '\\"') + '"); return false;');
+						cancelLink.onclick = new Function('delimitResults("' + type + '","' + facet.name.replace(/"/g, '\\"') + '"); return false;');
 						cancelLink.appendChild(document.createTextNode(localise('Filter aufheben')));
 						break;
 					}
@@ -1545,6 +1565,32 @@ function facetListForType (type, preferOriginalFacets) {
 			}
 		}
 		
+		// If some facets are hidden, add a show all button at the very end.
+		if (needToHideFacets) {
+			var showAllItem = document.createElement('li');
+			list.appendChild(showAllItem);
+			jQuery(showAllItem).addClass('pz2-facet-showAll');
+			var showLink = document.createElement('a');
+			showAllItem.appendChild(showLink);
+			showLink.setAttribute('href', '#');
+
+			var showAllFacetsOfType = function () {
+				var containingList = this.parentElement.parentElement;
+
+				// Fade in the hidden elemens and hide the Show All link.
+				jQuery('.pz2-facet-hidden', containingList).slideDown(300);
+				jQuery('.pz2-facet-showAll', containingList).fadeOut(200);
+
+				// Store the current state in the termLists object for the current facet type.
+				var facetType = containingList.getAttribute('facetType');
+				termLists[facetType].showAll = true;
+				return false;
+			}
+			showLink.onclick = showAllFacetsOfType;
+			var showLinkText = localise('# weitere anzeigen').replace('#', terms.length - invisibleCount);
+			showLink.appendChild(document.createTextNode(showLinkText));
+		}
+
 		return list;
 	}
 
@@ -1871,13 +1917,17 @@ function onSelectDidChange () {
 
 
 /*	resetPage
-	Empties result lists and filters, switches to first page and redisplays.
+	Empties result lists, userSettings (filters, term list visibility),
+	resets status and switches to first page and redisplays.
 */
 function resetPage() {
 	curPage = 1;
 	hitList = {};
 	displayHitList = [];
 	filterArray = {};
+	for (var facetIndex in termLists) {
+		termLists[facetIndex].showAll = undefined;
+	}
 	jQuery('.pz2-pager .pz2-progressIndicator').css({'width': 0});
 	updateAndDisplay();
 }

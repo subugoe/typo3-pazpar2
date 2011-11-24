@@ -260,6 +260,15 @@
 	margin-left: 0.4em;
 }
 
+.pz2-facet-hidden {
+	display: none;
+}
+
+.pz2-facet-showAll a {
+	color: #999;
+	font-style: italic;
+}
+
 .pz2-activeFacet {
 	font-weight: bold;
 }

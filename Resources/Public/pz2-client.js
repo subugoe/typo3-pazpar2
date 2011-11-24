@@ -1672,12 +1672,17 @@ function facetListForType (type, preferOriginalFacets) {
 
 		var plot = jQuery.plot(jGraphDiv , [{'data': graphData, 'color': graphColour}], graphOptions);
 
+		var removeTooltip = function () {
+			jQuery("#pz2-histogram-tooltip").remove();
+		}
+
 		var selectRanges = function (ranges) {
 			ranges.xaxis.from = Math.floor(ranges.xaxis.from);
 			ranges.xaxis.to = Math.ceil(ranges.xaxis.to) ;
 			plot.setSelection(ranges, true);
 			filterArray['filterDate'] = undefined;
 			limitResults('filterDate', ranges.xaxis);
+			removeTooltip();
 		}
 
 		jGraphDiv.bind("plotclick", function (event, pos, item) {
@@ -1687,15 +1692,22 @@ function facetListForType (type, preferOriginalFacets) {
 			}
 		});
 
-		jGraphDiv.bind('plotselected', function(event, ranges) { selectRanges(ranges); });
+		jGraphDiv.mouseout(removeTooltip);
 
-		jGraphDiv.bind('plotunselected', function() { delimitResults('filterDate'); });
-		
-		jGraphDiv.mouseleave(function() { jQuery("#pz2-histogram-tooltip").remove(); });
+		jGraphDiv.bind('plotselected', function(event, ranges) {
+			selectRanges(ranges);
+		});
+
+		jGraphDiv.bind('plotunselected', function() {
+			delimitResults('filterDate');
+		});
 		
 		jGraphDiv.bind('plothover', function(event, ranges, item) {
 			var showTooltip = function(x, y, contents) {
-				jQuery('<div id="pz2-histogram-tooltip">' + contents + '</div>').css( {
+				var tooltipDiv = document.createElement('div');
+				tooltipDiv.setAttribute('id', 'pz2-histogram-tooltip');
+				tooltipDiv.appendChild(document.createTextNode(contents));
+				jQuery(tooltipDiv).css( {
 					'position': 'absolute',
 					'display': 'none',
 					'top': y + 5,
@@ -1703,7 +1715,7 @@ function facetListForType (type, preferOriginalFacets) {
 				}).appendTo('body').fadeIn(200);
 			}
 		
-			jQuery("#pz2-histogram-tooltip").remove();
+			removeTooltip();
 			var year = Math.floor(ranges.x);
 			for (termIndex in terms) {
 				var term = terms[termIndex].name;

@@ -1678,7 +1678,7 @@ function facetListForType (type, preferOriginalFacets) {
 
 		var selectRanges = function (ranges) {
 			ranges.xaxis.from = Math.floor(ranges.xaxis.from);
-			ranges.xaxis.to = Math.ceil(ranges.xaxis.to) ;
+			ranges.xaxis.to = Math.ceil(ranges.xaxis.to);
 			plot.setSelection(ranges, true);
 			filterArray['filterDate'] = undefined;
 			limitResults('filterDate', ranges.xaxis);
@@ -1723,7 +1723,7 @@ function facetListForType (type, preferOriginalFacets) {
 					var hitCount = terms[termIndex].freq;
 					var displayString = year + ': ' + hitCount + ' ' + localise('Treffer');
 					tooltipY = jGraphDiv.offset().top + canvasHeight - 20;
-                    showTooltip(ranges.pageX, tooltipY, displayString);
+					showTooltip(ranges.pageX, tooltipY, displayString);
 				}
 			}
 		});

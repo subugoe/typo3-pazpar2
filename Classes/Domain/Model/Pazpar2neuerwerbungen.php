@@ -205,7 +205,7 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 		$queryResults = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'*',
 			'tx_nkwgok_data',
-			"parent = '" . $parentPPN . "'",
+			"parent = '" . $parentPPN . "' AND statusID = 0",
 			'',
 			'gok ASC',
 			'');

@@ -1687,7 +1687,8 @@ function facetListForType (type, preferOriginalFacets) {
 
 		jGraphDiv.bind("plotclick", function (event, pos, item) {
 			if (item) {
-				var ranges = {'xaxis': {'from': pos.x, 'to': pos.x} };
+				var year = item.datapoint[0];
+				var ranges = {'xaxis': {'from': year, 'to': year + 1} };
 				selectRanges(ranges);
 			}
 		});

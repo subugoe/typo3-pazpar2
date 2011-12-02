@@ -72,4 +72,5 @@ plugin.tx_pazpar2_pazpar2neuerwerbungen.settings {
 	pz2-neuerwerbungenCSSPath = EXT:pazpar2/Resources/Public/pz2-neuerwerbungen.css
 	neuerwerbungen-subjects =
 	useAtomFeed = 1
+	numberOfMonths = 13
 }

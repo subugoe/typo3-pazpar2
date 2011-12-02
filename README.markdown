@@ -75,7 +75,6 @@ In addition to the options exposed in the flexform, a number of additional optio
 	* mainSearchFieldPlaceholder [0]: HTML5 placeholder string to be put into the main search field; available options are: 0 -> blank, 1 -> Search Term, 2 -> additional Search term
 	* useSortMenu [0]: if 1 a HTML select element letting the user pick the sort order is included in the search form
 	* sortOrder [{1.fieldName = date \n 1.direction = descending \n 2.fieldName = author \n 2.direction = ascending \n 3.fieldName = title \n 3.direction = ascending}]
-	* useAtomFeed [1]: if 1, a link to an Atom feed is displayed along with the Neuwerbungen form and inserted into the page’s <head>
 * Results display:
 	* provideCOinSExport [1]: if 1, causes invisible [COinS](http://ocoins.info/) metadata to be inserted into the result lists. It will be used by [Zotero](http://www.zotero.org/) to automatically find bibliographics records displayed in the page. Note that Zotero 3 is the first version capable of discovering COinS data that are dynamically added to the page.
 	* exportFormats [{ris = 1\n bibtex = 1}]: an array with export format names as keys set to the value 1. Based on this list links to downloads of bibliographic metadata are added to the detail view of records. You can empty this array to remove the export links from the detail view. Permitted keys are: ris, bibtex, ris-inline and bibtex-inline for [RIS](http://www.refman.com/support/risformat_intro.asp) and BibTeX formats. The plain names cause a download of the file, the -inline name replace the current page with the bibliographic data.
@@ -87,10 +86,11 @@ In addition to the options exposed in the flexform, a number of additional optio
 	* pz2-clientJSPath [EXT:pazpar2/Resources/Public/pz2-client.js]: JavaScript handling the user interaction and display of results; a lot of the customisation is in here
 	* flotJSPath [EXT:pazpar2/Resources/Public/flot/jquery.flot.js]: flot graphing library
 	* flotSelectionJSPath [EXT:pazpar2/Resources/Public/flot/jquery.flot.selection.js]: selection component of flot graphing library
+* pazpar2-neuerwerbungen
+	* useAtomFeed [1]: if 1, a link to an Atom feed is displayed along with the Neuwerbungen form and inserted into the page’s <head>
+	* numberOfMonths [13]: the number of months to display in the popup menu for date selection
 	* pz2-neuerwerbungenCSSPath [EXT:pazpar2/Resources/Public/pz2-neuerwerbungen.css]: Additional CSS file included if the pazpar2-neuerwerbungen plug-in is used
 	* pz2-neuerwerbungenJSPath [EXT:pazpar2/Resources/Public/pz2-neuerwerbungen.js]: Additional JavaScript included if the pazpar2-neuerwerbungen plug-in is used
-
-
 
 
 

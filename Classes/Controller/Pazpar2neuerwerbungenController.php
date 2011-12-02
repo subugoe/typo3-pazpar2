@@ -62,6 +62,7 @@ class Tx_Pazpar2_Controller_Pazpar2neuerwerbungenController extends Tx_Pazpar2_C
 		$this->pz2Neuerwerbungen = t3lib_div::makeInstance('Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen');
 		$this->pz2Neuerwerbungen->setRootPPN($this->conf['neuerwerbungen-subjects']);
 		$this->pz2Neuerwerbungen->setRequestArguments($this->request->getArguments());
+		$this->pz2Neuerwerbungen->setMonthCount($this->conf['numberOfMonths']);
 	}
 	
 	

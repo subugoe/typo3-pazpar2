@@ -108,6 +108,32 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 
 
 	/**
+	 * Number of months to display, defaults to 13.
+	 * @var int
+	 */
+	protected $monthCount;
+
+	/**
+	 * @return int
+	 */
+	public function getMonthCount () {
+		if ($this->monthCount === Null) {
+			return 13;
+		}
+
+		return $this->monthCount;
+	}
+
+	/**
+	 * @param int $newMonthCount
+	 */
+	public function setMonthCount ($newMonthCount) {
+		$this->monthCount = $newMonthCount;
+	}
+
+
+
+	/**
 	 * Return array of subjects for the parentPPN passed.
 	 * The data needed are loaded from the tx_nkwgok_data table of the database.
 	 * They are expected to be imported from CSV-data by the GOK Plug-In. See its documentation
@@ -365,30 +391,23 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 		}
 		return $this->months;
 	}
-	
-	/**
-	 * @param Array $newMonths
-	 * @return void
-	 */
-	public function setMonths ($newMonths) {
-		$this->months = $newMonths;
-	}
+
+
 
 	/**
 	 * Returns array of months preceding the current one.
-	 *	* Keys are of the form YYYYMM.
+	 *	* Keys are of the form YYYY-MM.
 	 *	* Values are localised names of the months followed by the year.
 	 *		Localised '(incomplete)' is appended to the name of the current month.
 	 *
-	 * @param $numberOfMonths (default = 13)
 	 * @return Array
 	 */
-	public function monthsArray ($numberOfMonths = 13) {
+	public function monthsArray () {
 		$months = array();
 		$year = date('Y');
 		$month = date('n');
 
-		for ($i = 1; $i <= $numberOfMonths; $i++) {
+		for ($i = 1; $i <= $this->getMonthCount(); $i++) {
 			$searchString = $this->picaSearchStringForMonth($month, $year);
 
 			/* make sure the text encoding in the locale_all setting matches the encoding

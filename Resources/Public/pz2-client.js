@@ -3887,7 +3887,8 @@ var catalogueNames = {
 	},
 	'en': {
 		'Geschichte Aufsätze': 'Essays: History',
-		'Anglistik Aufsätze': 'Essays: Literature'
+		'Anglistik Aufsätze': 'Essays: Literature',
+		'Alte Karten': 'Old Maps'
 	}
 }
 

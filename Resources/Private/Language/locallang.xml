@@ -246,6 +246,7 @@ Please run the search from a German university network for more complete results
 			<!-- Catalogue Names which need localisation -->
 			<label index="Geschichte Aufsätze">Essays: History</label>
 			<label index="Anglistik Aufsätze">Essays: Literature</label>
+			<label index="Alte Karten">Old Maps</label>
 
 		</languageKey>
 

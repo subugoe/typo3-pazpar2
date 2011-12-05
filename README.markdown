@@ -185,6 +185,7 @@ Many thanks go to [Indexdata](http://www.indexdata.com/) for their powerful pazp
 
 
 ## Version History ##
+* 1.3.0 (2011-12-02): Neuerwerbungen: number of months in popup menu is now configurable in TypoScript; if there is just single checkbox, automatically select it
 * 1.2.0 (2011-11-25): add links to show all facets when facets needed to be hidden; more reliable tooltip hiding for histogram; require nkwgok 1.2.0 or above and use its updated database schema for Neuerwerbungen
 * 1.1.5 (2011-11-23): fix Piwik tracking for metadata export links
 * 1.1.4 (2011-11-22): make automatic query starting more reliable in Neuerwerbungen; prevent incorrect usage of the no-JavaScript code path

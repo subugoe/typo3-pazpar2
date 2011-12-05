@@ -311,7 +311,12 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 			}
 		}
 
-		// Turn on the selection for the group if all containing subjects are selected
+		// Turn on the checkbox if there only is a single one.
+		if (count($subjects) === 1 && count($subjects[0]['subjects'] === 1)) {
+			$subjects[0]['subjects'][0]['selected'] = True;
+		}
+
+		// Turn on the selection for the group if all containing subjects are selected.
 		foreach ($subjects as &$group) {
 			$this->turnOnGroupSelectionIfNeeded($group);
 		}

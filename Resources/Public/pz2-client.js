@@ -3750,6 +3750,132 @@ function renderDetails(recordID) {
 
 
 
+
+	var addSameButDifferentIntoElement = function (container) {
+		var addExtraInfo = function (element, li) {
+			var extraInfo = [];
+			
+			appendElementForFieldName(element, 'ed', li, ', ');
+			appendElementForFieldName(element, 'city', li, ', ');
+			appendElementForFieldName(element, 'year', li, ', ');
+			appendElementForFieldName(element, 'lang', li, ', ');
+		
+			var urls = element.url;
+				for (var j in urls) {
+					var url = urls[j];
+					var a = document.createElement('a');
+					a.href = url;
+					a.appendChild(document.createTextNode('[WorldCat]'));
+					turnIntoNewWindowLink(a);
+					li.appendChild(document.createTextNode(' '));
+					li.appendChild(a);
+			}
+		
+		}
+
+		var appendElementForFieldName = function (data, fieldName, container, separator) {
+			if (fieldName && data[fieldName]) {
+				var span = document.createElement('span');
+				span.setAttribute('class', fieldName);
+				span.appendChild(document.createTextNode(localise(data[fieldName], languageNames)));
+				container.appendChild(span);
+				if (separator != '') {
+					container.appendChild(document.createTextNode(separator));
+				}
+			}
+		}
+
+
+		var searchOCLC = '';
+		var searchISBN = '';
+		for (var locationID in data.location) {
+			var location = data.location[locationID];
+			
+			// does not work as xID does not return full data for OCLC lookups
+			// numberField = String(location['md-oclc-number']);
+			// matches = numberField.match(/[0-9]{4,}/g);
+			// if (matches && !searchOCLC) {
+			//	searchOCLC = matches[0];
+			// }
+			
+			numberField = String(location['md-isbn']);
+			matches = numberField.match("[-0-9Xx]{10,17}");
+			if (matches && !searchISBN) {
+				searchISBN = matches[0];
+			}
+		}
+
+		if (searchOCLC != '' || searchISBN != '') {
+			var baseURL = 'http://xisbn.worldcat.org/webservices/xid/';
+			var searchPart = (searchOCLC != '')?('oclcnum/' + searchOCLC):('isbn/' + searchISBN);
+			var parameters = '?format=json&fl=%2A&callback=?';
+			var URL = baseURL + searchPart + parameters;
+			console.log(URL);
+			var ul;
+			jQuery.getJSON(URL, function(data) {
+				if (data.stat === 'ok') {
+					var dt = document.createElement('dt');
+					dt.appendChild(document.createTextNode('Other Editions:'));
+					var dd = document.createElement('dd');
+					ul = document.createElement('ul');
+					dd.appendChild(ul);
+					
+					data.list.sort( function (a,b) {
+						return b.year - a.year;
+					});
+							
+					for (var i in data.list) {
+						var item = data.list[i];			
+						var li = document.createElement('li');
+						ul.appendChild(li);
+						addExtraInfo(item, li);
+						li.xISBNData = item;
+					}
+				}
+				
+				var jDTDD = jQuery([dt, dd]);
+				jDTDD.hide();
+				var jGoogleBooksDT = jQuery('dt.pz2-googleBooks', container);
+				if (jGoogleBooksDT.length > 0) {
+					jGoogleBooksDT.before(jDTDD);
+				}
+				else {
+					jDTDD.appendTo(container);
+				}
+				jDTDD.slideDown('fast');
+				
+				// Determine local availability of book and display it.
+				jQuery(ul).children().each( function () {
+					var node = this;
+					var element = node.xISBNData;
+
+					var vlibBaseURL = 'http://vlib.sub.uni-goettingen.de/worldcat/webservices/catalog/content/libraries/';
+					copyURL = vlibBaseURL + element.oclcnum[0] + parameters;
+
+					jQuery.getJSON(copyURL, function(libData) {
+						if (libData.library.length > 0) {
+							var library = libData.library[0];
+							var locationSpan = document.createElement('span');
+							locationSpan.setAttribute('class', 'nextCopy');
+							
+							locationSpan.appendChild(document.createTextNode(' Next Copy at: '));
+							var link = document.createElement('a');
+							link.href = library.opacUrl;
+							locationSpan.appendChild(link);
+							link.appendChild(document.createTextNode(library.institutionName));
+							turnIntoNewWindowLink(link);
+							locationSpan.appendChild(document.createTextNode(' (' + library.distance + 'km away)'));
+							
+							node.appendChild(locationSpan);
+						}
+					});
+					
+				});
+				
+			});
+		}
+	}
+
 	
 	var data = hitList[recordID];
 
@@ -3803,6 +3929,7 @@ function renderDetails(recordID) {
 		if (useZDB === true) {
 			addZDBInfoIntoElement( detailsList );
 		}
+		addSameButDifferentIntoElement( detailsList);
 		if (exportFormats.length > 0) {
 			appendInfoToContainer( exportLinks(), detailsDiv );
 		}

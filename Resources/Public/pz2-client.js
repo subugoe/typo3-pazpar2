@@ -2598,7 +2598,8 @@ function renderDetails(recordID) {
 				var parameters = {'tx_pazpar2_pazpar2[extended]': 1,
 									'tx_pazpar2_pazpar2[controller]': 'Pazpar2',
 									'tx_pazpar2_pazpar2[action]': 'index',
-									'tx_pazpar2_pazpar2[queryStringKeyword]': '"' + keyword + '"'
+									'tx_pazpar2_pazpar2[queryStringKeyword]': '"' + keyword + '"',
+									'tx_pazpar2_pazpar2[useJS]': 'no'
 							}
 				var linkURL = document.location.href.split('?')[0] + '?' + jQuery.param(parameters);
 				linkElement.setAttribute('href', linkURL);

@@ -459,6 +459,7 @@ private function renderDetails ($result) {
 	$this->appendInfoToContainer( $this->ISSNsDetailLine($result), $detailsList);
 	$this->appendInfoToContainer( $this->detailLineAuto('doi', $result), $detailsList);
 	$this->appendInfoToContainer( $this->detailLineAuto('creator', $result), $detailsList);
+	$this->appendInfoToContainer( $this->keywordsDetailLine($result), $detailsList);
 
 	$this->appendInfoToContainer( $this->locationDetails($result), $detailsList);
 	$this->addZDBInfoIntoElement( $detailsList, $result );
@@ -881,6 +882,45 @@ private function ISSNsDetailLine ($result) {
 	return $this->detailLine('issn', $infoElements);
 }
 
+
+
+/**
+ * @param array $result
+ * @return array of DOM Elements
+ */
+private function keywordsDetailLine ($result) {
+	$infoElements = Null;
+	$labelString = 'keyword';
+
+	if ($result['md-subject'] && $this->conf['useKeywords']) {
+		$infoElement = $this->doc->createElement('span');
+		$infoElements = Array($infoElement);
+		foreach ($result['md-subject'] as $keywordIndex => $keywordArray) {
+			$keyword = $keywordArray['values'][0];
+			$keywordQuery = "subject=\\\"" . $keyword . "\\\"";
+			$linkElement = $this->doc->createElement('a');
+			$URIBuilder = $this->controllerContext->getUriBuilder();
+
+			$linkURI = $URIBuilder->uriFor('index', Array('queryStringKeyword' => '"' . $keyword . '"', 'extended' => 1, 'useJS' => 'no'), 'Pazpar2', 'Pazpar2');
+			$linkElement->setAttribute('href', $linkURI);
+			$titleString = Tx_Extbase_Utility_Localization::translate('nach Schlagwort "#" suchen', 'Pazpar2');
+			$titleString = str_replace('#', $keyword, $titleString);
+			$linkElement->setAttribute('title', $titleString);
+			$linkElement->appendChild($this->doc->createTextNode($keyword));
+			$infoElement->appendChild($linkElement);
+
+			if ($keywordIndex + 1 < count($result['md-subject'])) {
+				$infoElement->appendChild($this->doc->createTextNode('; '));
+			}
+		}
+
+		if (count($result['md-subject']) > 1) {
+			$labelString .= '-plural';
+		}
+	}
+
+	return $this->detailLine($labelString, $infoElements);
+}
 
 
 

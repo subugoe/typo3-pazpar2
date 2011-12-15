@@ -64,6 +64,7 @@ plugin.tx_pazpar2 {
 		fulltextSearch = 2
 		journalTitleOnlySearch = 1
 		dateSearch = 1
+		useKeywords = 0
 	}
 }
 

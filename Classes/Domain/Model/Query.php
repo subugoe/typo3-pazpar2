@@ -50,6 +50,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	protected $queryStringTitle = Null;
 	protected $querySwitchJournalOnly = Null;
 	protected $queryStringPerson = Null;
+	protected $queryStringKeyword = Null;
 	protected $queryStringDate = Null;
 
 	/**
@@ -60,6 +61,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	public function getQueryStringTitle () { return $this->queryStringTitle; }
 	public function getQuerySwitchJournalOnly () { return $this->querySwitchJournalOnly; }
 	public function getQueryStringPerson () { return $this->queryStringPerson; }
+	public function getQueryStringKeyword () { return $this->queryStringKeyword; }
 	public function getQueryStringDate () { return $this->queryStringDate; }
 
 
@@ -101,6 +103,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 		$this->queryStringTitle = trim($newArguments['queryStringTitle']);
 		$this->querySwitchJournalOnly = ($newArguments['querySwitchJournalOnly'] != '');
 		$this->queryStringPerson = trim($newArguments['queryStringPerson']);
+		$this->queryStringKeyword = trim($newArguments['queryStringKeyword']);
 		$this->queryStringDate = trim($newArguments['queryStringDate']);
 	}
 
@@ -328,6 +331,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 		}
 		// Person search is a phrase search.
 		if ($this->queryStringPerson) {	$queryParts[] = 'person="' . $this->queryStringPerson . '"'; }
+		if ($this->queryStringKeyword) { $queryParts[] = 'keyword="' . $this->queryStringKeyword . '"'; }
 		if ($this->queryStringDate) { $queryParts[] = 'date=' . $this->queryStringDate; }
 
 		$query = implode(' and ', $queryParts);

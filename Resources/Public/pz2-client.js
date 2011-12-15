@@ -69,10 +69,13 @@ var germanTerms = {
 	'detail-label-doi': 'DOI',
 	'detail-label-acronym-doi': 'Document Object Identifier: Mit dem Link zu dieser Nummer kann das Dokument im Netz gefunden werden.',
 	'detail-label-doi-plural': 'DOIs',
+	'detail-label-keyword': 'Schlagwort',
+	'detail-label-keyword-plural': 'Schlagwörter',
 	'detail-label-creator': 'erfasst von',
 	'detail-label-verfügbarkeit': 'Verfügbarkeit',
 	'elektronisch': 'digital',
 	'gedruckt': 'gedruckt',
+	'nach Schlagwort "#" suchen': 'nach Schlagwort \u201e#\u201c suchen',
 	'Ausgabe': 'Ausgabe',
 	/* Google Books status Strings from
 		http://code.google.com/intl/de-DE/apis/books/examples/translated-branding-elements.html	*/
@@ -178,10 +181,13 @@ var englishTerms = {
 	'detail-label-doi': 'DOI',
 	'detail-label-acronym-doi': 'Document Object Identifier: Use the link to load the document.',
 	'detail-label-doi-plural': 'DOIs',
+	'detail-label-keyword': 'Keyword',
+	'detail-label-keyword-plural': 'Keywords',
 	'detail-label-creator': 'catalogued by',
 	'detail-label-verfügbarkeit': 'Availability',
 	'elektronisch': 'electronic',
 	'gedruckt': 'printed',
+	'nach Schlagwort "#" suchen': 'search for keyword \u201c#\u201d',
 	'Ausgabe': 'Edition',
 	/* Google Books status Strings from
 		http://code.google.com/intl/de-DE/apis/books/examples/translated-branding-elements.html	*/
@@ -385,7 +391,8 @@ var showExportLinksForEachLocation = false;
 var preferSUBOpac = false;
 // Function used to trigger search (to be overwritten by pazpar2-neuwerbungen).
 var triggerSearchFunction = triggerSearchForForm;
-
+// Show keywords field in extended search and display linked keywords in detail view?
+var useKeywords = false;
 
 
 /*	my_oninit
@@ -1894,8 +1901,13 @@ function pz2ClientDomReady ()  {
 	domReadyFired = true;
 
 	jQuery('.pz2-searchForm').each( function(index, form) {
-			form.onsubmit = onFormSubmitEventHandler;
-			jQuery('.pz2-extendedLink', form).click(addExtendedSearchForLink);
+			form.onsubmit = onFormSubmitEventHandler
+			if (jQuery('form.pz2-searchForm').hasClass('pz2-extended')) {
+				jQuery('.pz2-extendedLink', form).click(removeExtendedSearch);
+			}
+			else {
+				jQuery('.pz2-extendedLink', form).click(addExtendedSearch);
+			}
 		}
 	);
 
@@ -1989,8 +2001,8 @@ function triggerSearchForForm (form, additionalQueryTerms) {
 
 	var myForm = form;
 	// If no form is passed use the first .pz2-mainForm.
-	if (myForm === undefined) {
-		var mainForms = jQuery('.pz2-mainForm form');
+	if (!myForm) {
+		var mainForms = jQuery('.pz2-searchForm');
 		if (mainForms.length > 0) {
 			myForm = mainForms[0];
 		}
@@ -2008,6 +2020,7 @@ function triggerSearchForForm (form, additionalQueryTerms) {
 		if (isExtendedSearch) {
 			addSearchStringForFieldToArray('title', searchChunks);
 			addSearchStringForFieldToArray('person', searchChunks);
+			addSearchStringForFieldToArray('keyword', searchChunks);
 			addSearchStringForFieldToArray('date', searchChunks);
 		}
 		searchChunks = searchChunks.concat(curAdditionalQueryTerms)
@@ -2025,57 +2038,65 @@ function triggerSearchForForm (form, additionalQueryTerms) {
 
 
 
-/*	addExtendedSearchForLink
-	Handler for link switching to extended search.
-	Adds the extended search fields, moves the search button and updates
+/*	addExtendedSearch
+	Switches the form  to extended search.
+	Shows the extended search fields, moves the search button and updates
 		the link to show basic search.
 
-	input:	event - jQuery event
+	inputs:	event - jQuery event
+			dontTrack - boolean [defaults to false]
 	output:	false
 */
-function addExtendedSearchForLink (event) {
+function addExtendedSearch (event, dontTrack) {
 	// switch form type
-	var formContainer = jQuery('.pz2-mainForm');
-	jQuery(formContainer).parent('form').removeClass('pz2-basic').addClass('pz2-extended');
+	var jFormContainer = jQuery('.pz2-mainForm');
+	jFormContainer.parent('form').removeClass('pz2-basic').addClass('pz2-extended');
 
 	// move the controls
-	var controls = jQuery('.pz2-formControls', formContainer);
-	jQuery('.pz2-fieldContainer:last').append(controls);
+	var jControls = jQuery('.pz2-formControls', jFormContainer);
+	jQuery('.pz2-fieldContainer:last', jFormContainer).append(jControls);
 
 	// switch the link to a simple search link
-	jQuery(this).unbind().click(removeExtendedSearchForLink).empty().text(localise('einfache Suche'));
-	jQuery('.pz2-extraFields').show();
+	jQuery('.pz2-extendedLink', jFormContainer).unbind().click(removeExtendedSearch).empty().text(localise('einfache Suche'));
+	jQuery('.pz2-extraFields', jFormContainer).show();
 
-	trackPiwik('extendedsearch/show');
+	if (dontTrack !== true) {
+		trackPiwik('extendedsearch/show');
+	}
+
 	return false;
 }
 
 
 
-/*	removeExtendedSearchForLink
-	Handler for link switching to basic search.
-	Removes the extended search fields, moves the search button and updates
+/*	removeExtendedSearch
+	Switches the form to basic search.
+	Hides the extended search fields, moves the search button and updates
 		the link to reflect the state.
 
-	input:	event - jQuery event
+	inputs:	event - jQuery event
+			dontTrack - boolean [defaults to false]
 	output:	false
 */
-function removeExtendedSearchForLink (event) {
+function removeExtendedSearch (event, dontTrack) {
 	// switch form type
-	var formContainer = jQuery('.pz2-mainForm');
-	formContainer.parent('form').removeClass('pz2-extended').addClass('pz2-basic');
+	var jFormContainer = jQuery('.pz2-mainForm');
+	jFormContainer.parent('form').removeClass('pz2-extended').addClass('pz2-basic');
 
 	// move the controls
-	var controls = jQuery('.pz2-formControls', formContainer);
-	jQuery('#pz2-field-all').after(controls);
+	var jControls = jQuery('.pz2-formControls', jFormContainer);
+	jQuery('#pz2-field-all').after(jControls);
 
 	// switch the link to an extended search link
-	jQuery(this).unbind().click(addExtendedSearchForLink).empty().text(localise('erweiterte Suche'));
+	jQuery('.pz2-extendedLink', jFormContainer).unbind().click(addExtendedSearch).empty().text(localise('erweiterte Suche'));
 
 	// remove extended search fields
-	jQuery('.pz2-extraFields', formContainer).hide();
+	jQuery('.pz2-extraFields', jFormContainer).hide();
 
-	trackPiwik('extendedsearch/hide');
+	if (dontTrack !== true) {
+		trackPiwik('extendedsearch/hide');
+	}
+
 	return false;
 }
 
@@ -2524,7 +2545,7 @@ function renderDetails(recordID) {
 			taking into account the issn, eissn and pissn fields.
 
 		output: Array of DOM elements containing
-				0:	DT element with the row's title ISSN or ISSNs
+				0:	DT element with the row’s title ISSN or ISSNs
 				1:	DD element with a list of ISSNs
 	*/
 	var ISSNsDetailLine = function () {
@@ -2551,6 +2572,67 @@ function renderDetails(recordID) {
 		return detailLine('issn', infoElements);
 	}
 
+
+
+/*	keywordsDetailLine
+		If useKeywords is true, returns DOMElements with markupt for the
+			record’s keywords, each wrapped in a link for starting the
+			associated keyword search.
+
+		output: Array of DOM elements containing
+				0:	DT element with the row’s title ISSN or ISSNs
+				1:	DD element with a list of ISSNs
+	*/
+	var keywordsDetailLine = function () {
+		var infoElements;
+		var labelString = 'keyword';
+
+		if (data['md-subject'] && useKeywords) {
+			var infoElement = document.createElement('span');
+			infoElements = [infoElement];
+
+			for (var subjectIndex = 0; subjectIndex < data['md-subject'].length; subjectIndex++) {
+				var keyword = data['md-subject'][subjectIndex];
+				var keywordQuery = "keyword=\\\"" + keyword + "\\\"";
+				var linkElement = document.createElement('a');
+				var parameters = {'tx_pazpar2_pazpar2[extended]': 1,
+									'tx_pazpar2_pazpar2[controller]': 'Pazpar2',
+									'tx_pazpar2_pazpar2[action]': 'index',
+									'tx_pazpar2_pazpar2[queryStringKeyword]': '"' + keyword + '"'
+							}
+				var linkURL = document.location.href.split('?')[0] + '?' + jQuery.param(parameters);
+				linkElement.setAttribute('href', linkURL);
+				var titleString = localise('nach Schlagwort "#" suchen').replace('#', keyword);
+				linkElement.setAttribute('title', titleString);
+
+				var searchForKeyword = function () {
+					jForm = jQuery('form.pz2-searchForm');
+					if (!jForm.hasClass('pz2-extended')) {
+						addExtendedSearch(null, true);
+					}
+					jQuery(".pz2-searchField", jForm).val("");
+					jQuery("input#pz2-field-keyword", jForm).val('"' + this.textContent + '"');
+					triggerSearchForForm();
+					return false;
+				}
+
+				linkElement.onclick = searchForKeyword;
+
+				linkElement.appendChild(document.createTextNode(keyword));
+				infoElement.appendChild(linkElement);
+
+				if (subjectIndex + 1 < data['md-subject'].length) {
+					infoElement.appendChild(document.createTextNode('; '));
+				}
+			}
+
+			if (data['md-subject'].length > 1) {
+				labelString += '-plural';
+			}
+		}
+
+		return detailLine(labelString, infoElements);
+	}
 
 
 	/*	ZDBQuery
@@ -3798,6 +3880,8 @@ function renderDetails(recordID) {
 		appendInfoToContainer( ISSNsDetailLine(), detailsList );
 		appendInfoToContainer( detailLineAuto('doi'), detailsList );
 		appendInfoToContainer( detailLineAuto('creator'), detailsList );
+		appendInfoToContainer( keywordsDetailLine(), detailsList);
+
 		appendInfoToContainer( locationDetails(), detailsList );
 		appendGoogleBooksElementTo(detailsList);
 		if (useZDB === true) {

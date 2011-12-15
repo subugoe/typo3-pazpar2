@@ -80,13 +80,14 @@ In addition to the options exposed in the flexform, a number of additional optio
 	* exportFormats [{ris = 1\n bibtex = 1}]: an array with export format names as keys set to the value 1. Based on this list links to downloads of bibliographic metadata are added to the detail view of records. You can empty this array to remove the export links from the detail view. Permitted keys are: ris, bibtex, ris-inline and bibtex-inline for [RIS](http://www.refman.com/support/risformat_intro.asp) and BibTeX formats. The plain names cause a download of the file, the -inline name replace the current page with the bibliographic data.
 	* showKVKLink [1]: for records with an ISBN or media type book a link to the metasearch across German union catalogues in [Karlsruhe Virtual Catalogue](http://www.ubka.uni-karlsruhe.de/kvk.html) (KVK) is added along with the export links
 	* preferSUBOpac [0]: if 1, links to GVK catalogue pages are mapped to the SUB Göttingen Opac for people with 134.76.* IP addresses, to provide greater convenience for Göttingen user
+	* useKeywords [0]: if 1, the Keywords search field is offered in extended search and keywords are displayed in result details, each linking to a search for the keyword in question; requires pazpar2’s targets to be configured for keyword searches on the »subject« index
 * included files:
 	* CSSPath [EXT:pazpar2/Resources/Public/pz2.css]: CSS file included to style the search form and search results
 	* pz2JSPath [EXT:pazpar2/Resources/Public/pz2.js]: Indexdata’s [pz2.js](http://git.indexdata.com/?p=pazpar2.git;a=blob_plain;f=js/pz2.js;hb=HEAD) library to communicate with the pazar2  service
 	* pz2-clientJSPath [EXT:pazpar2/Resources/Public/pz2-client.js]: JavaScript handling the user interaction and display of results; a lot of the customisation is in here
 	* flotJSPath [EXT:pazpar2/Resources/Public/flot/jquery.flot.js]: flot graphing library
 	* flotSelectionJSPath [EXT:pazpar2/Resources/Public/flot/jquery.flot.selection.js]: selection component of flot graphing library
-* pazpar2-neuerwerbungen
+* tx_pazpar2_pazpar2-neuerwerbungen
 	* useAtomFeed [1]: if 1, a link to an Atom feed is displayed along with the Neuwerbungen form and inserted into the page’s <head>
 	* numberOfMonths [13]: the number of months to display in the popup menu for date selection
 	* pz2-neuerwerbungenCSSPath [EXT:pazpar2/Resources/Public/pz2-neuerwerbungen.css]: Additional CSS file included if the pazpar2-neuerwerbungen plug-in is used
@@ -95,7 +96,7 @@ In addition to the options exposed in the flexform, a number of additional optio
 
 
 ## pazpar2 Setup
-pazpar2 services used by the extesion need to have specific settings for the search keys as well as for the metadata they provide for the searches to work and the quality of the displayed data to be reasonable.
+pazpar2 services used by the extension need to have specific settings for the search keys as well as for the metadata they provide for the searches to work and the quality of the displayed data to be reasonable.
 
 ### Search keys ###
 The search forms provided by pazpar2 use the following search keys which must be set up in the pazpar2 service:
@@ -107,6 +108,7 @@ The search forms provided by pazpar2 use the following search keys which must be
 * person
 * date
 * nel - month index required by pazpar2 Neuewerbungen only (required format: YYYYMM)
+* subject
 
 ### Metadata format ###
 The metadata expected by the extension to display results are based on the metadata fields created by Indexdata’s powerful [tmarc.xsl](http://git.indexdata.com/?p=pazpar2.git;a=blob_plain;f=etc/tmarc.xsl;hb=HEAD) style file for extracting information from Marc records. A few additions and changes to the standard output of that stylesheet have been made to improve the display quality.
@@ -185,6 +187,7 @@ Many thanks go to [Indexdata](http://www.indexdata.com/) for their powerful pazp
 
 
 ## Version History ##
+* 1.4.0 (2011-12-??): Add keyword search and ability to display keywords in result details
 * 1.3.0 (2011-12-02): Neuerwerbungen: number of months in popup menu is now configurable in TypoScript; if there is just single checkbox, automatically select it
 * 1.2.0 (2011-11-25): add links to show all facets when facets needed to be hidden; more reliable tooltip hiding for histogram; require nkwgok 1.2.0 or above and use its updated database schema for Neuerwerbungen
 * 1.1.5 (2011-11-23): fix Piwik tracking for metadata export links

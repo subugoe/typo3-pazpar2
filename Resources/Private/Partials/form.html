@@ -39,6 +39,14 @@
 						additionalAttributes="{placeholder: '{f:translate(key:\"form-extended-placeholder-person\")}'}"/>
 				</div>
 
+				<f:if condition="{conf.useKeywords}">
+					<div class="pz2-fieldContainer pz2-field-keyword">
+						<label class="pz2-textFieldLabel" for="pz2-field-keyword"><f:translate key="form-extended-label-keyword" >keyword</f:translate></label>
+						<f:form.textbox id="pz2-field-keyword" class="pz2-searchField" name="queryStringKeyword" value="{query.queryStringKeyword}"
+						additionalAttributes="{placeholder: '{f:translate(key:\"form-extended-placeholder-keyword\")}'}"/>
+					</div>
+				</f:if>
+
 				<f:if condition="{conf.dateSearch}==1">
 					<div class="pz2-fieldContainer pz2-field-date">
 						<label class="pz2-textFieldLabel" for="pz2-field-date"><f:translate key="form-extended-label-date" >date</f:translate></label>

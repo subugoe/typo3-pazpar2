@@ -69,6 +69,7 @@
 		<!-- 
 			Title:
 			md-title -> T1
+			md-title-number-section -> T3
 			md-title-remainder -> T2
 			md-series-title -> T3
 		-->

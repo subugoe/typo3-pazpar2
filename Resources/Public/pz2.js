@@ -79,6 +79,7 @@ var pz2 = function ( paramArray )
 
     // where are we?
     this.currentStart = 0;
+    // currentNum can be overwritten in show
     this.currentNum = 20;
 
     // last full record retrieved
@@ -360,7 +361,7 @@ pz2.prototype =
             }
         );
     },
-    show: function(start, num, sort)
+    show: function(start, num, sort, query_state)
     {
         if( !this.searchStatusOK && this.useSessions )
             throw new Error(
@@ -379,8 +380,7 @@ pz2.prototype =
 
         var context = this;
         var request = new pzHttpRequest(this.pz2String, this.errorHandler);
-        request.safeGet(
-          {
+        var requestParameters = {
             "command": "show", 
             "session": this.sessionID, 
             "start": this.currentStart,
@@ -389,7 +389,12 @@ pz2.prototype =
             "block": 1,
             "type": this.showResponseType,
             "windowid" : window.name
-          },
+          };
+        if (query_state) {
+          requestParameters["query-state"] = query_state;
+        }
+        request.safeGet(
+          requestParameters,
           function(data, type) {
             var show = null;
             var activeClients = 0;
@@ -629,7 +634,12 @@ pz2.prototype =
         var context = this;
         var request = new pzHttpRequest(this.pz2String, this.errorHandler);
         request.safeGet(
-            { "command": "bytarget", "session": this.sessionID, "windowid" : window.name},
+            {
+              "command": "bytarget",
+              "session": this.sessionID,
+              "block": 1,
+              "windowid" : window.name
+            },
             function(data) {
                 if ( data.getElementsByTagName("status")[0]
                         .childNodes[0].nodeValue == "OK" ) {

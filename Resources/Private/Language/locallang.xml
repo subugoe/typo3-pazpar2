@@ -93,18 +93,21 @@ Bei Zugriff aus einem deutschen Universitätsnetzwerk umfaßt Ihre Abfrage zusä
 
 			<!-- Media Types -->
 			<label index="media-type-article">Aufsatz</label>
-			<label index="media-type-audio-visual">Video</label>
+			<label index="media-type-audio-visual">Film</label>
 			<label index="media-type-book">Buch</label>
 			<label index="media-type-electronic">Datei</label>
+			<label index="media-type-letter">Brief</label>
 			<label index="media-type-journal">Zeitschrift</label>
 			<label index="media-type-map">Karte</label>
 			<label index="media-type-microform">Mikroform</label>
-			<label index="media-type-multivolume">Mehrbändig</label>
+			<label index="media-type-multivolume">Mehrere Bände</label>
 			<label index="media-type-music-score">Noten</label>
+			<label index="media-type-manuscript">Manuskript</label>
 			<label index="media-type-other">Andere</label>
-			<label index="media-type-recording">Aufnahme</label>
+			<label index="media-type-recording">Tonaufnahme</label>
 			<label index="media-type-website">Website</label>
 			<label index="media-type-multiple">Verschiedene Medien</label>
+			<label index="media-type-image">Bild</label>
 
 			<!-- Link Descriptions -->
 			<label index="link-description-Contributor biographical information">Biographische Informationen</label>
@@ -215,18 +218,21 @@ Please run the search from a German university network for more complete results
 
 			<!-- Media Types -->
 			<label index="media-type-article">Article</label>
-			<label index="media-type-audio-visual">Video</label>
+			<label index="media-type-audio-visual">Film</label>
 			<label index="media-type-book">Book</label>
-			<label index="media-type-electronic">Computer File</label>
+			<label index="media-type-electronic">Computer file</label>
+			<label index="media-type-letter">Letter</label>
 			<label index="media-type-journal">Journal</label>
 			<label index="media-type-map">Map</label>
 			<label index="media-type-microform">Microform</label>
 			<label index="media-type-multivolume">Multivolume</label>
-			<label index="media-type-music-score">Music Score</label>
+			<label index="media-type-music-score">Music score</label>
+			<label index="media-type-manuscript">Manuscript</label>
 			<label index="media-type-other">Other</label>
 			<label index="media-type-recording">Recording</label>
 			<label index="media-type-website">Website</label>
-			<label index="media-type-multiple">Mixed Media Types</label>
+			<label index="media-type-multiple">Mixed media types</label>
+			<label index="media-type-image">Image</label>
 
 			<!-- Link Descriptions -->
 			<label index="link-description-Contributor biographical information">Biographical Information</label>

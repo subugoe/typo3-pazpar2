@@ -3932,34 +3932,39 @@ function recordIDForHTMLID (HTMLID) {
 var mediaNames = {
 	'de': {
 		'article': 'Aufsatz',
-		'audio-visual': 'Video',
+		'audio-visual': 'Film',
 		'book': 'Buch',
 		'electronic': 'Datei',
+		'letter': 'Brief',
 		'journal': 'Zeitschrift',
 		'map': 'Karte',
 		'microform': 'Mikroform',
-		'multivolume': 'Mehrbändig',
+		'multivolume': 'Mehrere Bände',
 		'music-score': 'Noten',
+		'manuscript': 'Manuskript',
 		'other': 'Andere',
-		'recording': 'Aufnahme',
+		'recording': 'Tonaufnahme',
 		'website': 'Website',
-		'multiple': 'Verschiedene Medien'
+		'multiple': 'Verschiedene Medien',
+		'image': 'Bild'
 	},
 	
 	'en': {
 		'article': 'Article',
-		'audio-visual': 'Video',
+		'audio-visual': 'Film',
 		'book': 'Book',
-		'electronic': 'Computer File',
+		'electronic': 'Computer file',
 		'journal': 'Journal',
 		'map': 'Map',
 		'microform': 'Microform',
-		'music-score': 'Music Score',
+		'music-score': 'Music score',
+		'manuscript': 'Manuscript',
 		'multivolume': 'Multiple volumes',
 		'other': 'Other',
 		'recording': 'Recording',
 		'website': 'Website',
-		'multiple': 'Mixed Media Types'
+		'multiple': 'Mixed media types',
+		'image': 'Image'
 	}
 };
 

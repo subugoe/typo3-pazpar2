@@ -387,13 +387,16 @@
 .pz2-mediaIcon.book { background-position: -40px 0px; }
 .pz2-mediaIcon.electronic { background-position: -60px 0px; }
 .pz2-mediaIcon.multivolume { background-position: -80px 0px; }
+.pz2-mediaIcon.letter { background-position: -100px 0px; }
 .pz2-mediaIcon.journal { background-position: 0px -20px; }
 .pz2-mediaIcon.map { background-position: -20px -20px; }
 .pz2-mediaIcon.microform { background-position: -40px -20px; }
 .pz2-mediaIcon.music-score { background-position: -60px -20px; }
+.pz2-mediaIcon.manuscript { background-position: -80px -20px; }
 .pz2-mediaIcon.recording { background-position: -20px -40px; }
 .pz2-mediaIcon.website { background-position: -40px -40px; }
 .pz2-mediaIcon.multiple { background-position: -60px -40px; }
+.pz2-mediaIcon.image { background-position: -80px -40px; }
 
 
 .pz2-title-main {

@@ -3,7 +3,7 @@
 
 		<div class="pz2-fieldContainer pz2-field-all">
 			<label class="pz2-textFieldLabel" for="pz2-field-all"><f:translate key="form-extended-label-all" >all</f:translate></label>
-			<f:form.textbox id="pz2-field-all" additionalAttributes="{placeholder: '{f:translate(key: \'form-main-placeholder-{conf.mainSearchFieldPlaceholder}\')}'}" class="pz2-searchField" name="queryString" value="{query.queryString}"/>
+			<f:form.textfield id="pz2-field-all" additionalAttributes="{placeholder: '{f:translate(key: \'form-main-placeholder-{conf.mainSearchFieldPlaceholder}\')}'}" class="pz2-searchField" name="queryString" value="{query.queryString}"/>
 			<f:if condition="{extended}!=1">
 				<span class="pz2-formControls">
 					<f:form.submit class="pz2-submitButton" value="{f:translate(key:'Find')}"/>
@@ -24,7 +24,7 @@
 			<div class="pz2-extraFields">
 				<div class="pz2-fieldContainer pz2-field-title">
 					<label class="pz2-textFieldLabel" for="pz2-field-title"><f:translate key="form-extended-label-title"/></label>
-					<f:form.textbox id="pz2-field-title" class="pz2-searchField" name="queryStringTitle" value="{query.queryStringTitle}"/>
+					<f:form.textfield id="pz2-field-title" class="pz2-searchField" name="queryStringTitle" value="{query.queryStringTitle}"/>
 					<f:if condition="{conf.journalTitleOnlySearch}==1">
 						<span class="pz2-checkbox pz2-journal-only">
 							<f:form.checkbox id="pz2-checkbox-journal" name="querySwitchJournalOnly" value="1" checked="{query.querySwitchJournalOnly}"/>
@@ -35,14 +35,14 @@
 
 				<div class="pz2-fieldContainer pz2-field-person">
 					<label class="pz2-textFieldLabel" for="pz2-field-person"><f:translate key="form-extended-label-person" >person</f:translate></label>
-					<f:form.textbox id="pz2-field-person" class="pz2-searchField" name="queryStringPerson" value="{query.queryStringPerson}"
+					<f:form.textfield id="pz2-field-person" class="pz2-searchField" name="queryStringPerson" value="{query.queryStringPerson}"
 						additionalAttributes="{placeholder: '{f:translate(key:\"form-extended-placeholder-person\")}'}"/>
 				</div>
 
 				<f:if condition="{conf.useKeywords}">
 					<div class="pz2-fieldContainer pz2-field-keyword">
 						<label class="pz2-textFieldLabel" for="pz2-field-keyword"><f:translate key="form-extended-label-keyword" >keyword</f:translate></label>
-						<f:form.textbox id="pz2-field-keyword" class="pz2-searchField" name="queryStringKeyword" value="{query.queryStringKeyword}"
+						<f:form.textfield id="pz2-field-keyword" class="pz2-searchField" name="queryStringKeyword" value="{query.queryStringKeyword}"
 						additionalAttributes="{placeholder: '{f:translate(key:\"form-extended-placeholder-keyword\")}'}"/>
 					</div>
 				</f:if>
@@ -50,7 +50,7 @@
 				<f:if condition="{conf.dateSearch}==1">
 					<div class="pz2-fieldContainer pz2-field-date">
 						<label class="pz2-textFieldLabel" for="pz2-field-date"><f:translate key="form-extended-label-date" >date</f:translate></label>
-						<f:form.textbox id="pz2-field-date" class="pz2-searchField" name="queryStringDate" value="{query.queryStringDate}"
+						<f:form.textfield id="pz2-field-date" class="pz2-searchField" name="queryStringDate" value="{query.queryStringDate}"
 							additionalAttributes="{placeholder: '{f:translate(key:\"form-extended-placeholder-date\")}'}"/>
 						<f:if condition="{extended}==1">
 							<span class="pz2-formControls">

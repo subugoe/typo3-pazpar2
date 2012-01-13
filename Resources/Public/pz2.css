@@ -272,7 +272,7 @@
 	font-weight: bold;
 }
 
-.pz2-termList li a.pz2-facetCancel {
+.pz2-termList a.pz2-facetCancel {
 	color: #f00;
 	font-weight: bold;
 }

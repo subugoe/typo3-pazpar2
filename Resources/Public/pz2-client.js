@@ -1644,7 +1644,7 @@ function facetListForType (type, preferOriginalFacets) {
 
 		// Use the colour of term list titles for the histogram.
 		var graphColour = jQuery('.pz2-termList-xtargets a').css('color');
-		var selectionColour = jQuery('.pz2-termList-xtargets').css('color');
+		var selectionColour = jQuery('.pz2-termList-xtargets h5').css('color');
 
 		var graphOptions = {
 			'series': {

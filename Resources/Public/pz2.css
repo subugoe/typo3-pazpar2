@@ -343,7 +343,7 @@
 }
 
 .pz2-pager a, .pz2-prev, .pz2-next {
-	padding: 0.3em;
+	padding: 0 0.3em;
 }
 
 .pz2-pager .pz2-currentPage {

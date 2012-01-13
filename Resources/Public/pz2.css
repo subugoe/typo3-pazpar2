@@ -37,6 +37,11 @@
 	border-color: #b3b3b3 #d2d2d2 #d2d2d2 #b3b3b3;
 }
 
+/* set placeholder colour for Mozilla as it defaults to black, WebKit’s default is fine */
+.pz2-searchField:-moz-placeholder {
+	color: #999;
+}
+
 .pz2-basic .pz2-searchField {
 	width: 400px;
 	height: 22px;

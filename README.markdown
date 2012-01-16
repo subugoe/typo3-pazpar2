@@ -60,7 +60,7 @@ Fields of the flexform for the content element in the backend offers the followi
 * Journals Online &amp; Print [useZDB]: Choose whether the extension should try to look up all records with ISSN numbers using ZDB’s Journals Online &amp; Print (JOP) service. If this option is turned on, the plug-in will load information about journal availability from the ZDB Proxy on your server(see the next option) to display the availability of the journal.
 * ZDB Proxy [ZDBIP]: You can set up two distinct proxies for the ZDB JOP service if you plan to use it. The one available at the path /zdb/ on your server should pass the user’s IP address to the ZDB JOP service, thus returning the journal availability for the user’s current location. The one available at /zdb-local/ will do the lookup for the server’s IP address – with the intention to provide availability information for the institution running the server. This option lets you pick which of the proxies will be used for the ZDB JOP lookup. [[Apache configuration file for setting up the proxies](https://raw.github.com/ssp/pazpar2-extras/master/fileadmin/apache/zdb.conf)]
 * Histogram [useHistogramForYearFacets]: The extension displays year facets if results from more than a few years are displayed. Choose whether the year facets should be displayed graphically using a histogram rather than as an (incomplete) list of year numbers in modern browsers. Activating this option will load the [flot][] JavaScript library from your server on the relevant pages.
-* Subject for pazpar2 Neuerwerbungen [neuerwerbungen-subjects]: A subject has to be picked in the popup menu if you want to use the pazpar2 Neuerwerbungen plug-in. The popup menu is populated using child elements of the PPN »NA« in the subject hierarchy of the nkwgok extension. This is probably useful for SUB Göttingen use only.
+* Subjects for pazpar2 Neuerwerbungen [neuerwerbungen-subjects]: A subject has to be picked in the popup menu if you want to use the pazpar2 Neuerwerbungen plug-in. The popup menu is populated using child elements of the PPN »NA« in the subject hierarchy of the nkwgok extension. This is probably useful for SUB Göttingen use only.
 
 ### Typo Script
 In addition to the options exposed in the flexform, a number of additional options can be set using TypoScript in plugin.tx_pazpar2.settings. The default value is noted inside [] after the option name.
@@ -147,21 +147,25 @@ Fields used to display data:
 * abstract (not part of standard tmarc.xsl)
 * creator (used for Guide links)
 * catalogue-url (URL linking to the catalogue web page for that record, built using the stylesheets ard setup for the various targets.)
+* subject
 
-For the 'medium' field, the supported types (with a localised name and icon) are:
+For the 'medium' field, the supported types (with a localised name and icon) are. Most of them come from standard tmarc.xsl analysis of Marc records. A few depend on our refinements of tmarc.xsl and additional information/analysis.
 
 * article
-* audio-visual
+* audio-visual (may require tmarc.xsl output to be stripped of more specific media type information like dvd)
 * book
 * electronic
-* multivolume (extended tmarc.xsl to recognise these)
+* image (not part of tmarc.xsl)
 * journal
+* letter (not part of tmarc.xsl)
+* manuscript (changed tmarc.xsl to recognise these)
 * map
 * microform
 * music-score
+* multivolume (extended tmarc.xsl to recognise these)
 * recording
 * website (used for websites as found in SUB’s SSG-FI Guides, not coming from tmarc.xsl)
-* multiple (used for merged records of varying media types)
+* multiple (used for merged records of varying media types as well as mixed-media items)
 
 To get a better idea of the general setup, take a look at [our setup files](https://github.com/ssp/pazpar2-SUB), particularly the [AAC service](https://github.com/ssp/pazpar2-SUB/blob/master/services/AAC.xml) and the [gbv-sru-neu target](https://github.com/ssp/pazpar2-SUB/blob/master/settings/gbv-sru-neu.xml). Some of [our stylesheets](https://github.com/ssp/pazpar2-SUB/tree/master/xsl) may be helpful as well, particularly those for [ISO 639-2 cleaning](https://raw.github.com/ssp/pazpar2-SUB/master/xsl/language-code-cleaner.xsl) and [ISO 639-1 to 639-2/B conversion](https://raw.github.com/ssp/pazpar2-SUB/master/xsl/iso-639-1-to-639-2b.xsl).
 
@@ -187,7 +191,7 @@ Many thanks go to [Indexdata](http://www.indexdata.com/) for their powerful pazp
 
 
 ## Version History ##
-* 1.4.0 (2011-12-??): Add keyword search and ability to display keywords in result details
+* 1.4.0 (2012-01-16): Add keyword search and ability to display keywords in result details; add support for additional media types (letter, manuscript, image); small display tweaks; stop using deprecated form field View Helper
 * 1.3.0 (2011-12-02): Neuerwerbungen: number of months in popup menu is now configurable in TypoScript; if there is just single checkbox, automatically select it
 * 1.2.0 (2011-11-25): add links to show all facets when facets needed to be hidden; more reliable tooltip hiding for histogram; require nkwgok 1.2.0 or above and use its updated database schema for Neuerwerbungen
 * 1.1.5 (2011-11-23): fix Piwik tracking for metadata export links

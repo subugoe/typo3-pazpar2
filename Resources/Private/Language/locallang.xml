@@ -13,6 +13,7 @@
 			<label index="form-main-placeholder-0"></label>
 			<label index="form-main-placeholder-1">Suchbegriff</label>
 			<label index="form-main-placeholder-2">zusätzlicher Suchbegriff</label>
+			<label index="form-main-placeholder-3">z.B. Granit oder Vulkan*</label>
 			<!-- extended search form -->
 			<label index="form-extended-label-all">Alle Felder</label>
 			<label index="form-extended-label-fulltext-1">Volltextsuche</label>
@@ -138,6 +139,7 @@ Bei Zugriff aus einem deutschen Universitätsnetzwerk umfaßt Ihre Abfrage zusä
 			<label index="form-main-placeholder-0"></label>
 			<label index="form-main-placeholder-1">Search term</label>
 			<label index="form-main-placeholder-2">add a search term</label>
+			<label index="form-main-placeholder-3">e.g. rocket or arctic*</label>
 			<!-- pazpar2 extended search form -->
 			<label index="form-extended-label-all">All Fields</label>
 			<label index="form-extended-label-fulltext-1">full text search</label>

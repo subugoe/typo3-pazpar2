@@ -1164,7 +1164,7 @@ function display () {
 
 
 /* 	updatePagers
-	Updates pagers and record counts shown in .pz2-pager elements.
+	Updates fs and record counts shown in .pz2-pager elements.
 */
 function updatePagers () {
 	jQuery('div.pz2-pager').each( function(index) {
@@ -1180,7 +1180,7 @@ function updatePagers () {
 			if (curPage > 1) {
 				previous = document.createElement('a');
 				previous.setAttribute('href', '#');
-				previous.onclick = new Function('pagerPrev();return false;');
+				previous.onclick = new Function('pagerPrev(this);return false;');
 				previous.title = localise('Vorige Trefferseite anzeigen');
 			}
 			jQuery(previous).addClass('pz2-prev');
@@ -1200,7 +1200,7 @@ function updatePagers () {
 				if(pageNumber != curPage) {
 					var linkElement = document.createElement('a');
 					linkElement.setAttribute('href', '#');
-					linkElement.onclick = new Function('showPage(' + pageNumber + ');return false;');
+					linkElement.onclick = new Function('showPage(' + pageNumber + ', this);return false;');
 					linkElement.appendChild(document.createTextNode(pageNumber));
 					pageItem.appendChild(linkElement);
 				}
@@ -1214,7 +1214,7 @@ function updatePagers () {
 			if (pages - curPage > 0) {
 				nextLink = document.createElement('a');
 				nextLink.setAttribute('href', '#');
-				nextLink.onclick = new Function('pagerNext();return false;');
+				nextLink.onclick = new Function('pagerNext(this);return false;');
 				nextLink.title = localise('Nächste Trefferseite anzeigen');
 			}
 			jQuery(nextLink).addClass('pz2-next');
@@ -2241,8 +2241,11 @@ function delimitResults(kind, term) {
 		If the number is out of range, go to the first or last page instead.
 	input:	pageNum - number of the page to be shown
 */
-function showPage (pageNum) {
+function showPage (pageNum, link) {
 	curPage = Math.min( Math.max(0, pageNum), Math.ceil(displayHitList.length / recPerPage) );
+	if (jQuery(link).parents('.pz2-pager').hasClass('pz2-bottom')) {
+		jQuery('body,html').animate({'scrollTop': jQuery('.pz2-pager.pz2-top').offset().top}, 'fast');
+	}
 	display();
 	trackPiwik('page', pageNum);
 }
@@ -2251,16 +2254,16 @@ function showPage (pageNum) {
 /*	pagerNext
 	Display the next page (if available).
 */
-function pagerNext() {
-	showPage (curPage + 1);
+function pagerNext(link) {
+	showPage (curPage + 1, link);
 }
 
 
 /*	pagerPrev
 	Display the previous page (if available).
 */
-function pagerPrev() {
-	showPage(curPage - 1);
+function pagerPrev(link) {
+	showPage(curPage - 1, link);
 }
 
 

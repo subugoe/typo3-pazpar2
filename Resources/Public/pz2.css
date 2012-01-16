@@ -318,8 +318,13 @@
 /* PAGER */
 
 .pz2-pager {
-	margin: 20px 0;
+	padding-top: 20px;
 	position: relative;
+}
+
+.pz2-pager.pz2-bottom {
+	clear: both;
+	padding-bottom: 20px;
 }
 
 .pz2-pager .pz2-pageNumbers {
@@ -358,7 +363,7 @@
 
 .pz2-recordCount {
 	position: absolute;
-	top: 0px;
+	top: 20px;
 	right: 0px;
 }
 

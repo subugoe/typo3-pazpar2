@@ -9,7 +9,137 @@
 
 	<data type="array">
 
-		<languageKey index="default" type="array">
+		<languageKey index="en" type="array">
+			<label index="form-main-placeholder-0"></label>
+			<label index="form-main-placeholder-1">Search term</label>
+			<label index="form-main-placeholder-2">add a search term</label>
+			<label index="form-main-placeholder-3">e.g. rocket or arctic*</label>
+			<!-- pazpar2 extended search form -->
+			<label index="form-extended-label-all">All Fields</label>
+			<label index="form-extended-label-fulltext-1">full text search</label>
+			<label index="form-extended-label-fulltext-2">include tables of contents</label>
+			<label index="form-extended-label-title">Title</label>
+			<label index="form-extended-label-journalOnly">journal titles only</label>
+			<label index="form-extended-label-person">Person, Author</label>
+			<label index="form-extended-label-keyword">Keywords</label>
+			<label index="form-extended-placeholder-person">e.g. Lincoln or Wilde, Oscar</label>
+			<label index="form-extended-label-date">Year</label>
+			<label index="form-extended-placeholder-date">e.g. 2004, 2004-, -2004 or 2004-2008</label>
+			<label index="erweiterte Suche">Extended Search</label>
+			<label index="einfache Suche">Basic Search</label>
+			<label index="Find">Search</label>
+
+			<!-- pazpar2neuerwerbungen form -->
+			<label index="Anzeigen">Show</label>
+			<label index="Die aktuelle Liste als RSS-Feed abonnieren.">Subscribe to new acquisitions as a feed.</label>
+			<label index="unvollständig">incomplete</label>
+
+			<!-- Sort controls -->
+			<label index="Sort by">Sort by</label>
+			<label index="Age">Age</label>
+			<label index="Author">Author</label>
+			<label index="Title">Title</label>
+
+			<!-- Status strings -->
+			<label index="No information available yet.">No information available yet.</label>
+			<label index="No Results">There were no search results for your query.</label>
+			<label index="Result">Result</label>
+			<label index="Results">Results</label>
+			<label index="Nicht alle Datenbanken verfügbar.">You do not have permission to access all catalogues from your current location.
+Please run the search from a German university network for more complete results.</label>
+			<label index="Zugang über:">Access provided by:</label>
+			<label index="Gastzugang">Guest Access</label>
+
+			<!-- Labels for book display details -->
+			<label index="detail-label-title">Title</label>
+			<label index="detail-label-author">Author</label>
+			<label index="detail-label-author-plural">Authors</label>
+			<label index="detail-label-author-clean">Author</label>
+			<label index="detail-label-author-clean-plural">Authors</label>
+			<label index="detail-label-other-person">Person</label>
+			<label index="detail-label-other-person-plural">People</label>
+			<label index="detail-label-other-person-clean">Person</label>
+			<label index="detail-label-other-person-clean-plural">People</label>
+			<label index="detail-label-medium">Type</label>
+			<label index="detail-label-description">Information</label>
+			<label index="detail-label-description-plural">Information</label>
+			<label index="detail-label-abstract">Abstract</label>
+			<label index="detail-label-series-title">Series</label>
+			<label index="detail-label-issn">ISSN</label>
+			<label index="detail-label-acronym-issn">International Standard Series Number</label>
+			<label index="detail-label-doi">DOI</label>
+			<label index="detail-label-acronym-doi">Document Object Identifier</label>
+			<label index="detail-label-doi-plural">DOIs</label>
+			<label index="detail-label-keyword">Keyword</label>
+			<label index="detail-label-keyword-plural">Keywords</label>
+			<label index="detail-label-creator">catalogued by</label>
+			<label index="elektronisch">electronic</label>
+			<label index="gedruckt">printed</label>
+			<label index="Ausgabe">Edition</label>
+			<label index="In">In</label>
+			<label index="Im Katalog ansehen">View in catalogue.</label>
+			<label index="Search is better with JavaScript.">JavaScript seems to be unavailable in your web browser. Without JavaScript, displaying the results of a query can take up to a minute in some cases. Please be patient or turn on JavaScript for a more interactive search experience.</label>
+			<label index="of">of</label>
+			<label index="Erscheint in separatem Fenster.">Link opens in a new Window.</label>
+
+			<!-- Download/Extra Links -->
+			<label index="mehr Links">additional Links</label>
+			<label index="download-label-format-simple">Load bibliographic data for this result as *</label>
+			<label index="download-label-format-all">Load all editions as *</label>
+			<label index="download-label-ris">RIS</label>
+			<label index="download-label-bibtex">BibTeX</label>
+			<label index="KVK">KVK</label>
+			<label index="deutschlandweit im KVK suchen">search for this title in union catalogues throughout Germany (KVK)</label>
+			<label index="&amp;lang=de">&amp;lang=en</label>
+
+			<!-- Media Types -->
+			<label index="media-type-article">Article</label>
+			<label index="media-type-audio-visual">Film</label>
+			<label index="media-type-book">Book</label>
+			<label index="media-type-electronic">Computer file</label>
+			<label index="media-type-letter">Letter</label>
+			<label index="media-type-journal">Journal</label>
+			<label index="media-type-map">Map</label>
+			<label index="media-type-microform">Microform</label>
+			<label index="media-type-multivolume">Multivolume</label>
+			<label index="media-type-music-score">Music score</label>
+			<label index="media-type-manuscript">Manuscript</label>
+			<label index="media-type-other">Other</label>
+			<label index="media-type-recording">Recording</label>
+			<label index="media-type-website">Website</label>
+			<label index="media-type-multiple">Mixed media types</label>
+			<label index="media-type-image">Image</label>
+
+			<!-- Link Descriptions -->
+			<label index="link-description-Contributor biographical information">Biographical Information</label>
+			<label index="link-description-Book review (H-Net)">Review</label>
+			<label index="link-description-Buchrezension (H-Soz-u-Kult)">Review</label>
+			<label index="link-description-Contributor biographical information">Biographical Information</label>
+			<label index="link-description-Deutschlandweit zugänglich">accessible in Germany</label>
+			<label index="link-description-Document">Full Text</label>
+			<label index="link-description-Gesamtes Dokument">Full Text</label>
+			<label index="link-description-Inhaltsverzeichnis">Table of Contents</label>
+			<label index="link-description-kostenfrei">free</label>
+			<label index="link-description-Leseprobe">Excerpt</label>
+			<label index="link-description-Link">Link</label>
+			<label index="link-description-Publisher Description">Publisher Description</label>
+			<label index="link-description-Repository">Repository</label>
+			<label index="link-description-Rezension">Review</label>
+			<label index="link-description-Table of Contents">Table of Contents</label>
+			<label index="link-description-Table of contents">Table of Contents</label>
+			<label index="link-description-Table of contents only">Table of Contents</label>
+			<label index="link-description-TOC">Table of Contents</label>
+			<label index="link-description-Volltext">Full Text</label>
+
+			<!-- Catalogue Names which need localisation -->
+			<label index="Geschichte Aufsätze">Essays: History</label>
+			<label index="Anglistik Aufsätze">Essays: Literature</label>
+			<label index="Alte Karten">Old Maps</label>
+
+		</languageKey>
+
+
+		<languageKey index="de" type="array">
 			<label index="form-main-placeholder-0"></label>
 			<label index="form-main-placeholder-1">Suchbegriff</label>
 			<label index="form-main-placeholder-2">zusätzlicher Suchbegriff</label>
@@ -132,136 +262,6 @@ Bei Zugriff aus einem deutschen Universitätsnetzwerk umfaßt Ihre Abfrage zusä
 			<label index="link-description-Volltext">Volltext</label>
 
 			<!-- Catalogue Names which need localisation -->
-		</languageKey>
-
-
-		<languageKey index="en" type="array">
-			<label index="form-main-placeholder-0"></label>
-			<label index="form-main-placeholder-1">Search term</label>
-			<label index="form-main-placeholder-2">add a search term</label>
-			<label index="form-main-placeholder-3">e.g. rocket or arctic*</label>
-			<!-- pazpar2 extended search form -->
-			<label index="form-extended-label-all">All Fields</label>
-			<label index="form-extended-label-fulltext-1">full text search</label>
-			<label index="form-extended-label-fulltext-2">include tables of contents</label>
-			<label index="form-extended-label-title">Title</label>
-			<label index="form-extended-label-journalOnly">journal titles only</label>
-			<label index="form-extended-label-person">Person, Author</label>
-			<label index="form-extended-label-keyword">Keywords</label>
-			<label index="form-extended-placeholder-person">e.g. Lincoln or Wilde, Oscar</label>
-			<label index="form-extended-label-date">Year</label>
-			<label index="form-extended-placeholder-date">e.g. 2004, 2004-, -2004 or 2004-2008</label>
-			<label index="erweiterte Suche">Extended Search</label>
-			<label index="einfache Suche">Basic Search</label>
-			<label index="Find">Search</label>
-			
-			<!-- pazpar2neuerwerbungen form -->
-			<label index="Anzeigen">Show</label>
-			<label index="Die aktuelle Liste als RSS-Feed abonnieren.">Subscribe to new acquisitions as a feed.</label>
-			<label index="unvollständig">incomplete</label>
-			
-			<!-- Sort controls -->
-			<label index="Sort by">Sort by</label>
-			<label index="Age">Age</label>
-			<label index="Author">Author</label>
-			<label index="Title">Title</label>
-			
-			<!-- Status strings -->
-			<label index="No information available yet.">No information available yet.</label>
-			<label index="No Results">There were no search results for your query.</label>
-			<label index="Result">Result</label>
-			<label index="Results">Results</label>
-			<label index="Nicht alle Datenbanken verfügbar.">You do not have permission to access all catalogues from your current location.
-Please run the search from a German university network for more complete results.</label>
-			<label index="Zugang über:">Access provided by:</label>
-			<label index="Gastzugang">Guest Access</label>
-
-			<!-- Labels for book display details -->
-			<label index="detail-label-title">Title</label>
-			<label index="detail-label-author">Author</label>
-			<label index="detail-label-author-plural">Authors</label>
-			<label index="detail-label-author-clean">Author</label>
-			<label index="detail-label-author-clean-plural">Authors</label>
-			<label index="detail-label-other-person">Person</label>
-			<label index="detail-label-other-person-plural">People</label>
-			<label index="detail-label-other-person-clean">Person</label>
-			<label index="detail-label-other-person-clean-plural">People</label>
-			<label index="detail-label-medium">Type</label>
-			<label index="detail-label-description">Information</label>
-			<label index="detail-label-description-plural">Information</label>
-			<label index="detail-label-abstract">Abstract</label>
-			<label index="detail-label-series-title">Series</label>
-			<label index="detail-label-issn">ISSN</label>
-			<label index="detail-label-acronym-issn">International Standard Series Number</label>
-			<label index="detail-label-doi">DOI</label>
-			<label index="detail-label-acronym-doi">Document Object Identifier</label>
-			<label index="detail-label-doi-plural">DOIs</label>
-			<label index="detail-label-keyword">Keyword</label>
-			<label index="detail-label-keyword-plural">Keywords</label>
-			<label index="detail-label-creator">catalogued by</label>
-			<label index="elektronisch">electronic</label>
-			<label index="gedruckt">printed</label>
-			<label index="Ausgabe">Edition</label>
-			<label index="In">In</label>
-			<label index="Im Katalog ansehen">View in catalogue.</label>
-			<label index="Search is better with JavaScript.">JavaScript seems to be unavailable in your web browser. Without JavaScript, displaying the results of a query can take up to a minute in some cases. Please be patient or turn on JavaScript for a more interactive search experience.</label>
-			<label index="of">of</label>
-			<label index="Erscheint in separatem Fenster.">Link opens in a new Window.</label>
-
-			<!-- Download/Extra Links -->
-			<label index="mehr Links">additional Links</label>
-			<label index="download-label-format-simple">Load bibliographic data for this result as *</label>
-			<label index="download-label-format-all">Load all editions as *</label>
-			<label index="download-label-ris">RIS</label>
-			<label index="download-label-bibtex">BibTeX</label>
-			<label index="KVK">KVK</label>
-			<label index="deutschlandweit im KVK suchen">search for this title in union catalogues throughout Germany (KVK)</label>
-			<label index="&amp;lang=de">&amp;lang=en</label>
-
-			<!-- Media Types -->
-			<label index="media-type-article">Article</label>
-			<label index="media-type-audio-visual">Film</label>
-			<label index="media-type-book">Book</label>
-			<label index="media-type-electronic">Computer file</label>
-			<label index="media-type-letter">Letter</label>
-			<label index="media-type-journal">Journal</label>
-			<label index="media-type-map">Map</label>
-			<label index="media-type-microform">Microform</label>
-			<label index="media-type-multivolume">Multivolume</label>
-			<label index="media-type-music-score">Music score</label>
-			<label index="media-type-manuscript">Manuscript</label>
-			<label index="media-type-other">Other</label>
-			<label index="media-type-recording">Recording</label>
-			<label index="media-type-website">Website</label>
-			<label index="media-type-multiple">Mixed media types</label>
-			<label index="media-type-image">Image</label>
-
-			<!-- Link Descriptions -->
-			<label index="link-description-Contributor biographical information">Biographical Information</label>
-			<label index="link-description-Book review (H-Net)">Review</label>
-			<label index="link-description-Buchrezension (H-Soz-u-Kult)">Review</label>
-			<label index="link-description-Contributor biographical information">Biographical Information</label>
-			<label index="link-description-Deutschlandweit zugänglich">accessible in Germany</label>
-			<label index="link-description-Document">Full Text</label>
-			<label index="link-description-Gesamtes Dokument">Full Text</label>
-			<label index="link-description-Inhaltsverzeichnis">Table of Contents</label>
-			<label index="link-description-kostenfrei">free</label>
-			<label index="link-description-Leseprobe">Excerpt</label>
-			<label index="link-description-Link">Link</label>
-			<label index="link-description-Publisher Description">Publisher Description</label>
-			<label index="link-description-Repository">Repository</label>
-			<label index="link-description-Rezension">Review</label>
-			<label index="link-description-Table of Contents">Table of Contents</label>
-			<label index="link-description-Table of contents">Table of Contents</label>
-			<label index="link-description-Table of contents only">Table of Contents</label>
-			<label index="link-description-TOC">Table of Contents</label>
-			<label index="link-description-Volltext">Full Text</label>
-
-			<!-- Catalogue Names which need localisation -->
-			<label index="Geschichte Aufsätze">Essays: History</label>
-			<label index="Anglistik Aufsätze">Essays: Literature</label>
-			<label index="Alte Karten">Old Maps</label>
-
 		</languageKey>
 
 	</data>

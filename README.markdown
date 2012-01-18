@@ -191,6 +191,7 @@ Many thanks go to [Indexdata](http://www.indexdata.com/) for their powerful pazp
 
 
 ## Version History ##
+* 1.5.0 (2012-01-18): Add Geo-specific placeholder search term to main search field configuration; add second set of paging controls beneath the results; work around localisation breakage of TYPO3 4.6
 * 1.4.0 (2012-01-16): Add keyword search and ability to display keywords in result details; add support for additional media types (letter, manuscript, image); small display tweaks; stop using deprecated form field View Helper
 * 1.3.0 (2011-12-02): Neuerwerbungen: number of months in popup menu is now configurable in TypoScript; if there is just single checkbox, automatically select it
 * 1.2.0 (2011-11-25): add links to show all facets when facets needed to be hidden; more reliable tooltip hiding for histogram; require nkwgok 1.2.0 or above and use its updated database schema for Neuerwerbungen

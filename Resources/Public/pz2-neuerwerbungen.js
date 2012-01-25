@@ -150,7 +150,7 @@ function neuerwerbungenRunSearchForForm (form) {
 		var jAtomLink = jQuery('.pz2-atomLink', form);
 		var linkElement = document.getElementById('pz2neuerwerbungen-atom-linkElement');
 
-		var query = searchQueryWithEqualsAndWildcard(form, '=', '');
+		var query = searchQueryWithEqualsAndWildcard(form, '=', undefined);
 		if (query) {
 			query = query.replace('*', '?');
 			my_paz.search(query, 2000, null, null);
@@ -413,18 +413,21 @@ function oredSearchQueries (queryTerms, key, equals) {
  * addSearchTermsToList
  *
  * Helper function adding the elements of an array to a given array,
- *	potentially appending a wildcard to each of them in the process.
+ *	potentially changing the wildcard string at the end of each of them in
+ *	the process.
  *
  * inputs:	searchTerms - array of strings which will be added to the list
  *			list - array that each component will be added to
- *			wildcard - string that is appended to each component before adding
- *				it to the list
+ *			wildcard - wildcard - string to replace a final (?) in each term with
  */
 function addSearchTermsToList (searchTerms, list, wildcard) {
 	for (var termIndex in searchTerms) {
 		var term = searchTerms[termIndex];
 		if (term && term !== '') {
-			list.push(term + wildcard);
+			if (wildcard && term.substr(term.length - 1, 1) === '?') {
+				term = term.substr(0, term.length - 1) + wildcard;
+			}
+			list.push(term);
 		}
 	}
 }

@@ -140,7 +140,7 @@ function neuerwerbungenRunSearchForForm (form) {
 		var myForm = form;
 		// If no form is passed use the first .pz2-neuerwerbungenForm.
 		if (myForm === undefined) {
-			var mainForms = jQuery('.pz2-neuerwerbungenForm form');
+			var mainForms = jQuery('form.pz2-neuerwerbungenForm');
 			if (mainForms.length > 0) {
 				myForm = mainForms[0];
 			}

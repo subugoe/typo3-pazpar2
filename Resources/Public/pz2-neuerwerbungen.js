@@ -1,14 +1,13 @@
 /*
  * pz2-neuerwerbungen.js
  *
- * 2010-2011 by Sven-S. Porst, SUB Göttingen
+ * 2010-2012 by Sven-S. Porst, SUB Göttingen
  * porst@sub.uni-goettingen.de
  *
  * JavaScript for interactive loading and display of new acquisitions by
  * the library.
  *
- * For use with the pazpar2neuerwerbungen Typo3 extension.
- *
+ * For use with the pazpar2neuerwerbungen plugin of the pazpar2 TYPO3 extension.
  */
 
 
@@ -17,8 +16,8 @@
  * pz2neuerwerbungenDOMReady
  *
  * To be called when the Document is ready (usually by jQuery).
- * Hides the submit button as it's not needed when we're using JavaScript.
- * Restores state from cookies and kicks off the search.
+ * Hides the submit button as it is not needed when using JavaScript.
+ * Restores the selected checkboxes from cookies and kicks off the search.
  */
 function pz2neuerwerbungenDOMReady () {
 	jQuery('.pz2-neuerwerbungenForm input[type="submit"]').hide();
@@ -33,13 +32,12 @@ function pz2neuerwerbungenDOMReady () {
 /*
  * restoreCookieState
  *
- * Restore previously checked checkboxes from the stated stored in the
- *	'pz2neuerwerbungen-previousQuery' cookie.
+ * Restore previously checked checkboxes from the state stored in the
+ *	»pz2neuerwerbungen-previousQuery« cookie.
  *
  * Cookie data is a string whose components are separated by colons (:).
- * Each item corresponds to the value of a checkbox. Select those checkboxes and
- * turn them on.
- *
+ * Each item corresponds to the value of a checkbox.
+ * Select those checkboxes and turn them on.
  */
 function restoreCookieState () {
 	var cookieInfo = getPz2NeuerwerbungenCookie();
@@ -92,7 +90,7 @@ function getPz2NeuerwerbungenCookie () {
  *
  * Get the checked checkboxes from the passed form and concatenate their values
  * with colon (:) separators. Store the result in the
- * 'pz2neuerwerbungen-previousQuery' cookie.
+ * »pz2neuerwerbungen-previousQuery« cookie.
  *
  * input:	form - DOM form element in which to look for checked checkboxes
  */
@@ -127,15 +125,16 @@ function saveFormStateInCookie (form) {
 /*
  * neuerwerbungenRunSearchForForm
  *
- * Build search query from the selected checkboxes. If it is non-empty,use it
- *	to kick off pazpar2 and set the Atom subscription URL.
+ * Build search query from the selected checkboxes. If it is non-empty, use it
+ *	to kick off the pazpar2 search and set the Atom subscription URL.
  *
  * input:	form - DOM form element in which to look for checked checkboxes
  */
 function neuerwerbungenRunSearchForForm (form) {
-	/* Only start the query if pazpar2 is initialised. Otherwise this function
-		will be called by on_myinit in pz2-client.js once initialisation has finished.
-	*/
+	/*
+	 * Only start the query if pazpar2 is initialised. Otherwise this function
+	 * will be called by on_myinit in pz2-client.js once initialisation has finished.
+	 */
 	if (domReadyFired && pz2Initialised) {
 		var myForm = form;
 		// If no form is passed use the first .pz2-neuerwerbungenForm.
@@ -181,8 +180,10 @@ function neuerwerbungenRunSearchForForm (form) {
 				linkElement.parentNode.removeChild(linkElement);
 			}
 
-			/* Manually set my_paz’ currQuery to the empty string. We can’t pass the empty
-				to my_paz.search because it throws an error. */
+			/*
+			 * Manually set my_paz’ currQuery to undefined.
+			 * We cannot pass the empty string to my_paz.search because it throws an error.
+			 */
 			my_paz.currQuery = undefined;
 		}
 
@@ -242,7 +243,7 @@ function monthChanged (select) {
 /*
  * toggleParentCheckboxOf
  *
- * Helper function to update the parent checkbox' state when one of its child
+ * Helper function to update the parent checkbox’ state when one of its child
  * checkboxes was changed:
  *	* all child checkboxes on => parent checkbox on
  *	* any child checkbox off => parent checkbox off
@@ -261,7 +262,7 @@ function toggleParentCheckboxOf (checkbox) {
 /*
  * toggleChildCheckboxesOf
  *
- * Helper function to update the child checkboxes' state when their parent
+ * Helper function to update the child checkboxes’ state when their parent
  * checkbox was changed:
  *	* parent checkbox on => all child checkboxes on
  *	* parent checkbox off => all child checkboxes off
@@ -278,25 +279,25 @@ function toggleChildCheckboxesOf (checkbox) {
 /**
  * selectedQueriesInFormWithWildcard
  *
- * For a given form returns an array of all GOKs in the values of the active
- * checkboxes. Each checkbox’ value can contain several GOKs, separated by a
- * comma (,). A wildcard is appended to each GOK if required.
+ * For the given form, returns an array of all queries in the values of the
+ * active checkboxes. Each checkbox’ value can contain several queries separated
+ * by a comma (,). The wildcard at the end of query terms is changed if required.
  *
  * inputs:	form - DOM element of the form to get the data from
- *			wildcard - string to be appended to each extracted GOK
- * output:	array of strings, each of which is a GOK, potentially with a wildcard
+ *			wildcard - wildcard - string to replace a final (?) in each term with
+ * output:	array of strings, each of which is a subquery
  */
 function selectedQueriesInFormWithWildcard (form, wildcard) {
-	var GOKs = [];
+	var queries = [];
 	var formStatus = searchFormStatus();
 
 	for (var searchTerms in formStatus) {
 		if (formStatus[searchTerms]) {
-			addSearchTermsToList(searchTerms.split(','), GOKs, wildcard);
+			addSearchTermsToList(searchTerms.split(','), queries, wildcard);
 		}
 	}
 
-	return GOKs;
+	return queries;
 }
 
 
@@ -358,18 +359,19 @@ function searchFormStatus (form) {
 /*
  * searchQueryWithEqualsAndWildcard
  *
- * Builds a query string using the selected GOKs and date in the passed form.
- * Equals assignment and wildcard can be configured to yield strings that can
- *	be used as Pica Opac queries or as CCL queries.
- * undefined is returned when there are no GOKs to search for.
+ * Builds a query string using the queries for the selected checkboxes as well
+ * as the date from the passed form.
+ * The strings for equals assignment and terminating wildcard can be configured
+ * to yield strings that can be used as Pica Opac queries ( /*) or as
+ * CCL queries (=/undefined).
+ * undefined is returned when there are no query terms to search for.
  *
  * inputs:	form - DOM element of the form to get the data from
  *			equals - string used between the field name and the query term
- *				(typically ' ' in Pica or '=' in CCL)
- *			wildcard - string to be appended to each extracted GOK
+ *			wildcard - string to replace a final (?) in each term with
  *			ignoreSelectedDate - boolean indicating whether the date is to be
  *				included in the search query [optional, defaults to false]
- * output:	string containing the complete query / undefined if no GOKs are found
+ * output:	string containing the complete query / undefined if no query terms are found
  */
 function searchQueryWithEqualsAndWildcard (form, equals, wildcard, ignoreSelectedDate) {
 	var queries = selectedQueriesInFormWithWildcard(form, wildcard);
@@ -381,7 +383,7 @@ function searchQueryWithEqualsAndWildcard (form, equals, wildcard, ignoreSelecte
 			var dates = [];
 			var searchTerms = jQuery('.pz2-months :selected', form)[0].value.split(',');
 			addSearchTermsToList(searchTerms, dates, wildcard);
-			var	NELQueryString = oredSearchQueries(dates, 'nel', equals);
+			var NELQueryString = oredSearchQueries(dates, 'nel', equals);
 			queryString += ' and ' + NELQueryString;
 		}
 	}
@@ -418,7 +420,7 @@ function oredSearchQueries (queryTerms, key, equals) {
  *
  * inputs:	searchTerms - array of strings which will be added to the list
  *			list - array that each component will be added to
- *			wildcard - wildcard - string to replace a final (?) in each term with
+ *			wildcard - string to replace a final (?) in each term with
  */
 function addSearchTermsToList (searchTerms, list, wildcard) {
 	for (var termIndex in searchTerms) {

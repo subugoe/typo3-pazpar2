@@ -2,7 +2,7 @@
 /*******************************************************************************
  * Copyright notice
  *
- * Copyright (C) 2010-2011 by Sven-S. Porst, SUB Göttingen
+ * Copyright (C) 2010-2012 by Sven-S. Porst, SUB Göttingen
  * <porst@sub.uni-goettingen.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -43,7 +43,7 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 
 	/**
 	 * PPN (i.e. an ID) of the root element used for the Neuerwerbungen subject list.
-	 * A record with this value in the 'ppn' field should be in the tx_nkwgok_data table.
+	 * A record with this value in the »ppn« field should be in the tx_nkwgok_data table.
 	 * @var string
 	 */
 	protected $rootPPN;
@@ -56,7 +56,7 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	}
 
 	/**
-	 * @param string $newRootGOK
+	 * @param string $newRootPPN
 	 * @return void
 	 */
 	public function setRootPPN ($newRootPPN) {
@@ -136,28 +136,28 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	/**
 	 * Return array of subjects for the parentPPN passed.
 	 * The data needed are loaded from the tx_nkwgok_data table of the database.
-	 * They are expected to be imported from CSV-data by the GOK Plug-In. See its documentation
-	 * or code for the fields required in teh CSV-file.
+	 * They are expected to be imported from CSV-data by the nkwgok extension.
+	 *	See its documentation or code for the fields required in teh CSV-file.
 	 *
-	 * The information is converted to nested arrays as required by the 'neuerwerbungen-form'
+	 * The information is converted to nested arrays as required by the »neuerwerbungen-form«
 	 * Partial that handles the display. The data format is:
 	 *	* Array [subject groups]
 	 *		* Array [subject group, associative]
 	 *			* name => string - name of subject group [required]
-	 *			* GOKs => Array [optional]
-	 *				* string that is a truncated GOK notation
+	 *			* queries => Array [optional]
+	 *				* string that is a CCL query
 	 *			* subjects => Array [required, subjects]
 	 *				* Array [subject, associative]
 	 *					* name => string - name of subject group [required]
-	 *					* GOKs => Array [required]
-	 *						* string that is a truncated GOK notation
+	 *					* queries => Array [required]
+	 *						* string that is a CCL query
 	 *					* inline => boolean - displayed in one line with other items?
 	 *						[optional, defaults to false]
 	 *					* break => boolean - insert <br> before current element?
 	 *						[optional, should only be used with inline => true, defaults to false]
 	 *
-	 * If the GOKs field of a subject group is not specified, create it by taking
-	 *	the union of the GOKs arrays of all its subjects.
+	 * If the »queries« field of a subject group is not specified, create it by
+	 *	taking the union of the »queries« arrays of all its »subjects«.
 	 *
 	 * @param string $parentPPN
 	 * @return array subjects to be displayed
@@ -191,16 +191,16 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 					$component = preg_replace('/^LKL /', '', $component);
 					$searchComponents[] = trim($component);
 				}
-				$subject['GOKs'] = $searchComponents;
+				$subject['queries'] = $searchComponents;
 			}
 			else {
-				$subGOKs = array();
+				$subqueries = array();
 				foreach ($subject['subjects'] as $subsubject) {
-					foreach ($subsubject['GOKs'] as $subGOK) {
-						$subGOKs[] = $subGOK;
+					foreach ($subsubject['queries'] as $subquery) {
+						$subqueries[] = $subquery;
 					}
 				}
-				$subject['GOKs'] = $subGOKs;
+				$subject['queries'] = $subqueries;
 			}
 
 			// Add tag fields to subject (inline and break).
@@ -249,7 +249,7 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	 *	group itself.
 	 *
 	 * If a subject group is selected, also select all the subjects contained in
-	 *  it. (If a subject group is not selected, _don't_ deselect all the
+	 *  it. (If a subject group is not selected, do _not_ deselect all the
 	 *  children. Imperfect but probably the most reasonable thing to be done in
 	 *  a non-interactive setup like this one.)
 	 *
@@ -278,7 +278,7 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 						$subjectIndex = intval(array_shift($nameParts));
 						$subject =& $mySubjects[$subjectIndex];
 						$subject['selected'] = True;
-						$selectedCheckboxes[] = implode(',', $subject['GOKs']);
+						$selectedCheckboxes[] = implode(',', $subject['queries']);
 					}
 				}
 			}
@@ -292,18 +292,18 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 			$previousQuery = $_COOKIE['pz2neuerwerbungen-previousQuery'];
 			$queryItems = explode(':', $previousQuery);
 
-			// Turn on the selection for each group if its GOKs have been passed
-			// in the cookie xor for each included subject if its GOKs have been
-			// passed in the cookie.
+			// Turn on the selection for each group if its queries have been
+			// passed in the cookie xor for each included subject if its queries
+			// have been passed in the cookie.
 			foreach ($subjects as &$group) {
-				$GOKsString = implode(',', $group['GOKs']);
-				if (in_array($GOKsString, $queryItems)) {
+				$queriesString = implode(',', $group['queries']);
+				if (in_array($queriesString, $queryItems)) {
 					$group['selected'] = True;
 				}
 				else {
 					foreach ($group['subjects'] as &$subject) {
-						$GOKsString = implode(',', $subject['GOKs']);
-						if (in_array($GOKsString, $queryItems)) {
+						$queriesString = implode(',', $subject['queries']);
+						if (in_array($queriesString, $queryItems)) {
 							$subject['selected'] = True;
 						}
 					}
@@ -332,8 +332,8 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 
 
 	/**
-	 * Takes the passed $group array and sets its 'selected' field to True if the 'selected' fields
-	 * of all the objects in its 'subjects' array are set to True. Uses recursion to check
+	 * Takes the passed $group array and sets its »selected« field to True if the »selected« fields
+	 * of all the objects in its »subjects« array are set to True. Uses recursion to check
 	 * potentially existant nested groups.
 	 *
 	 * @param array $group (passed by reference)
@@ -356,8 +356,8 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 
 
 	/**
-	 * Checks whether the 'selected' field of the passed $group array is true and recursively sets
-	 * the 'selected' fields of all contained subjects in the 'subject' element to True if that is
+	 * Checks whether the »selected« field of the passed $group array is true and recursively sets
+	 * the »selected« fields of all contained subjects in the »subject« element to True if that is
 	 * the case.
 	 *
 	 * @param array $group (passed by reference)
@@ -403,7 +403,7 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	 * Returns array of months preceding the current one.
 	 *	* Keys are of the form YYYY-MM.
 	 *	* Values are localised names of the months followed by the year.
-	 *		Localised '(incomplete)' is appended to the name of the current month.
+	 *		Localised »(incomplete)« is appended to the name of the current month.
 	 *
 	 * @return Array
 	 */
@@ -518,10 +518,10 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 
 
 	/**
-	 * Builds a query string using the selected GOKs in the form.
+	 * Builds a query string using the queries of the selected checkboxes in the form.
 	 * The strings used for equals assignment and wildcard can be configured
 	 *  to yield string that can be used for both Pica- and CCL-style queries.
-	 * Null is returned when there are no GOKs to search for.
+	 * Null is returned when no search queries are selected.
 	 *
 	 * @param string $equals [defaults to '=']
 	 * @param string $wildcard [defaults to '']
@@ -570,11 +570,11 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 
 
 	/**
-	 * Return the array of all GOKs selected in the form, taking into account
+	 * Return the array of all queries selected in the form, taking into account
 	 *  group checkboxes.
 	 *
-	 * @param string $wildcard appended to each extracted GOK
-	 * @return array of GOK strings
+	 * @param string $wildcard replace a final (?) in each term with this string
+	 * @return array of query strings
 	 */
 	private function selectedQueriesInFormWithWildcard($wildcard) {
 		return $this->selectedQueriesInGroupWithWildcard($this->getSubjects(), $wildcard);
@@ -583,26 +583,26 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 
 
 	/**
-	 * Return the array of all GOKs selected in a subject group, taking into account
+	 * Return the array of all queries selected in a subject group, taking into account
 	 *  group checkboxes.
 	 *
 	 * @param array $subjects
-	 * @param string $wildcard appended to each extracted GOK
-	 * @return array of GOK strings
+	 * @param string $wildcard replace a final (?) in each term with this string
+	 * @return array of query strings
 	 */
 	private function selectedQueriesInGroupWithWildcard($subjects, $wildcard) {
-		$GOKs = Array();
+		$queries = Array();
 
 		foreach ($subjects as $subject) {
-			if ($subject['selected'] && $subject['GOKs']) {
-				$this->addSearchTermsToList($subject['GOKs'], $GOKs, $wildcard);
+			if ($subject['selected'] && $subject['queries']) {
+				$this->addSearchTermsToList($subject['queries'], $queries, $wildcard);
 			}
 			elseif ($subject['subjects']) {
 				$subsubjects = $this->selectedQueriesInGroupWithWildcard($subject['subjects'], $wildcard);
-				$GOKs = array_merge($GOKs, $subsubjects);
+				$queries = array_merge($queries, $subsubjects);
 			}
 		}
-		return $GOKs;
+		return $queries;
 	}
 
 

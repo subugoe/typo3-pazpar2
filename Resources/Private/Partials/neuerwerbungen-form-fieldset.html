@@ -3,7 +3,7 @@
 		<fieldset class="pz2-fieldset-{sectionIndex}">
 			<legend>
 				<f:form.checkbox name="pz2subject-{sectionIndex}"
-								value="<f:for each='{section.GOKs}' as='GOK' key='GOKIndex'><f:if condition='{GOKIndex} != 0'>,</f:if>{GOK}</f:for>"
+								value="<f:for each='{section.queries}' as='query' key='queryIndex'><f:if condition='{queryIndex} != 0'>,</f:if>{query}</f:for>"
 								checked="{section.selected}"
 								onclick="groupCheckboxChanged(this);"
 								id="neuerwerbungen-group-checkbox-{sectionIndex}"/>
@@ -23,7 +23,7 @@
 					<f:then>
 						<f:if condition="{sectionItem.break} == 1"><br></f:if>
 						<f:form.checkbox name="pz2subject-{sectionIndex}-{itemIndex}"
-								value="<f:for each='{sectionItem.GOKs}' as='GOK' iteration='GOKIterator' key='GOKIndex'>{GOK}{f:if(condition:GOKIterator.isLast, then:'', else:',')}</f:for>"
+								value="<f:for each='{sectionItem.queries}' as='query' iteration='queryIterator' key='queryIndex'>{query}{f:if(condition:queryIterator.isLast, then:'', else:',')}</f:for>"
 								checked="{sectionItem.selected}"
 								onclick="checkboxChanged(this);"
 								id="neuerwerbungen-group-checkbox-{sectionIndex}-{itemIndex}"/>

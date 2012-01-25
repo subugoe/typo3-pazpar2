@@ -612,13 +612,16 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	 *  potentially appending a wildcard to each of them in the process.
 	 *
 	 * @param Array $searchTerms strings to be added to the list
-	 * @param type $list Array the terms are added to
-	 * @param type $wildcard string that is appended to each component before adding it to the list
+	 * @param Array $list the terms are added to
+	 * @param string $wildcard replace a final (?) in each term with this string
 	 */
 	private function addSearchTermsToList ($searchTerms, &$list, $wildcard) {
 		foreach($searchTerms as $term) {
 			if ($term != '') {
-				$list[] = $term . $wildcard;
+				if ($wildcard && substr($term, -1) === '?') {
+					$term = substr($term, 0, -1) . $wildcard;
+				}
+				$list[] = $term;
 			}
 		}
 	}

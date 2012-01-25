@@ -22,10 +22,10 @@
  */
 function pz2neuerwerbungenDOMReady () {
 	jQuery('.pz2-neuerwerbungenForm input[type="submit"]').hide();
+	restoreCookieState ();
 	// Overwrite pz-client.js search trigger function with our own.
 	triggerSearchFunction = neuerwerbungenRunSearchForForm;
 	triggerSearchFunction();
-	restoreCookieState ();
 }
 
 

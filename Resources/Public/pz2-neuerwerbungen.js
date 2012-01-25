@@ -402,7 +402,7 @@ function searchQueryWithEqualsAndWildcard (form, equals, wildcard, ignoreSelecte
  * output:	string containing the query
  */
 function oredSearchQueries (queryTerms, key, equals) {
-	var query = '(' + key + equals + queryTerms.join(' or ' + key + equals) + ')';
+	var query = key + equals + queryTerms.join(' or ' + key + equals);
 	
 	return query;
 }

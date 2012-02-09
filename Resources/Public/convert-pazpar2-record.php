@@ -2,7 +2,7 @@
 /*************************************************************************
  *  Copyright notice
  *
- *  © 2011 Sven-S. Porst, SUB Göttingen <porst@sub.uni-goettingen.de>
+ *  © 2011-2012 Sven-S. Porst, SUB Göttingen <porst@sub.uni-goettingen.de>
  *  All rights reserved
  *
  *  This script is distributed in the hope that it will be useful,

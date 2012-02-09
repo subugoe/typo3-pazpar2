@@ -6,7 +6,7 @@
 		http://www.refman.com/support/risformat_intro.asp
 		http://www.adeptscience.co.uk/kb/article/FE26
 	
-	2011-07 Sven-S. Porst, SUB Göttingen <porst@sub.uni-goettingen.de>
+	2011-2012 Sven-S. Porst, SUB Göttingen <porst@sub.uni-goettingen.de>
 -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"

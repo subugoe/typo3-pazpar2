@@ -1,3 +1,3 @@
-[submodule "Resources/Public/flot"]
-	path = Resources/Public/flot
-	url = git://github.com/ssp/flot.git
+[submodule "Resources/Public/pz2-client"]
+	path = Resources/Public/pz2-client
+	url = git://github.com/ssp/pazpar2-js-client.git

@@ -42,11 +42,11 @@ plugin.tx_pazpar2 {
 		}
 		showKVKLink = 1
 
-		CSSPath = EXT:pazpar2/Resources/Public/pz2.css
-		pz2JSPath = EXT:pazpar2/Resources/Public/pz2.js
-		pz2-clientJSPath = EXT:pazpar2/Resources/Public/pz2-client.js
-		flotJSPath = EXT:pazpar2/Resources/Public/flot/jquery.flot.js
-		flotSelectionJSPath = EXT:pazpar2/Resources/Public/flot/jquery.flot.selection.js
+		CSSPath = EXT:pazpar2/Resources/Public/pz2-client/pz2.css
+		pz2JSPath = EXT:pazpar2/Resources/Public/pz2-client/pz2.js
+		pz2-clientJSPath = EXT:pazpar2/Resources/Public/pz2-client/pz2-client.js
+		flotJSPath = EXT:pazpar2/Resources/Public/pz2-client/flot/jquery.flot.js
+		flotSelectionJSPath = EXT:pazpar2/Resources/Public/pz2-client/flot/jquery.flot.selection.js
 
 		useSortMenu = 0
 		sortOrder {
@@ -69,8 +69,8 @@ plugin.tx_pazpar2 {
 }
 
 plugin.tx_pazpar2_pazpar2neuerwerbungen.settings {
-	pz2-neuerwerbungenJSPath = EXT:pazpar2/Resources/Public/pz2-neuerwerbungen.js
-	pz2-neuerwerbungenCSSPath = EXT:pazpar2/Resources/Public/pz2-neuerwerbungen.css
+	pz2-neuerwerbungenJSPath = EXT:pazpar2/Resources/Public/pz2-client/pz2-neuerwerbungen.js
+	pz2-neuerwerbungenCSSPath = EXT:pazpar2/Resources/Public/pz2-client/pz2-neuerwerbungen.css
 	neuerwerbungen-subjects =
 	useAtomFeed = 1
 	numberOfMonths = 13

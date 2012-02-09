@@ -1016,7 +1016,7 @@ private function dataConversionForm ($locations, $exportFormat, $labelFormat) {
 	if ($XMLString) {
 		$form = $this->doc->createElement('form');
 		$form->setAttribute('method', 'POST');
-		$scriptPath = 'typo3conf/ext/pazpar2/Resources/Public/convert-pazpar2-record.php';
+		$scriptPath = 'typo3conf/ext/pazpar2/Resources/Public/pz2-client/converter/convert-pazpar2-record.php';
 		$scriptGetParameters = Array('format' => $exportFormat);
 		if ($GLOBALS['TSFE']->lang) {
 			$scriptGetParameters['language'] = $GLOBALS['TSFE']->lang;

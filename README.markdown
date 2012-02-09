@@ -82,16 +82,16 @@ In addition to the options exposed in the flexform, a number of additional optio
 	* preferSUBOpac [0]: if 1, links to GVK catalogue pages are mapped to the SUB Göttingen Opac for people with 134.76.* IP addresses, to provide greater convenience for Göttingen user
 	* useKeywords [0]: if 1, the Keywords search field is offered in extended search and keywords are displayed in result details, each linking to a search for the keyword in question; requires pazpar2’s targets to be configured for keyword searches on the »subject« index
 * included files:
-	* CSSPath [EXT:pazpar2/Resources/Public/pz2.css]: CSS file included to style the search form and search results
-	* pz2JSPath [EXT:pazpar2/Resources/Public/pz2.js]: Indexdata’s [pz2.js](http://git.indexdata.com/?p=pazpar2.git;a=blob_plain;f=js/pz2.js;hb=HEAD) library to communicate with the pazar2  service
-	* pz2-clientJSPath [EXT:pazpar2/Resources/Public/pz2-client.js]: JavaScript handling the user interaction and display of results; a lot of the customisation is in here
-	* flotJSPath [EXT:pazpar2/Resources/Public/flot/jquery.flot.js]: flot graphing library
-	* flotSelectionJSPath [EXT:pazpar2/Resources/Public/flot/jquery.flot.selection.js]: selection component of flot graphing library
+	* CSSPath [EXT:pazpar2/Resources/Public/pz2-client/pz2.css]: CSS file included to style the search form and search results
+	* pz2JSPath [EXT:pazpar2/Resources/Public/pz2-client/pz2.js]: Indexdata’s [pz2.js](http://git.indexdata.com/?p=pazpar2.git;a=blob_plain;f=js/pz2.js;hb=HEAD) library to communicate with the pazar2  service
+	* pz2-clientJSPath [EXT:pazpar2/Resources/Public/pz2-client/pz2-client.js]: JavaScript handling the user interaction and display of results; a lot of the customisation is in here
+	* flotJSPath [EXT:pazpar2/Resources/Public/pz2-client/flot/jquery.flot.js]: flot graphing library
+	* flotSelectionJSPath [EXT:pazpar2/Resources/Public/pz2-client/flot/jquery.flot.selection.js]: selection component of flot graphing library
 * tx_pazpar2_pazpar2-neuerwerbungen
-	* useAtomFeed [1]: if 1, a link to an Atom feed is displayed along with the Neuwerbungen form and inserted into the page’s <head>
+	* useAtomFeed [1]: if 1, a link to an Atom feed is displayed along with the Neuerwerbungen form and inserted into the page’s <head>
 	* numberOfMonths [13]: the number of months to display in the popup menu for date selection
-	* pz2-neuerwerbungenCSSPath [EXT:pazpar2/Resources/Public/pz2-neuerwerbungen.css]: Additional CSS file included if the pazpar2-neuerwerbungen plug-in is used
-	* pz2-neuerwerbungenJSPath [EXT:pazpar2/Resources/Public/pz2-neuerwerbungen.js]: Additional JavaScript included if the pazpar2-neuerwerbungen plug-in is used
+	* pz2-neuerwerbungenCSSPath [EXT:pazpar2/Resources/Public/pz2-client/pz2-neuerwerbungen.css]: Additional CSS file included if the pazpar2-neuerwerbungen plug-in is used
+	* pz2-neuerwerbungenJSPath [EXT:pazpar2/Resources/Public/pz2-client/pz2-neuerwerbungen.js]: Additional JavaScript included if the pazpar2-neuerwerbungen plug-in is used
 
 
 
@@ -173,11 +173,11 @@ To get a better idea of the general setup, take a look at [our setup files](http
 
 
 ## Bibliographic data export
-To create proper downloads these are created in a slightly involved way by sending the pazpar2 metadata back to server where the script Resources/Public/convert-pazpar2-record.php is run.
+To create proper downloads these are created in a slightly involved way by sending the pazpar2 metadata back to server where the script Resources/Public/pz2-client/converter/convert-pazpar2-record.php is run.
 
-Conversions done by that script use the stylesheets in Resources/Private/XSL. The conversion quality achieved by those scripts is somewhat limited on a syntactic level due to the inadequacies (RIS is defined to be [non-Unicode](http://www.refman.com/support/risformat_fields_02.asp) but we, like many others, send UTF-8 to accomodate non-Latin references as well) or complexities (getting BibTeX escaping right is a major effort [and occasionally undesirable as some mathematical sites includ TeX code which benefits from not being escaped] so the lazy compromise is to send UTF-8 as well).
+Conversions done by that script use the stylesheets in Resources/Public/pz2-client/converter. The conversion quality achieved by those scripts is somewhat limited on a syntactic level due to the inadequacies (RIS is defined to be [non-Unicode](http://www.refman.com/support/risformat_fields_02.asp) but we, like many others, send UTF-8 to accomodate non-Latin references as well) or complexities (getting BibTeX escaping right is a major effort [and occasionally undesirable as some mathematical sites includ TeX code which benefits from not being escaped] so the lazy compromise is to send UTF-8 as well).
 
-Support for additional formats can be added to the extension by adding a stylesheet to the Resources/Private/XSL folder, registering it for a format name in the Array the beginning of Resources/Public/convert-pazpar2-record.php and adding the display strings for that format to Resources/Public/pz2-client.js as well as to Resources/Private/Language/locallang.xml
+Support for additional formats can be added to the extension by adding an XSL file to the Resources/Public/pz2-client/converter folder, registering it for a format name in the Array the beginning of Resources/Public/pz2-client/converter/convert-pazpar2-record.php and adding the display strings for that format to Resources/Public/pz2-client/pz2-client.js as well as to Resources/Private/Language/locallang.xml
 
 
 ## Acknowledgements ##

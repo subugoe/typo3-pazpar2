@@ -4,7 +4,7 @@ A TYPO3 extension for including a bibliographic metasearch.
 
 The extension only makes sense if you are running Indexdata’s [pazpar2][] bibliographic metasearch software on your server.
 
-2010-2011 by [Sven-S. Porst](http://earthlingsoft.net/ssp/), [SUB Göttingen][sub] <[porst@sub.uni-goettingen.de](mailto:porst@sub.uni-goettingen.de?subject=pazpar2%20TYPO3%20Extension)>
+2010-2012 by [Sven-S. Porst](http://earthlingsoft.net/ssp/), [SUB Göttingen][sub] <[porst@sub.uni-goettingen.de](mailto:porst@sub.uni-goettingen.de?subject=pazpar2%20TYPO3%20Extension)>
 
 The extension includes the [flot][] JavaScript library for drawing graphs.
 

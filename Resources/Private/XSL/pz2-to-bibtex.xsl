@@ -2,7 +2,7 @@
 <!--
 	Sloppily converts pazpar2 metadata to BibTeX.
 	
-	2011-07 Sven-S. Porst, SUB Göttingen <porst@sub.uni-goettingen.de>
+	2011-2012 Sven-S. Porst, SUB Göttingen <porst@sub.uni-goettingen.de>
 -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"

@@ -2,7 +2,7 @@
 /*******************************************************************************
  * Copyright notice
  *
- * Copyright (C) 2010-2011 by Sven-S. Porst, SUB Göttingen
+ * Copyright (C) 2010-2012 by Sven-S. Porst, SUB Göttingen
  * <porst@sub.uni-goettingen.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy

@@ -468,7 +468,7 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 			$leadingZero = '0';
 		}
 
-		return $year . '-' . $leadingZero . $month;
+		return $year . $leadingZero . $month;
 	}
 
 

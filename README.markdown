@@ -76,6 +76,7 @@ In addition to the options exposed in the flexform, a number of additional optio
 	* useSortMenu [0]: if 1 a HTML select element letting the user pick the sort order is included in the search form
 	* sortOrder [{1.fieldName = date \n 1.direction = descending \n 2.fieldName = author \n 2.direction = ascending \n 3.fieldName = title \n 3.direction = ascending}]
 * Results display:
+	* useMaps [1]: if 1, enables the display of Google Maps with markers for areas covered by the record displayed
 	* provideCOinSExport [1]: if 1, causes invisible [COinS](http://ocoins.info/) metadata to be inserted into the result lists. It will be used by [Zotero](http://www.zotero.org/) to automatically find bibliographics records displayed in the page. Note that Zotero 3 is the first version capable of discovering COinS data that are dynamically added to the page.
 	* exportFormats [{ris = 1\n bibtex = 1}]: an array with export format names as keys set to the value 1. Based on this list links to downloads of bibliographic metadata are added to the detail view of records. You can empty this array to remove the export links from the detail view. Permitted keys are: ris, bibtex, ris-inline and bibtex-inline for [RIS](http://www.refman.com/support/risformat_intro.asp) and BibTeX formats. The plain names cause a download of the file, the -inline name replace the current page with the bibliographic data.
 	* showKVKLink [1]: for records with an ISBN or media type book a link to the metasearch across German union catalogues in [Karlsruhe Virtual Catalogue](http://www.ubka.uni-karlsruhe.de/kvk.html) (KVK) is added along with the export links
@@ -148,6 +149,7 @@ Fields used to display data:
 * creator (used for Guide links)
 * catalogue-url (URL linking to the catalogue web page for that record, built using the stylesheets ard setup for the various targets.)
 * subject
+* mapscale (not part of standard tmarc.xsl), display the scale of maps and potentially draw the region covered by the map on an interactive map on the web page
 
 For the 'medium' field, the supported types (with a localised name and icon) are. Most of them come from standard tmarc.xsl analysis of Marc records. A few depend on our refinements of tmarc.xsl and additional information/analysis.
 
@@ -191,6 +193,7 @@ Many thanks go to [Indexdata](http://www.indexdata.com/) for their powerful pazp
 
 
 ## Version History ##
+* 1.7.0 (2012-03-??): Support displaying the location covered by maps
 * 1.6.0 (2012-02-24): Restructure Resources/Public to provide the JavaScript interface as a standalone repository: [pazpar2-js-client](https://github.com/ssp/pazpar2-js-client); change date format for Neuerwerbungen to YYYYMM; improved reliability of triggering the pazpar2 search
 * 1.5.0 (2012-01-18): Add Geo-specific placeholder search term to main search field configuration; add second set of paging controls beneath the results; work around localisation breakage of TYPO3 4.6
 * 1.4.0 (2012-01-16): Add keyword search and ability to display keywords in result details; add support for additional media types (letter, manuscript, image); small display tweaks; stop using deprecated form field View Helper

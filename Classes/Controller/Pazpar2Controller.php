@@ -170,6 +170,7 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		// Create additional settings that are needed by pz-client.js.
 		$jsVariables = array(
 			'useGoogleBooks' => (($this->conf['useGoogleBooks']) ? 'true' : 'false'),
+			'useMaps' => (($this->conf['useMaps']) ? 'true' : 'false'),
 			'useZDB' => (($this->conf['useZDB']) ? 'true' : 'false'),
 			'ZDBUseClientIP' => ((!$this->conf['ZDBIP']) ? 'true' : 'false'),
 			'useHistogramForYearFacets' => (($this->conf['useHistogramForYearFacets'] == '1') ? 'true' : 'false'),
@@ -231,7 +232,7 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		$jsCommand = "jQuery(document).ready(pz2ClientDomReady);\n";
 
 		// Add Google Books support if asked to do so.
-		if ( $this->conf['useGoogleBooks'] ) {
+		if ( $this->conf['useGoogleBooks'] || $this->conf['useMaps'] ) {
 			// Structurally this might be better in a separate extension?
 			$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
 			$scriptTag->addAttribute('type', 'text/javascript');
@@ -239,7 +240,9 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 			$scriptTag->forceClosingTag(true);
 			$this->response->addAdditionalHeaderData( $scriptTag->render() );
 
-			$jsCommand .= "google.load('books', '0');\n";
+			if ( $this->conf['useGoogleBooks'] ) {
+				$jsCommand .= "google.load('books', '0');\n";
+			}
 		}
 
 		// Add further JavaScript initialisation commands to <head>.

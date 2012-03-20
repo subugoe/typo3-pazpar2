@@ -28,6 +28,7 @@ plugin.tx_pazpar2 {
 		serviceID =
 		useHistogramForYearFacets = 1
 		useGoogleBooks = 1
+		useMaps = 1
 		useZDB = 1
 		ZDBIP = 0
 

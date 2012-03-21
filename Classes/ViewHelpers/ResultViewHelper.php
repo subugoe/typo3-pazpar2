@@ -590,6 +590,7 @@ private function locationDetails ($result) {
 			$this->appendInfoToContainer( $this->detailInfoItem('isbn', $location), $detailsData);
 		}
 		$this->appendInfoToContainer( $this->electronicURLs($location, $result), $detailsData);
+		$this->appendInfoToContainer( $this->parentLink($locationAll), $detailsData);
 		$this->appendInfoToContainer( $this->catalogueLink($locationAll), $detailsData);
 
 		// Only append location information if additional details exist
@@ -810,13 +811,18 @@ private function electronicURLs ($location, $result) {
 
 
 /**
- * Returns a link for the current record that points to the catalogue page for that item.
+ * Checks whether the field with the passed name exists, extracts the
+ * first instance of it and manipulates it if configured to do so.
+ * @param string $fieldName
  * @param array $locationAll
- * @return DOMElement
+ * @return string
  */
-private function catalogueLink ($locationAll) {
-	$catalogueURL = $locationAll['ch']['md-catalogue-url'][0]['values'][0];
+private function processedCatalogueURLFromField ($fieldName, $locationAll) {
+	$URL = NULL;
+	$catalogueURL = $locationAll['ch']['md-' . $fieldName][0]['values'][0];
 	if ($catalogueURL) {
+		$URL = $catalogueURL;
+
 		/** Replace links to the Göttingen Opac by GVK-links if:
 		 *	1) the user does not have a Göttingen IP and
 		 *	2) we are not set up to always server SUB Opace links
@@ -828,16 +834,59 @@ private function catalogueLink ($locationAll) {
 			$catalogueURL = preg_replace($opacBaseRegexp, $GVKBaseURL, $catalogueURL);
 		}
 	}
-	
-	$linkElement = Null;
-	$targetName = $locationAll['attrs']['name'];
-	if ($catalogueURL && $targetName) {
+
+	return $URL;
+}
+
+
+
+/**
+ * Returns DOM elements linking to the catalogue page of the current
+ * record’s parent record, plus spacing.
+ * @param type $locationAll
+ * @return type
+ */
+private function parentLink ($locationAll) {
+	$result = NULL;
+	$URL = $this->processedCatalogueURLFromField('parent-catalogue-url', $locationAll);
+
+	if ($URL) {
 		$linkElement = $this->doc->createElement('a');
-		$linkElement->setAttribute('href', $catalogueURL);
-		$linkElement->setAttribute('class', 'pz2-detail-catalogueLink');
+		$linkElement->setAttribute('href', $URL);
+		$linkTitle = Tx_Extbase_Utility_Localization::translate('enthaltendes Werk im Katalog ansehen', 'Pazpar2');
+		$linkElement->setAttribute('title', $linkTitle);
 		$this->turnIntoNewWindowLink($linkElement);
+		$linkElement->setAttribute('class', 'pz2-detail-parent-catalogueLink');
+
+		$linkText = Tx_Extbase_Utility_Localization::translate('enthaltendes Werk', 'Pazpar2');
+		$linkElement->appendChild($this->doc->createTextNode($linkText));
+
+		$result = array($linkElement, $this->doc->createTextNode(' '));
+	}
+
+	return $result;
+}
+
+
+
+/**
+ * Returns a link for the current record that points to the catalogue page for that item.
+ * @param array $locationAll
+ * @return DOMElement
+ */
+private function catalogueLink ($locationAll) {
+	$linkElement = NULL;
+	$URL = $this->processedCatalogueURLFromField('catalogue-url', $locationAll);
+	$targetName = $locationAll['attrs']['name'];
+
+	if ($URL && $targetName) {
+		$linkElement = $this->doc->createElement('a');
+		$linkElement->setAttribute('href', $URL);
 		$linkTitle = Tx_Extbase_Utility_Localization::translate('Im Katalog ansehen', 'Pazpar2');
 		$linkElement->setAttribute('title', $linkTitle);
+		$this->turnIntoNewWindowLink($linkElement);
+		$linkElement->setAttribute('class', 'pz2-detail-catalogueLink');
+
 		/* Try to localise catalogue name, fall back to original target name
 			if no localisation is available */
 		$linkText = Tx_Extbase_Utility_Localization::translate($targetName, 'Pazpar2');

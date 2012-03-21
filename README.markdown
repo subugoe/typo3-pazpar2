@@ -194,7 +194,7 @@ Many thanks go to [Indexdata](http://www.indexdata.com/) for their powerful pazp
 
 
 ## Version History ##
-* 1.7.0 (2012-03-??): Support displaying the location covered by maps; Remove ZDB-JOP sid configuration from script, it has to be provided by the proxy now; Add ability to display a link to the parent record
+* 1.7.0 (2012-03-??): Display the location covered by maps; Display the scale of maps; Remove ZDB-JOP sid configuration from script, it has to be provided by the proxy now; Add ability to display a link to the parent record
 * 1.6.0 (2012-02-24): Restructure Resources/Public to provide the JavaScript interface as a standalone repository: [pazpar2-js-client](https://github.com/ssp/pazpar2-js-client); change date format for Neuerwerbungen to YYYYMM; improved reliability of triggering the pazpar2 search
 * 1.5.0 (2012-01-18): Add Geo-specific placeholder search term to main search field configuration; add second set of paging controls beneath the results; work around localisation breakage of TYPO3 4.6
 * 1.4.0 (2012-01-16): Add keyword search and ability to display keywords in result details; add support for additional media types (letter, manuscript, image); small display tweaks; stop using deprecated form field View Helper

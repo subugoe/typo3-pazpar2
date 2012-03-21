@@ -72,6 +72,8 @@ Please run the search from a German university network for more complete results
 			<label index="detail-label-doi-plural">DOIs</label>
 			<label index="detail-label-keyword">Keyword</label>
 			<label index="detail-label-keyword-plural">Keywords</label>
+			<label index="detail-label-map">Location</label>
+			<label index="detail-label-mapscale">Scale</label>
 			<label index="detail-label-creator">catalogued by</label>
 			<label index="elektronisch">electronic</label>
 			<label index="gedruckt">printed</label>
@@ -204,6 +206,8 @@ Bei Zugriff aus einem deutschen Universitätsnetzwerk umfaßt Ihre Abfrage zusä
 			<label index="detail-label-doi-plural">DOIs</label>
 			<label index="detail-label-keyword">Schlagwort</label>
 			<label index="detail-label-keyword-plural">Schlagwörter</label>
+			<label index="detail-label-map">Ort</label>
+			<label index="detail-label-mapscale">Maßstab</label>
 			<label index="detail-label-creator">erfasst von</label>
 			<label index="elektronisch">digital</label>
 			<label index="gedruckt">gedruckt</label>

@@ -459,6 +459,7 @@ private function renderDetails ($result) {
 	$this->appendInfoToContainer( $this->ISSNsDetailLine($result), $detailsList);
 	$this->appendInfoToContainer( $this->detailLineAuto('doi', $result), $detailsList);
 	$this->appendInfoToContainer( $this->detailLineAuto('creator', $result), $detailsList);
+	$this->appendInfoToContainer( $this->detailLineAuto('mapscale', $result), $detailsList);
 	$this->appendInfoToContainer( $this->keywordsDetailLine($result), $detailsList);
 
 	$this->appendInfoToContainer( $this->locationDetails($result), $detailsList);

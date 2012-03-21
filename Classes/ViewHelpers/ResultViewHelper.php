@@ -462,10 +462,10 @@ private function renderDetails ($result) {
 	$this->appendInfoToContainer( $this->keywordsDetailLine($result), $detailsList);
 
 	$this->appendInfoToContainer( $this->locationDetails($result), $detailsList);
+	$this->appendGoogleBooksElementTo( $detailsList, $result );
+	$this->appendInfoToContainer( $this->mapDetailLine($result), $detailsList);
 	$this->addZDBInfoIntoElement( $detailsList, $result );
-	if (count($this->conf['exportFormats']) > 0) {
-		$this->appendInfoToContainer( $this->exportLinks($result), $detailsDiv);
-	}
+	$this->appendInfoToContainer( $this->exportLinks($result), $detailsDiv);
 	
 	return $detailsDiv;
 }
@@ -974,6 +974,18 @@ private function keywordsDetailLine ($result) {
 
 
 // Not implemented in the PHP version.
+private function mapDetailLine ($result) {
+
+}
+
+
+// Not implemented in the PHP version.
+private function appendGoogleBooksElementTo ($container, $result) {
+
+}
+
+
+// Not implemented in the PHP version.
 private function addZDBInfoIntoElement ($container, $result) {
 
 }
@@ -987,14 +999,7 @@ private function addZDBInfoIntoElement ($container, $result) {
  * @return DOMElement
  */
 private function exportLinks ($result) {
-	$exportLinks = $this->doc->createElement('div');
-	$exportLinks->setAttribute('class', 'pz2-extraLinks');
-	$exportLinksLabel = $this->doc->createElement('span');
-	$exportLinks->appendChild($exportLinksLabel);
-	$exportLinksLabel->setAttribute('class', 'pz2-extraLinksLabel');
-	$exportLinksLabel->appendChild($this->doc->createTextNode(Tx_Extbase_Utility_Localization::translate('mehr Links', 'Pazpar2')));
 	$extraLinkList = $this->doc->createElement('ul');
-	$exportLinks->appendChild($extraLinkList);
 	$labelFormat = Tx_Extbase_Utility_Localization::translate('download-label-format-simple', 'Pazpar2');
 	if (count($result['location']) > 1) {
 		$labelFormat = Tx_Extbase_Utility_Localization::translate('download-label-format-all', 'Pazpar2');
@@ -1005,6 +1010,17 @@ private function exportLinks ($result) {
 	}
 	$this->appendExportItemsTo($result['location'], $labelFormat, $extraLinkList);
 	// Separate submenus for individual locations not implemented in the PHP version.
+
+	$exportLinks = NULL;
+	if (count($extraLinkList->hasChildNodes())) {
+		$exportLinks = $this->doc->createElement('div');
+		$exportLinks->setAttribute('class', 'pz2-extraLinks');
+		$exportLinksLabel = $this->doc->createElement('span');
+		$exportLinks->appendChild($exportLinksLabel);
+		$exportLinksLabel->setAttribute('class', 'pz2-extraLinksLabel');
+		$exportLinksLabel->appendChild($this->doc->createTextNode(Tx_Extbase_Utility_Localization::translate('mehr Links', 'Pazpar2')));
+		$exportLinks->appendChild($extraLinkList);
+	}
 
 	return $exportLinks;
 }

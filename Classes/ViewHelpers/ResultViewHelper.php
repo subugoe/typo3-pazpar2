@@ -947,7 +947,6 @@ private function keywordsDetailLine ($result) {
 		$infoElements = Array($infoElement);
 		foreach ($result['md-subject'] as $keywordIndex => $keywordArray) {
 			$keyword = $keywordArray['values'][0];
-			$keywordQuery = "subject=\\\"" . $keyword . "\\\"";
 			$linkElement = $this->doc->createElement('a');
 			$URIBuilder = $this->controllerContext->getUriBuilder();
 

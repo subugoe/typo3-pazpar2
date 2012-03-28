@@ -331,7 +331,8 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 		}
 		// Person search is a phrase search.
 		if ($this->queryStringPerson) {	$queryParts[] = 'person="' . $this->queryStringPerson . '"'; }
-		if ($this->queryStringKeyword) { $queryParts[] = 'keyword="' . $this->queryStringKeyword . '"'; }
+		// Subject search is a phrase search.
+		if ($this->queryStringKeyword) { $queryParts[] = 'subject="' . $this->queryStringKeyword . '"'; }
 		if ($this->queryStringDate) { $queryParts[] = 'date=' . $this->queryStringDate; }
 
 		$query = implode(' and ', $queryParts);

@@ -812,36 +812,6 @@ private function electronicURLs ($location, $result) {
 
 
 /**
- * Checks whether the field with the passed name exists, extracts the
- * first instance of it and manipulates it if configured to do so.
- * @param string $fieldName
- * @param array $locationAll
- * @return string
- */
-private function processedCatalogueURLFromField ($fieldName, $locationAll) {
-	$URL = NULL;
-	$catalogueURL = $locationAll['ch']['md-' . $fieldName][0]['values'][0];
-	if ($catalogueURL) {
-		$URL = $catalogueURL;
-
-		/** Replace links to the Göttingen Opac by GVK-links if:
-		 *	1) the user does not have a Göttingen IP and
-		 *	2) we are not set up to always server SUB Opace links
-		 */
-		if (strpos('134.76.', $_SERVER["REMOTE_ADDR"]) !== 0
-				&& $this->conf['preferSUBOpac'] == 0) {
-			$opacBaseRegexp = '/https?\:\/\/opac\.sub\.uni\-goettingen.de\/DB\=1/';
-			$GVKBaseURL = 'http://gso.gbv.de/DB=2.1';
-			$catalogueURL = preg_replace($opacBaseRegexp, $GVKBaseURL, $catalogueURL);
-		}
-	}
-
-	return $URL;
-}
-
-
-
-/**
  * Returns DOM elements linking to the catalogue page of the current
  * record’s parent record, plus spacing.
  * @param type $locationAll
@@ -849,7 +819,7 @@ private function processedCatalogueURLFromField ($fieldName, $locationAll) {
  */
 private function parentLink ($locationAll) {
 	$result = NULL;
-	$URL = $this->processedCatalogueURLFromField('parent-catalogue-url', $locationAll);
+	$URL = $locationAll['ch']['md-parent-catalogue-url'][0]['values'][0];
 
 	if ($URL) {
 		$linkElement = $this->doc->createElement('a');
@@ -877,7 +847,7 @@ private function parentLink ($locationAll) {
  */
 private function catalogueLink ($locationAll) {
 	$linkElement = NULL;
-	$URL = $this->processedCatalogueURLFromField('catalogue-url', $locationAll);
+	$URL = $locationAll['ch']['md-catalogue-url'][0]['values'][0];
 	$targetName = $locationAll['attrs']['name'];
 
 	if ($URL && $targetName) {

@@ -2,7 +2,7 @@
 
 A TYPO3 extension for including a bibliographic metasearch.
 
-The extension only makes sense if you are running Indexdata’s [pazpar2][] bibliographic metasearch software on your server.
+The extension interacts with Index Data’s [pazpar2][] bibliographic metasearch software.
 
 2010-2012 by [Sven-S. Porst](http://earthlingsoft.net/ssp/), [SUB Göttingen][sub] <[porst@sub.uni-goettingen.de](mailto:porst@sub.uni-goettingen.de?subject=pazpar2%20TYPO3%20Extension)>
 
@@ -13,7 +13,7 @@ Feel free to send in comments or contribute improvements. You can fork the exten
 
 
 ## Introduction
-[pazpar2][] is a bibliographic metasearch software by Indexdata for querying multiple Solr, SRU and Z39.50 servers, normalising, merging and deduplicating the results and providing them for presentation.
+[pazpar2][] is a bibliographic metasearch software by Index Data for querying multiple Solr, SRU and Z39.50 servers, normalising, merging and deduplicating the results and providing them for presentation.
 
 The pazpar2 TYPO3 extension provides two plug-ins for content elements that let the user initiate search queries and display the results:
 
@@ -25,17 +25,17 @@ You can see the extension in use at the Library of Anglo-American Culture site w
 
 
 ## Requirements
-To run the extension’s code, you need:
+To use this extension successfully you need:
 
 * TYPO3 ≥ 4.5.3
 * with Extbase/Fluid ≥ 1.3
-* the t3jquery extension injecting at least jQuery 1.6 into the pages (jQuery 1.7.0 is buggy and will not work well, use at least 1.7.1 if you need 1.7)
+* the t3jquery extension injecting at least jQuery 1.7.1 into the pages
 
 ### pazpar2
 For searches to work and results to be displayed correctly you need
 
 * pazpar2 ≥ 1.6.2
-* … running at or proxied to the path /pazpar2/search.pz2 on your server (see [Indexdata’s instructions on how to proxy it there](http://www.indexdata.com/pazpar2/doc/installation.apache2proxy.html))
+* … running at – or proxied to – the path /pazpar2/search.pz2 on your server (see [Index Data’s instructions on how to proxy it there](http://www.indexdata.com/pazpar2/doc/installation.apache2proxy.html))
 ** the implementation also supports displaying additional access information which is provided by the [pazpar2-access proxy](https://github.com/ssp/pazpar2-access)
 * See below for more details on the assumptions the extension makes regarding pazpar2’s search key and metadata normalisation setup.
 
@@ -80,11 +80,10 @@ In addition to the options exposed in the flexform, a number of additional optio
 	* provideCOinSExport [1]: if 1, causes invisible [COinS](http://ocoins.info/) metadata to be inserted into the result lists. It will be used by [Zotero](http://www.zotero.org/) to automatically find bibliographics records displayed in the page. Note that Zotero 3 is the first version capable of discovering COinS data that are dynamically added to the page.
 	* exportFormats [{ris = 1\n bibtex = 1}]: an array with export format names as keys set to the value 1. Based on this list links to downloads of bibliographic metadata are added to the detail view of records. You can empty this array to remove the export links from the detail view. Permitted keys are: ris, bibtex, ris-inline and bibtex-inline for [RIS](http://www.refman.com/support/risformat_intro.asp) and BibTeX formats. The plain names cause a download of the file, the -inline name replace the current page with the bibliographic data.
 	* showKVKLink [1]: for records with an ISBN or media type book a link to the metasearch across German union catalogues in [Karlsruhe Virtual Catalogue](http://www.ubka.uni-karlsruhe.de/kvk.html) (KVK) is added along with the export links
-	* preferSUBOpac [0]: if 1, links to GVK catalogue pages are mapped to the SUB Göttingen Opac for people with 134.76.* IP addresses, to provide greater convenience for Göttingen user
 	* useKeywords [0]: if 1, the Keywords search field is offered in extended search and keywords are displayed in result details, each linking to a search for the keyword in question; requires pazpar2’s targets to be configured for keyword searches on the »subject« index
 * included files:
 	* CSSPath [EXT:pazpar2/Resources/Public/pz2-client/pz2.css]: CSS file included to style the search form and search results
-	* pz2JSPath [EXT:pazpar2/Resources/Public/pz2-client/pz2.js]: Indexdata’s [pz2.js](http://git.indexdata.com/?p=pazpar2.git;a=blob_plain;f=js/pz2.js;hb=HEAD) library to communicate with the pazar2  service
+	* pz2JSPath [EXT:pazpar2/Resources/Public/pz2-client/pz2.js]: Index Data’s [pz2.js](http://git.indexdata.com/?p=pazpar2.git;a=blob_plain;f=js/pz2.js;hb=HEAD) library to communicate with the pazar2  service
 	* pz2-clientJSPath [EXT:pazpar2/Resources/Public/pz2-client/pz2-client.js]: JavaScript handling the user interaction and display of results; a lot of the customisation is in here
 	* flotJSPath [EXT:pazpar2/Resources/Public/pz2-client/flot/jquery.flot.js]: flot graphing library
 	* flotSelectionJSPath [EXT:pazpar2/Resources/Public/pz2-client/flot/jquery.flot.selection.js]: selection component of flot graphing library
@@ -184,7 +183,7 @@ Support for additional formats can be added to the extension by adding an XSL fi
 
 
 ## Acknowledgements ##
-Many thanks go to [Indexdata](http://www.indexdata.com/) for their powerful pazpar2 software and quick bug fixes, to my colleague Ingo Pfennigstorf for his TYPO3 expertise and to [Henrik Cederblad](http://cederbladdesign.com/) who created the media type icons.
+Many thanks go to [Index Data](http://www.indexdata.com/) for their powerful pazpar2 software and quick bug fixes, to my colleague Ingo Pfennigstorf for his TYPO3 expertise and to [Henrik Cederblad](http://cederbladdesign.com/) who created the media type icons.
 
 
 

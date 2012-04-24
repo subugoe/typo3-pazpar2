@@ -12,7 +12,7 @@
 
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'pazpar2',
-	'description' => 'Interface to indexdata’s pazpar2 metasearch middleware',
+	'description' => 'Interface to Index Data’s pazpar2 metasearch middleware',
 	'category' => 'plugin',
 	'version' => '1.7.0',
 	'state' => 'stable',

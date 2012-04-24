@@ -174,8 +174,6 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 			'useZDB' => (($this->conf['useZDB']) ? 'true' : 'false'),
 			'ZDBUseClientIP' => ((!$this->conf['ZDBIP']) ? 'true' : 'false'),
 			'useHistogramForYearFacets' => (($this->conf['useHistogramForYearFacets'] == '1') ? 'true' : 'false'),
-			'clientIPAddress' => json_encode($_SERVER['REMOTE_ADDR']),
-			'preferSUBOpac' => (($this->conf['preferSUBOpac']) ? 'true' : 'false'),
 			'provideCOinSExport' => (($this->conf['provideCOinSExport']) ? 'true' : 'false'),
 			'showExportLinksForEachLocation' => (($this->conf['showExportLinksForEachLocation']) ? 'true' : 'false'),
 			'showKVKLink' => (($this->conf['showKVKLink']) ? 'true' : 'false'),

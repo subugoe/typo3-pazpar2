@@ -21,7 +21,7 @@
 			<label index="form-extended-label-title">Title</label>
 			<label index="form-extended-label-journalOnly">journal titles only</label>
 			<label index="form-extended-label-person">Person, Author</label>
-			<label index="form-extended-label-keyword">Keywords</label>
+			<label index="form-extended-label-subject">Keywords</label>
 			<label index="form-extended-placeholder-person">e.g. Lincoln or Wilde, Oscar</label>
 			<label index="form-extended-label-date">Year</label>
 			<label index="form-extended-placeholder-date">e.g. 2004, 2004-, -2004 or 2004-2008</label>
@@ -155,14 +155,14 @@ Please run the search from a German university network for more complete results
 			<label index="form-extended-label-title">Titel</label>
 			<label index="form-extended-label-journalOnly">nur Zeitschriftentitel</label>
 			<label index="form-extended-label-person">Person, Autor</label>
-			<label index="form-extended-label-keyword">Schlagwörter</label>
+			<label index="form-extended-label-subject">Schlagwörter</label>
 			<label index="form-extended-placeholder-person">z.B. Lincoln oder Wilde, Oscar</label>
 			<label index="form-extended-label-date">Jahr</label>
 			<label index="form-extended-placeholder-date">z.B. 2004, 2004-, -2004 oder 2004-2008</label>
 			<label index="erweiterte Suche">erweiterte Suche</label>
 			<label index="einfache Suche">einfache Suche</label>
 			<label index="Find">Suchen</label>
-			
+
 			<!-- pazpar2neuerwerbungen form -->
 			<label index="Anzeigen">Anzeigen</label>
 			<label index="Die aktuelle Liste als RSS-Feed abonnieren.">Neuerwerbungen als Feed abonnieren.</label>

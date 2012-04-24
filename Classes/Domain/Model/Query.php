@@ -303,7 +303,27 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 
 
 	/**
-	 * Returns the full query string to use in pazpar2.
+	 * Creates pazpar2 search string for the given index name and query term.
+	 * Adds an 'indexName=' after and/not/or to allow logical operations in
+	 * the fields of extended search.
+	 *
+	 * @param string $indexName
+	 * @param string $searchString
+	 * @return string
+	 */
+	private function createSearchString ($indexName, $searchString) {
+		$search = '(' . $indexName . '=' . $searchString . ')';
+		$search = str_replace(' and ', ' and ' . $indexName . '=', $search);
+		$search = str_replace(' not ', ' not ' . $indexName . '=', $search);
+		$search = str_replace(' or ', ' or ' . $indexName . '=', $search);
+		
+		return $search;
+	}
+
+
+
+	/**
+	 * Returns the full query string to send to pazpar2.
 	 * 
 	 * @return string
 	 */
@@ -316,24 +336,31 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 				$queryParts[] = $this->queryString;
 			}
 			else {
-				$queryParts[] = 'fulltext=' . $this->queryString;
+				$queryParts[] = $this->createSearchString('fulltext', $this->queryString);
 			}
 			
 		}
 		// Title search can be proper title or journal title depending on the switch.
 		if ($this->queryStringTitle) {
 			if (!$this->querySwitchJournalOnly) {
-				$queryParts[] = 'title=' . $this->queryStringTitle;
+				$queryParts[] = $this->createSearchString('title', $this->queryStringTitle);
 			}
 			else {
-				$queryParts[] = 'journal=' . $this->queryStringTitle;
+				$queryParts[] = $this->createSearchString('journal', $this->queryStringTitle);
 			}
 		}
 		// Person search is a phrase search.
-		if ($this->queryStringPerson) {	$queryParts[] = 'person="' . $this->queryStringPerson . '"'; }
-		// Subject search is a phrase search.
-		if ($this->queryStringKeyword) { $queryParts[] = 'subject="' . $this->queryStringKeyword . '"'; }
-		if ($this->queryStringDate) { $queryParts[] = 'date=' . $this->queryStringDate; }
+		if ($this->queryStringPerson) {
+			$myQueryStringPerson = preg_replace('/^[\s"]*/', '', $this->queryStringPerson);
+			$myQueryStringPerson = preg_replace('/[\s"]*$/', '', $myQueryStringPerson);
+			$queryParts[] = $this->createSearchString('person', '"' . $myQueryStringPerson . '"');
+		}
+		if ($this->queryStringKeyword) {
+			$queryParts[] = $this->createSearchString('subject', $this->queryStringKeyword);
+		}
+		if ($this->queryStringDate) {
+			$queryParts[] = $this->createSearchString('date', $this->queryStringDate);
+		}
 
 		$query = implode(' and ', $queryParts);
 		$query = str_replace('*', '?', $query);

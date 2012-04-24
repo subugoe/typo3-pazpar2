@@ -10,10 +10,7 @@
 	<data type="array">
 
 		<languageKey index="en" type="array">
-			<label index="form-main-placeholder-0"></label>
-			<label index="form-main-placeholder-1">Search term</label>
-			<label index="form-main-placeholder-2">add a search term</label>
-			<label index="form-main-placeholder-3">e.g. rocket or arctic*</label>
+			<label index="form-main-placeholder"></label>
 			<!-- pazpar2 extended search form -->
 			<label index="form-extended-label-all">All Fields</label>
 			<label index="form-extended-label-fulltext-1">full text search</label>
@@ -144,10 +141,7 @@ Please run the search from a German university network for more complete results
 
 
 		<languageKey index="de" type="array">
-			<label index="form-main-placeholder-0"></label>
-			<label index="form-main-placeholder-1">Suchbegriff</label>
-			<label index="form-main-placeholder-2">zusätzlicher Suchbegriff</label>
-			<label index="form-main-placeholder-3">z.B. Granit oder Vulkan*</label>
+			<label index="form-main-placeholder"></label>
 			<!-- extended search form -->
 			<label index="form-extended-label-all">Alle Felder</label>
 			<label index="form-extended-label-fulltext-1">Volltextsuche</label>

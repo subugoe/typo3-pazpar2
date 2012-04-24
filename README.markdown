@@ -72,9 +72,9 @@ In addition to the options exposed in the flexform, a number of additional optio
 	* fulltextSearch [2]: configure checkbox to do full text search in the extended search form; 0 -> not shown, 1 -> labelled for full text search, 2 -> labelled for table of contents search
 	* journalTitleOnlySearch [1]: if 1, the checkbox to search journal titles only is displayed in the extended search form
 	* dateSearch [1]: if 1, the date field is displayed in the extended search form
-	* mainSearchFieldPlaceholder [0]: HTML5 placeholder string to be put into the main search field; available options are: 0 -> blank, 1 -> Search Term, 2 -> additional Search term, 3 -> Geo-sample strings featuring trunctation
 	* useSortMenu [0]: if 1 a HTML select element letting the user pick the sort order is included in the search form
 	* sortOrder [{1.fieldName = date \n 1.direction = descending \n 2.fieldName = author \n 2.direction = ascending \n 3.fieldName = title \n 3.direction = ascending}]
+	* Override localisations: Using plugin.tx_pazpar2._LOCAL_LANG.[en|de], the strings used in the search form can be overridden; Please refer to the file Resources/Private/Language/locallang.xml for a list of strings in use
 * Results display:
 	* useMaps [1]: if 1, enables the display of Google Maps with markers for areas covered by the record displayed
 	* provideCOinSExport [1]: if 1, causes invisible [COinS](http://ocoins.info/) metadata to be inserted into the result lists. It will be used by [Zotero](http://www.zotero.org/) to automatically find bibliographics records displayed in the page. Note that Zotero 3 is the first version capable of discovering COinS data that are dynamically added to the page.

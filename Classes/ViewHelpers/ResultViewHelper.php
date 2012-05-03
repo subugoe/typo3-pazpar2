@@ -460,6 +460,7 @@ private function renderDetails ($result) {
 	$this->appendInfoToContainer( $this->detailLineAuto('doi', $result), $detailsList);
 	$this->appendInfoToContainer( $this->detailLineAuto('creator', $result), $detailsList);
 	$this->appendInfoToContainer( $this->detailLineAuto('mapscale', $result), $detailsList);
+	$this->appendInfoToContainer( $this->MSCDetailLine($result), $detailsList);
 	$this->appendInfoToContainer( $this->keywordsDetailLine($result), $detailsList);
 
 	$this->appendInfoToContainer( $this->locationDetails($result), $detailsList);
@@ -939,6 +940,45 @@ private function keywordsDetailLine ($result) {
 	}
 
 	return $this->detailLine($labelString, $infoElements);
+}
+
+
+
+/**
+ *
+ * @param array $result
+ * @return array of DOM Elements
+ */
+private function MSCDetailLine ($result) {
+	$infoElements = Null;
+	$MSCInfo = Array();
+	$notes = Array();
+
+	foreach($result['location'] as $locationAll) {
+		$location = $locationAll['ch'];
+		if ($location['md-classification-msc']) {
+			foreach($location['md-classification-msc'] as $MSCAll) {
+				$MSCInfo[$MSCAll['values'][0]] = TRUE;
+				if (array_key_exists('attrs', $MSCAll) && array_key_exists('accordingto', $MSCAll['attrs'])) {
+					$notes[$MSCAll['attrs']['accordingto']] = TRUE;
+				}
+			}
+		}
+	}
+
+	$MSCStrings = array_keys($MSCInfo);
+	if (count($MSCStrings) > 0 ) {
+		$MSCString = implode(', ', $MSCStrings);
+
+		$MSCNotes = array_keys($notes);
+		if (count($MSCNotes) > 0) {
+			$MSCString .= ' (' .  Tx_Extbase_Utility_Localization::translate('gemäß', 'Pazpar2') . ' ' . implode(', ', $MSCNotes) . ')';
+		}
+
+		$infoElements = Array($this->doc->createTextNode($MSCString));
+	}
+
+	return $this->detailLine('classification-msc', $infoElements);
 }
 
 

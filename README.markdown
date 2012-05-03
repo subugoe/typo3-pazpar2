@@ -149,6 +149,7 @@ Fields used to display data:
 * catalogue-url (URL linking to the catalogue web page for that record, built using the stylesheets and setup for the various targets.)
 * parent-catalogue-url (URL linking to the catalogue web page for related records to the current record, typically the containing parent collection.)
 * subject
+* classification-msc (not part of standard tmarc.xsl)
 * mapscale (not part of standard tmarc.xsl), display the scale of maps and potentially draw the region covered by the map on an interactive map on the web page
 
 For the 'medium' field, the supported types (with a localised name and icon) are. Most of them come from standard tmarc.xsl analysis of Marc records. A few depend on our refinements of tmarc.xsl and additional information/analysis.

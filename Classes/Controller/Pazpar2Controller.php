@@ -188,6 +188,9 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		if ($this->conf['sortOrder']) {
 			$jsVariables['displaySort'] = json_encode(array_values(array_filter($this->conf['sortOrder'])));
 		}
+		if ($this->conf['termLists']) {
+			$jsVariables['termLists'] = json_encode($this->conf['termLists']);
+		}
 
 		$jsCommand = "\n";
 		foreach ($jsVariables as $name => $value) {

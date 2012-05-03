@@ -59,6 +59,26 @@ plugin.tx_pazpar2 {
 			3.direction = ascending
 		}
 		triggeredByNKWGOKMenu = 0
+
+		termLists {
+			xtargets {
+				maxFetch = 25
+				minDisplay = 1
+			}
+			medium {
+				maxFetch = 12
+				minDisplay = 1
+			}
+			language {
+				maxFetch = 5
+				minDisplay = 1
+			}
+			filterDate {
+				maxFetch = 10
+				minDisplay = 5
+			}
+		}
+
 		showSearchForm = 1
 		allowExtendedSearch = 1
 		fulltextSearch = 2

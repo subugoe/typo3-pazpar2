@@ -34,7 +34,6 @@ plugin.tx_pazpar2 {
 
 		# only settable via TypoScript
 		siteName =
-		preferSUBOpac = 0
 		provideCOinSExport = 1
 		showExportLinksForEachLocation = 0
 		exportFormats {
@@ -58,7 +57,6 @@ plugin.tx_pazpar2 {
 			3.fieldName = title
 			3.direction = ascending
 		}
-		triggeredByNKWGOKMenu = 0
 
 		termLists {
 			xtargets {
@@ -79,6 +77,7 @@ plugin.tx_pazpar2 {
 			}
 		}
 
+		triggeredByNKWGOK = 0
 		showSearchForm = 1
 		allowExtendedSearch = 1
 		fulltextSearch = 2

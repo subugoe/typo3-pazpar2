@@ -198,9 +198,9 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		}
 		
 		// Set up JavaScript function that is called by nkwgok if asked to do so.
-		if ($this->conf['triggeredByNKWGOKMenu']) {
-			$jsCommand .= 'function nkwgokMenuSelected(option) {
-	var searchTerm = option.getAttribute("query");
+		if ($this->conf['triggeredByNKWGOK']) {
+			$jsCommand .= 'var nkwgokItemSelected = function (element) {
+	var searchTerm = element.getAttribute("query");
 	if (searchTerm) {
 		triggerSearchForForm(undefined, ["(" +  searchTerm + ")"]);
 	}

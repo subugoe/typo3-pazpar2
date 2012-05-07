@@ -30,7 +30,7 @@ $EM_CONF[$_EXTKEY] = array(
 		),
 		'suggests' => array(
 			't3jquery' => '1.8.0-',
-			'nkwgok' => '1.2.0-',
+			'nkwgok' => '2.0.0-',
 		),
 	),
 	'dependencies' => 'extbase,fluid',

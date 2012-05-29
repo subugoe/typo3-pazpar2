@@ -92,8 +92,8 @@ Please run the search from a German university network for more complete results
 			<label index="download-label-format-all">Load all editions as *</label>
 			<label index="download-label-ris">RIS</label>
 			<label index="download-label-bibtex">BibTeX</label>
-			<label index="KVK">KVK</label>
-			<label index="deutschlandweit im KVK suchen">search for this title in union catalogues throughout Germany (KVK)</label>
+			<label index="KVK">search throughout Germany</label>
+			<label index="deutschlandweit im KVK suchen">search for this item in German union catalogues (KVK)</label>
 			<label index="&amp;lang=de">&amp;lang=en</label>
 
 			<!-- Media Types -->
@@ -226,8 +226,8 @@ Bei Zugriff aus einem deutschen Universitätsnetzwerk umfaßt Ihre Abfrage zusä
 			<label index="download-label-format-all">Alle Ausgaben als * laden</label>
 			<label index="download-label-ris">RIS</label>
 			<label index="download-label-bibtex">BibTeX</label>
-			<label index="KVK">KVK</label>
-			<label index="deutschlandweit im KVK suchen">deutschlandweit im KVK suchen</label>
+			<label index="KVK">deutschlandweit suchen</label>
+			<label index="deutschlandweit im KVK suchen">Suche in deutschen Verbundkatalogen (KVK)</label>
 			<label index="&amp;lang=de">&amp;lang=de</label>
 
 			<!-- Media Types -->

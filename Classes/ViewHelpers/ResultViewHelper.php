@@ -588,9 +588,9 @@ private function locationDetails ($result) {
 			$this->appendInfoToContainer( $this->detailInfoItem('publication-place', $location), $detailsData);
 			$this->appendInfoToContainer( $this->detailInfoItem('date', $location), $detailsData);
 			$this->appendInfoToContainer( $this->detailInfoItem('physical-extent', $location), $detailsData);
-			// $this->cleanISBNs(); not implemented in PHP version
-			$this->appendInfoToContainer( $this->detailInfoItem('isbn', $location), $detailsData);
 		}
+		// $this->cleanISBNs(); not implemented in PHP version
+		$this->appendInfoToContainer( $this->detailInfoItem('isbn', $location), $detailsData);
 		$this->appendInfoToContainer( $this->electronicURLs($location, $result), $detailsData);
 		$this->appendInfoToContainer( $this->parentLink($locationAll), $detailsData);
 		$this->appendInfoToContainer( $this->catalogueLink($locationAll), $detailsData);

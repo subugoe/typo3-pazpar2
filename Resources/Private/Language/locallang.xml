@@ -79,6 +79,7 @@ Please run the search from a German university network for more complete results
 			<label index="gemäß">according to</label>
 			<label index="Ausgabe">Edition</label>
 			<label index="In">In</label>
+			<label index="et al.">et al.</label>
 			<label index="Im Katalog ansehen">View in catalogue.</label>
 			<label index="enthaltendes Werk im Katalog ansehen">View all associated items in catalogue.</label>
 			<label index="enthaltendes Werk">associated items</label>
@@ -213,6 +214,7 @@ Bei Zugriff aus einem deutschen Universitätsnetzwerk umfaßt Ihre Abfrage zusä
 			<label index="gemäß">according to</label>
 			<label index="Ausgabe">Ausgabe</label>
 			<label index="In">In</label>
+			<label index="et al.">et al.</label>
 			<label index="Im Katalog ansehen">Im Katalog ansehen.</label>
 			<label index="enthaltendes Werk im Katalog ansehen">Alle zugehörigen Publikationen im Katalog ansehen.</label>
 			<label index="enthaltendes Werk">zugehörige Publikationen</label>

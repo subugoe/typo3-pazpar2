@@ -24,6 +24,14 @@
  ******************************************************************************/
 
 
+// Maximum number of authors to display in the summary part of the record.
+// (This could be more configurable and does not make particularly much sense
+// to begin with, but is included to match the output given by the JavaScript
+// generated markup.)
+define(MAX_AUTHORS, 3);
+
+
+
 /**
  * ResultViewHelper.php
  *
@@ -244,9 +252,15 @@ private function authorInfo ($result) {
 	$outputText = $result['md-title-responsibility'][0]['values'][0];
 	if (!$outputText && $result['md-author']) {
 		$authors = Array();
-		foreach ($result['md-author'] as $author) {
-			$authorName = $author['values'][0];
-			$authors[] = $authorName;
+		foreach ($result['md-author'] as $index => $author) {
+			if ($index < MAX_AUTHORS) {
+				$authorName = $author['values'][0];
+				$authors[] = $authorName;
+			}
+			else {
+				$authors[] = Tx_Extbase_Utility_Localization::translate('et al.', 'Pazpar2');
+				break;
+			}
 		}
 
 		$outputText = implode('; ', $authors);
@@ -439,6 +453,10 @@ private function renderDetails ($result) {
 			}
 		}
 	}
+	else if (array_key_exists('md-author', $result) && count($result['md-author']) > MAX_AUTHORS) {
+		$result['md-author-clean'] = array_slice($result['md-author'], MAX_AUTHORS);
+	}
+
 	$otherPeople = $result['md-other-person'];
 	if ($otherPeople) {
 		$result['md-other-person-clean'] = Array();

@@ -610,7 +610,7 @@ private function locationDetails ($result) {
 		// $this->cleanISBNs(); not implemented in PHP version
 		$this->appendInfoToContainer( $this->detailInfoItem('isbn', $location), $detailsData);
 		$this->appendInfoToContainer( $this->electronicURLs($location, $result), $detailsData);
-		$this->appendInfoToContainer( $this->parentLink($locationAll), $detailsData);
+		$this->appendInfoToContainer( $this->parentLink($locationAll, $result), $detailsData);
 		$this->appendInfoToContainer( $this->catalogueLink($locationAll), $detailsData);
 
 		// Only append location information if additional details exist
@@ -831,16 +831,18 @@ private function electronicURLs ($location, $result) {
 
 
 /**
- * Returns DOM elements linking to the catalogue page of the current
+ * Returns DOM nodes linking to the catalogue page of the current
  * record’s parent record, plus spacing.
- * @param type $locationAll
- * @return type
+ * @param Array $locationAll
+ * @param Array $result
+ * @return NULL|Array of DOMNodes
  */
-private function parentLink ($locationAll) {
-	$result = NULL;
+private function parentLink ($locationAll, $result) {
+	$nodes = NULL;
 	$URL = $locationAll['ch']['md-parent-catalogue-url'][0]['values'][0];
+	if ($URL && $result['md-medium'][0]['values'][0] !== 'article') {
+debugster($result);
 
-	if ($URL) {
 		$linkElement = $this->doc->createElement('a');
 		$linkElement->setAttribute('href', $URL);
 		$linkTitle = Tx_Extbase_Utility_Localization::translate('enthaltendes Werk im Katalog ansehen', 'Pazpar2');
@@ -851,10 +853,10 @@ private function parentLink ($locationAll) {
 		$linkText = Tx_Extbase_Utility_Localization::translate('enthaltendes Werk', 'Pazpar2');
 		$linkElement->appendChild($this->doc->createTextNode($linkText));
 
-		$result = array($linkElement, $this->doc->createTextNode(' '));
+		$nodes = array($linkElement, $this->doc->createTextNode(' '));
 	}
 
-	return $result;
+	return $nodes;
 }
 
 

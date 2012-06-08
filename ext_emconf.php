@@ -12,7 +12,7 @@
 
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'pazpar2',
-	'description' => 'Interface to Index Data’s pazpar2 metasearch middleware',
+	'description' => 'Interface for Index Data’s pazpar2 metasearch middleware',
 	'category' => 'plugin',
 	'version' => '1.7.0',
 	'state' => 'stable',
@@ -21,7 +21,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'author_company' => 'Göttingen State and University Library, Germany http://www.sub.uni-goettingen.de',
 	'constraints' => array(
 		'depends' => array(
-			'php' => '5.2.0-0.0.0',
+			'php' => '5.3.0-0.0.0',
 			'typo3' => '4.5.3-0.0.0',
 			'extbase' => '1.3.0-0.0.0',
 			'fluid' => '1.3.0-0.0.0',
@@ -29,8 +29,9 @@ $EM_CONF[$_EXTKEY] = array(
 		'conflicts' => array(
 		),
 		'suggests' => array(
-			't3jquery' => '1.8.0-',
-			'nkwgok' => '2.0.0-',
+			'typo3' => '4.7.1-0.0.0',
+			't3jquery' => '1.8.0-0.0.0',
+			'nkwgok' => '2.0.0-0.0.0',
 		),
 	),
 	'dependencies' => 'extbase,fluid',

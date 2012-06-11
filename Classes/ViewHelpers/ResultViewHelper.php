@@ -841,8 +841,6 @@ private function parentLink ($locationAll, $result) {
 	$nodes = NULL;
 	$URL = $locationAll['ch']['md-parent-catalogue-url'][0]['values'][0];
 	if ($URL && $result['md-medium'][0]['values'][0] !== 'article') {
-debugster($result);
-
 		$linkElement = $this->doc->createElement('a');
 		$linkElement->setAttribute('href', $URL);
 		$linkTitle = Tx_Extbase_Utility_Localization::translate('enthaltendes Werk im Katalog ansehen', 'Pazpar2');

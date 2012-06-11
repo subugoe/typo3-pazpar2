@@ -140,6 +140,9 @@ Please run the search from a German university network for more complete results
 			<label index="Geschichte Aufsätze">Essays: History</label>
 			<label index="Anglistik Aufsätze">Essays: Literature</label>
 			<label index="Alte Karten">Old Maps</label>
+			<label index="OLC Mathematik">Articles</label>
+			<label index="Dissertationen">Dissertations</label>
+			<label index="Jahrbuch-Datenbank">Jahrbuch-Database</label>
 
 		</languageKey>
 
@@ -272,6 +275,8 @@ Bei Zugriff aus einem deutschen Universitätsnetzwerk umfaßt Ihre Abfrage zusä
 			<label index="link-description-Volltext">Volltext</label>
 
 			<!-- Catalogue Names which need localisation -->
+			<label index="OLC Mathematik">Artikel</label>
+
 		</languageKey>
 
 	</data>

@@ -199,12 +199,11 @@ Many thanks go to [Index Data](http://www.indexdata.com/) for their powerful paz
 ## TODO ##
 * WAI-ARIA support
 * investigate using pazpar2’s faceting again (following the latest improvements)
-* close box for status panel
 * HTML5 History support?
 
 
 ## Version History ##
-* 2.0.0 (2012-06-??): cooperation with nkwgok requires at least version 2 of that extension; display improvements; support MathJax; add visible link to hide the status panel; fix bug in Google Books links;
+* 2.0.0 (2012-06-13): cooperation with nkwgok requires at least version 2 of that extension; display improvements; support MathJax; add visible link to hide the status panel; fix bug in Google Books links;
 * 1.8.0 (2012-05-29): fix localisation for keyword search field label; enable use of boolean operators in extended search fields; add display of MSC classification; make facet configuration accessible from TypoScript; add ability to display facets for the `country` field containing ISO 3166-1 alpha-2 country codes and the `source-type` field
 * 1.7.0 (2012-03-30): display the location covered by maps from the `` attribute of the `mapscale` field; Display the scale of maps from the `mapscale`field; Remove ZDB-JOP sid configuration from script, it has to be inserted into the URL by the proxy now; Add ability to display a link to the parent record (`catalogue-url-parent` field); Remove hard coded recognition and rewriting of Göttingen Opac URLs, the same effect is achieved more generically by using at least revision v2 of [pazpar2-access](https://github.com/ssp/pazpar2-access)
 * 1.6.0 (2012-02-24): restructure Resources/Public to provide the JavaScript interface as a standalone repository: [pazpar2-js-client](https://github.com/ssp/pazpar2-js-client); change date format for Neuerwerbungen to `YYYYMM`; improved reliability of triggering the pazpar2 search

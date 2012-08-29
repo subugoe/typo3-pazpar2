@@ -112,10 +112,10 @@ public function render () {
 	$this->appendInfoToContainer($authors, $li);
 
 	// year or journal + year information
-	if($result['md-medium'][0]['values'][0] == 'article') {
-		$this->appendJournalInfoToContainer($result, $li);
-	}
-	else {
+	$journal = $this->journalInfo($result);
+	$this->appendInfoToContainer($journal, $li);
+
+	if (!$journal) {
 		$spaceBefore = ' ';
 		if ($authors) {
 			$spaceBefore = ', ';
@@ -283,19 +283,24 @@ private function authorInfo ($result) {
 
 
 /**
- * Appends DOM SPAN element with the current hit's journal information to linkElement.
+ * Returns DOM SPAN element with the current hit’s journal information.
  * @param DOMElement $result
- * @param DOMElement $container to append the DOM element to
+ * @return DOMElement
  */
-private function appendJournalInfoToContainer ($result, $container) {
+private function journalInfo ($result) {
 	$outputElement = $this->doc->createElement('span');
 	$outputElement->setAttribute('class', 'pz2-journal');
 
-	$journalTitle = $this->appendMarkupForFieldToContainer('journal-title', $result, $container, ' ' . Tx_Extbase_Utility_Localization::translate("In", "Pazpar2") . ": ");
+	$journalTitle = $this->appendMarkupForFieldToContainer('journal-title', $result, $outputElement, ' ' . Tx_Extbase_Utility_Localization::translate("In", "Pazpar2") . ": ");
 	if ($journalTitle) {
 		$this->appendMarkupForFieldToContainer('journal-subpart', $result, $journalTitle, ', ');
 		$journalTitle->appendChild($this->doc->createTextNode('.'));
 	}
+	else {
+		$outputElement = Null;
+	}
+
+	return $outputElement;
 }
 
 

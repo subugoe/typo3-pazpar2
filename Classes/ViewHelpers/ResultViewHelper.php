@@ -944,7 +944,18 @@ private function keywordsDetailLine ($result) {
 			$linkElement = $this->doc->createElement('a');
 			$URIBuilder = $this->controllerContext->getUriBuilder();
 
-			$linkURI = $URIBuilder->uriFor('index', Array('queryStringKeyword' => '"' . $keyword . '"', 'extended' => 1, 'useJS' => 'no'), 'Pazpar2', 'Pazpar2');
+			$parameters = Array('useJS' => 'no');
+			if ($this->conf['extendedSearch'] == 1) {
+				// The subject field is available: switch to extended search and use it.
+				$parameters['queryStringKeyword'] = '"' . $keyword . '"';
+				$parameters['extended'] = 1;
+			}
+			else {
+				// The subject field is not available: use "subject=XXX" in the general search field.
+				$parameters['queryString'] = 'subject="' . $keyword . '"';
+			}
+
+			$linkURI = $URIBuilder->uriFor('index', $parameters , 'Pazpar2', 'Pazpar2');
 			$linkElement->setAttribute('href', $linkURI);
 			$titleString = Tx_Extbase_Utility_Localization::translate('nach Schlagwort "#" suchen', 'Pazpar2');
 			$titleString = str_replace('#', $keyword, $titleString);

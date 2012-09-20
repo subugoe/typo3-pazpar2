@@ -137,6 +137,7 @@ Fields used to display data if present:
 * pissn (not part of standard tmarc.xsl)
 * eissn (not part of standard tmarc.xsl)
 * oclc-number
+* zdb-number
 * doi (not part of standard tmarc.xsl)
 * electronic-url
 * edition

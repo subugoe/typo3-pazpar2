@@ -204,6 +204,7 @@ Many thanks go to [Index Data](http://www.indexdata.com/) for their powerful paz
 
 
 ## Version History ##
+* 2.2.0 (2012-12-12): display fewer ISBNs (JS); fix count of additional facets; avoid duplicate facet list updates; adapt Neuerwerbungen month queries to new GBV Index format
 * 2.1.0 (2012-09-20): more generic display of journal information for articles; better handling of subject search when extended search is not available; use ZDB IDs to determine journal availability if no ISSN is available; make »No matching Records« display more visible
 * 2.0.0 (2012-06-13): cooperation with nkwgok requires at least version 2 of that extension; display improvements; support MathJax; add visible link to hide the status panel; fix bug in Google Books links
 * 1.8.0 (2012-05-29): fix localisation for keyword search field label; enable use of boolean operators in extended search fields; add display of MSC classification; make facet configuration accessible from TypoScript; add ability to display facets for the `country` field containing ISO 3166-1 alpha-2 country codes and the `source-type` field

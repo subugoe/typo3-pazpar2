@@ -249,7 +249,7 @@ private function titleInfo ($result) {
 private function authorInfo ($result) {
 	$outputElement = Null;
 
-	$outputText = $result['md-title-responsibility'][0]['values'][0];
+	$outputText = implode('; ', $result['md-title-responsibility'][0]['values']);
 	if (!$outputText && $result['md-author']) {
 		$authors = Array();
 		foreach ($result['md-author'] as $index => $author) {
@@ -267,14 +267,9 @@ private function authorInfo ($result) {
 	}
 
 	if ($outputText) {
-		$extraFullStop = '';
-		if (strlen($outputText) > 1 && $outputText{strlen($outputText) - 1} != '.') {
-			$extraFullStop = '.';
-		}
-
 		$outputElement = $this->doc->createElement('span');
 		$outputElement->setAttribute('class', 'pz2-item-responsibility');
-		$outputElement->appendChild($this->doc->createTextNode($outputText . $extraFullStop));
+		$outputElement->appendChild($this->doc->createTextNode($outputText));
 	}
 
 	return $outputElement;
@@ -291,7 +286,7 @@ private function journalInfo ($result) {
 	$outputElement = $this->doc->createElement('span');
 	$outputElement->setAttribute('class', 'pz2-journal');
 
-	$journalTitle = $this->appendMarkupForFieldToContainer('journal-title', $result, $outputElement, ' ' . Tx_Extbase_Utility_Localization::translate("In", "Pazpar2") . ": ");
+	$journalTitle = $this->appendMarkupForFieldToContainer('journal-title', $result, $outputElement, ' – ' . Tx_Extbase_Utility_Localization::translate("In", "Pazpar2") . ": ");
 	if ($journalTitle) {
 		$this->appendMarkupForFieldToContainer('journal-subpart', $result, $journalTitle, ', ');
 		$journalTitle->appendChild($this->doc->createTextNode('.'));

@@ -249,21 +249,23 @@ private function titleInfo ($result) {
 private function authorInfo ($result) {
 	$outputElement = Null;
 
-	$outputText = implode('; ', $result['md-title-responsibility'][0]['values']);
-	if (!$outputText && $result['md-author']) {
-		$authors = Array();
-		foreach ($result['md-author'] as $index => $author) {
-			if ($index < MAX_AUTHORS) {
-				$authorName = $author['values'][0];
-				$authors[] = $authorName;
+	if ($result['md-title-responsibility'][0]['values']) {
+		$outputText = implode('; ', $result['md-title-responsibility'][0]['values']);
+		if (!$outputText && $result['md-author']) {
+			$authors = Array();
+			foreach ($result['md-author'] as $index => $author) {
+				if ($index < MAX_AUTHORS) {
+					$authorName = $author['values'][0];
+					$authors[] = $authorName;
+				}
+				else {
+					$authors[] = Tx_Extbase_Utility_Localization::translate('et al.', 'Pazpar2');
+					break;
+				}
 			}
-			else {
-				$authors[] = Tx_Extbase_Utility_Localization::translate('et al.', 'Pazpar2');
-				break;
-			}
-		}
 
-		$outputText = implode('; ', $authors);
+			$outputText = implode('; ', $authors);
+		}
 	}
 
 	if ($outputText) {

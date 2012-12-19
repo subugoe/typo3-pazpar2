@@ -64,7 +64,7 @@ class tx_Pazpar2_Service_Flexform {
 			'tx_nkwgok_data',
 			"parent = '" . $parentGOK . "'",
 			'',
-			'gok ASC',
+			'notation ASC',
 			'');
 
 		return $queryResults;

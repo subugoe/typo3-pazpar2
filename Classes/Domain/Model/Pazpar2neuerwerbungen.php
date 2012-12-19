@@ -233,7 +233,7 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 			'tx_nkwgok_data',
 			"parent = '" . $parentPPN . "' AND statusID = 0",
 			'',
-			'gok ASC',
+			'notation ASC',
 			'');
 
 		return $queryResults;

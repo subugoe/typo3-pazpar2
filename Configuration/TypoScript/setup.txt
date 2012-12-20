@@ -56,6 +56,8 @@ plugin.tx_pazpar2 {
 			2.direction = ascending
 			3.fieldName = title
 			3.direction = ascending
+			4.fieldName = title-number-section
+			4.direction = ascending
 		}
 
 		termLists {

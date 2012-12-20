@@ -73,7 +73,7 @@ In addition to the options exposed in the flexform, a number of additional optio
 	* `journalTitleOnlySearch` [1]: if 1, the checkbox to search journal titles only is displayed in the extended search form
 	* `dateSearch` [1]: if 1, the date field is displayed in the extended search form
 	* `useSortMenu` [0]: if 1 a HTML select element letting the user pick the sort order is included in the search form
-	* `sortOrder` [{1.fieldName = date \n 1.direction = descending \n 2.fieldName = author \n 2.direction = ascending \n 3.fieldName = title \n 3.direction = ascending}]
+	* `sortOrder` [{1.fieldName = date \n 1.direction = descending \n 2.fieldName = author \n 2.direction = ascending \n 3.fieldName = title \n 3.direction = ascending \n 4.fieldname = title-number-section \n 4.direction = ascending}]
 	* Override localisations: Using `plugin.tx_pazpar2._LOCAL_LANG.[en|de]`, the strings used in the search form can be overridden; Please refer to the file Resources/Private/Language/locallang.xml for a list of strings in use
 * Results display:
 	* `useMaps` [1]: if 1, enables the display of Google Maps with markers for areas covered by the record displayed
@@ -110,6 +110,17 @@ The search forms provided by pazpar2 use the following search keys which must be
 * `date`
 * `nel` - month index required by pazpar2 Neuerwerbungen only (required format: `YYYYMM`)
 * `subject`
+
+### Sorting ###
+The standard configuration requires the pazpar2 service to support sorting by the metadata fields:
+
+* `date`
+* `author`
+* `title`
+* `title-number-section`
+
+This can be reconfigured using the `sortOrder` TypoScript setting if the pazpar2 server is not configured to support all of these fields.
+
 
 ### Metadata format ###
 The metadata expected by the extension to display results are based on the metadata fields created by Indexdata’s powerful [tmarc.xsl](http://git.indexdata.com/?p=pazpar2.git;a=blob_plain;f=etc/tmarc.xsl;hb=HEAD) style file for extracting information from Marc records. A few additions and changes to the standard output of that stylesheet have been made to improve the display quality.
@@ -204,6 +215,7 @@ Many thanks go to [Index Data](http://www.indexdata.com/) for their powerful paz
 
 
 ## Version History ##
+* 2.4.0 (2013-01-??): sort by `title-number-section` for identical titles; add fake manual for the benefit of TER; avoid warning in View Helper
 * 2.3.0 (2012-12-19): adapt to new nkwgok database field names
 * 2.2.2 (2012-12-17): fix punctuation problems in md-title-responsibility
 * 2.2.0 (2012-12-12): display fewer ISBNs (JS); fix count of additional facets; avoid duplicate facet list updates; adapt Neuerwerbungen month queries to new GBV Index format

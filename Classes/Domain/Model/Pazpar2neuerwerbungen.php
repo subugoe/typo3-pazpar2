@@ -143,6 +143,7 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	 * Partial that handles the display. The data format is:
 	 *	* Array [subject groups]
 	 *		* Array [subject group, associative]
+	 *			* id => string - id/ppn of subject group [required]
 	 *			* name => string - name of subject group [required]
 	 *			* queries => Array [optional]
 	 *				* string that is a CCL query
@@ -168,6 +169,9 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 
 		while($nodeRecord = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($rootNodes)) {
 			$subject = array();
+
+			// Add PPN for separating distinct subject fieldsets
+			$subject['id'] = strtolower($nodeRecord['ppn']);
 
 			// Use English subject name if it exists and the language is English
 			// and the German subject name otherwise.

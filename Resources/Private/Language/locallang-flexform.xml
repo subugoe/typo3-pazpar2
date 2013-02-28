@@ -18,7 +18,7 @@
 			<label index="settings.ZDBIPUser">Query with the user’s IP address (using service at /zdb/)</label>
 			<label index="settings.ZDBIPLocal">Query with the server’s IP address (using service at /zdb-local/)</label>
 			<label index="settings.useHistogramForYearFacets">Draw a histogram to visualise the distribution of publication dates</label>
-			<label index="settings.neuerwerbungen-subjects">Subject list for pazapar2-neuerwerbungen: (requires GOK)</label>
+			<label index="settings.neuerwerbungen-subjects">Subject list for pazapar2-neuerwerbungen</label>
 
 		</languageKey>
 
@@ -31,7 +31,7 @@
 			<label index="settings.ZDBIPUser">Abfrage für die IP Adresse des Nutzers machen (Proxy unter /zdb/)</label>
 			<label index="settings.ZDBIPLocal">Abfrage für die IP Adresse des Servers machen (Proxy unter /zdb-local/)</label>
 			<label index="settings.useHistogramForYearFacets">Verteilung der Erscheinungsjahre als Histogramm anzeigen</label>
-			<label index="settings.neuerwerbungen-subjects">Fachgebietsauswahl für pazpar2-Neuerwerbungen: (benötigt GOK)</label>
+			<label index="settings.neuerwerbungen-subjects">Fachgebietsauswahl für pazpar2-Neuerwerbungen</label>
 
 		</languageKey>
 

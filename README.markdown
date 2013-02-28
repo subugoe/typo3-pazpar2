@@ -215,8 +215,7 @@ Many thanks go to [Index Data](http://www.indexdata.com/) for their powerful paz
 
 
 ## Version History ##
-* 2.4.1 (2013-02-28): added PPN-field to the subjects-array for separating distinct subject-fieldsets in the frontend [dsimm]
-* 2.4.0 (2013-01-??): sort by `title-number-section` for identical titles; add fake manual for the benefit of TER; avoid warning in View Helper
+* 2.4.0 (2013-02-28): sort by `title-number-section` for identical titles; add fake manual for the benefit of TER; avoid warning in View Helper; add ID to CSS classes in the neuerwerbungen template [dsimm]
 * 2.3.0 (2012-12-19): adapt to new nkwgok database field names
 * 2.2.2 (2012-12-17): fix punctuation problems in md-title-responsibility
 * 2.2.0 (2012-12-12): display fewer ISBNs (JS); fix count of additional facets; avoid duplicate facet list updates; adapt Neuerwerbungen month queries to new GBV Index format

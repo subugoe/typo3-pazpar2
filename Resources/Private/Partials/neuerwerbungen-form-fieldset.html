@@ -1,6 +1,6 @@
 <f:if condition="{f:count(subject:section.subjects)} > 1">
 	<f:then>
-		<fieldset class="pz2-fieldset-{sectionIndex}">
+		<fieldset id="{section.ppn}" class="pz2-fieldset-{sectionIndex}">
 			<legend>
 				<f:form.checkbox name="pz2subject-{sectionIndex}"
 								value="<f:for each='{section.queries}' as='query' key='queryIndex'><f:if condition='{queryIndex} != 0'>,</f:if>{query}</f:for>"

@@ -177,6 +177,8 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 			else {
 				$subject['name'] = $nodeRecord['descr'];
 			}
+			// Add PPN for separating distinct subject fieldsets
+			$subject['ppn'] = strtolower($nodeRecord['ppn']);
 
 			// Recursively add child elements if they exist.
 			if ($nodeRecord['childcount'] > 0) {

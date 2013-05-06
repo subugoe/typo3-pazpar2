@@ -1253,7 +1253,7 @@ private function KVKItem ($result) {
 
 	if ($query !== '') {
 		$KVKLink = $this->doc->createElement('a');
-		$KVKLinkURL = 'http://kvk.ubka.uni-karlsruhe.de/hylib-bin/kvk/nph-kvk2.cgi?input-charset=utf-8&Timeout=120';
+		$KVKLinkURL = 'http://kvk.ubka.uni-karlsruhe.de/hylib-bin/kvk/nph-kvk2.cgi?maske=kvk-last&input-charset=utf-8&Timeout=120';
 		$KVKLinkURL .= Tx_Extbase_Utility_Localization::translate('&lang=de', 'Pazpar2');
 		$KVKLinkURL .= '&kataloge=SWB&kataloge=BVB&kataloge=NRW&kataloge=HEBIS&kataloge=KOBV_SOLR&kataloge=GBV';
 		$KVKLink->setAttribute('href', $KVKLinkURL . $query);

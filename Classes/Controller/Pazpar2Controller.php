@@ -179,8 +179,14 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 			'showKVKLink' => (($this->conf['showKVKLink']) ? 'true' : 'false'),
 			'useKeywords' => (($this->conf['useKeywords']) ? 'true' : 'false')
 		);
-		if ($this->conf['exportFormats']) {
-			$jsVariables['exportFormats'] = json_encode(array_keys($this->conf['exportFormats']));
+		if (array_key_exists('exportFormats', $this->conf)) {
+			$exportFormats = Array();
+			foreach ($this->conf['exportFormats'] as $format => $value) {
+				if ($value) {
+					$exportFormats[] = $format;
+				}
+			}
+			$jsVariables['exportFormats'] = json_encode($exportFormats);
 		}
 		if ($this->conf['siteName']) {
 			$jsVariables['siteName'] = json_encode($this->conf['siteName']);

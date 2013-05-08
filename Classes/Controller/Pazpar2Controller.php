@@ -90,6 +90,7 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		if (array_key_exists('useJS', $arguments) && $arguments['useJS'] !== 'yes') {
 			$this->query->setServiceName($this->conf['serviceID']);
 			$this->query->setSortOrder($this->determineSortCriteria($arguments));
+			$this->query->setPazpar2Path($this->conf['pazpar2Path']);
 			$this->query->run();
 		}
 		$this->view->assign('conf', $this->conf);
@@ -156,6 +157,9 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
 		$scriptTag->addAttribute('type', 'text/javascript');
 		$jsCommand = "\nmy_serviceID = '" . $this->conf['serviceID'] . "';\n";
+		if ($this->conf['pazpar2Path']) {
+			$jsCommand .= "pazpar2Path = " . json_encode($this->conf['pazpar2Path']) . ";\n" ;
+		}
 		$scriptTag->setContent($jsCommand);
 		$this->response->addAdditionalHeaderData( $scriptTag->render() );
 

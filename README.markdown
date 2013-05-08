@@ -65,6 +65,8 @@ Fields of the flexform for the content element in the backend offers the followi
 ### Typo Script
 In addition to the options exposed in the flexform, a number of additional options can be set using TypoScript in `plugin.tx_pazpar2.settings`. The default value is noted inside [] after the option name.
 
+* pazpar2 configuration:
+	* `pazpar2Path` [/pazpar2/search.pz2]: absolute path to pazpar2 service on the web server
 * Search form:
 	* `showSearchForm` [1]: if 1, the search form is shown in the pazpar2 plug-in; turning off the search form still provides the pazpar2 search and result display capabilities which you may want to trigger from your own component
 	* `triggeredByNKWGOK` [0]: if 1, search will be triggered by selections from subject hierarchies displayed by the nkwgok extension (presumably useful for SUB Göttingen setup only)

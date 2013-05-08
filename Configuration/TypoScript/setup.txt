@@ -33,6 +33,7 @@ plugin.tx_pazpar2 {
 		ZDBIP = 0
 
 		# only settable via TypoScript
+		pazpar2Path = /pazpar2/search.pz2
 		siteName =
 		provideCOinSExport = 1
 		showExportLinksForEachLocation = 0

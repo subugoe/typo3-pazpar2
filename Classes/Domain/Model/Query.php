@@ -110,6 +110,30 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 
 
 	/**
+	 * Absolute path of the pazpar2 service on the host.
+	 *
+	 * @var string
+	 */
+	protected $pazpar2Path = '/pazpar2/search.pz2';
+
+	/**
+	 * @return string
+	 */
+	public function getPazpar2Path () {
+		return $this->pazpar2Path;
+	}
+
+	/**
+	 * @param string $newPazpar2Path
+	 * @return void
+	 */
+	public function setPazpar2Path ($newPazpar2Path) {
+		$this->pazpar2Path = $newPazpar2Path;
+	}
+
+
+	
+	/**
 	 * Service name to run the query on.
 	 *
 	 * @var string|Null
@@ -218,7 +242,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	 * @return string
 	 */
 	public function getPazpar2BaseURL () {
-		$URL = 'http://' . t3lib_div::getIndpEnv(HTTP_HOST) . '/pazpar2/search.pz2';
+		$URL = 'http://' . t3lib_div::getIndpEnv(HTTP_HOST) . $this->getPazpar2Path();
 		if ($this->pazpar2BaseURL) {
 			$URL = $this->pazpar2BaseURL;
 		}

@@ -217,6 +217,7 @@ Many thanks go to [Index Data](http://www.indexdata.com/) for their powerful paz
 
 
 ## Version History ##
+* 2.4.1 (2013-05-??): fix KVK links; improve map display; improve configuration for turning off export formats; make pazpar2 service path configurable in JavaScript
 * 2.4.0 (2013-02-28): sort by `title-number-section` for identical titles; add fake manual for the benefit of TER; avoid warning in View Helper; add ID to CSS classes in the neuerwerbungen template [dsimm]
 * 2.3.0 (2012-12-19): adapt to new nkwgok database field names
 * 2.2.2 (2012-12-17): fix punctuation problems in md-title-responsibility

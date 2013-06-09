@@ -27,7 +27,7 @@ You can see the extension in use at the Library of Anglo-American Culture site w
 ## Requirements
 To use this extension successfully you need:
 
-* TYPO3 ≥ 4.5.3
+* TYPO3 ≥ 4.5.27
 * with Extbase/Fluid ≥ 1.3
 * the t3jquery extension injecting at least jQuery 1.7.1 into the pages
 
@@ -50,10 +50,10 @@ For the pazpar2-neuerwerbungen plug-in to be useful you additionally need:
 
 
 ## Setup
-Insert the pazpar2 [Neuerwerbungen] content element where you need it and make sure the pazpar2 Settings static include is added for the relevant pages.
+Insert the pazpar2 [Neuerwerbungen|Service Proxy] content element where you need it and make sure the pazpar2 Settings static include is added for the relevant pages.
 
-### Flexform
-Fields of the flexform for the content element in the backend offers the following options. The name of the corresponding TypoScript parameter is noted in [].
+### Flex Form
+Flex Form configuration is available for the pazpar2 and pazpar2 Neuerwerbungen content elements and offers the following options. The name of the corresponding TypoScript parameter is noted in [].
 
 * pazpar2 service ID [`serviceID`]: needs to be the name of a service set up on your pazpar2 server or empty if there is only a single unnamed service running
 * Google Books [`useGoogleBooks`]: Choose whether the extension should try to look up all records with ISBN and OCLC numbers on Google books once the full record is revealed and try to display the cover art and offer the book preview if possible. If this option is turned on, the plug-in will load and run a JavaScript from Google’s servers on the page the content element is inserted in.
@@ -71,17 +71,17 @@ In addition to the options exposed in the flexform, a number of additional optio
 	* `showSearchForm` [1]: if 1, the search form is shown in the pazpar2 plug-in; turning off the search form still provides the pazpar2 search and result display capabilities which you may want to trigger from your own component
 	* `triggeredByNKWGOK` [0]: if 1, search will be triggered by selections from subject hierarchies displayed by the nkwgok extension (presumably useful for SUB Göttingen setup only)
 	* `allowExtendedSearch` [1]: if 1, the link to show the extended search form is displayed
-	* `fulltextSearch` [2]: configure checkbox to do full text search in the extended search form; 0 -> not shown, 1 -> labelled for full text search, 2 -> labelled for table of contents search
-	* `journalTitleOnlySearch` [1]: if 1, the checkbox to search journal titles only is displayed in the extended search form
+	* `fulltextSearch` [0]: configure checkbox to do full text search in the extended search form; 0 -> not shown, 1 -> labelled for full text search, 2 -> labelled for table of contents search
+	* `journalTitleOnlySearch` [0]: if 1, the checkbox to search journal titles only is displayed in the extended search form
 	* `dateSearch` [1]: if 1, the date field is displayed in the extended search form
 	* `useSortMenu` [0]: if 1 a HTML select element letting the user pick the sort order is included in the search form
-	* `sortOrder` [{1.fieldName = date \n 1.direction = descending \n 2.fieldName = author \n 2.direction = ascending \n 3.fieldName = title \n 3.direction = ascending \n 4.fieldname = title-number-section \n 4.direction = ascending}]
+	* `sortOrder` [{1.fieldName = date \n 1.direction = descending}]: the sort order to use; the array may have additional entries to determine the sort order in the case of equality of the precedeing criteria; The fieldNames must be set up in the pazpar2 service’s metadata configuration. More complex example: {1.fieldName = date \n 1.direction = descending\n 2.fieldName = author \n 2.direction = ascending \n 3.fieldName = title \n 3.direction = ascending \n 4.fieldname = title-number-section \n 4.direction = ascending}
 	* Override localisations: Using `plugin.tx_pazpar2._LOCAL_LANG.[en|de]`, the strings used in the search form can be overridden; Please refer to the file Resources/Private/Language/locallang.xml for a list of strings in use
 * Results display:
 	* `useMaps` [1]: if 1, enables the display of Google Maps with markers for areas covered by the record displayed
 	* `provideCOinSExport` [1]: if 1, causes invisible [COinS](http://ocoins.info/) metadata to be inserted into the result lists. It will be used by [Zotero](http://www.zotero.org/) to automatically find bibliographic records displayed in the page. Note that Zotero 3 is the first version capable of discovering COinS data that are dynamically added to the page.
-	* `exportFormats` [{ris = 1\n bibtex = 1}]: an array with export format names as keys. Set the value to 1/0 to enable/disable a specific format. For active formats links to downloads of bibliographic metadata are added to the detail view of records. Permitted keys are: `ris`, `bibtex`, `ris-inline` and `bibtex-inline` for [RIS](http://www.refman.com/support/risformat_intro.asp) and BibTeX formats. The plain names cause a download of the file, the `-inline` names replace the current page with the bibliographic data.
-	* `showKVKLink` [1]: for records with an ISBN or media type book a link to the metasearch across German union catalogues in [Karlsruhe Virtual Catalogue](http://www.ubka.uni-karlsruhe.de/kvk.html) (KVK) is added along with the export links
+	* `exportFormats` [{ris = 0\n bibtex = 0}]: an array with export format names as keys. Set the value to 1/0 to enable/disable a specific format. For active formats links to downloads of bibliographic metadata are added to the detail view of records. Permitted keys are: `ris`, `bibtex`, `ris-inline` and `bibtex-inline` for [RIS](http://www.refman.com/support/risformat_intro.asp) and BibTeX formats. The plain names cause a download of the file, the `-inline` names replace the current page with the bibliographic data.
+	* `showKVKLink` [0]: for records with an ISBN or media type book a link to the metasearch across German union catalogues in [Karlsruhe Virtual Catalogue](http://www.ubka.uni-karlsruhe.de/kvk.html) (KVK) is added along with the export links
 	* `useKeywords` [0]: if 1, the Keywords search field is offered in extended search and keywords are displayed in result details, each linking to a search for the keyword in question; requires pazpar2’s targets to be configured for keyword searches on the »subject« index
 	* `termLists` [{\n xtargets {\n maxFetch = 25 \n minDisplay = 1 \n}\n medium {\n maxFetch = 12 \n minDisplay = 1 \n}\n language {\n maxFetch = 5 \n minDisplay = 1 \n}\n filterDate {\n maxFetch = 10 \n minDisplay = 1 \n}\n }]: Configuration which facets will be displayed. Set up an array with the pazpar2 metadata field names as keys and arrays as values. The arrays contain the key  `maxFetch` with value the maximum number of facet items to display and the key `minDisplay` with value the minimum number of facets required for this facet to appear. The `filterDate` facet used by default is generated automatically by the script from the date field.
 * included files:
@@ -90,7 +90,10 @@ In addition to the options exposed in the flexform, a number of additional optio
 	* `pz2-clientJSPath` [EXT:pazpar2/Resources/Public/pz2-client/pz2-client.js]: JavaScript handling the user interaction and display of results; a lot of the customisation is in here
 	* `flotJSPath` [EXT:pazpar2/Resources/Public/pz2-client/flot/jquery.flot.js]: flot graphing library
 	* `flotSelectionJSPath` [EXT:pazpar2/Resources/Public/pz2-client/flot/jquery.flot.selection.js]: selection component of flot graphing library
-* `plugin.tx_pazpar2_pazpar2-neuerwerbungen.settings`
+* `plugin.tx_pazpar2_pazpar2serviceproxy.settings`
+	* `serviceProxyAuthPath` [/service-proxy-auth]: absolute path to Service Proxy authentication on the web server
+	* `serviceProxyPath` [/service-proxy/]: absolute path to Service Proxy on the web server
+* `plugin.tx_pazpar2_pazpar2neuerwerbungen.settings`
 	* `useAtomFeed` [1]: if 1, a link to an Atom feed is displayed along with the Neuerwerbungen form and inserted into the page’s <head>
 	* `numberOfMonths` [13]: the number of months to display in the popup menu for date selection
 	* `pz2-neuerwerbungenCSSPath` [EXT:pazpar2/Resources/Public/pz2-client/pz2-neuerwerbungen.css]: Additional CSS file included if the pazpar2-neuerwerbungen plug-in is used

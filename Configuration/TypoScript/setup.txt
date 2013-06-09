@@ -39,10 +39,10 @@ plugin.tx_pazpar2 {
 		provideCOinSExport = 1
 		showExportLinksForEachLocation = 0
 		exportFormats {
-			ris = 1
-			bibtex = 1
+			ris = 0
+			bibtex = 0
 		}
-		showKVKLink = 1
+		showKVKLink = 0
 
 		CSSPath = EXT:pazpar2/Resources/Public/pz2-client/pz2.css
 		pz2JSPath = EXT:pazpar2/Resources/Public/pz2-client/pz2.js
@@ -54,12 +54,12 @@ plugin.tx_pazpar2 {
 		sortOrder {
 			1.fieldName = date
 			1.direction = descending
-			2.fieldName = author
-			2.direction = ascending
-			3.fieldName = title
-			3.direction = ascending
-			4.fieldName = title-number-section
-			4.direction = ascending
+			# 2.fieldName = author
+			# 2.direction = ascending
+			# 3.fieldName = title
+			# 3.direction = ascending
+			# 4.fieldName = title-number-section
+			# 4.direction = ascending
 		}
 
 		termLists {
@@ -84,8 +84,8 @@ plugin.tx_pazpar2 {
 		triggeredByNKWGOK = 0
 		showSearchForm = 1
 		allowExtendedSearch = 1
-		fulltextSearch = 2
-		journalTitleOnlySearch = 1
+		fulltextSearch = 0
+		journalTitleOnlySearch = 0
 		dateSearch = 1
 		useKeywords = 0
 	}

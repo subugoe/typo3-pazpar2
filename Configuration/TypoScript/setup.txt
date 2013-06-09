@@ -34,8 +34,6 @@ plugin.tx_pazpar2 {
 
 		# only settable via TypoScript
 		pazpar2Path = /pazpar2/search.pz2
-		serviceProxyAuthPath = /service-proxy-auth
-		serviceProxyPath = /service-proxy/
 
 		siteName =
 		provideCOinSExport = 1
@@ -91,6 +89,11 @@ plugin.tx_pazpar2 {
 		dateSearch = 1
 		useKeywords = 0
 	}
+}
+
+plugin.tx_pazpar2_pazpar2serviceproxy.settings {
+	serviceProxyAuthPath = /service-proxy-auth
+	serviceProxyPath = /service-proxy/
 }
 
 plugin.tx_pazpar2_pazpar2neuerwerbungen.settings {

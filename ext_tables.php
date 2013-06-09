@@ -2,7 +2,7 @@
 /*******************************************************************************
  * Copyright notice
  *
- * Copyright (C) 2010-2012 by Sven-S. Porst, SUB Göttingen
+ * Copyright (C) 2010-2013 by Sven-S. Porst, SUB Göttingen
  * <porst@sub.uni-goettingen.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -33,18 +33,23 @@ if (!defined ('TYPO3_MODE')) die ('Access denied.');
 // The dispatcher is configured in ext_localconf.php.
 Tx_Extbase_Utility_Extension::registerPlugin (
 	$_EXTKEY,
-	'pazpar2', // Name used internally by Typo3
+	'pazpar2', // Name used internally by TYPO3.
 	'pazpar2' // Name shown in the backend dropdown field.
 );
 
 Tx_Extbase_Utility_Extension::registerPlugin (
 	$_EXTKEY,
-	'pazpar2neuerwerbungen', // Name used internally by Typo3
+	'pazpar2serviceproxy', // Name used internally by TYPO3.
+	'pazpar2 Service Proxy' // Name shown in the backend dropdown field.
+);
+
+Tx_Extbase_Utility_Extension::registerPlugin (
+	$_EXTKEY,
+	'pazpar2neuerwerbungen', // Name used internally by TYPO3.
 	'pazpar2 Neuerwerbungen' // Name shown in the backend dropdown field.
 );
 
-
-// Add flexform for both plug-ins.
+// Add Flex Forms.
 $plugInFlexForms = Array (
 	Array( 'plugIn' => 'pazpar2', 'flexForm' => 'Pazpar2'),
 	Array( 'plugIn' => 'pazpar2neuerwerbungen', 'flexForm' => 'Pazpar2'),

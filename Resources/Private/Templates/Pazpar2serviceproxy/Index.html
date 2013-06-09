@@ -1,0 +1,10 @@
+<f:layout name="Layout"/>
+
+<f:section name="form">
+	<f:if condition="{conf.showSearchForm}==1">
+		<f:render partial="form" arguments="{query: query,
+												extended: extended,
+												conf: conf}"
+		/>
+	</f:if>
+</f:section>

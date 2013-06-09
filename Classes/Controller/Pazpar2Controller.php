@@ -2,7 +2,7 @@
 /*******************************************************************************
  * Copyright notice
  *
- * Copyright (C) 2010-2012 by Sven-S. Porst, SUB Göttingen
+ * Copyright (C) 2010-2013 by Sven-S. Porst, SUB Göttingen
  * <porst@sub.uni-goettingen.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -45,6 +45,17 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 	 * @var Tx_Pazpar2_Domain_Model_Query
 	 */
 	protected $query;
+
+
+
+	/**
+	 * Returns the path of the pazpar2 service on the server or NULL.
+	 *
+	 * @return String|NULL
+	 */
+	protected function getPazpar2Path () {
+		return $this->conf['pazpar2Path'];
+	}
 
 
 	
@@ -90,7 +101,7 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		if (array_key_exists('useJS', $arguments) && $arguments['useJS'] !== 'yes') {
 			$this->query->setServiceName($this->conf['serviceID']);
 			$this->query->setSortOrder($this->determineSortCriteria($arguments));
-			$this->query->setPazpar2Path($this->conf['pazpar2Path']);
+			$this->query->setPazpar2Path($this->getPazpar2Path());
 			$this->query->run();
 		}
 		$this->view->assign('conf', $this->conf);
@@ -145,6 +156,8 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		$cssTag->addAttribute('media', 'all');
 		$this->response->addAdditionalHeaderData( $cssTag->render() );
 
+		$this->addServiceConfigurationToHead();
+
 		// Add pz2.js to <head>.
 		// This is Indexdata’s JavaScript that ships with the pazpar2 software.
 		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
@@ -153,23 +166,12 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		$scriptTag->forceClosingTag(true);
 		$this->response->addAdditionalHeaderData( $scriptTag->render() );
 
-		// Set up the service name.
-		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
-		$scriptTag->addAttribute('type', 'text/javascript');
-		$jsCommand = "\nmy_serviceID = '" . $this->conf['serviceID'] . "';\n";
-		if ($this->conf['pazpar2Path']) {
-			$jsCommand .= "pazpar2Path = " . json_encode($this->conf['pazpar2Path']) . ";\n" ;
-		}
-		$scriptTag->setContent($jsCommand);
-		$this->response->addAdditionalHeaderData( $scriptTag->render() );
-
 		// Add pz2-client.js to <head>.
 		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
 		$scriptTag->addAttribute('type', 'text/javascript');
 		$scriptTag->addAttribute('src', $this->conf['pz2-clientJSPath']) ;
 		$scriptTag->forceClosingTag(true);
 		$this->response->addAdditionalHeaderData( $scriptTag->render() );
-
 
 		// Create additional settings that are needed by pz-client.js.
 		$jsVariables = array(
@@ -257,6 +259,26 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		}
 
 		// Add further JavaScript initialisation commands to <head>.
+		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
+		$scriptTag->addAttribute('type', 'text/javascript');
+		$scriptTag->setContent($jsCommand);
+		$this->response->addAdditionalHeaderData( $scriptTag->render() );
+	}
+
+
+
+	/**
+	 * Adds <script> element to <head> containing the configuration of the
+	 * pazpar2 Service to use.
+	 *
+	 * @return void
+	 */
+	protected function addServiceConfigurationToHead () {
+		$jsCommand = "\nmy_serviceID = " . json_encode($this->conf['serviceID']) . ";\n";
+		if ($this->getPazpar2Path()) {
+			$jsCommand .= "pazpar2Path = " . json_encode($this->getPazpar2Path()) . ";\n" ;
+		}
+
 		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
 		$scriptTag->addAttribute('type', 'text/javascript');
 		$scriptTag->setContent($jsCommand);

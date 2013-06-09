@@ -34,6 +34,9 @@ plugin.tx_pazpar2 {
 
 		# only settable via TypoScript
 		pazpar2Path = /pazpar2/search.pz2
+		serviceProxyAuthPath = /service-proxy-auth
+		serviceProxyPath = /service-proxy/
+
 		siteName =
 		provideCOinSExport = 1
 		showExportLinksForEachLocation = 0

@@ -2,7 +2,7 @@
 /*******************************************************************************
  * Copyright notice
  *
- * Copyright (C) 2010-2012 by Sven-S. Porst, SUB Göttingen
+ * Copyright (C) 2010-2013 by Sven-S. Porst, SUB Göttingen
  * <porst@sub.uni-goettingen.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -33,7 +33,7 @@ if (!defined ('TYPO3_MODE')) die ('Access denied.');
 
 Tx_Extbase_Utility_Extension::configurePlugin (
 	$_EXTKEY,
-	'pazpar2', // Name used internally by Typo3
+	'pazpar2', // Name used internally by TYPO3
 	// Array holding the controller-action-combinations that are accessible
 	array(
 		// The first controller and its first action will be the default
@@ -47,7 +47,21 @@ Tx_Extbase_Utility_Extension::configurePlugin (
 
 Tx_Extbase_Utility_Extension::configurePlugin (
 	$_EXTKEY,
-	'pazpar2neuerwerbungen', // Name used internally by Typo3
+	'pazpar2serviceproxy', // Name used internally by TYPO3
+	// Array holding the controller-action-combinations that are accessible
+	array(
+		// The first controller and its first action will be the default
+		'Pazpar2serviceproxy' => 'index'
+	),
+	// Array holding non-cachable controller-action-combinations
+	array(
+		'Pazpar2serviceproxy' => 'index'
+	)
+);
+
+Tx_Extbase_Utility_Extension::configurePlugin (
+	$_EXTKEY,
+	'pazpar2neuerwerbungen', // Name used internally by TYPO3
 	// Array holding the controller-action-combinations that are accessible
 	array(
 		// The first controller and its first action will be the default

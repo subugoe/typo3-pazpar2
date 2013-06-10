@@ -222,7 +222,7 @@ Many thanks go to [Index Data](http://www.indexdata.com/) for their powerful paz
 
 
 ## Version History ##
-* 3.0.0 (2013-06-xx): add new Plug-In »pazpar2 Service Proxy« for use with [Service Proxy](http://www.indexdata.com/service-proxy/); support loading autocomplete lists for the form fields
+* 3.0.0 (2013-06-xx): add new Plug-In »pazpar2 Service Proxy« for use with [Service Proxy](http://www.indexdata.com/service-proxy/); support loading autocomplete lists for the form fields; add class .pz2-electronic-url to links
 * 2.4.1 (2013-05-10): fix KVK links; improve map display; improve configuration for turning off export formats; make pazpar2 service path configurable in JavaScript
 * 2.4.0 (2013-02-28): sort by `title-number-section` for identical titles; add fake manual for the benefit of TER; avoid warning in View Helper; add ID to CSS classes in the neuerwerbungen template [dsimm]
 * 2.3.0 (2012-12-19): adapt to new nkwgok database field names

@@ -820,6 +820,7 @@ private function electronicURLs ($location, $result) {
 
 			$link = $this->doc->createElement('a');
 			$URLsContainer->appendChild($link);
+			$link->setAttribute('class', 'pz2-electronic-url');
 			$link->setAttribute('href', $linkURL);
 			$this->turnIntoNewWindowLink($link);
 			$link->appendChild($this->doc->createTextNode($linkText));

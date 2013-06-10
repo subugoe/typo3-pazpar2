@@ -69,13 +69,15 @@ In addition to the options exposed in the flexform, a number of additional optio
 	* `pazpar2Path` [/pazpar2/search.pz2]: absolute path to pazpar2 service on the web server
 * Search form:
 	* `showSearchForm` [1]: if 1, the search form is shown in the pazpar2 plug-in; turning off the search form still provides the pazpar2 search and result display capabilities which you may want to trigger from your own component
-	* `triggeredByNKWGOK` [0]: if 1, search will be triggered by selections from subject hierarchies displayed by the nkwgok extension (presumably useful for SUB Göttingen setup only)
+	* `autcompleteURLs` []: an array with keys: field names (e.g. all, title, person) and values: URLs to which the search term can be appended to create a query for an autocompletion list.
+	* `autocompleteSetupFunction` []: name of a JavaScript `function (URL, fieldName) that is run when setting up the autocomplete feature. Returns an object for configuring [jQuery UI’s autocomplete widget](http://api.jqueryui.com/autocomplete/). Functions `autocompleteSetupArray` for sources that return JSON arrays and `autocompleteSolrSpellcheck` for querying a Solr spellcheck component are predefined.
 	* `allowExtendedSearch` [1]: if 1, the link to show the extended search form is displayed
 	* `fulltextSearch` [0]: configure checkbox to do full text search in the extended search form; 0 -> not shown, 1 -> labelled for full text search, 2 -> labelled for table of contents search
 	* `journalTitleOnlySearch` [0]: if 1, the checkbox to search journal titles only is displayed in the extended search form
 	* `dateSearch` [1]: if 1, the date field is displayed in the extended search form
 	* `useSortMenu` [0]: if 1 a HTML select element letting the user pick the sort order is included in the search form
-	* `sortOrder` [{1.fieldName = date \n 1.direction = descending}]: the sort order to use; the array may have additional entries to determine the sort order in the case of equality of the precedeing criteria; The fieldNames must be set up in the pazpar2 service’s metadata configuration. More complex example: {1.fieldName = date \n 1.direction = descending\n 2.fieldName = author \n 2.direction = ascending \n 3.fieldName = title \n 3.direction = ascending \n 4.fieldname = title-number-section \n 4.direction = ascending}
+	* `sortOrder` [{1.fieldName = date \n 1.direction = descending}]: the sort order to use; the array may have additional entries to determine the sort order in the case of equality of the precedeing criteria; The fieldNames must be set up in the pazpar2 service’s metadata configuration. More complex example: {1.fieldName = date \n 1.direction = descending\n 2.fieldName = author \n 2.direction = ascending \n 3.fieldName = title \n 3.direction = ascending \n 4.fieldname = title-number-section \n` 4.direction = ascending}
+	* `triggeredByNKWGOK` [0]: if 1, search will be triggered by selections from subject hierarchies displayed by the nkwgok extension (presumably useful for SUB Göttingen setup only)
 	* Override localisations: Using `plugin.tx_pazpar2._LOCAL_LANG.[en|de]`, the strings used in the search form can be overridden; Please refer to the file Resources/Private/Language/locallang.xml for a list of strings in use
 * Results display:
 	* `useMaps` [1]: if 1, enables the display of Google Maps with markers for areas covered by the record displayed
@@ -220,7 +222,8 @@ Many thanks go to [Index Data](http://www.indexdata.com/) for their powerful paz
 
 
 ## Version History ##
-* 2.4.1 (2013-05-??): fix KVK links; improve map display; improve configuration for turning off export formats; make pazpar2 service path configurable in JavaScript
+* 3.0.0 (2013-06-xx): add new Plug-In »pazpar2 Service Proxy« for use with [Service Proxy](http://www.indexdata.com/service-proxy/); support loading autocomplete lists for the form fields
+* 2.4.1 (2013-05-10): fix KVK links; improve map display; improve configuration for turning off export formats; make pazpar2 service path configurable in JavaScript
 * 2.4.0 (2013-02-28): sort by `title-number-section` for identical titles; add fake manual for the benefit of TER; avoid warning in View Helper; add ID to CSS classes in the neuerwerbungen template [dsimm]
 * 2.3.0 (2012-12-19): adapt to new nkwgok database field names
 * 2.2.2 (2012-12-17): fix punctuation problems in md-title-responsibility

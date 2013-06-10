@@ -1,2 +1,2 @@
-script=Resources/Public/pz2-client/pz2-client.js
-components=jQuery
+script=Resources/Public/pz2-client/pz2-client.js,Resources/Public/pz2-client/pz2-neuerwerbungen.js
+components=jQuery,Autocomplete,Menu,Position

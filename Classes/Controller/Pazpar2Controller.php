@@ -203,6 +203,12 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		if ($this->conf['termLists']) {
 			$jsVariables['termLists'] = json_encode($this->conf['termLists']);
 		}
+		if ($this->conf['autocompleteURLs']) {
+			$jsVariables['autocompleteURLs'] = json_encode($this->conf['autocompleteURLs']);
+		}
+		if ($this->conf['autocompleteSetupFunction']) {
+			$jsVariables['autocompleteSetupFunction'] = $this->conf['autocompleteSetupFunction'];
+		}
 
 		$jsCommand = "\n";
 		foreach ($jsVariables as $name => $value) {

@@ -88,6 +88,14 @@ plugin.tx_pazpar2 {
 		journalTitleOnlySearch = 0
 		dateSearch = 1
 		useKeywords = 0
+
+		autocompleteURLs {
+			# all = /api/autocomplete/all?query=
+			# title = /api/autocomplete/title?query=
+			# person = /api/autocomplete/person?query=
+			# subject = /api/autocomplete/subject?query=
+		}
+		autocompleteSetupFunction =
 	}
 }
 

@@ -882,7 +882,7 @@ private function catalogueLink ($locationAll) {
 
 		/* Try to localise catalogue name, fall back to original target name
 			if no localisation is available */
-		$linkText = Tx_Extbase_Utility_Localization::translate($targetName, 'Pazpar2');
+		$linkText = Tx_Extbase_Utility_Localization::translate('catalogue-name-' . $targetName, 'Pazpar2');
 		if ($linkText === Null) {
 			$linkText = $targetName;
 		}

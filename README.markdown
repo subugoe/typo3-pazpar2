@@ -78,7 +78,7 @@ In addition to the options exposed in the flexform, a number of additional optio
 	* `useSortMenu` [0]: if 1 a HTML select element letting the user pick the sort order is included in the search form
 	* `sortOrder` [{1.fieldName = date \n 1.direction = descending}]: the sort order to use; the array may have additional entries to determine the sort order in the case of equality of the precedeing criteria; The fieldNames must be set up in the pazpar2 service’s metadata configuration. More complex example: {1.fieldName = date \n 1.direction = descending\n 2.fieldName = author \n 2.direction = ascending \n 3.fieldName = title \n 3.direction = ascending \n 4.fieldname = title-number-section \n` 4.direction = ascending}
 	* `triggeredByNKWGOK` [0]: if 1, search will be triggered by selections from subject hierarchies displayed by the nkwgok extension (presumably useful for SUB Göttingen setup only)
-	* Override localisations: Using `plugin.tx_pazpar2._LOCAL_LANG.[en|de]`, the strings used in the search form can be overridden; Please refer to the file Resources/Private/Language/locallang.xml for a list of strings in use
+	* Override localisations: Using `plugin.tx_pazpar2._LOCAL_LANG.[en|default]`, the strings used in the search form can be overwritten; You can override the strings in Resources/Private/Language/locallang.xml, as well as those in the `localisations` object at the end of Resources/Public/pz2-client/pz2-client.js and the objects `linkDescriptions`, `mediaTypeNames`, `catalogueNames` (by prefixing their keys with `link-description-`, `media-type-` and `catalogue-name-` respectively. Example: `plugin.tx_pazpar2._LOCAL_LANG.en.link-description-Link = Go to Resource`.
 * Results display:
 	* `useMaps` [1]: if 1, enables the display of Google Maps with markers for areas covered by the record displayed
 	* `provideCOinSExport` [1]: if 1, causes invisible [COinS](http://ocoins.info/) metadata to be inserted into the result lists. It will be used by [Zotero](http://www.zotero.org/) to automatically find bibliographic records displayed in the page. Note that Zotero 3 is the first version capable of discovering COinS data that are dynamically added to the page.
@@ -222,7 +222,7 @@ Many thanks go to [Index Data](http://www.indexdata.com/) for their powerful paz
 
 
 ## Version History ##
-* 3.0.0 (2013-06-xx): add new Plug-In »pazpar2 Service Proxy« for use with [Service Proxy](http://www.indexdata.com/service-proxy/); support loading autocomplete lists for the form fields; add class .pz2-electronic-url to links
+* 3.0.0 (2013-06-xx): add new Plug-In »pazpar2 Service Proxy« for use with [Service Proxy](http://www.indexdata.com/service-proxy/); support loading autocomplete lists for the form fields; add class .pz2-electronic-url to links; allow overriding JavaScript localisations from TypoScript
 * 2.4.1 (2013-05-10): fix KVK links; improve map display; improve configuration for turning off export formats; make pazpar2 service path configurable in JavaScript
 * 2.4.0 (2013-02-28): sort by `title-number-section` for identical titles; add fake manual for the benefit of TER; avoid warning in View Helper; add ID to CSS classes in the neuerwerbungen template [dsimm]
 * 2.3.0 (2012-12-19): adapt to new nkwgok database field names

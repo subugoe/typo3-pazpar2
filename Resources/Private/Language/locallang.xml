@@ -137,12 +137,12 @@ Please run the search from a German university network for more complete results
 			<label index="link-description-Volltext">Full Text</label>
 
 			<!-- Catalogue Names which need localisation -->
-			<label index="Geschichte Aufsätze">Essays: History</label>
-			<label index="Anglistik Aufsätze">Essays: Literature</label>
-			<label index="Alte Karten">Old Maps</label>
-			<label index="OLC Mathematik">Articles</label>
-			<label index="Dissertationen">Dissertations</label>
-			<label index="Jahrbuch-Datenbank">Jahrbuch-Database</label>
+			<label index="catalogue-name-Geschichte Aufsätze">Essays: History</label>
+			<label index="catalogue-name-Anglistik Aufsätze">Essays: Literature</label>
+			<label index="catalogue-name-Alte Karten">Old Maps</label>
+			<label index="catalogue-name-OLC Mathematik">Articles</label>
+			<label index="catalogue-name-Dissertationen">Dissertations</label>
+			<label index="catalogue-name-Jahrbuch-Datenbank">Jahrbuch-Database</label>
 
 		</languageKey>
 
@@ -275,7 +275,7 @@ Bei Zugriff aus einem deutschen Universitätsnetzwerk umfaßt Ihre Abfrage zusä
 			<label index="link-description-Volltext">Volltext</label>
 
 			<!-- Catalogue Names which need localisation -->
-			<label index="OLC Mathematik">Artikel</label>
+			<label index="catalogue-name-OLC Mathematik">Artikel</label>
 
 		</languageKey>
 

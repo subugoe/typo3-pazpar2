@@ -264,6 +264,19 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 			}
 		}
 
+		// Write custom localisations to pz2-client.js’ localisation array
+		$configFramework = $this->configurationManager->getConfiguration(TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'pazpar2');
+		$localisationOverrides = $configFramework['_LOCAL_LANG'];
+		if ($localisationOverrides) {
+			foreach ($localisationOverrides as $languageCode => $dictionary) {
+				foreach ($dictionary as $key => $localisedString) {
+					$jsCommand .= "overrideLocalisation(" . json_encode($languageCode) . ", "
+															. json_encode($key) . ", "
+															. json_encode($localisedString) . ");\n";
+				}
+			}
+		}
+
 		// Add further JavaScript initialisation commands to <head>.
 		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
 		$scriptTag->addAttribute('type', 'text/javascript');

@@ -29,14 +29,17 @@ To use this extension successfully you need:
 
 * TYPO3 ≥ 4.5.27
 * with Extbase/Fluid ≥ 1.3
-* the t3jquery extension injecting at least jQuery 1.7.1 into the pages
+* at least jQuery 1.7.1 (compatible with jQuery ≥ 1.9) on your pages; use the t3jquery extension for that
+** when using autocomplete you need jQuery UI with the Autocomplete, Menu and Position modules
+** make sure you have the CSS for a jQuery UI theme included in your site to get a correct look
 
 ### pazpar2
 For searches to work and results to be displayed correctly you need
 
 * pazpar2 ≥ 1.6.2
-* … running at – or proxied to – the path /pazpar2/search.pz2 on your server (see [Index Data’s instructions on how to proxy it there](http://www.indexdata.com/pazpar2/doc/installation.apache2proxy.html))
-	* the implementation also supports displaying additional access information which is provided by the [pazpar2-access proxy](https://github.com/ssp/pazpar2-access)
+* … at an URL on your webserver (by default uses the path /pazpar2/search.pz2, see [Index Data’s instructions on how to proxy it there](http://www.indexdata.com/pazpar2/doc/installation.apache2proxy.html))
+	* supports using pazpar2 through Service Proxy
+	* supports displaying additional access information which is provided by the [pazpar2-access proxy](https://github.com/ssp/pazpar2-access)
 * See below for more details on the assumptions the extension makes regarding pazpar2’s search key and metadata normalisation setup.
 
 ### pazpar2 Neuerwerbungen ###
@@ -96,6 +99,7 @@ In addition to the options exposed in the flexform, a number of additional optio
 * `plugin.tx_pazpar2_pazpar2serviceproxy.settings`
 	* `serviceProxyAuthPath` [/service-proxy-auth]: absolute path to Service Proxy authentication on the web server
 	* `serviceProxyPath` [/service-proxy/]: absolute path to Service Proxy on the web server
+	* `pz2urlrecipeJSPath` [EXT:pazpar2/Resources/Public/pz2-client/mk2.js]: JavaScript for applying URL recipes
 * `plugin.tx_pazpar2_pazpar2neuerwerbungen.settings`
 	* `useAtomFeed` [1]: if 1, a link to an Atom feed is displayed along with the Neuerwerbungen form and inserted into the page’s <head>
 	* `numberOfMonths` [13]: the number of months to display in the popup menu for date selection
@@ -223,7 +227,7 @@ Many thanks go to [Index Data](http://www.indexdata.com/) for their powerful paz
 
 
 ## Version History ##
-* 3.0.0 (2013-06-xx): add new Plug-In »pazpar2 Service Proxy« for use with [Service Proxy](http://www.indexdata.com/service-proxy/); support loading autocomplete lists for the form fields; add class .pz2-electronic-url to links; allow overriding JavaScript localisations from TypoScript; make number of results per page configurable from TypoScript
+* 3.0.0 (2013-06-xx): add new Plug-In »pazpar2 Service Proxy« for use with [Service Proxy](http://www.indexdata.com/service-proxy/); process electronic-url fields in Service Proxy plugin; support loading autocomplete lists for the form fields; add class .pz2-electronic-url to links; allow overriding JavaScript localisations from TypoScript; make number of results per page configurable from TypoScript;
 * 2.4.1 (2013-05-10): fix KVK links; improve map display; improve configuration for turning off export formats; make pazpar2 service path configurable in JavaScript
 * 2.4.0 (2013-02-28): sort by `title-number-section` for identical titles; add fake manual for the benefit of TER; avoid warning in View Helper; add ID to CSS classes in the neuerwerbungen template [dsimm]
 * 2.3.0 (2012-12-19): adapt to new nkwgok database field names

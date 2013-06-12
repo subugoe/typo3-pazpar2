@@ -75,6 +75,13 @@ class Tx_Pazpar2_Controller_Pazpar2serviceproxyController extends Tx_Pazpar2_Con
 	 * @return void
 	 */
 	protected function addServiceConfigurationToHead () {
+		// Add pz2urlrecipe.js to <head> if URL recipes are to be used.
+		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
+		$scriptTag->addAttribute('type', 'text/javascript');
+		$scriptTag->addAttribute('src',  $this->conf['pz2urlrecipeJSPath']);
+		$scriptTag->forceClosingTag(true);
+		$this->response->addAdditionalHeaderData( $scriptTag->render() );
+
 		// Add Service Proxy configuration to <head> before pz2.js is included.
 		$jsVariables = array(
 			'useServiceProxy' => 'true',

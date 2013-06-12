@@ -88,6 +88,7 @@ plugin.tx_pazpar2 {
 		journalTitleOnlySearch = 0
 		dateSearch = 1
 		useKeywords = 0
+
 		resultsPerPage = 100
 
 		autocompleteURLs {
@@ -103,6 +104,7 @@ plugin.tx_pazpar2 {
 plugin.tx_pazpar2_pazpar2serviceproxy.settings {
 	serviceProxyAuthPath = /service-proxy-auth
 	serviceProxyPath = /service-proxy/
+	pz2urlrecipeJSPath = EXT:pazpar2/Resources/Public/pz2-client/mk2.js
 }
 
 plugin.tx_pazpar2_pazpar2neuerwerbungen.settings {

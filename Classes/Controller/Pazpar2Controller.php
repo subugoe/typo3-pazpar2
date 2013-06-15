@@ -265,12 +265,23 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		}
 
 		// Write custom localisations to pz2-client.js’ localisation array
-		$configFramework = $this->configurationManager->getConfiguration(TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'pazpar2');
-		$localisationOverrides = $configFramework['_LOCAL_LANG'];
+		$localisationOverrides;
+		if (t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version) < 6000000) {
+			// TYPO3 4: read from TSFE (ugly)
+			$localisationOverrides = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_pazpar2.']['_LOCAL_LANG.'];
+		}
+		else {
+			// TYPO3 6+: use configuration manager
+			$configFramework = $this->configurationManager->getConfiguration(TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'pazpar2');
+			$localisationOverrides = $configFramework['_LOCAL_LANG'];
+		}
 		if ($localisationOverrides) {
 			foreach ($localisationOverrides as $languageCode => $dictionary) {
+				// remove '.' from language codes (only appear when using TYPO3 4)
+				$cleanLanguageCode = str_replace('.', '', $languageCode);
+				
 				foreach ($dictionary as $key => $localisedString) {
-					$jsCommand .= "overrideLocalisation(" . json_encode($languageCode) . ", "
+					$jsCommand .= "overrideLocalisation(" . json_encode($cleanLanguageCode) . ", "
 															. json_encode($key) . ", "
 															. json_encode($localisedString) . ");\n";
 				}

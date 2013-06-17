@@ -1,0 +1,149 @@
+<?php
+/*******************************************************************************
+ * Copyright notice
+ *
+ * Copyright (C) 2013 by Sven-S. Porst, SUB Göttingen
+ * <porst@sub.uni-goettingen.de>
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ ******************************************************************************/
+
+
+/**
+ * QueryPazpar2.php
+ *
+ * Pazpar2 specific aspects of the Query class.
+ *
+ * @author Sven-S. Porst <porst@sub-uni-goettingen.de>
+ */
+
+
+
+/**
+ * Query model object.
+ */
+class Tx_Pazpar2_Domain_Model_QueryPazpar2 extends Tx_Pazpar2_Domain_Model_Query {
+
+
+	/**
+	 * VARIABLES FOR INTERNAL USE
+	 */
+
+	/**
+	 * Stores session ID while pazpar2 is running.
+	 * @var string
+	 */
+	protected $pazpar2SessionID;
+
+
+	
+	/**
+	 * Returns URL for pazpar2 search command.
+	 *
+	 * @return string
+	 */
+	protected function pazpar2SearchURL () {
+		return $this->appendSessionID(parent::pazpar2SearchURL());
+	}
+
+
+
+	/**
+	 * Returns URL for a status request of the current pazpar2 session.
+	 * 
+	 * @return string
+	 */
+	protected function pazpar2StatURL () {
+		return $this->appendSessionID(parent::pazpar2StatURL());
+	}
+
+
+
+	/**
+	 * Returns URL for downloading pazpar2 results.
+	 * The parameters can be used to give the the start record
+	 * as well as the number of records required.
+	 *
+	 * TYPO3 typically starts running into out of memory errors when fetching
+	 * around 1000 records in one go with a 128MB memory limit for PHP.
+	 *
+	 * @param int $start index of first record to retrieve (optional, default: 0)
+	 * @param int $num number of records to retrieve (optional, default: 500)
+	 * @return string
+	 */
+	protected function pazpar2ShowURL ($start=0, $num=500) {
+		return $this->appendSessionID(parent::pazpar2ShowURL($start, $num));
+	}
+
+
+
+	/**
+	 * Appends the session ID to $URL.
+	 *
+	 * @param string $URL
+	 * @return string
+	 */
+	protected function appendSessionID ($URL) {
+		return $URL . '&session=' . $this->pazpar2SessionID;
+	}
+
+
+
+	/**
+	 * Initialise the pazpar2 session and store the session ID in $pazpar2SessionID.
+	 *
+	 * @return boolean TRUE when initialisation was successful
+	 */
+	protected function initialiseSession () {
+		$this->queryStartTime = time();
+		$initReplyString = $this->fetchURL($this->pazpar2InitURL());
+		$initReply = t3lib_div::xml2array($initReplyString);
+
+		if ($initReply) {
+			$status = $initReply['status'];
+			if ($status === 'OK') {
+				$sessionID = $initReply['session'];
+				if ($sessionID) {
+					$this->pazpar2SessionID = $sessionID;
+				}
+				else {
+					t3lib_div::devLog('did not receive pazpar2 session ID', 'pazpar2', 3);
+				}
+
+				// Extract access rights information if it is available.
+				if (array_key_exists('accessRights', $initReply)) {
+					$accessRights = $initReply['accessRights'];
+					$this->setInstitutionName($accessRights['institutionName']);
+					$this->setAllTargetsActive($accessRights['allTargetsActive'] === '1');
+				}
+			}
+			else {
+				t3lib_div::devLog('pazpar2 init status is not "OK" but "' . $status . '"', 'pazpar2', 3);
+			}
+		}
+		else {
+			t3lib_div::devLog('could not parse pazpar2 init reply', 'pazpar2', 3);
+		}
+
+		return ($this->pazpar2SessionID !== NULL);
+	}
+
+}
+
+?>

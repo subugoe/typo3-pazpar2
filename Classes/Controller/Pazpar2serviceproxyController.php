@@ -2,8 +2,7 @@
 /*******************************************************************************
  * Copyright notice
  *
- * Copyright (C) 2013 by Sven-S. Porst
- * <ssp-web@earthlingsoft.net>
+ * Copyright (C) 2013 by Sven-S. Porst <ssp-web@earthlingsoft.net>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -42,31 +41,27 @@
 class Tx_Pazpar2_Controller_Pazpar2serviceproxyController extends Tx_Pazpar2_Controller_Pazpar2Controller {
 
 	/**
-	 * Initialiser.
+	 * Returns the path of the pazpar2 service on the server or NULL.
 	 *
-	 * Initialises parent class and sets up model object.
-	 *
-	 * @return void
+	 * @return String|NULL
 	 */
-	public function initializeAction() {
-		parent::initializeAction();
+	protected function getPazpar2Path () {
+		return $this->conf['serviceProxyPath'];
 	}
 
 
 
 	/**
-	 * Index: Make superclass insert <script> and <link> tags into <head>.
-	 * Load subjects, set up the query string, run the superclass’ action
-	 *  (which does the relevant pazpar2 queries if necessary) and assign the
-	 *  results to the view.
-	 *
-	 * @return void
+	 * @return Tx_Pazpar2_Domain_Model_Query
 	 */
-	public function indexAction () {
-		parent::indexAction();
+	protected function createQuery () {
+		$query = t3lib_div::makeInstance('Tx_Pazpar2_Domain_Model_QueryServiceProxy');
+		$query->setServiceProxyAuthPath($this->conf['serviceProxyAuthPath']);
+		$query->setPazpar2Path($this->getPazpar2Path());
+		return $query;
 	}
 
-
+	
 
 	/**
 	 * Adds <script> element to <head> containing the configuration for the

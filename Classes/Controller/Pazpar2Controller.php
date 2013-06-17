@@ -60,6 +60,18 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 
 	
 	/**
+	 * @return Tx_Pazpar2_Domain_Model_Query
+	 */
+	protected function createQuery () {
+		$query = t3lib_div::makeInstance('Tx_Pazpar2_Domain_Model_QueryPazpar2');
+		$query->setPazpar2Path($this->getPazpar2Path());
+		$query->setServiceName($this->conf['serviceID']);
+		return $query;
+	}
+
+
+
+	/**
 	 * Initialiser
 	 *
 	 * @return void
@@ -79,7 +91,7 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 			}
 		}
 
-		$this->query = t3lib_div::makeInstance('Tx_Pazpar2_Domain_Model_Query');
+		$this->query = $this->createQuery();
 		$this->query->setQueryFromArguments($this->request->getArguments());
 	}
 
@@ -99,9 +111,7 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		$this->view->assign('extended', $arguments['extended']);
 		$this->view->assign('query', $this->query);
 		if (array_key_exists('useJS', $arguments) && $arguments['useJS'] !== 'yes') {
-			$this->query->setServiceName($this->conf['serviceID']);
 			$this->query->setSortOrder($this->determineSortCriteria($arguments));
-			$this->query->setPazpar2Path($this->getPazpar2Path());
 			$this->query->run();
 		}
 		$this->view->assign('conf', $this->conf);

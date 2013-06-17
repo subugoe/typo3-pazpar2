@@ -168,14 +168,14 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	/**
 	 * @return string|Null
 	 */
-	public function getInstitutionName () {
+	protected function getInstitutionName () {
 		return $this->institutionName;
 	}
 
 	/**
 	 * @param string $newInstitutionName
 	 */
-	private function setInstitutionName ($newInstitutionName) {
+	protected function setInstitutionName ($newInstitutionName) {
 		$this->institutionName = $newInstitutionName;
 	}
 
@@ -191,14 +191,14 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	/**
 	 * @return Boolean
 	 */
-	public function getDidRun () {
+	protected function getDidRun () {
 		return $this->didRun;
 	}
 
 	/**
 	 * @param Boolean $newDidRun
 	 */
-	private function setDidRun ($newDidRun) {
+	protected function setDidRun ($newDidRun) {
 		$this->didRun = $newDidRun;
 	}
 
@@ -222,7 +222,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	/**
 	 * @param Boolean $newAllTargetsActive
 	 */
-	private function setAllTargetsActive ($newAllTargetsActive) {
+	protected function setAllTargetsActive ($newAllTargetsActive) {
 		$this->allTargetsActive = $newAllTargetsActive;
 	}
 
@@ -296,7 +296,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	/**
 	 * @param integer $newTotalResultCount
 	 */
-	private function setTotalResultCount ($newTotalResultCount) {
+	protected function setTotalResultCount ($newTotalResultCount) {
 		$this->totalResultCount = $newTotalResultCount;
 	}
 
@@ -306,12 +306,6 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	 * VARIABLES FOR INTERNAL USE
 	 */
 	
-	/**
-	 * Stores session ID while pazpar2 is running.
-	 * @var string
-	 */
-	protected $pazpar2SessionID;
-
 	/**
 	 * Stores state of query.
 	 * @var Boolean
@@ -335,7 +329,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	 * @param string $searchString
 	 * @return string
 	 */
-	private function createSearchString ($indexName, $searchString) {
+	protected function createSearchString ($indexName, $searchString) {
 		$search = '(' . $indexName . '=' . $searchString . ')';
 		$search = str_replace(' and ', ' and ' . $indexName . '=', $search);
 		$search = str_replace(' not ', ' not ' . $indexName . '=', $search);
@@ -351,7 +345,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	 * 
 	 * @return string
 	 */
-	private function fullQueryString () {
+	protected function fullQueryString () {
 		$queryParts = Array();
 
 		// Main search can be default search or full text search.
@@ -397,9 +391,9 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	 * Returns URL to initialise pazpar2.
 	 * If $serviceName has been set up, that service is used.
 	 *
-	 * @return sting
+	 * @return string
 	 */
-	private function pazpar2InitURL () {
+	protected function pazpar2InitURL () {
 		$URL = $this->getPazpar2BaseURL() . '?command=init';
 		if ($this->getServiceName() != Null) {
 			$URL .= '&service=' . urlencode($this->getServiceName());
@@ -411,12 +405,12 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 
 
 	/**
-	 * Returns URL for starting a search with the current pazpar2 session.
+	 * Returns URL for pazpar2 search command.
+	 *
 	 * @return string
 	 */
-	private function pazpar2SearchURL () {
+	protected function pazpar2SearchURL () {
 		$URL = $this->getPazpar2BaseURL() . '?command=search';
-		$URL .= '&session=' . $this->pazpar2SessionID;
 		$URL .= '&query=' . urlencode($this->fullQueryString());
 
 		return $URL;
@@ -425,14 +419,12 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 
 
 	/**
-	 * Returns URL for a status request of the current pazpar2 session.
+	 * Returns URL for pazpar2 status command.
+	 *
 	 * @return string
 	 */
-	private function pazpar2StatURL () {
-		$URL = $this->getPazpar2BaseURL() . '?command=stat';
-		$URL .= '&session=' . $this->pazpar2SessionID;
-
-		return $URL;
+	protected function pazpar2StatURL () {
+		return $this->getPazpar2BaseURL() . '?command=stat';
 	}
 
 
@@ -449,9 +441,8 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	 * @param int $num number of records to retrieve (optional, default: 500)
 	 * @return string 
 	 */
-	private function pazpar2ShowURL ($start=0, $num=500) {
+	protected function pazpar2ShowURL ($start=0, $num=500) {
 		$URL = $this->getPazpar2BaseURL() . '?command=show';
-		$URL .= '&session=' . $this->pazpar2SessionID;
 		$URL .= '&query=' . urlencode($this->fullQueryString());
 		$URL .= '&start=' . $start . '&num=' . $num;
 		$URL .= '&sort=' . urlencode($this->sortOrderString());
@@ -466,7 +457,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	 *
 	 * @return string
 	 */
-	private function sortOrderString () {
+	protected function sortOrderString () {
 		$sortOrderComponents = Array();
 		foreach ($this->getSortOrder() as $sortCriterion) {
 			$sortOrderComponents[] = $sortCriterion['fieldName'] . ':'
@@ -480,38 +471,25 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 
 
 	/**
-	 * Initialise the pazpar2 session and store the session ID in $pazpar2SessionID.
+	 * Returns the content loaded from the given URL.
+	 *
+	 * @param string $URL to fetch
+	 * @return string
+	 */
+	protected function fetchURL ($URL) {
+		return t3lib_div::getURL($URL);
+	}
+
+
+
+	/**
+	 * Initialise pazpar2/Service Proxy.
+	 * To be implemented in subclasses.
+	 *
+	 * @return boolean TRUE when initialisation was successful.
 	 */
 	protected function initialiseSession () {
-		$this->queryStartTime = time();
-		$initReplyString = t3lib_div::getURL($this->pazpar2InitURL());
-		$initReply = t3lib_div::xml2array($initReplyString);
-
-		if ($initReply) {
-			$status = $initReply['status'];
-			if ($status == 'OK') {
-				$sessionID = $initReply['session'];
-				if ($sessionID) {
-					$this->pazpar2SessionID = $sessionID;
-				}
-				else {
-					t3lib_div::devLog('did not receive pazpar2 session ID', 'pazpar2', 3);
-				}
-
-				// Extract access rights information if it is available.
-				if (array_key_exists('accessRights', $initReply)) {
-					$accessRights = $initReply['accessRights'];
-					$this->setInstitutionName($accessRights['institutionName']);
-					$this->setAllTargetsActive($accessRights['allTargetsActive'] === '1');
-				}
-			}
-			else {
-				t3lib_div::devLog('pazpar2 init status is not "OK" but "' . $status . '"', 'pazpar2', 3);
-			}
-		}
-		else {
-			t3lib_div::devLog('could not parse pazpar2 init reply', 'pazpar2', 3);
-		}
+		return FALSE;
 	}
 
 
@@ -521,15 +499,14 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	 * Requires $pazpar2SessionID to be set.
 	 */
 	protected function startQuery () {
-		$this->initialiseSession();
-
-		if ($this->pazpar2SessionID) {
-			$searchReplyString = t3lib_div::getURL($this->pazpar2SearchURL());
+		$sessionOK = $this->initialiseSession();
+		if ($sessionOK) {
+			$searchReplyString = $this->fetchURL($this->pazpar2SearchURL());
 			$searchReply = t3lib_div::xml2array($searchReplyString);
 
 			if ($searchReply) {
 				$status = $searchReply['status'];
-				if ($status == 'OK') {
+				if ($status === 'OK') {
 					$this->queryIsRunning = True;
 				}
 				else {
@@ -554,7 +531,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	protected function queryIsDone () {
 		$result = False;
 
-		$statReplyString = t3lib_div::getURL($this->pazpar2StatURL());
+		$statReplyString = $this->fetchURL($this->pazpar2StatURL());
 		$statReply = t3lib_div::xml2array($statReplyString);
 
 		if ($statReply) {
@@ -585,7 +562,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	 * @param Array $record location or full pazpar2 record
 	 * @return Array of integers
 	 */
-	private function extractNewestDates ($record) {
+	protected function extractNewestDates ($record) {
 		$result = Array();
 
 		if (array_key_exists('md-date', $record['ch'])) {
@@ -613,7 +590,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 	 * @param Array $b location or full pazpar2 record
 	 * @return integer
 	 */
-	private function yearSort($a, $b) {
+	protected function yearSort($a, $b) {
 		$aDates = $this->extractNewestDates($a);
 		$bDates = $this->extractNewestDates($b);
 
@@ -652,7 +629,7 @@ class Tx_Pazpar2_Domain_Model_Query extends Tx_Extbase_DomainObject_AbstractEnti
 		// in t3lib_div::xml2tree. We seem to typically need ~100KB per record (?).
 		while ($firstRecord < $maxResults) {
 			$recordsToFetchNow = min(Array($recordsToFetch, $maxResults - $firstRecord));
-			$showReplyString = t3lib_div::getURL($this->pazpar2ShowURL($firstRecord, $recordsToFetchNow));
+			$showReplyString = $this->fetchURL($this->pazpar2ShowURL($firstRecord, $recordsToFetchNow));
 			$firstRecord += $recordsToFetchNow;
 
 			// need xml2tree here as xml2array fails when dealing with arrays of tags with the same name

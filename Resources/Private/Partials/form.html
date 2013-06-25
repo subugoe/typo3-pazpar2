@@ -1,6 +1,5 @@
-<f:form class="pz2-searchForm{f:if(condition: '{conf.allowExtendedSearch}', then: ' {f:if(condition: \'{extended}\', then: \'pz2-extended\', else:\'pz2-basic\')}')}" method="get">
+<f:form class="pz2-searchForm {f:if(condition:'{conf.allowExtendedSearch}', else:'pz2-basic', then:'{f:if(condition: \'{extended}\', then: \'pz2-extended\', else:\'pz2-basic\')}')}" method="get">
 	<div class="pz2-mainForm">
-
 		<div class="pz2-fieldContainer pz2-field-all">
 			<label class="pz2-textFieldLabel" for="pz2-field-all"><f:translate key="form-extended-label-all"/></label>
 			<f:form.textfield id="pz2-field-all" additionalAttributes="{placeholder: '{f:translate(key: \'form-main-placeholder\')}'}" class="pz2-searchField" name="queryString" value="{query.queryString}"/>

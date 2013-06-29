@@ -17,8 +17,9 @@ Feel free to send in comments or contribute improvements. You can fork the exten
 
 The pazpar2 TYPO3 extension provides two plug-ins for content elements that let the user initiate search queries and display the results:
 
-* _pazpar2_ offering a standard search interface with a search field and extended search options
-* _pazpar2neuerwerbungen_ which offers checkboxes, the state of which determines the search queries (this has been designed for the specific needs of SUB Göttingen, relies on the nkwgok TYPO3 extension and is unlikely to be useful elsewhere)
+* _pazpar2_ offering a standard search interface for a pazpar2 service with a search field and extended search options
+* _pazpar2 Service Proxy_ the same search interface for pazpar2 accessed through Service Proxy
+* _pazpar2neuerwerbungen_ which offers checkboxes, the state of which determines the search queries (this has been designed for the specific needs of SUB Göttingen, relies on the nkwgok subject tree TYPO3 extension and is unlikely to be useful elsewhere)
 
 You can see the extension in use at the Library of Anglo-American Culture site which uses the _pazpar2_ plug-in on its [home page](http://aac.sub.uni-goettingen.de/) and the _pazpar2neuerwerbungen_ plug-in on its [New Acquisitions page](http://aac.sub.uni-goettingen.de/new/).
 
@@ -27,20 +28,22 @@ You can see the extension in use at the Library of Anglo-American Culture site w
 ## Requirements
 To use this extension successfully you need:
 
+### TYPO3 ###
 * TYPO3 ≥ 4.5.27
 * with Extbase/Fluid ≥ 1.3
 * at least jQuery 1.7.1 (compatible with jQuery ≥ 1.9) on your pages; use the t3jquery extension for that
 ** when using autocomplete you need jQuery UI with the Autocomplete, Menu and Position modules
 ** make sure you have the CSS for a jQuery UI theme included in your site to get a correct look
-
-### pazpar2
-For searches to work and results to be displayed correctly you need
-
 * pazpar2 ≥ 1.6.2
-* … at an URL on your webserver (by default uses the path /pazpar2/search.pz2, see [Index Data’s instructions on how to proxy it there](http://www.indexdata.com/pazpar2/doc/installation.apache2proxy.html))
-	* supports using pazpar2 through Service Proxy
-	* supports displaying additional access information which is provided by the [pazpar2-access proxy](https://github.com/ssp/pazpar2-access)
-* See below for more details on the assumptions the extension makes regarding pazpar2’s search key and metadata normalisation setup.
+** The extension works pretty well with the metadata fields created by pazpar2’s tmarc.xsl. See the section [pazpar2 Setup](#pazpar2-setup) for additional metadata features supported by the extension.
+
+### pazpar2 ###
+For searches to work and results to be displayed correctly with the _pazpar2_ plug-in you need pazpar2 ≥ 1.6.2 available at a URL on your webserver (by default at the path /pazpar2/search.pz2, see [Index Data’s instructions on how to proxy it there](http://www.indexdata.com/pazpar2/doc/installation.apache2proxy.html)).
+
+The plug-in supports displaying additional access information as provided by the [pazpar2-access proxy](https://github.com/ssp/pazpar2-access).
+
+### pazpar2 Service Proxy ###
+For searches to work and results to be displayed correctly with the _pazpar2 Service Proxy_ plug-in, you need pazpar2 ≥ 1.6.2 available through Service Proxy at a URL on your webserver (by default at the path /service-proxy/ for the service itself and /service-proxy-auth for authentication.
 
 ### pazpar2 Neuerwerbungen ###
 For the pazpar2-neuerwerbungen plug-in to be useful you additionally need:
@@ -115,24 +118,29 @@ pazpar2 services used by the extension need to have specific settings for the se
 The search forms provided by pazpar2 use the following search keys which must be set up in the pazpar2 service:
 
 * `term` - for default search
-* `fulltext` - for fulltext/toc search (use same as term if not available)
+* `fulltext` - for fulltext/toc search (use same as term if not available) [optional]
 * `title`
-* `journal` - for journal title search
+* `journal` - for journal title search [optional]
 * `person`
 * `date`
 * `nel` - month index required by pazpar2 Neuerwerbungen only (required format: `YYYYMM`)
-* `subject`
+* `subject` [optional]
 
 ### Sorting ###
-The standard configuration requires the pazpar2 service to support sorting by the metadata fields:
+The standard configuration requires the pazpar2 service to support sorting by the metadata fields `date`. It can be reconfigured using the `sortOrder` TypoScript setting.
 
-* `date`
-* `author`
-* `title`
-* `title-number-section`
+For example – if you have those fields set up in your metadata configuration – you get better results by using `date`, `author`, `title`, `title-number-section` using the TypoScript setup:
 
-This can be reconfigured using the `sortOrder` TypoScript setting if the pazpar2 server is not configured to support all of these fields.
-
+		plugin.tx_pazpar2.settings.sortOrder {
+			1.fieldName = date
+			1.direction = descending
+			2.fieldName = author
+			2.direction = ascending
+			3.fieldName = title
+			3.direction = ascending
+			4.fieldName = title-number-section
+			4.direction = ascending
+		}
 
 ### Metadata format ###
 The metadata expected by the extension to display results are based on the metadata fields created by Indexdata’s powerful [tmarc.xsl](http://git.indexdata.com/?p=pazpar2.git;a=blob_plain;f=etc/tmarc.xsl;hb=HEAD) style file for extracting information from Marc records. A few additions and changes to the standard output of that stylesheet have been made to improve the display quality.
@@ -258,7 +266,7 @@ Many thanks go to [Index Data](http://www.indexdata.com/) for their powerful paz
 MIT License to keep the people happy who need it.
 
 
-Copyright (C) 2010-2012 by Sven-S. Porst
+Copyright (C) 2010-2013 by Sven-S. Porst
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

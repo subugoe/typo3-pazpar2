@@ -9,7 +9,7 @@
 
 	<data type="array">
 
-		<languageKey index="en" type="array">
+		<languageKey index="default" type="array">
 			<label index="form-main-placeholder"></label>
 			<!-- pazpar2 extended search form -->
 			<label index="form-extended-label-all">All Fields</label>

@@ -4,7 +4,7 @@ A TYPO3 extension for including a bibliographic metasearch.
 
 The extension interacts with Index Data’s [pazpar2][] bibliographic metasearch software.
 
-2010-2012 by [Sven-S. Porst](http://earthlingsoft.net/ssp/), [SUB Göttingen][sub] <[porst@sub.uni-goettingen.de](mailto:porst@sub.uni-goettingen.de?subject=pazpar2%20TYPO3%20Extension)>
+2010-2013 by [Sven-S. Porst](http://earthlingsoft.net/ssp/), [SUB Göttingen][sub] <[porst@sub.uni-goettingen.de](mailto:porst@sub.uni-goettingen.de?subject=pazpar2%20TYPO3%20Extension)>
 
 The extension includes the [flot][] JavaScript library for drawing graphs.
 
@@ -56,7 +56,7 @@ For the pazpar2-neuerwerbungen plug-in to be useful you additionally need:
 
 
 ## Setup
-Insert the pazpar2 [Neuerwerbungen|Service Proxy] content element where you need it and make sure the pazpar2 Settings static include is added for the relevant pages.
+Insert the pazpar2 [Neuerwerbungen|Service Proxy] content element where you need it and make sure the pazpar2 Settings static include is added for the relevant pages. Looking at the [illustrated setup example](https://github.com/ssp/typo3-pazpar2/blob/master/doc/Setup.md) may make this easier.
 
 ### Flex Form
 Flex Form configuration is available for the pazpar2 and pazpar2 Neuerwerbungen content elements and offers the following options. The name of the corresponding TypoScript parameter is noted in [].
@@ -235,7 +235,7 @@ Many thanks go to [Index Data](http://www.indexdata.com/) for their powerful paz
 
 
 ## Version History ##
-* 3.0.0 (2013-06-xx): add new Plug-In »pazpar2 Service Proxy« for use with [Service Proxy](http://www.indexdata.com/service-proxy/); process electronic-url fields in Service Proxy plugin; support loading autocomplete lists for the form fields; add class .pz2-electronic-url to links; allow overriding JavaScript localisations from TypoScript; make number of results per page configurable from TypoScript;
+* 3.0.0 (2013-07-xx): add new Plug-In »pazpar2 Service Proxy« for use with [Service Proxy](http://www.indexdata.com/service-proxy/); process electronic-url fields in Service Proxy plugin; support loading autocomplete lists for the form fields; add class .pz2-electronic-url to links; allow overriding JavaScript localisations from TypoScript; make number of results per page configurable from TypoScript;
 * 2.4.1 (2013-05-10): fix KVK links; improve map display; improve configuration for turning off export formats; make pazpar2 service path configurable in JavaScript
 * 2.4.0 (2013-02-28): sort by `title-number-section` for identical titles; add fake manual for the benefit of TER; avoid warning in View Helper; add ID to CSS classes in the neuerwerbungen template [dsimm]
 * 2.3.0 (2012-12-19): adapt to new nkwgok database field names

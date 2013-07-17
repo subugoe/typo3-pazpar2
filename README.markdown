@@ -65,7 +65,7 @@ Flex Form configuration is available for the pazpar2 and pazpar2 Neuerwerbungen 
 * Google Books [`useGoogleBooks`]: Choose whether the extension should try to look up all records with ISBN and OCLC numbers on Google books once the full record is revealed and try to display the cover art and offer the book preview if possible. If this option is turned on, the plug-in will load and run a JavaScript from Google’s servers on the page the content element is inserted in.
 * Journals Online & Print [`useZDB`]: Choose whether the extension should try to look up all records with ISSN numbers using ZDB’s Journals Online & Print (JOP) service. If this option is turned on, the plug-in will load information about journal availability from the ZDB Proxy on your server (see the next option) to display the availability of the journal.
 * ZDB Proxy [`ZDBIP`]: You can set up two distinct proxies for the ZDB JOP service if you plan to use it. The one available at the path /zdb/ on your server should pass the user’s IP address to the ZDB JOP service, thus returning the journal availability for the user’s current location. The one available at /zdb-local/ will do the lookup for the server’s IP address – with the intention to provide availability information for the institution running the server. This option lets you pick which of the proxies will be used for the ZDB JOP lookup. Either proxy configuration needs to contain the sid parameter with your service name. [[Apache configuration file for setting up the proxies](https://raw.github.com/ssp/pazpar2-extras/master/fileadmin/apache/zdb.conf)]
-* Histogram [`useHistogramForYearFacets`]: The extension displays year facets if results from more than a few years are displayed. Choose whether the year facets should be displayed graphically using a histogram rather than as an (incomplete) list of year numbers in modern browsers. Activating this option will load the [`flot`][] JavaScript library from your server on the relevant pages.
+* Histogram [`useHistogramForYearFacets`]: The extension displays year facets if results from more than a few years are displayed. Choose whether the year facets should be displayed graphically using a histogram rather than as an (incomplete) list of year numbers in modern browsers. Activating this option will load the [flot][] JavaScript library from your server on the relevant pages.
 * Subjects for pazpar2 Neuerwerbungen [`neuerwerbungen-subjects`]: A subject has to be picked in the popup menu if you want to use the pazpar2 Neuerwerbungen plug-in. The popup menu is populated using child elements of the PPN »NE« in the subject hierarchy of the nkwgok extension. This is probably useful for SUB Göttingen use only.
 
 ### Typo Script
@@ -225,7 +225,7 @@ Many thanks go to [Index Data](http://www.indexdata.com/) for their powerful paz
 
 [pazpar2]: http://www.indexdata.com/pazpar2/
 [sub]: http://www.sub.uni-goettingen.de/
-[flot]: http://code.google.com/p/flot/
+[flot]: http://www.flotcharts.org/
 
 
 ## TODO ##

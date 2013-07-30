@@ -506,13 +506,15 @@ TODO
 Version History
 ---------------
 
--  3.0.0 (2013-07-xx): add new Plug-In »pazpar2 Service Proxy« for use
+-  3.0.1b (2013-07-30): improvements to README, JavaScript client and
+   configuration files
+-  3.0.0b (2013-07-17): add new Plug-In »pazpar2 Service Proxy« for use
    with `Service Proxy <http://www.indexdata.com/service-proxy/>`__;
    process electronic-url fields in Service Proxy plugin; support
    loading autocomplete lists for the form fields; add class
    .pz2-electronic-url to links; allow overriding JavaScript
    localisations from TypoScript; make number of results per page
-   configurable from TypoScript; convert README to ReSt
+   configurable from TypoScript
 -  2.4.1 (2013-05-10): fix KVK links; improve map display; improve
    configuration for turning off export formats; make pazpar2 service
    path configurable in JavaScript

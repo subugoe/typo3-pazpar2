@@ -1,11 +1,8 @@
 pazpar2 TYPO3 extension
 =======================
 
-A TYPO3 extension for including a bibliographic metasearch.
-
-The extension interacts with Index Data’s
-`pazpar2 <http://www.indexdata.com/pazpar2/>`__ bibliographic metasearch
-software.
+A TYPO3 extension to include a bibliographic metasearch with Index Data’s
+`pazpar2 <http://www.indexdata.com/pazpar2/>`__ software on web pages.
 
 2010-2013 by `Sven-S. Porst <http://earthlingsoft.net/ssp/>`__, `SUB
 Göttingen <http://www.sub.uni-goettingen.de/>`__
@@ -26,7 +23,7 @@ metasearch software by Index Data for querying multiple Solr, SRU and
 Z39.50 servers, normalising, merging and deduplicating the results and
 providing them for presentation.
 
-The pazpar2 TYPO3 extension provides two plug-ins for content elements
+The pazpar2 TYPO3 extension provides three plug-ins for content elements
 that let the user initiate search queries and display the results:
 
 -  *pazpar2* offering a standard search interface for a pazpar2 service
@@ -55,14 +52,18 @@ TYPO3
 -  TYPO3 ≥ 4.5.27
 -  with Extbase/Fluid ≥ 1.3
 -  at least jQuery 1.7.1 (compatible with jQuery ≥ 1.9) on your pages;
-   use the t3jquery extension for that *\* when using autocomplete you
-   need jQuery UI with the Autocomplete, Menu and Position modules*\ \*
-   make sure you have the CSS for a jQuery UI theme included in your
-   site to get a correct look
--  pazpar2 ≥ 1.6.2 \*\* The extension works pretty well with the
-   metadata fields created by pazpar2’s tmarc.xsl. See the section
-   `pazpar2 Setup <#pazpar2-setup>`__ for additional metadata features
-   supported by the extension.
+   use the t3jquery extension for that
+
+   - when using autocomplete you need jQuery UI with the Autocomplete,
+     Menu and Position modules
+   - make sure you have the CSS for a jQuery UI theme included in your
+     site to get a correct look
+
+-  pazpar2 ≥ 1.6.2
+
+   - The extension works pretty well with the metadata fields created by
+     pazpar2’s tmarc.xsl. See the section `pazpar2 Setup <#pazpar2-setup>`__
+     for additional metadata features supported by the extension.
 
 pazpar2
 ~~~~~~~
@@ -84,7 +85,7 @@ For searches to work and results to be displayed correctly with the
 *pazpar2 Service Proxy* plug-in, you need pazpar2 ≥ 1.6.2 available
 through Service Proxy at a URL on your webserver (by default at the path
 /service-proxy/ for the service itself and /service-proxy-auth for
-authentication.
+authentication).
 
 pazpar2 Neuerwerbungen
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -167,8 +168,8 @@ name of the corresponding TypoScript parameter is noted in [].
    child elements of the PPN »NE« in the subject hierarchy of the nkwgok
    extension. This is probably useful for SUB Göttingen use only.
 
-Typo Script
-~~~~~~~~~~~
+TypoScript
+~~~~~~~~~~
 
 In addition to the options exposed in the flexform, a number of
 additional options can be set using TypoScript in
@@ -303,10 +304,7 @@ after the option name.
 
    -  ``useAtomFeed`` [1]: if 1, a link to an Atom feed is displayed
       along with the Neuerwerbungen form and inserted into the page’s
-
-      .. raw:: html
-
-         <head>
+      ``<head>``
 
    -  ``numberOfMonths`` [13]: the number of months to display in the
       popup menu for date selection
@@ -514,7 +512,7 @@ Version History
    loading autocomplete lists for the form fields; add class
    .pz2-electronic-url to links; allow overriding JavaScript
    localisations from TypoScript; make number of results per page
-   configurable from TypoScript;
+   configurable from TypoScript; convert README to ReSt
 -  2.4.1 (2013-05-10): fix KVK links; improve map display; improve
    configuration for turning off export formats; make pazpar2 service
    path configurable in JavaScript

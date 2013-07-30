@@ -15,6 +15,7 @@ Feel free to send in comments or contribute improvements. You can fork
 the extension’s `repository at
 github <https://github.com/ssp/typo3-pazpar2>`__.
 
+
 Introduction
 ------------
 
@@ -40,6 +41,7 @@ Culture site which uses the *pazpar2* plug-in on its `home
 page <http://aac.sub.uni-goettingen.de/>`__ and the
 *pazpar2neuerwerbungen* plug-in on its `New Acquisitions
 page <http://aac.sub.uni-goettingen.de/new/>`__.
+
 
 Requirements
 ------------
@@ -111,6 +113,7 @@ need:
    /opac.atom. See the
    `Opac-2-Atom <https://github.com/ssp/Opac-2-Atom>`__ project for an
    example script converting Göttingen’s Pica Opac output to Atom.
+
 
 Setup
 -----
@@ -317,6 +320,7 @@ after the option name.
       Additional JavaScript included if the pazpar2-neuerwerbungen
       plug-in is used
 
+
 pazpar2 Setup
 -------------
 
@@ -460,6 +464,7 @@ cleaning <https://raw.github.com/ssp/pazpar2-SUB/master/xsl/language-code-cleane
 and `ISO 639-1 to 639-2/B
 conversion <https://raw.github.com/ssp/pazpar2-SUB/master/xsl/iso-639-1-to-639-2b.xsl>`__.
 
+
 Bibliographic data export
 -------------------------
 
@@ -486,6 +491,7 @@ adding the display strings for that format to
 Resources/Public/pz2-client/pz2-client.js as well as to
 Resources/Private/Language/locallang.xml
 
+
 Acknowledgements
 ----------------
 
@@ -495,6 +501,7 @@ Pfennigstorf for his TYPO3 expertise and to `Henrik
 Cederblad <http://cederbladdesign.com/>`__ who created the media type
 icons.
 
+
 TODO
 ----
 
@@ -503,94 +510,120 @@ TODO
    improvements)
 -  HTML5 History support?
 
+
 Version History
 ---------------
 
--  3.0.1b (2013-07-30): improvements to README, JavaScript client and
-   configuration files
--  3.0.0b (2013-07-17): add new Plug-In »pazpar2 Service Proxy« for use
-   with `Service Proxy <http://www.indexdata.com/service-proxy/>`__;
-   process electronic-url fields in Service Proxy plugin; support
-   loading autocomplete lists for the form fields; add class
-   .pz2-electronic-url to links; allow overriding JavaScript
-   localisations from TypoScript; make number of results per page
-   configurable from TypoScript
--  2.4.1 (2013-05-10): fix KVK links; improve map display; improve
-   configuration for turning off export formats; make pazpar2 service
-   path configurable in JavaScript
--  2.4.0 (2013-02-28): sort by ``title-number-section`` for identical
-   titles; add fake manual for the benefit of TER; avoid warning in View
-   Helper; add ID to CSS classes in the neuerwerbungen template [dsimm]
--  2.3.0 (2012-12-19): adapt to new nkwgok database field names
--  2.2.2 (2012-12-17): fix punctuation problems in
-   md-title-responsibility
--  2.2.0 (2012-12-12): display fewer ISBNs (JS); fix count of additional
-   facets; avoid duplicate facet list updates; adapt Neuerwerbungen
-   month queries to new GBV Index format
--  2.1.0 (2012-09-20): more generic display of journal information for
-   articles; better handling of subject search when extended search is
-   not available; use ZDB IDs to determine journal availability if no
-   ISSN is available; make »No matching Records« display more visible
--  2.0.0 (2012-06-13): cooperation with nkwgok requires at least version
-   2 of that extension; display improvements; support MathJax; add
-   visible link to hide the status panel; fix bug in Google Books links
--  1.8.0 (2012-05-29): fix localisation for keyword search field label;
-   enable use of boolean operators in extended search fields; add
-   display of MSC classification; make facet configuration accessible
-   from TypoScript; add ability to display facets for the ``country``
-   field containing ISO 3166-1 alpha-2 country codes and the
-   ``source-type`` field
--  1.7.0 (2012-03-30): display the location covered by maps from the
-   \`\ ``attribute of the``\ mapscale\ ``field; Display the scale of maps from the``\ mapscale\ ``field; Remove ZDB-JOP sid configuration from script, it has to be inserted into the URL by the proxy now; Add ability to display a link to the parent record (``\ catalogue-url-parent\`
-   field); Remove hard coded recognition and rewriting of Göttingen Opac
-   URLs, the same effect is achieved more generically by using at least
-   revision v2 of
-   `pazpar2-access <https://github.com/ssp/pazpar2-access>`__
--  1.6.0 (2012-02-24): restructure Resources/Public to provide the
-   JavaScript interface as a standalone repository:
-   `pazpar2-js-client <https://github.com/ssp/pazpar2-js-client>`__;
-   change date format for Neuerwerbungen to ``YYYYMM``; improved
-   reliability of triggering the pazpar2 search
--  1.5.0 (2012-01-18): add Geo-specific placeholder search term to main
-   search field configuration; add second set of paging controls beneath
-   the results; work around localisation breakage of TYPO3 4.6
--  1.4.0 (2012-01-16): add keyword search and ability to display
-   keywords in result details; add support for additional media types
-   (letter, manuscript, image); small display tweaks; stop using
-   deprecated form field View Helper
--  1.3.0 (2011-12-02): Neuerwerbungen: number of months in popup menu is
-   now configurable in TypoScript; if there is just single checkbox,
-   automatically select it
--  1.2.0 (2011-11-25): add links to show all facets when facets needed
-   to be hidden; more reliable tooltip hiding for histogram; require
-   nkwgok 1.2.0 or above and use its updated database schema for
-   Neuerwerbungen
--  1.1.5 (2011-11-23): fix Piwik tracking for metadata export links
--  1.1.4 (2011-11-22): make automatic query starting more reliable in
-   Neuerwerbungen; prevent incorrect usage of the no-JavaScript code
-   path
--  1.1.3 (2011-11-21): reduce maximum GET query length for pz2.js to 512
-   (the default limit set by Suhosin on SLES 11); improve Content-Type
-   header information for export formats
--  1.1.2 (2011-11-21): do not add access information to Fluid template
-   when the query did not run in PHP
--  1.1.1 (2011-11-17): recognise Göttingen Opac https URLs; fix
-   recognition of Guest access; improve automatic restarting of searches
-   on session loss
--  1.1 (2011-11-15): support Piwik tracking; support for pazpar2-access
-   proxy; improve URL sorting; improve location sorting; better total
-   result count in non-JavaScript version; leaner Fluid templates;
-   single year selection in year histogram
--  1.0.3 (2011-09-22): add class pz2-neuerwerbungen to container when
-   using Neuerwerbungen
--  1.0.2 (2011-09-21): add information about feed link to README; make
-   Neuerwerbungen feed link optional; make fulltext checkbox in extended
-   search form configurable; make date field in extended search form
-   configurable; fix problem with passed parameters in Neuerwerbungen
-   no-JS mode; make catalogue names localisable
--  1.0.1 (2011-09-20): add icon; fix problem with losing the user’s data
-   after sending the form; preserve the fulltext setting
--  1.0.0 (2011-09-19): initial release to TER
+3.0.1b (2013-07-30)
+	* improvements to README, JavaScript client and configuration files
+3.0.0b (2013-07-17)
+	* add new Plug-In »pazpar2 Service Proxy« for use with
+	  `Service Proxy <http://www.indexdata.com/service-proxy/>`__
+	* process electronic-url fields in Service Proxy plugin
+	* support loading autocomplete lists for the form fields
+	* add class ``pz2-electronic-url`` to links
+	* allow overriding JavaScript localisations from TypoScript
+	* make number of results per page configurable from TypoScript
+2.4.1 (2013-05-10)
+	* fix KVK links
+	* improve map display
+	* improve configuration for turning off export formats
+	* make pazpar2 service path configurable in JavaScript
+2.4.0 (2013-02-28)
+	* sort by ``title-number-section`` for identical titles
+	* add fake manual for the benefit of TER
+	* avoid warning in View Helper
+	* add ID to CSS classes in the neuerwerbungen template [dsimm]
+2.3.0 (2012-12-19)
+	* adapt to new nkwgok database field names
+2.2.2 (2012-12-17)
+	* fix punctuation problems in md-title-responsibility
+2.2.0 (2012-12-12)
+	* display fewer ISBNs (JS)
+	* fix count of additional facets
+	* avoid duplicate facet list updates
+	* adapt Neuerwerbungen month queries to new GBV Index format
+2.1.0 (2012-09-20)
+	* more generic display of journal information for articles
+	* better handling of subject search when extended search is not available
+	* use ZDB IDs to determine journal availability if no ISSN is available
+	* make »No matching Records« display more visible
+2.0.0 (2012-06-13)
+	* cooperation with nkwgok requires at least version 2 of that extension
+	* display improvements
+	* support MathJax
+	* add visible link to hide the status panel
+	* fix bug in Google Books links
+1.8.0 (2012-05-29)
+	* fix localisation for keyword search field label
+	* enable use of boolean operators in extended search fields
+	* add display of MSC classification
+	* make facet configuration accessible from TypoScript
+	* add ability to display facets for the ``country`` field containing ISO 3166-1 alpha-2 country codes and the ``source-type`` field
+1.7.0 (2012-03-30)
+	* display the location covered by maps from the ``coordinates`` attribute of the ``mapscale`` field
+	* Display the scale of maps from the ``mapscale`` field
+	* Remove ZDB-JOP sid configuration from script, it has to be inserted into the URL by the proxy now
+	* Add ability to display a link to the parent record (``catalogue-url-parent`` field)
+	* Remove hard coded recognition and rewriting of Göttingen OPAC URLs, the same effect is achieved more generically by using at least revision v2 of `pazpar2-access <https://github.com/ssp/pazpar2-access>`__
+1.6.0 (2012-02-24)
+	* restructure Resources/Public to provide the JavaScript interface as a standalone repository: `pazpar2-js-client <https://github.com/ssp/pazpar2-js-client>`__
+	* change date format for Neuerwerbungen to ``YYYYMM``
+	* improved reliability of triggering the pazpar2 search
+1.5.0 (2012-01-18)
+	* add Geo-specific placeholder search term to main search field configuration
+	* add second set of paging controls beneath the results
+	* work around localisation breakage of TYPO3 4.6
+1.4.0 (2012-01-16)
+	* add keyword search and ability to display keywords in result details
+	* add support for additional media types (letter, manuscript, image)
+	* small display tweaks
+	* stop using deprecated form field View Helper
+1.3.0 (2011-12-02)
+	* Neuerwerbungen: number of months in popup menu is now configurable in TypoScript
+	* if there is just single checkbox, automatically select it
+1.2.0 (2011-11-25)
+	* add links to show all facets when facets needed to be hidden
+	* more reliable tooltip hiding for histogram
+	* require nkwgok 1.2.0 or above and use its updated database schema for Neuerwerbungen
+1.1.5 (2011-11-23)
+	* fix Piwik tracking for metadata export links
+1.1.4 (2011-11-22)
+	* make automatic query starting more reliable in Neuerwerbungen
+	* prevent incorrect usage of the no-JavaScript code path
+1.1.3 (2011-11-21)
+	* reduce maximum GET query length for pz2.js to 512 (the default limit set by Suhosin on SLES 11)
+	* improve ``Content-Type`` header information for export formats
+1.1.2 (2011-11-21)
+	* do not add access information to Fluid template when the query did not run in PHP
+1.1.1 (2011-11-17)
+	* recognise Göttingen OPAC https URLs
+	* fix recognition of Guest access
+	* improve automatic restarting of searches on session loss
+1.1 (2011-11-15)
+	* support Piwik tracking
+	* support for pazpar2-access proxy
+	* improve URL sorting
+	* improve location sorting
+	* better total result count in non-JavaScript version
+	* leaner Fluid templates
+	* single year selection in year histogram
+1.0.3 (2011-09-22)
+	* add class ``pz2-neuerwerbungen`` to container when using Neuerwerbungen
+1.0.2 (2011-09-21)
+	* add information about feed link to README
+	* make Neuerwerbungen feed link optional
+	* make fulltext checkbox in extended search form configurable
+	* make date field in extended search form configurable
+	* fix problem with passed parameters in Neuerwerbungen no-JS mode
+	* make catalogue names localisable
+1.0.1 (2011-09-20)
+	* add icon
+	* fix problem with losing the user’s data after sending the form
+	* preserve the fulltext setting
+1.0.0 (2011-09-19)
+	* initial release to TER
+
 
 License
 -------

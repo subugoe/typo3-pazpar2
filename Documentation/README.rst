@@ -514,6 +514,8 @@ TODO
 Version History
 ---------------
 
+4.0.1b (2013-08-15)
+	* Silly bump of version number to help the confused TER
 3.0.1b (2013-07-30)
 	* improvements to README, JavaScript client and configuration files
 3.0.0b (2013-07-17)

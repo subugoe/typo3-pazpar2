@@ -263,9 +263,9 @@ after the option name.
       linking to a search for the keyword in question; requires
       pazpar2’s targets to be configured for keyword searches on the
       »subject« index
-   -  ``termLists`` [{xtargets {maxFetch = 25 minDisplay = 1 }medium
-      {maxFetch = 12 minDisplay = 1 }language {maxFetch = 5 minDisplay =
-      1 }filterDate {maxFetch = 10 minDisplay = 1 }}]: Configuration
+   -  ``termLists`` [{xtargets {maxFetch = 25 minDisplay = 1} medium
+      {maxFetch = 12 minDisplay = 1} language {maxFetch = 5 minDisplay =
+      1} filterDate {maxFetch = 10 minDisplay = 1}}]: Configuration
       which facets will be displayed. Set up an array with the pazpar2
       metadata field names as keys and arrays as values. The arrays
       contain the key ``maxFetch`` with value the maximum number of
@@ -429,7 +429,7 @@ Fields used to display data if present:
 -  source-type (not part of standard tmarc.xsl, used for Guide records)
 
 For the 'medium' field, the supported types (with a localised name and
-icon) are. Most of them come from standard tmarc.xsl analysis of Marc
+icon) are. Most of them come from standard tmarc.xsl analysis of MARC
 records. A few depend on our refinements of tmarc.xsl and additional
 information/analysis.
 
@@ -437,6 +437,7 @@ information/analysis.
 -  audio-visual (may require tmarc.xsl output to be stripped of more
    specific media type information like dvd)
 -  book
+-  data (not part of tmarc.xsl)
 -  electronic
 -  image (not part of tmarc.xsl)
 -  journal
@@ -446,6 +447,7 @@ information/analysis.
 -  microform
 -  music-score
 -  multivolume (extended tmarc.xsl to recognise these)
+-  newspaper
 -  recording
 -  website (used for websites as found in SUB’s SSG-FI Guides, not
    coming from tmarc.xsl)
@@ -498,8 +500,8 @@ Acknowledgements
 Many thanks go to `Index Data <http://www.indexdata.com/>`__ for their
 powerful pazpar2 software and quick bug fixes, to my colleague Ingo
 Pfennigstorf for his TYPO3 expertise and to `Henrik
-Cederblad <http://cederbladdesign.com/>`__ who created the media type
-icons.
+Cederblad <http://cederbladdesign.com/>`__ who created the `media type
+icons <https://github.com/subugoe/sub-iconfont>`__.
 
 
 TODO
@@ -514,6 +516,8 @@ TODO
 Version History
 ---------------
 
+4.0.2b (2013-09-16)
+	* Switch to icon fonts for media types
 4.0.1b (2013-08-15)
 	* Silly bump of version number to help the confused TER
 4.0.0b (2013-08-15)

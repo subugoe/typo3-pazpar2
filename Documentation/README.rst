@@ -516,6 +516,10 @@ TODO
 Version History
 ---------------
 
+4.0.4 (2013-10-25)
+	* Readme fixes
+4.0.3b (2013-09-26)
+	* JavaScript fixes
 4.0.2b (2013-09-16)
 	* Switch to icon fonts for media types
 4.0.1b (2013-08-15)

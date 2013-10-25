@@ -13,7 +13,7 @@ JavaScript library for drawing graphs.
 
 Feel free to send in comments or contribute improvements. You can fork
 the extension’s `repository at
-github <https://github.com/ssp/typo3-pazpar2>`__.
+github <https://github.com/subugoe/typo3-pazpar2>`__.
 
 
 Introduction
@@ -78,7 +78,7 @@ there <http://www.indexdata.com/pazpar2/doc/installation.apache2proxy.html>`__).
 
 The plug-in supports displaying additional access information as
 provided by the `pazpar2-access
-proxy <https://github.com/ssp/pazpar2-access>`__.
+proxy <https://github.com/subugoe/pazpar2-access>`__.
 
 pazpar2 Service Proxy
 ~~~~~~~~~~~~~~~~~~~~~
@@ -111,7 +111,7 @@ need:
 -  if you want to provide RSS feeds for new acquisitions, a script
    accepting queries in the »q« parameter is expected at the path
    /opac.atom. See the
-   `Opac-2-Atom <https://github.com/ssp/Opac-2-Atom>`__ project for an
+   `Opac-2-Atom <https://github.com/subugoe/Opac-2-Atom>`__ project for an
    example script converting Göttingen’s Pica Opac output to Atom.
 
 
@@ -121,7 +121,7 @@ Setup
 Insert the pazpar2 [Neuerwerbungen\|Service Proxy] content element where
 you need it and make sure the pazpar2 Settings static include is added
 for the relevant pages. Looking at the `illustrated setup
-example <https://github.com/ssp/typo3-pazpar2/blob/master/Documentation/Setup.md>`__
+example <https://github.com/subugoe/typo3-pazpar2/blob/master/Documentation/Setup.md>`__
 may make this easier.
 
 Flex Form
@@ -157,7 +157,7 @@ name of the corresponding TypoScript parameter is noted in [].
    JOP lookup. Either proxy configuration needs to contain the sid
    parameter with your service name. [`Apache configuration file for
    setting up the
-   proxies <https://raw.github.com/ssp/pazpar2-extras/master/fileadmin/apache/zdb.conf>`__\ ]
+   proxies <https://raw.github.com/subugoe/pazpar2-extras/master/fileadmin/apache/zdb.conf>`__\ ]
 -  Histogram [``useHistogramForYearFacets``\ ]: The extension displays
    year facets if results from more than a few years are displayed.
    Choose whether the year facets should be displayed graphically using
@@ -455,16 +455,16 @@ information/analysis.
    mixed-media items)
 
 To get a better idea of the general setup, take a look at `our setup
-files <https://github.com/ssp/pazpar2-SUB>`__, particularly the `AAC
-service <https://github.com/ssp/pazpar2-SUB/blob/master/services/AAC.xml>`__
+files <https://github.com/subugoe/pazpar2-SUB>`__, particularly the `AAC
+service <https://github.com/subugoe/pazpar2-SUB/blob/master/services/AAC.xml>`__
 and the `gbv-sru-neu
-target <https://github.com/ssp/pazpar2-SUB/blob/master/settings/gbv-sru-neu.xml>`__.
+target <https://github.com/subugoe/pazpar2-SUB/blob/master/settings/gbv-sru-neu.xml>`__.
 Some of `our
-stylesheets <https://github.com/ssp/pazpar2-SUB/tree/master/xsl>`__ may
+stylesheets <https://github.com/subugoe/pazpar2-SUB/tree/master/xsl>`__ may
 be helpful as well, particularly those for `ISO 639-2
-cleaning <https://raw.github.com/ssp/pazpar2-SUB/master/xsl/language-code-cleaner.xsl>`__
+cleaning <https://raw.github.com/subugoe/pazpar2-SUB/master/xsl/language-code-cleaner.xsl>`__
 and `ISO 639-1 to 639-2/B
-conversion <https://raw.github.com/ssp/pazpar2-SUB/master/xsl/iso-639-1-to-639-2b.xsl>`__.
+conversion <https://raw.github.com/subugoe/pazpar2-SUB/master/xsl/iso-639-1-to-639-2b.xsl>`__.
 
 
 Bibliographic data export
@@ -573,9 +573,9 @@ Version History
 	* Display the scale of maps from the ``mapscale`` field
 	* Remove ZDB-JOP sid configuration from script, it has to be inserted into the URL by the proxy now
 	* Add ability to display a link to the parent record (``catalogue-url-parent`` field)
-	* Remove hard coded recognition and rewriting of Göttingen OPAC URLs, the same effect is achieved more generically by using at least revision v2 of `pazpar2-access <https://github.com/ssp/pazpar2-access>`__
+	* Remove hard coded recognition and rewriting of Göttingen OPAC URLs, the same effect is achieved more generically by using at least revision v2 of `pazpar2-access <https://github.com/subugoe/pazpar2-access>`__
 1.6.0 (2012-02-24)
-	* restructure Resources/Public to provide the JavaScript interface as a standalone repository: `pazpar2-js-client <https://github.com/ssp/pazpar2-js-client>`__
+	* restructure Resources/Public to provide the JavaScript interface as a standalone repository: `pazpar2-js-client <https://github.com/subugoe/pazpar2-js-client>`__
 	* change date format for Neuerwerbungen to ``YYYYMM``
 	* improved reliability of triggering the pazpar2 search
 1.5.0 (2012-01-18)

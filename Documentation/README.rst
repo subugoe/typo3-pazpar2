@@ -121,7 +121,7 @@ Setup
 Insert the pazpar2 [Neuerwerbungen\|Service Proxy] content element where
 you need it and make sure the pazpar2 Settings static include is added
 for the relevant pages. Looking at the `illustrated setup
-example <https://github.com/ssp/typo3-pazpar2/blob/master/doc/Setup.md>`__
+example <https://github.com/ssp/typo3-pazpar2/blob/master/Documentation/Setup.md>`__
 may make this easier.
 
 Flex Form

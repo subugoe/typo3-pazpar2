@@ -25,52 +25,49 @@
  ******************************************************************************/
 
 
-if (!defined ('TYPO3_MODE')) die ('Access denied.');
-
+if (!defined('TYPO3_MODE')) die ('Access denied.');
 
 
 // Configure Plug-Ins
 
-Tx_Extbase_Utility_Extension::configurePlugin (
-	$_EXTKEY,
-	'pazpar2', // Name used internally by TYPO3
-	// Array holding the controller-action-combinations that are accessible
-	array(
-		// The first controller and its first action will be the default
-		'Pazpar2' => 'index'
-	),
-	// Array holding non-cachable controller-action-combinations
-	array(
-		'Pazpar2' => 'index'
-	)
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+		'Subugoe.' . $_EXTKEY,
+		'pazpar2', // Name used internally by TYPO3
+		// Array holding the controller-action-combinations that are accessible
+		array(
+			// The first controller and its first action will be the default
+				'Pazpar2' => 'index'
+		),
+		// Array holding non-cachable controller-action-combinations
+		array(
+				'Pazpar2' => 'index'
+		)
 );
 
-Tx_Extbase_Utility_Extension::configurePlugin (
-	$_EXTKEY,
-	'pazpar2serviceproxy', // Name used internally by TYPO3
-	// Array holding the controller-action-combinations that are accessible
-	array(
-		// The first controller and its first action will be the default
-		'Pazpar2serviceproxy' => 'index'
-	),
-	// Array holding non-cachable controller-action-combinations
-	array(
-		'Pazpar2serviceproxy' => 'index'
-	)
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+		'Subugoe.' . $_EXTKEY,
+		'pazpar2serviceproxy', // Name used internally by TYPO3
+		// Array holding the controller-action-combinations that are accessible
+		array(
+			// The first controller and its first action will be the default
+				'Pazpar2serviceproxy' => 'index'
+		),
+		// Array holding non-cachable controller-action-combinations
+		array(
+				'Pazpar2serviceproxy' => 'index'
+		)
 );
 
-Tx_Extbase_Utility_Extension::configurePlugin (
-	$_EXTKEY,
-	'pazpar2neuerwerbungen', // Name used internally by TYPO3
-	// Array holding the controller-action-combinations that are accessible
-	array(
-		// The first controller and its first action will be the default
-		'Pazpar2neuerwerbungen' => 'index'
-	),
-	// Array holding non-cachable controller-action-combinations
-	array(
-		'Pazpar2neuerwerbungen' => 'index'
-	)
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+		'Subugoe.' . $_EXTKEY,
+		'pazpar2neuerwerbungen', // Name used internally by TYPO3
+		// Array holding the controller-action-combinations that are accessible
+		array(
+			// The first controller and its first action will be the default
+				'Pazpar2neuerwerbungen' => 'index'
+		),
+		// Array holding non-cachable controller-action-combinations
+		array(
+				'Pazpar2neuerwerbungen' => 'index'
+		)
 );
-
-?>

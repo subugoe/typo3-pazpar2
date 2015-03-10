@@ -51,8 +51,7 @@ To use this extension successfully you need:
 TYPO3
 ~~~~~
 
--  TYPO3 ≥ 4.5.27
--  with Extbase/Fluid ≥ 1.3
+-  TYPO3 ≥ 6.2.0
 -  at least jQuery 1.7.1 (compatible with jQuery ≥ 1.9) on your pages;
    use the t3jquery extension for that
 

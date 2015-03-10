@@ -1,4 +1,5 @@
 <?php
+namespace Subugoe\Pazpar2\Domain\Model;
 /*******************************************************************************
  * Copyright notice
  *
@@ -23,7 +24,6 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
-
 /**
  * QueryServiceProxy.php
  *
@@ -31,13 +31,12 @@
  *
  * @author Sven-S. Porst <ssp-web@earthlingsoft.net>
  */
-
-
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Query model object.
  */
-class Tx_Pazpar2_Domain_Model_QueryServiceProxy extends Tx_Pazpar2_Domain_Model_Query {
+class QueryServiceProxy extends Query {
 
 	/**
 	 * VARIABLES FOR INTERNAL USE
@@ -61,7 +60,7 @@ class Tx_Pazpar2_Domain_Model_QueryServiceProxy extends Tx_Pazpar2_Domain_Model_
 	/**
 	 * @return string
 	 */
-	public function getServiceProxyAuthPath () {
+	public function getServiceProxyAuthPath() {
 		return $this->serviceProxyAuthPath;
 	}
 
@@ -70,10 +69,9 @@ class Tx_Pazpar2_Domain_Model_QueryServiceProxy extends Tx_Pazpar2_Domain_Model_
 	 * @param string $newPazpar2Path
 	 * @return void
 	 */
-	public function setServiceProxyAuthPath ($newServiceProxyAuthPath) {
-		$this->serviceProxyAuthPath  = $newServiceProxyAuthPath;
+	public function setServiceProxyAuthPath($newServiceProxyAuthPath) {
+		$this->serviceProxyAuthPath = $newServiceProxyAuthPath;
 	}
-
 
 
 	/**
@@ -82,11 +80,10 @@ class Tx_Pazpar2_Domain_Model_QueryServiceProxy extends Tx_Pazpar2_Domain_Model_
 	 *
 	 * @return string
 	 */
-	public function getServiceProxyAuthURL () {
-		$URL = 'http://' . t3lib_div::getIndpEnv(HTTP_HOST) . $this->getServiceProxyAuthPath();
+	public function getServiceProxyAuthURL() {
+		$URL = 'http://' . GeneralUtility::getIndpEnv('HTTP_HOST') . $this->getServiceProxyAuthPath();
 		return $URL;
 	}
-
 
 
 	/**
@@ -97,7 +94,7 @@ class Tx_Pazpar2_Domain_Model_QueryServiceProxy extends Tx_Pazpar2_Domain_Model_
 	 * @param string $URL to fetch
 	 * @return string
 	 */
-	protected function fetchURL ($URL) {
+	protected function fetchURL($URL) {
 		$cookieHeader = array();
 		if ($this->cookie) {
 			$cookieHeader[] = 'Cookie: ' . $this->cookie . ';';
@@ -133,34 +130,29 @@ class Tx_Pazpar2_Domain_Model_QueryServiceProxy extends Tx_Pazpar2_Domain_Model_
 	}
 
 
-
 	/**
 	 * TODO: Query Service Proxy auth URL and store the cookie received.
 	 *
 	 * @return boolean TRUE when initialisation was successful.
 	 */
-	protected function initialiseSession () {
+	protected function initialiseSession() {
 		$this->queryStartTime = time();
 		$authReplyString = $this->fetchURL($this->getServiceProxyAuthURL());
-		$authReply = t3lib_div::xml2array($authReplyString);
+		$authReply = GeneralUtility::xml2array($authReplyString);
 
 		$success = FALSE;
 		if ($authReply) {
 			$status = $authReply['status'];
 			if ($status === 'OK') {
 				$success = TRUE;
+			} else {
+				GeneralUtility::devLog('Service Proxy init status is not "OK" but "' . $status . '"', 'pazpar2', 3);
 			}
-			else {
-				t3lib_div::devLog('Service Proxy init status is not "OK" but "' . $status . '"', 'pazpar2', 3);
-			}
-		}
-		else {
-			t3lib_div::devLog('could not parse Service Proxy init reply', 'pazpar2', 3);
+		} else {
+			GeneralUtility::devLog('could not parse Service Proxy init reply', 'pazpar2', 3);
 		}
 
 		return ($this->cookie !== NULL) && $success;
 	}
 
 }
-
-?>

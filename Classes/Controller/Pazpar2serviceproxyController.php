@@ -1,4 +1,6 @@
 <?php
+namespace Subugoe\Pazpar2\Controller;
+
 /*******************************************************************************
  * Copyright notice
  *
@@ -23,7 +25,6 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
-
 /**
  * Pazpar2serviceproxyController.php
  *
@@ -32,36 +33,34 @@
  *
  * @author Sven-S. Porst <ssp-web@earthlingsoft.net>
  */
-
-
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
  * Controller for the pazpar2 Service Proxy package.
  */
-class Tx_Pazpar2_Controller_Pazpar2serviceproxyController extends Tx_Pazpar2_Controller_Pazpar2Controller {
+class Pazpar2serviceproxyController extends Pazpar2Controller {
 
 	/**
 	 * Returns the path of the pazpar2 service on the server or NULL.
 	 *
 	 * @return String|NULL
 	 */
-	protected function getPazpar2Path () {
+	protected function getPazpar2Path() {
 		return $this->conf['serviceProxyPath'];
 	}
 
 
-
 	/**
-	 * @return Tx_Pazpar2_Domain_Model_Query
+	 * @return \Subugoe\Pazpar2\Domain\Model\Query
 	 */
-	protected function createQuery () {
-		$query = t3lib_div::makeInstance('Tx_Pazpar2_Domain_Model_QueryServiceProxy');
+	protected function createQuery() {
+		$query = GeneralUtility::makeInstance(\Subugoe\Pazpar2\Domain\Model\QueryServiceProxy::class);
 		$query->setServiceProxyAuthPath($this->conf['serviceProxyAuthPath']);
 		$query->setPazpar2Path($this->getPazpar2Path());
 		return $query;
 	}
 
-	
 
 	/**
 	 * Adds <script> element to <head> containing the configuration for the
@@ -69,19 +68,19 @@ class Tx_Pazpar2_Controller_Pazpar2serviceproxyController extends Tx_Pazpar2_Con
 	 *
 	 * @return void
 	 */
-	protected function addServiceConfigurationToHead () {
+	protected function addServiceConfigurationToHead() {
 		// Add pz2urlrecipe.js to <head> if URL recipes are to be used.
-		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
+		$scriptTag = new TagBuilder('script');
 		$scriptTag->addAttribute('type', 'text/javascript');
-		$scriptTag->addAttribute('src',  $this->conf['pz2urlrecipeJSPath']);
+		$scriptTag->addAttribute('src', $this->conf['pz2urlrecipeJSPath']);
 		$scriptTag->forceClosingTag(true);
-		$this->response->addAdditionalHeaderData( $scriptTag->render() );
+		$this->response->addAdditionalHeaderData($scriptTag->render());
 
 		// Add Service Proxy configuration to <head> before pz2.js is included.
 		$jsVariables = array(
-			'useServiceProxy' => 'true',
-			'serviceProxyAuthPath' => json_encode($this->conf['serviceProxyAuthPath']),
-			'pazpar2Path' => json_encode($this->conf['serviceProxyPath'])
+				'useServiceProxy' => 'true',
+				'serviceProxyAuthPath' => json_encode($this->conf['serviceProxyAuthPath']),
+				'pazpar2Path' => json_encode($this->conf['serviceProxyPath'])
 		);
 
 		$jsCommand = "\n";
@@ -89,11 +88,10 @@ class Tx_Pazpar2_Controller_Pazpar2serviceproxyController extends Tx_Pazpar2_Con
 			$jsCommand .= $name . ' = ' . $value . ";\n";
 		}
 
-		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
+		$scriptTag = new TagBuilder('script');
 		$scriptTag->addAttribute('type', 'text/javascript');
 		$scriptTag->setContent($jsCommand);
 		$this->response->addAdditionalHeaderData($scriptTag->render());
 	}
 
 }
-?>

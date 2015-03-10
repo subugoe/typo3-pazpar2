@@ -1,4 +1,5 @@
 <?php
+namespace Subugoe\Pazpar2\Domain\Model;
 /*******************************************************************************
  * Copyright notice
  *
@@ -32,13 +33,12 @@
  *
  * @author Sven-S. Porst <porst@sub-uni-goettingen.de>
  */
-
-
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Query model object.
  */
-class Tx_Pazpar2_Domain_Model_QueryPazpar2 extends Tx_Pazpar2_Domain_Model_Query {
+class QueryPazpar2 extends Query {
 
 
 	/**
@@ -113,7 +113,7 @@ class Tx_Pazpar2_Domain_Model_QueryPazpar2 extends Tx_Pazpar2_Domain_Model_Query
 	protected function initialiseSession () {
 		$this->queryStartTime = time();
 		$initReplyString = $this->fetchURL($this->pazpar2InitURL());
-		$initReply = t3lib_div::xml2array($initReplyString);
+		$initReply = GeneralUtility::xml2array($initReplyString);
 
 		if ($initReply) {
 			$status = $initReply['status'];
@@ -123,7 +123,7 @@ class Tx_Pazpar2_Domain_Model_QueryPazpar2 extends Tx_Pazpar2_Domain_Model_Query
 					$this->pazpar2SessionID = $sessionID;
 				}
 				else {
-					t3lib_div::devLog('did not receive pazpar2 session ID', 'pazpar2', 3);
+					GeneralUtility::devLog('did not receive pazpar2 session ID', 'pazpar2', 3);
 				}
 
 				// Extract access rights information if it is available.
@@ -134,16 +134,14 @@ class Tx_Pazpar2_Domain_Model_QueryPazpar2 extends Tx_Pazpar2_Domain_Model_Query
 				}
 			}
 			else {
-				t3lib_div::devLog('pazpar2 init status is not "OK" but "' . $status . '"', 'pazpar2', 3);
+				GeneralUtility::devLog('pazpar2 init status is not "OK" but "' . $status . '"', 'pazpar2', 3);
 			}
 		}
 		else {
-			t3lib_div::devLog('could not parse pazpar2 init reply', 'pazpar2', 3);
+			GeneralUtility::devLog('could not parse pazpar2 init reply', 'pazpar2', 3);
 		}
 
 		return ($this->pazpar2SessionID !== NULL);
 	}
 
 }
-
-?>

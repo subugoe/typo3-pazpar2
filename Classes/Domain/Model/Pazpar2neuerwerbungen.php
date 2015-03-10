@@ -1,4 +1,6 @@
 <?php
+namespace Subugoe\Pazpar2\Domain\Model;
+
 /*******************************************************************************
  * Copyright notice
  *
@@ -24,7 +26,6 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
-
 /**
  * Pazpar2neuerwerbungen.php
  *
@@ -32,13 +33,14 @@
  *
  * @author Sven-S. Porst <porst@sub-uni-goettingen.de>
  */
-
-
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * pazpar2 Neuerwerbungen model object.
  */
-class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObject_AbstractEntity {
+class Pazpar2neuerwerbungen extends AbstractEntity {
 
 
 	/**
@@ -51,7 +53,7 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	/**
 	 * @return string
 	 */
-	public function getRootPPN () {
+	public function getRootPPN() {
 		return $this->rootPPN;
 	}
 
@@ -59,10 +61,9 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	 * @param string $newRootPPN
 	 * @return void
 	 */
-	public function setRootPPN ($newRootPPN) {
+	public function setRootPPN($newRootPPN) {
 		$this->rootPPN = $newRootPPN;
 	}
-
 
 
 	/**
@@ -74,7 +75,7 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	/**
 	 * @return array
 	 */
-	public function getRequestArguments () {
+	public function getRequestArguments() {
 		return $this->requestArguments;
 	}
 
@@ -82,10 +83,9 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	 * @param array $newRequestArguments
 	 * @return void
 	 */
-	public function setRequestArguments ($newRequestArguments) {
+	public function setRequestArguments($newRequestArguments) {
 		$this->requestArguments = $newRequestArguments;
 	}
-
 
 
 	/**
@@ -93,18 +93,17 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	 * @var Array
 	 */
 	protected $subjects;
-	
+
 	/**
 	 * @return array
 	 */
-	public function getSubjects () {
+	public function getSubjects() {
 		if ($this->subjects == Null) {
 			$this->setupSubjects();
 		}
 
 		return $this->subjects;
 	}
-
 
 
 	/**
@@ -116,7 +115,7 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	/**
 	 * @return int
 	 */
-	public function getMonthCount () {
+	public function getMonthCount() {
 		if ($this->monthCount === Null) {
 			return 13;
 		}
@@ -127,47 +126,46 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	/**
 	 * @param int $newMonthCount
 	 */
-	public function setMonthCount ($newMonthCount) {
+	public function setMonthCount($newMonthCount) {
 		$this->monthCount = $newMonthCount;
 	}
-
 
 
 	/**
 	 * Return array of subjects for the parentPPN passed.
 	 * The data needed are loaded from the tx_nkwgok_data table of the database.
 	 * They are expected to be imported from CSV-data by the nkwgok extension.
-	 *	See its documentation or code for the fields required in teh CSV-file.
+	 *    See its documentation or code for the fields required in teh CSV-file.
 	 *
 	 * The information is converted to nested arrays as required by the »neuerwerbungen-form«
 	 * Partial that handles the display. The data format is:
-	 *	* Array [subject groups]
-	 *		* Array [subject group, associative]
-	 *			* id => string - id/ppn of subject group [required]
-	 *			* name => string - name of subject group [required]
-	 *			* queries => Array [optional]
-	 *				* string that is a CCL query
-	 *			* subjects => Array [required, subjects]
-	 *				* Array [subject, associative]
-	 *					* name => string - name of subject group [required]
-	 *					* queries => Array [required]
-	 *						* string that is a CCL query
-	 *					* inline => boolean - displayed in one line with other items?
-	 *						[optional, defaults to false]
-	 *					* break => boolean - insert <br> before current element?
-	 *						[optional, should only be used with inline => true, defaults to false]
+	 *    * Array [subject groups]
+	 *        * Array [subject group, associative]
+	 *            * id => string - id/ppn of subject group [required]
+	 *            * name => string - name of subject group [required]
+	 *            * queries => Array [optional]
+	 *                * string that is a CCL query
+	 *            * subjects => Array [required, subjects]
+	 *                * Array [subject, associative]
+	 *                    * name => string - name of subject group [required]
+	 *                    * queries => Array [required]
+	 *                        * string that is a CCL query
+	 *                    * inline => boolean - displayed in one line with other items?
+	 *                        [optional, defaults to false]
+	 *                    * break => boolean - insert <br> before current element?
+	 *                        [optional, should only be used with inline => true, defaults to false]
 	 *
 	 * If the »queries« field of a subject group is not specified, create it by
-	 *	taking the union of the »queries« arrays of all its »subjects«.
+	 *    taking the union of the »queries« arrays of all its »subjects«.
 	 *
 	 * @param string $parentPPN
 	 * @return array subjects to be displayed
 	 */
-	private function makeSubjectsArrayForPPN ($parentPPN) {
+	protected function makeSubjectsArrayForPPN($parentPPN) {
 		$rootNodes = $this->queryForChildrenOf($parentPPN);
 		$subjects = array();
 
-		while($nodeRecord = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($rootNodes)) {
+		while ($nodeRecord = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($rootNodes)) {
 			$subject = array();
 
 			// Add PPN for separating distinct subject fieldsets
@@ -177,8 +175,7 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 			// and the German subject name otherwise.
 			if ($GLOBALS['TSFE']->lang == 'en' && $nodeRecord['descr_en']) {
 				$subject['name'] = $nodeRecord['descr_en'];
-			}
-			else {
+			} else {
 				$subject['name'] = $nodeRecord['descr'];
 			}
 
@@ -190,14 +187,13 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 			// Extract each search term from the 'search' field and add an array with all of them.
 			if ($nodeRecord['search'] != '') {
 				$searchComponents = array();
-				foreach (explode( ' or ', urldecode($nodeRecord['search'])) as $searchComponent) {
+				foreach (explode(' or ', urldecode($nodeRecord['search'])) as $searchComponent) {
 					$component = trim($searchComponent, ' *');
 					$component = preg_replace('/^LKL /', '', $component);
 					$searchComponents[] = trim($component);
 				}
 				$subject['queries'] = $searchComponents;
-			}
-			else {
+			} else {
 				$subqueries = array();
 				foreach ($subject['subjects'] as $subsubject) {
 					foreach ($subsubject['queries'] as $subquery) {
@@ -221,7 +217,6 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	}
 
 
-
 	/**
 	 * Queries the database for all records having the $parentPPN parameter as their parent element
 	 *  and returns the query result.
@@ -231,18 +226,17 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	 * @param string $parentPPN
 	 * @return array
 	 */
-	private function queryForChildrenOf ($parentPPN) {
+	protected function queryForChildrenOf($parentPPN) {
 		$queryResults = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-			'*',
-			'tx_nkwgok_data',
-			"parent = '" . $parentPPN . "' AND statusID = 0",
-			'',
-			'notation ASC',
-			'');
+				'*',
+				'tx_nkwgok_data',
+				"parent = '" . $parentPPN . "' AND statusID = 0",
+				'',
+				'notation ASC',
+				'');
 
 		return $queryResults;
 	}
-
 
 
 	/**
@@ -250,7 +244,7 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	 *  from our arguments to it, and store it.
 	 *
 	 * If all child elements in a subject group are selected, also select the
-	 *	group itself.
+	 *    group itself.
 	 *
 	 * If a subject group is selected, also select all the subjects contained in
 	 *  it. (If a subject group is not selected, do _not_ deselect all the
@@ -259,7 +253,7 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	 *
 	 * @return void
 	 */
-	private function setupSubjects () {
+	protected function setupSubjects() {
 		$subjects = $this->makeSubjectsArrayForPPN($this->rootPPN);
 
 		// Figure out selected subjects from the request’s arguments. Subject argument names
@@ -290,8 +284,7 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 			// Also write the selected values to our cookie.
 			$cookieString = implode(':', $selectedCheckboxes);
 			setcookie('pz2neuerwerbungen-previousQuery', $cookieString);
-		}
-		else {
+		} else {
 			// Our form was not submitted: use cookie to set the selected checkboxes.
 			$previousQuery = $_COOKIE['pz2neuerwerbungen-previousQuery'];
 			$queryItems = explode(':', $previousQuery);
@@ -303,8 +296,7 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 				$queriesString = implode(',', $group['queries']);
 				if (in_array($queriesString, $queryItems)) {
 					$group['selected'] = True;
-				}
-				else {
+				} else {
 					foreach ($group['subjects'] as &$subject) {
 						$queriesString = implode(',', $subject['queries']);
 						if (in_array($queriesString, $queryItems)) {
@@ -334,7 +326,6 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	}
 
 
-
 	/**
 	 * Takes the passed $group array and sets its »selected« field to True if the »selected« fields
 	 * of all the objects in its »subjects« array are set to True. Uses recursion to check
@@ -343,7 +334,7 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	 * @param array $group (passed by reference)
 	 * @return void
 	 */
-	private function turnOnGroupSelectionIfNeeded (&$group) {
+	protected function turnOnGroupSelectionIfNeeded(&$group) {
 		$isSelected = True;
 		foreach ($group['subjects'] as &$subject) {
 			if ($subject['subjects']) {
@@ -358,7 +349,6 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	}
 
 
-
 	/**
 	 * Checks whether the »selected« field of the passed $group array is true and recursively sets
 	 * the »selected« fields of all contained subjects in the »subject« element to True if that is
@@ -367,7 +357,7 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	 * @param array $group (passed by reference)
 	 * @return void
 	 */
-	private function turnOnChildSelectionIfNeeded (&$group) {
+	protected function turnOnChildSelectionIfNeeded(&$group) {
 		if ($group['selected'] == True) {
 			foreach ($group['subjects'] as &$subject) {
 				$subject['selected'] = True;
@@ -379,13 +369,12 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	}
 
 
-
 	/**
 	 * Array used for month selection menu.
 	 * Array elements are associative arrays with two elements:
-	 * 	* name - the localised string used for display, e.g. Oktober 2010
-	 *	* searchTerms - string used to query the catalogue’s NEL field, e.g. 201010.
-	 * 		In case several months are used, the different strings are comma separated.
+	 *    * name - the localised string used for display, e.g. Oktober 2010
+	 *    * searchTerms - string used to query the catalogue’s NEL field, e.g. 201010.
+	 *        In case several months are used, the different strings are comma separated.
 	 *
 	 * @var array
 	 */
@@ -394,7 +383,7 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	/**
 	 * @return Array
 	 */
-	public function getMonths () {
+	public function getMonths() {
 		if ($this->months == Null) {
 			$this->months = $this->monthsArray();
 		}
@@ -402,16 +391,15 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	}
 
 
-
 	/**
 	 * Returns array of months preceding the current one.
-	 *	* Keys are of the form YYYY-MM.
-	 *	* Values are localised names of the months followed by the year.
-	 *		Localised »(incomplete)« is appended to the name of the current month.
+	 *    * Keys are of the form YYYY-MM.
+	 *    * Values are localised names of the months followed by the year.
+	 *        Localised »(incomplete)« is appended to the name of the current month.
 	 *
 	 * @return Array
 	 */
-	public function monthsArray () {
+	public function monthsArray() {
 		$months = array();
 		$year = date('Y');
 		$month = date('n');
@@ -425,7 +413,7 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 			$displayString = $monthName . ' ' . $year;
 
 			if ($i == 1) {
-				$displayString .= ' (' . Tx_Extbase_Utility_Localization::translate('unvollständig', 'pazpar2') . ')';
+				$displayString .= ' (' . LocalizationUtility::translate('unvollständig', 'pazpar2') . ')';
 			}
 
 			$months[$searchString] = $displayString;
@@ -437,35 +425,32 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	}
 
 
-
 	/**
 	 * reduceMonth: Assume the passed references to month and year numbers
-	 *	indicate a month; reduce them to indicate the previous month.
+	 *    indicate a month; reduce them to indicate the previous month.
 	 *
-	 * @param $month reference to month number
-	 * @param $year reference to year number
+	 * @param $month int reference to month number
+	 * @param $year int reference to year number
 	 * @return void
 	 */
-	private function reduceMonth (&$month, &$year) {
+	private function reduceMonth(&$month, &$year) {
 		if ($month == 1) {
 			$month = 12;
 			$year--;
-		}
-		else {
+		} else {
 			$month--;
 		}
 	}
 
 
-
 	/**
 	 * Return search string for Pica format of the given month: YYYYMM
 	 *
-	 * @param $month month number
-	 * @param $year year number
+	 * @param $month int month number
+	 * @param $year int year number
 	 * @return string the given month in YYYYMM format
 	 */
-	private function picaSearchStringForMonth ($month, $year) {
+	private function picaSearchStringForMonth($month, $year) {
 		$leadingZero = '';
 
 		if ($month < 10) {
@@ -476,24 +461,22 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	}
 
 
-
 	/**
 	 * Value of the selected item in the month selection menu:
 	 * The key of the second item in the $months array.
 	 *
 	 * @return string|null value of default month or null
 	 */
-	public function getDefaultMonth () {
+	public function getDefaultMonth() {
 		$result = null;
 
 		$keys = array_keys($this->getMonths());
-		if ( count($keys) >= 2 ) {
-			$result = (string) $keys[1];
+		if (count($keys) >= 2) {
+			$result = (string)$keys[1];
 		}
 
 		return $result;
 	}
-
 
 
 	/**
@@ -520,7 +503,6 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	}
 
 
-
 	/**
 	 * Builds a query string using the queries of the selected checkboxes in the form.
 	 * The strings used for equals assignment and wildcard can be configured
@@ -529,10 +511,10 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	 *
 	 * @param string $equals [defaults to '=']
 	 * @param string $wildcard [defaults to '']
-	 * @param bollean $ignoreSelectedDate [defaults to False]
+	 * @param boolean $ignoreSelectedDate [defaults to False]
 	 * @return string
 	 */
-	public function searchQueryWithEqualsAndWildcard ($equals = '=', $wildcard = '', $ignoreSelectedDate = False) {
+	public function searchQueryWithEqualsAndWildcard($equals = '=', $wildcard = '', $ignoreSelectedDate = False) {
 		$queryString = Null;
 
 		$queries = $this->selectedQueriesInFormWithWildcard($wildcard);
@@ -545,11 +527,10 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 				$NELQueryString = $this->oredSearchQueries($dates, 'nel', $equals);
 				$queryString .= ' and ' . $NELQueryString;
 			}
-  		}
+		}
 
 		return $queryString;
 	}
-
 
 
 	/**
@@ -557,20 +538,19 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	 *
 	 * @return string
 	 */
-	public function getAtomURL () {
+	public function getAtomURL() {
 		$atomURL = Null;
 
 		$searchQuery = $this->searchQueryWithEqualsAndWildcard(' ', '*', True);
 		if ($searchQuery) {
 			$searchQuery = urlencode($searchQuery);
 
-			$atomBaseURL = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . 'opac.atom?q=';
+			$atomBaseURL = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'opac.atom?q=';
 			$atomURL = $atomBaseURL . $searchQuery;
 		}
 
 		return $atomURL;
 	}
-
 
 
 	/**
@@ -583,7 +563,6 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	private function selectedQueriesInFormWithWildcard($wildcard) {
 		return $this->selectedQueriesInGroupWithWildcard($this->getSubjects(), $wildcard);
 	}
-
 
 
 	/**
@@ -600,15 +579,13 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 		foreach ($subjects as $subject) {
 			if ($subject['selected'] && $subject['queries']) {
 				$this->addSearchTermsToList($subject['queries'], $queries, $wildcard);
-			}
-			elseif ($subject['subjects']) {
+			} elseif ($subject['subjects']) {
 				$subsubjects = $this->selectedQueriesInGroupWithWildcard($subject['subjects'], $wildcard);
 				$queries = array_merge($queries, $subsubjects);
 			}
 		}
 		return $queries;
 	}
-
 
 
 	/**
@@ -619,8 +596,8 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	 * @param Array $list the terms are added to
 	 * @param string $wildcard replace a final (?) in each term with this string
 	 */
-	private function addSearchTermsToList ($searchTerms, &$list, $wildcard) {
-		foreach($searchTerms as $term) {
+	private function addSearchTermsToList($searchTerms, &$list, $wildcard) {
+		foreach ($searchTerms as $term) {
 			if ($term != '') {
 				if ($wildcard && substr($term, -1) === '?') {
 					$term = substr($term, 0, -1) . $wildcard;
@@ -631,7 +608,6 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	}
 
 
-
 	/**
 	 * Helper function for preparing search queries.
 	 *
@@ -640,11 +616,9 @@ class Tx_Pazpar2_Domain_Model_Pazpar2neuerwerbungen extends Tx_Extbase_DomainObj
 	 * @param string $equals string used to separate the key and the query term
 	 * @return string query
 	 */
-	private function oredSearchQueries ($queryTerms, $key, $equals) {
+	private function oredSearchQueries($queryTerms, $key, $equals) {
 		$query = '(' . $key . $equals . implode(' or ' . $key . $equals, $queryTerms) . ')';
 		return $query;
 	}
 
 }
-
-?>

@@ -1,4 +1,6 @@
 <?php
+namespace Subugoe\Pazpar2\Controller;
+
 /*******************************************************************************
  * Copyright notice
  *
@@ -24,7 +26,6 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
-
 /**
  * Pazpar2Controller.php
  *
@@ -32,20 +33,25 @@
  *
  * @author Sven-S. Porst <porst@sub-uni-goettingen.de>
  */
-
-
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
  * pazpar2 controller for the pazpar2 extension.
  */
-class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_ActionController {
+class Pazpar2Controller extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
 	/**
 	 * Query object handling the pazpar2 logic.
-	 * @var Tx_Pazpar2_Domain_Model_Query
+	 * @var \Subugoe\Pazpar2\Domain\Model\Query
 	 */
 	protected $query;
 
+	/**
+	 * @var array
+	 */
+	protected $conf;
 
 
 	/**
@@ -53,22 +59,20 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 	 *
 	 * @return String|NULL
 	 */
-	protected function getPazpar2Path () {
+	protected function getPazpar2Path() {
 		return $this->conf['pazpar2Path'];
 	}
 
 
-	
 	/**
-	 * @return Tx_Pazpar2_Domain_Model_Query
+	 * @return \Subugoe\Pazpar2\Domain\Model\Query
 	 */
-	protected function createQuery () {
-		$query = t3lib_div::makeInstance('Tx_Pazpar2_Domain_Model_QueryPazpar2');
+	protected function createQuery() {
+		$query = GeneralUtility::makeInstance(\Subugoe\Pazpar2\Domain\Model\QueryPazpar2::class);
 		$query->setPazpar2Path($this->getPazpar2Path());
 		$query->setServiceName($this->conf['serviceID']);
 		return $query;
 	}
-
 
 
 	/**
@@ -76,11 +80,11 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 	 *
 	 * @return void
 	 */
-	public function initializeAction () {
-		foreach ( $this->settings as $key => $value ) {
+	public function initializeAction() {
+		foreach ($this->settings as $key => $value) {
 			// Transfer settings to conf
 			$this->conf[$key] = $value;
-			
+
 			if (strpos($key, 'Path') !== False) {
 				// Let TYPO3 try to process path settings as a path, so we can
 				// use EXT: in the paths.
@@ -96,7 +100,6 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 	}
 
 
-
 	/**
 	 * Index:
 	 * 1. Insert pazpar2 CSS <link> and JavaScript <script>-tags into
@@ -105,7 +108,7 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 	 *
 	 * @return void
 	 */
-	public function indexAction () {
+	public function indexAction() {
 		$this->addResourcesToHead();
 		$arguments = $this->request->getArguments();
 		$this->view->assign('extended', $arguments['extended']);
@@ -118,38 +121,34 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 	}
 
 
-
 	/**
 	 * Determine which sort criteria to use and return them as an array whose
-	 *	elements are arrays with two elements: 'fieldName' and 'direction'.
+	 *    elements are arrays with two elements: 'fieldName' and 'direction'.
 	 * @param Array $arguments
 	 * @return Array
 	 */
-	private function determineSortCriteria ($arguments) {
+	private function determineSortCriteria($arguments) {
 		$sortCriteria = Array();
-		
+
 		if (array_key_exists('sort', $arguments)) {
 			// Sort order has been set by select on the page.
 			$criteria = explode('--', $arguments['sort']);
 			foreach ($criteria as $criterion) {
 				$parts = explode('-', $criterion);
 				if (count($parts) == 2) {
-					$sortCriteria[] = Array (
-						'fieldName' => $parts[0],
-						'direction' => ($parts[1] == 'd') ? 'descending' : 'ascending'
+					$sortCriteria[] = Array(
+							'fieldName' => $parts[0],
+							'direction' => ($parts[1] == 'd') ? 'descending' : 'ascending'
 					);
 				}
 			}
-		}
-		else {
+		} else {
 			// Use default sort order.
 			$sortCriteria = $this->conf['sortOrder'];
 		}
-		
+
 		return $sortCriteria;
 	}
-
-
 
 
 	/**
@@ -157,43 +156,43 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 	 *
 	 * @return void
 	 */
-	protected function addResourcesToHead () {
+	protected function addResourcesToHead() {
 		// Add pazpar2.css to <head>.
-		$cssTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('link');
+		$cssTag = new TagBuilder('link');
 		$cssTag->addAttribute('rel', 'stylesheet');
 		$cssTag->addAttribute('type', 'text/css');
 		$cssTag->addAttribute('href', $this->conf['CSSPath']);
 		$cssTag->addAttribute('media', 'all');
-		$this->response->addAdditionalHeaderData( $cssTag->render() );
+		$this->response->addAdditionalHeaderData($cssTag->render());
 
 		$this->addServiceConfigurationToHead();
 
 		// Add pz2.js to <head>.
 		// This is Indexdata’s JavaScript that ships with the pazpar2 software.
-		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
+		$scriptTag = new TagBuilder('script');
 		$scriptTag->addAttribute('type', 'text/javascript');
-		$scriptTag->addAttribute('src',  $this->conf['pz2JSPath']);
+		$scriptTag->addAttribute('src', $this->conf['pz2JSPath']);
 		$scriptTag->forceClosingTag(true);
-		$this->response->addAdditionalHeaderData( $scriptTag->render() );
+		$this->response->addAdditionalHeaderData($scriptTag->render());
 
 		// Add pz2-client.js to <head>.
-		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
+		$scriptTag = new TagBuilder('script');
 		$scriptTag->addAttribute('type', 'text/javascript');
-		$scriptTag->addAttribute('src', $this->conf['pz2-clientJSPath']) ;
+		$scriptTag->addAttribute('src', $this->conf['pz2-clientJSPath']);
 		$scriptTag->forceClosingTag(true);
-		$this->response->addAdditionalHeaderData( $scriptTag->render() );
+		$this->response->addAdditionalHeaderData($scriptTag->render());
 
 		// Create additional settings that are needed by pz-client.js.
 		$jsVariables = array(
-			'useGoogleBooks' => (($this->conf['useGoogleBooks']) ? 'true' : 'false'),
-			'useMaps' => (($this->conf['useMaps']) ? 'true' : 'false'),
-			'useZDB' => (($this->conf['useZDB']) ? 'true' : 'false'),
-			'ZDBUseClientIP' => ((!$this->conf['ZDBIP']) ? 'true' : 'false'),
-			'useHistogramForYearFacets' => (($this->conf['useHistogramForYearFacets'] == '1') ? 'true' : 'false'),
-			'provideCOinSExport' => (($this->conf['provideCOinSExport']) ? 'true' : 'false'),
-			'showExportLinksForEachLocation' => (($this->conf['showExportLinksForEachLocation']) ? 'true' : 'false'),
-			'showKVKLink' => (($this->conf['showKVKLink']) ? 'true' : 'false'),
-			'useKeywords' => (($this->conf['useKeywords']) ? 'true' : 'false')
+				'useGoogleBooks' => (($this->conf['useGoogleBooks']) ? 'true' : 'false'),
+				'useMaps' => (($this->conf['useMaps']) ? 'true' : 'false'),
+				'useZDB' => (($this->conf['useZDB']) ? 'true' : 'false'),
+				'ZDBUseClientIP' => ((!$this->conf['ZDBIP']) ? 'true' : 'false'),
+				'useHistogramForYearFacets' => (($this->conf['useHistogramForYearFacets'] == '1') ? 'true' : 'false'),
+				'provideCOinSExport' => (($this->conf['provideCOinSExport']) ? 'true' : 'false'),
+				'showExportLinksForEachLocation' => (($this->conf['showExportLinksForEachLocation']) ? 'true' : 'false'),
+				'showKVKLink' => (($this->conf['showKVKLink']) ? 'true' : 'false'),
+				'useKeywords' => (($this->conf['useKeywords']) ? 'true' : 'false')
 		);
 		if (array_key_exists('exportFormats', $this->conf)) {
 			$exportFormats = Array();
@@ -224,7 +223,7 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		foreach ($jsVariables as $name => $value) {
 			$jsCommand .= $name . ' = ' . $value . ";\n";
 		}
-		
+
 		// Set up JavaScript function that is called by nkwgok if asked to do so.
 		if ($this->conf['triggeredByNKWGOK']) {
 			$jsCommand .= 'var nkwgokItemSelected = function (element) {
@@ -237,74 +236,71 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 		}
 
 		// Add the JavaScript setup commands to <head>.
-		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
+		$scriptTag = new TagBuilder('script');
 		$scriptTag->addAttribute('type', 'text/javascript');
 		$scriptTag->setContent($jsCommand);
-		$this->response->addAdditionalHeaderData( $scriptTag->render() );
+		$this->response->addAdditionalHeaderData($scriptTag->render());
 
 		// Load flot graphing library if needed.
-		if ( $this->conf['useHistogramForYearFacets'] ) {
-			$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
+		if ($this->conf['useHistogramForYearFacets']) {
+			$scriptTag = new TagBuilder('script');
 			$scriptTag->addAttribute('type', 'text/javascript');
-			$scriptTag->addAttribute('src', $this->conf['flotJSPath']) ;
+			$scriptTag->addAttribute('src', $this->conf['flotJSPath']);
 			$scriptTag->forceClosingTag(true);
-			$this->response->addAdditionalHeaderData( $scriptTag->render() );
+			$this->response->addAdditionalHeaderData($scriptTag->render());
 
-			$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
+			$scriptTag = new TagBuilder('script');
 			$scriptTag->addAttribute('type', 'text/javascript');
-			$scriptTag->addAttribute('src', $this->conf['flotSelectionJSPath']) ;
+			$scriptTag->addAttribute('src', $this->conf['flotSelectionJSPath']);
 			$scriptTag->forceClosingTag(true);
-			$this->response->addAdditionalHeaderData( $scriptTag->render() );
+			$this->response->addAdditionalHeaderData($scriptTag->render());
 		}
 
 		// Make jQuery initialise pazpar2 when the DOM is ready.
 		$jsCommand = "jQuery(document).ready(pz2ClientDomReady);\n";
 
 		// Add Google Books support if asked to do so.
-		if ( $this->conf['useGoogleBooks'] || $this->conf['useMaps'] ) {
+		if ($this->conf['useGoogleBooks'] || $this->conf['useMaps']) {
 			// Structurally this might be better in a separate extension?
-			$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
+			$scriptTag = new TagBuilder('script');
 			$scriptTag->addAttribute('type', 'text/javascript');
-			$scriptTag->addAttribute('src',  'https://www.google.com/jsapi');
+			$scriptTag->addAttribute('src', 'https://www.google.com/jsapi');
 			$scriptTag->forceClosingTag(true);
-			$this->response->addAdditionalHeaderData( $scriptTag->render() );
+			$this->response->addAdditionalHeaderData($scriptTag->render());
 
-			if ( $this->conf['useGoogleBooks'] ) {
+			if ($this->conf['useGoogleBooks']) {
 				$jsCommand .= "google.load('books', '0');\n";
 			}
 		}
 
-		// Write custom localisations to pz2-client.js’ localisation array
-		$localisationOverrides;
-		if (t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version) < 6000000) {
+		// Write custom localisations to pz2-client.js’ localisation array $localisationOverrides;
+		if (VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) < 6000000) {
 			// TYPO3 4: read from TSFE (ugly)
 			$localisationOverrides = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_pazpar2.']['_LOCAL_LANG.'];
-		}
-		else {
+		} else {
 			// TYPO3 6+: use configuration manager
-			$configFramework = $this->configurationManager->getConfiguration(TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'pazpar2');
+			$configFramework = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'pazpar2');
 			$localisationOverrides = $configFramework['_LOCAL_LANG'];
 		}
 		if ($localisationOverrides) {
 			foreach ($localisationOverrides as $languageCode => $dictionary) {
 				// remove '.' from language codes (only appear when using TYPO3 4)
 				$cleanLanguageCode = str_replace('.', '', $languageCode);
-				
+
 				foreach ($dictionary as $key => $localisedString) {
 					$jsCommand .= "overrideLocalisation(" . json_encode($cleanLanguageCode) . ", "
-															. json_encode($key) . ", "
-															. json_encode($localisedString) . ");\n";
+							. json_encode($key) . ", "
+							. json_encode($localisedString) . ");\n";
 				}
 			}
 		}
 
 		// Add further JavaScript initialisation commands to <head>.
-		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
+		$scriptTag = new TagBuilder('script');
 		$scriptTag->addAttribute('type', 'text/javascript');
 		$scriptTag->setContent($jsCommand);
-		$this->response->addAdditionalHeaderData( $scriptTag->render() );
+		$this->response->addAdditionalHeaderData($scriptTag->render());
 	}
-
 
 
 	/**
@@ -313,17 +309,16 @@ class Tx_Pazpar2_Controller_Pazpar2Controller extends Tx_Extbase_MVC_Controller_
 	 *
 	 * @return void
 	 */
-	protected function addServiceConfigurationToHead () {
-		$jsCommand = "\nmy_serviceID = " . json_encode($this->conf['serviceID']) . ";\n";
+	protected function addServiceConfigurationToHead() {
+		$jsCommand = PHP_EOL . "my_serviceID = " . json_encode($this->conf['serviceID']) . ";" . PHP_EOL;
 		if ($this->getPazpar2Path()) {
-			$jsCommand .= "pazpar2Path = " . json_encode($this->getPazpar2Path()) . ";\n" ;
+			$jsCommand .= "pazpar2Path = " . json_encode($this->getPazpar2Path()) . ";" . PHP_EOL;
 		}
 
-		$scriptTag = new Tx_Fluid_Core_ViewHelper_TagBuilder('script');
+		$scriptTag = new TagBuilder('script');
 		$scriptTag->addAttribute('type', 'text/javascript');
 		$scriptTag->setContent($jsCommand);
-		$this->response->addAdditionalHeaderData( $scriptTag->render() );
+		$this->response->addAdditionalHeaderData($scriptTag->render());
 	}
 
 }
-?>

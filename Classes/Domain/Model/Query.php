@@ -55,6 +55,92 @@ class Query extends AbstractEntity {
 	protected $queryStringDate = Null;
 
 	/**
+	 * Array containing the sort conditions to use. Each of its elements
+	 *    is an array with the fields:
+	 *  'fieldName' - a string containing the name of the pazpar2 field to sort by
+	 *  'direction' - the string 'ascending' or 'descending'
+	 *
+	 * @var array
+	 */
+	protected $sortOrder = [];
+
+	/**
+	 * Absolute path of the pazpar2 service on the host.
+	 *
+	 * @var string
+	 */
+	protected $pazpar2Path = '/pazpar2/search.pz2';
+
+	/**
+	 * Service name to run the query on.
+	 *
+	 * @var string|Null
+	 */
+	protected $serviceName = Null;
+
+	/**
+	 * False by default, True when the Query finished running.
+	 *
+	 * @var Boolean
+	 */
+	protected $didRun = False;
+
+	/**
+	 * Indicates whether all targets in the service are active (as determined
+	 * by the pazpar2-access.php proxy service).
+	 *
+	 * @var Boolean|Null
+	 */
+	protected $allTargetsActive;
+
+	/**
+	 * Name of the institution proving database access (as determined by
+	 * the pazpar2-access.php proxy service).
+	 *
+	 * @var string|Null $institutionName
+	 */
+	protected $institutionName = Null;
+
+	/**
+	 * URL of the pazpar2 service used.
+	 *
+	 * @var string|Null
+	 */
+	protected $pazpar2BaseURL;
+
+	/**
+	 * Array holding the search results after they are downloaded.
+	 * The array's element can be displayed by the View Helper class
+	 * Tx_Pazpar2_ViewHelpers_ResultViewHelper.
+	 *
+	 * @var array
+	 */
+	private $results = [];
+
+	/**
+	 * The total number of results (including the ones that could not be fetched.
+	 *
+	 * @var integer
+	 */
+	private $totalResultCount;
+
+	/**
+	 * VARIABLES FOR INTERNAL USE
+	 */
+
+	/**
+	 * Stores state of query.
+	 * @var Boolean
+	 */
+	protected $queryIsRunning;
+
+	/**
+	 * Stores time the current query was started.
+	 * @var int
+	 */
+	protected $queryStartTime;
+
+	/**
 	 * @return string|Null
 	 */
 	public function getQueryString() {
@@ -85,7 +171,6 @@ class Query extends AbstractEntity {
 		return $this->queryStringDate;
 	}
 
-
 	/**
 	 * Setter for the main query string.
 	 *
@@ -95,25 +180,20 @@ class Query extends AbstractEntity {
 		$this->queryString = $newQueryString;
 	}
 
-
 	/**
-	 * Array containing the sort conditions to use. Each of its elements
-	 *    is an array with the fields:
-	 *  'fieldName' - a string containing the name of the pazpar2 field to sort by
-	 *  'direction' - the string 'ascending' or 'descending'
-	 *
-	 * @var Array
+	 * @return array
 	 */
-	protected $sortOrder = Array();
-
 	public function getSortOrder() {
 		return $this->sortOrder;
 	}
 
+	/**
+	 * @param string $newSortOrder
+	 * @return void
+	 */
 	public function setSortOrder($newSortOrder) {
 		$this->sortOrder = $newSortOrder;
 	}
-
 
 	/**
 	 * Set search query elements from the request’s arguments array.
@@ -130,14 +210,6 @@ class Query extends AbstractEntity {
 		$this->queryStringDate = trim($newArguments['queryStringDate']);
 	}
 
-
-	/**
-	 * Absolute path of the pazpar2 service on the host.
-	 *
-	 * @var string
-	 */
-	protected $pazpar2Path = '/pazpar2/search.pz2';
-
 	/**
 	 * @return string
 	 */
@@ -152,14 +224,6 @@ class Query extends AbstractEntity {
 	public function setPazpar2Path($newPazpar2Path) {
 		$this->pazpar2Path = $newPazpar2Path;
 	}
-
-
-	/**
-	 * Service name to run the query on.
-	 *
-	 * @var string|Null
-	 */
-	protected $serviceName = Null;
 
 	/**
 	 * @return string
@@ -176,59 +240,35 @@ class Query extends AbstractEntity {
 		$this->serviceName = $newServiceName;
 	}
 
-
-	/**
-	 * Name of the institution proving database access (as determined by
-	 * the pazpar2-access.php proxy service).
-	 *
-	 * @var string|Null $institutionName
-	 */
-	protected $institutionName = Null;
-
 	/**
 	 * @return string|Null
 	 */
-	protected function getInstitutionName() {
+	public function getInstitutionName() {
 		return $this->institutionName;
 	}
 
 	/**
 	 * @param string $newInstitutionName
+	 * @return void
 	 */
 	protected function setInstitutionName($newInstitutionName) {
 		$this->institutionName = $newInstitutionName;
 	}
 
-
-	/**
-	 * False by default, True when the Query finished running.
-	 *
-	 * @var Boolean
-	 */
-	protected $didRun = False;
-
 	/**
 	 * @return Boolean
 	 */
-	protected function getDidRun() {
+	public function getDidRun() {
 		return $this->didRun;
 	}
 
 	/**
 	 * @param Boolean $newDidRun
+	 * @return void
 	 */
 	protected function setDidRun($newDidRun) {
 		$this->didRun = $newDidRun;
 	}
-
-
-	/**
-	 * Indicates whether all targets in the service are active (as determined
-	 * by the pazpar2-access.php proxy service).
-	 *
-	 * @var Boolean|Null
-	 */
-	protected $allTargetsActive;
 
 	/**
 	 * @return Boolean|Null
@@ -239,18 +279,11 @@ class Query extends AbstractEntity {
 
 	/**
 	 * @param Boolean $newAllTargetsActive
+	 * @return void
 	 */
 	protected function setAllTargetsActive($newAllTargetsActive) {
 		$this->allTargetsActive = $newAllTargetsActive;
 	}
-
-
-	/**
-	 * URL of the pazpar2 service used.
-	 *
-	 * @var string|Null
-	 */
-	protected $pazpar2BaseURL;
 
 	/**
 	 * Return URL of pazpar2 service.
@@ -276,30 +309,12 @@ class Query extends AbstractEntity {
 		$this->pazpar2BaseURL = $newPazpar2BaseURL;
 	}
 
-
-	/**
-	 * Array holding the search results after they are downloaded.
-	 * The array's element can be displayed by the View Helper class
-	 * Tx_Pazpar2_ViewHelpers_ResultViewHelper.
-	 *
-	 * @var array
-	 */
-	private $results = array();
-
 	/**
 	 * @return array
 	 */
 	public function getResults() {
 		return $this->results;
 	}
-
-
-	/**
-	 * The total number of results (including the ones that could not be fetched.
-	 *
-	 * @var integer
-	 */
-	private $totalResultCount;
 
 	/**
 	 * @return integer
@@ -314,25 +329,6 @@ class Query extends AbstractEntity {
 	protected function setTotalResultCount($newTotalResultCount) {
 		$this->totalResultCount = $newTotalResultCount;
 	}
-
-
-
-	/**
-	 * VARIABLES FOR INTERNAL USE
-	 */
-
-	/**
-	 * Stores state of query.
-	 * @var Boolean
-	 */
-	protected $queryIsRunning;
-
-	/**
-	 * Stores time the current query was started.
-	 * @var int
-	 */
-	protected $queryStartTime;
-
 
 	/**
 	 * Creates pazpar2 search string for the given index name and query term.
@@ -351,7 +347,6 @@ class Query extends AbstractEntity {
 
 		return $search;
 	}
-
 
 	/**
 	 * Returns the full query string to send to pazpar2.
@@ -396,7 +391,6 @@ class Query extends AbstractEntity {
 		return $query;
 	}
 
-
 	/**
 	 * Returns URL to initialise pazpar2.
 	 * If $serviceName has been set up, that service is used.
@@ -412,7 +406,6 @@ class Query extends AbstractEntity {
 		return $URL;
 	}
 
-
 	/**
 	 * Returns URL for pazpar2 search command.
 	 *
@@ -425,7 +418,6 @@ class Query extends AbstractEntity {
 		return $URL;
 	}
 
-
 	/**
 	 * Returns URL for pazpar2 status command.
 	 *
@@ -434,7 +426,6 @@ class Query extends AbstractEntity {
 	protected function pazpar2StatURL() {
 		return $this->getPazpar2BaseURL() . '?command=stat';
 	}
-
 
 	/**
 	 * Returns URL for downloading pazpar2 results.
@@ -457,7 +448,6 @@ class Query extends AbstractEntity {
 		return $URL;
 	}
 
-
 	/**
 	 * Returns a string encoding the sort order formatted for use by pazpar2.
 	 *
@@ -474,7 +464,6 @@ class Query extends AbstractEntity {
 		return $sortOrderString;
 	}
 
-
 	/**
 	 * Returns the content loaded from the given URL.
 	 *
@@ -485,7 +474,6 @@ class Query extends AbstractEntity {
 		return GeneralUtility::getURL($URL);
 	}
 
-
 	/**
 	 * Initialise pazpar2/Service Proxy.
 	 * To be implemented in subclasses.
@@ -495,7 +483,6 @@ class Query extends AbstractEntity {
 	protected function initialiseSession() {
 		return FALSE;
 	}
-
 
 	/**
 	 * Start a pazpar2 Query.
@@ -519,7 +506,6 @@ class Query extends AbstractEntity {
 			}
 		}
 	}
-
 
 	/**
 	 * Checks whether the query is done.
@@ -552,13 +538,12 @@ class Query extends AbstractEntity {
 		return $result;
 	}
 
-
 	/**
 	 * Attempts to extract dates from $record and returns an array
 	 * containing numbers from the 'date' fields as integers.
 	 *
-	 * @param Array $record location or full pazpar2 record
-	 * @return Array of integers
+	 * @param array $record location or full pazpar2 record
+	 * @return array of integers
 	 */
 	protected function extractNewestDates($record) {
 		$result = Array();
@@ -577,14 +562,13 @@ class Query extends AbstractEntity {
 		return $result;
 	}
 
-
 	/**
 	 * Auxiliary sort function for sorting records and locations based
 	 * on their 'date' field with the newest item being first and undefined
 	 * dates last.
 	 *
-	 * @param Array $a location or full pazpar2 record
-	 * @param Array $b location or full pazpar2 record
+	 * @param array $a location or full pazpar2 record
+	 * @param array $b location or full pazpar2 record
 	 * @return integer
 	 */
 	protected function yearSort($a, $b) {
@@ -601,7 +585,6 @@ class Query extends AbstractEntity {
 			return 0;
 		}
 	}
-
 
 	/**
 	 * Fetches results from pazpar2.
@@ -667,7 +650,6 @@ class Query extends AbstractEntity {
 			}
 		}
 	}
-
 
 	/**
 	 * Public function to run the pazpar2 query.

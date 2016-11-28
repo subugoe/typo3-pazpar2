@@ -24,51 +24,49 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
+class tx_Pazpar2_Service_Flexform
+{
 
-class tx_Pazpar2_Service_Flexform {
+    /**
+     * Called from Flexform to provide menu items with Neuerwerbungen subjects.
+     *
+     * @param array $config
+     * @return array
+     */
+    public function buildMenu($config)
+    {
+        $rootNodes = $this->queryForChildrenOf('NE');
 
-	/**
-	 * Called from Flexform to provide menu items with Neuerwerbungen subjects.
-	 *
-	 * @param array $config
-	 * @return array
-	 */
-	public function buildMenu ($config) {
-		$rootNodes = $this->queryForChildrenOf('NE');
+        $options = [['', '']];
+        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($rootNodes)) {
+            $optionTitle = $row['descr'];
+            $optionValue = $row['ppn'];
+            $options[] = [$optionTitle , $optionValue];
+        }
 
-		$options = array(array('',''));
-		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($rootNodes)) {
-			$optionTitle = $row['descr'];
-			$optionValue = $row['ppn'];
-			$options[] = array($optionTitle , $optionValue);
-		}
+        $config['items'] = array_merge($config['items'], $options);
+        return $config;
+    }
 
-		$config['items'] = array_merge($config['items'], $options);
-		return $config;
-	}
+    /**
+     * Queries the database for all records having the $parentGOK parameter as their parent element
+     *  and returns the query result.
+     *
+     * This requires the GOK plug-in and its database table to work.
+     *
+     * @param string $parentGOK
+     * @return array
+     */
+    private function queryForChildrenOf($parentGOK)
+    {
+        $queryResults = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+            '*',
+            'tx_nkwgok_data',
+            "parent = '" . $parentGOK . "'",
+            '',
+            'notation ASC',
+            '');
 
-	
-	
-	/**
-	 * Queries the database for all records having the $parentGOK parameter as their parent element
-	 *  and returns the query result.
-	 *
-	 * This requires the GOK plug-in and its database table to work.
-	 *
-	 * @param string $parentGOK
-	 * @return array
-	 */
-	private function queryForChildrenOf ($parentGOK) {
-		$queryResults = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-			'*',
-			'tx_nkwgok_data',
-			"parent = '" . $parentGOK . "'",
-			'',
-			'notation ASC',
-			'');
-
-		return $queryResults;
-	}
-
+        return $queryResults;
+    }
 }
-?>

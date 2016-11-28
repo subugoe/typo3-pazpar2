@@ -24,50 +24,50 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
-
-if (!defined('TYPO3_MODE')) die ('Access denied.');
-
+if (!defined('TYPO3_MODE')) {
+    die('Access denied.');
+}
 
 // Register plug-in to be listed in the backend.
 // The dispatcher is configured in ext_localconf.php.
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-		'Subugoe.' . $_EXTKEY,
-		'pazpar2', // Name used internally by TYPO3.
-		'pazpar2' // Name shown in the backend dropdown field.
+        'Subugoe.' . $_EXTKEY,
+        'pazpar2', // Name used internally by TYPO3.
+        'pazpar2' // Name shown in the backend dropdown field.
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-		'Subugoe.' . $_EXTKEY,
-		'pazpar2serviceproxy', // Name used internally by TYPO3.
-		'pazpar2 Service Proxy' // Name shown in the backend dropdown field.
+        'Subugoe.' . $_EXTKEY,
+        'pazpar2serviceproxy', // Name used internally by TYPO3.
+        'pazpar2 Service Proxy' // Name shown in the backend dropdown field.
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-		'Subugoe.' . $_EXTKEY,
-		'pazpar2neuerwerbungen', // Name used internally by TYPO3.
-		'pazpar2 Neuerwerbungen' // Name shown in the backend dropdown field.
+        'Subugoe.' . $_EXTKEY,
+        'pazpar2neuerwerbungen', // Name used internally by TYPO3.
+        'pazpar2 Neuerwerbungen' // Name shown in the backend dropdown field.
 );
 
 // Add Flex Forms.
-$plugInFlexForms = array(
-		array(
-				'plugIn' => 'pazpar2',
-				'flexForm' => 'Pazpar2'
-		),
-		array(
-				'plugIn' => 'pazpar2neuerwerbungen',
-				'flexForm' => 'Pazpar2'
-		),
-);
+$plugInFlexForms = [
+        [
+                'plugIn' => 'pazpar2',
+                'flexForm' => 'Pazpar2'
+        ],
+        [
+                'plugIn' => 'pazpar2neuerwerbungen',
+                'flexForm' => 'Pazpar2'
+        ],
+];
 
 $extensionName = strtolower(\TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToUpperCamelCase($_EXTKEY));
 
 foreach ($plugInFlexForms as $plugInFlexFormInfo) {
-	$fullPlugInName = $extensionName . '_' . $plugInFlexFormInfo['plugIn'];
-	$TCA['tt_content']['types']['list']['subtypes_addlist'][$fullPlugInName] = 'pi_flexform';
-	$flexFormPath = 'FILE:EXT:' . $_EXTKEY .
-			'/Configuration/FlexForms/' . $plugInFlexFormInfo['flexForm'] . '.xml';
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($fullPlugInName, $flexFormPath);
+    $fullPlugInName = $extensionName . '_' . $plugInFlexFormInfo['plugIn'];
+    $TCA['tt_content']['types']['list']['subtypes_addlist'][$fullPlugInName] = 'pi_flexform';
+    $flexFormPath = 'FILE:EXT:' . $_EXTKEY .
+            '/Configuration/FlexForms/' . $plugInFlexFormInfo['flexForm'] . '.xml';
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($fullPlugInName, $flexFormPath);
 }
 
 include_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Classes/Service/Flexform.php');

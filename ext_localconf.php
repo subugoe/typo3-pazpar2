@@ -24,50 +24,41 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
-
-if (!defined('TYPO3_MODE')) die ('Access denied.');
-
+if (!defined('TYPO3_MODE')) {
+    die('Access denied.');
+}
 
 // Configure Plug-Ins
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-		'Subugoe.' . $_EXTKEY,
-		'pazpar2', // Name used internally by TYPO3
-		// Array holding the controller-action-combinations that are accessible
-		array(
-			// The first controller and its first action will be the default
-				'Pazpar2' => 'index'
-		),
-		// Array holding non-cachable controller-action-combinations
-		array(
-				'Pazpar2' => 'index'
-		)
+        'Subugoe.' . $_EXTKEY,
+        'pazpar2',
+        [
+                'Pazpar2' => 'index'
+        ],
+        [
+                'Pazpar2' => 'index'
+        ]
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-		'Subugoe.' . $_EXTKEY,
-		'pazpar2serviceproxy', // Name used internally by TYPO3
-		// Array holding the controller-action-combinations that are accessible
-		array(
-			// The first controller and its first action will be the default
-				'Pazpar2serviceproxy' => 'index'
-		),
-		// Array holding non-cachable controller-action-combinations
-		array(
-				'Pazpar2serviceproxy' => 'index'
-		)
+        'Subugoe.' . $_EXTKEY,
+        'pazpar2serviceproxy',
+        [
+                'Pazpar2serviceproxy' => 'index'
+        ],
+        [
+                'Pazpar2serviceproxy' => 'index'
+        ]
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-		'Subugoe.' . $_EXTKEY,
-		'pazpar2neuerwerbungen', // Name used internally by TYPO3
-		// Array holding the controller-action-combinations that are accessible
-		array(
-			// The first controller and its first action will be the default
-				'Pazpar2neuerwerbungen' => 'index'
-		),
-		// Array holding non-cachable controller-action-combinations
-		array(
-				'Pazpar2neuerwerbungen' => 'index'
-		)
+        'Subugoe.' . $_EXTKEY,
+        'pazpar2neuerwerbungen',
+        [
+                'Pazpar2neuerwerbungen' => 'index'
+        ],
+        [
+                'Pazpar2neuerwerbungen' => 'index'
+        ]
 );

@@ -47,8 +47,6 @@ plugin.tx_pazpar2 {
 		CSSPath = EXT:pazpar2/Resources/Public/pz2-client/pz2.css
 		pz2JSPath = EXT:pazpar2/Resources/Public/pz2-client/pz2.js
 		pz2-clientJSPath = EXT:pazpar2/Resources/Public/pz2-client/pz2-client.js
-		flotJSPath = EXT:pazpar2/Resources/Public/pz2-client/flot/jquery.flot.js
-		flotSelectionJSPath = EXT:pazpar2/Resources/Public/pz2-client/flot/jquery.flot.selection.js
 
 		useSortMenu = 0
 		sortOrder {

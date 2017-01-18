@@ -6,9 +6,6 @@ A TYPO3 extension to include a bibliographic metasearch with Index Data’s
 
 Created by `SUB Göttingen <http://www.sub.uni-goettingen.de/>`__
 
-The extension includes the `flot <http://www.flotcharts.org/>`__
-JavaScript library for drawing graphs.
-
 Feel free to send in comments or contribute improvements. You can fork
 the extension’s `repository at
 github <https://github.com/subugoe/typo3-pazpar2>`__.
@@ -163,9 +160,7 @@ name of the corresponding TypoScript parameter is noted in [].
    year facets if results from more than a few years are displayed.
    Choose whether the year facets should be displayed graphically using
    a histogram rather than as an (incomplete) list of year numbers in
-   modern browsers. Activating this option will load the
-   `flot <http://www.flotcharts.org/>`__ JavaScript library from your
-   server on the relevant pages.
+   modern browsers.
 -  Subjects for pazpar2 Neuerwerbungen [``neuerwerbungen-subjects``\ ]:
    A subject has to be picked in the popup menu if you want to use the
    pazpar2 Neuerwerbungen plug-in. The popup menu is populated using
@@ -287,12 +282,6 @@ after the option name.
       [EXT:pazpar2/Resources/Public/pz2-client/pz2-client.js]:
       JavaScript handling the user interaction and display of results; a
       lot of the customisation is in here
-   -  ``flotJSPath``
-      [EXT:pazpar2/Resources/Public/pz2-client/flot/jquery.flot.js]:
-      flot graphing library
-   -  ``flotSelectionJSPath``
-      [EXT:pazpar2/Resources/Public/pz2-client/flot/jquery.flot.selection.js]:
-      selection component of flot graphing library
 
 -  ``plugin.tx_pazpar2_pazpar2serviceproxy.settings``
 

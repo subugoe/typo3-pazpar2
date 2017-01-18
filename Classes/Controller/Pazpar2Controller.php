@@ -243,25 +243,8 @@ class Pazpar2Controller extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $scriptTag->addAttribute('type', 'text/javascript');
         $scriptTag->setContent($jsCommand);
         $this->response->addAdditionalHeaderData($scriptTag->render());
-
-        // Load flot graphing library if needed.
-        if ($this->conf['useHistogramForYearFacets']) {
-            /** @var TagBuilder $scriptTag */
-            $scriptTag = new TagBuilder('script');
-            $scriptTag->addAttribute('type', 'text/javascript');
-            $scriptTag->addAttribute('src', $this->conf['flotJSPath']);
-            $scriptTag->forceClosingTag(true);
-            $this->response->addAdditionalHeaderData($scriptTag->render());
-
-            /** @var TagBuilder $scriptTag */
-            $scriptTag = new TagBuilder('script');
-            $scriptTag->addAttribute('type', 'text/javascript');
-            $scriptTag->addAttribute('src', $this->conf['flotSelectionJSPath']);
-            $scriptTag->forceClosingTag(true);
-            $this->response->addAdditionalHeaderData($scriptTag->render());
-        }
-
-        // Make jQuery initialise pazpar2 when the DOM is ready.
+        
+	// Make jQuery initialise pazpar2 when the DOM is ready.
         $jsCommand = "jQuery(document).ready(pz2ClientDomReady);\n";
 
         // Add Google Books support if asked to do so.

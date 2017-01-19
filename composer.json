@@ -1,0 +1,17 @@
+{
+    "name": "subugoe/pazpar2",
+    "description": "Pazpar2 for TYPO3",
+    "type": "typo3-cms-extension",
+    "license": "GPL-2.0+",
+    "authors": [
+        {
+            "name": "Ingo Pfennigstorf",
+            "email": "pfennigstorf@sub.uni-goettingen.de"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Subugoe\\Pazpar2\\": "Classes/"
+        }
+    }
+}

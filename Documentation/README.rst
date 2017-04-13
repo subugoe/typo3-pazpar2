@@ -66,8 +66,7 @@ TYPO3
      for additional metadata features supported by the extension.
 
 For using this extension directly from git, be sure to run
-git submodule update --init
-after cloning this extension.
+git clone [ repository ] --recursive
 
 pazpar2
 ~~~~~~~

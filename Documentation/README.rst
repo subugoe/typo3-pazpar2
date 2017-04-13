@@ -57,7 +57,8 @@ TYPO3
      Menu and Position modules
    - make sure you have the CSS for a jQuery UI theme included in your
      site to get a correct look
-
+   - PHP XSL Extension
+   
 -  pazpar2 ≥ 1.6.2
 
    - The extension works pretty well with the metadata fields created by

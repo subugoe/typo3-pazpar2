@@ -1,3 +1,0 @@
-[submodule "Resources/Public/pz2-client"]
-	path = Resources/Public/pz2-client
-	url = git://github.com/subugoe/pazpar2-js-client.git

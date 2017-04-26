@@ -1,0 +1,163 @@
+@font-face {
+	font-family: 'subicons';
+	src:url('fonts/subicons.eot');
+	src:url('fonts/subicons.eot?#iefix') format('embedded-opentype'),
+		url('fonts/subicons.woff') format('woff'),
+		url('fonts/subicons.ttf') format('truetype'),
+		url('fonts/subicons.svg#subicons') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+/* Use the following CSS code if you want to use data attributes for inserting your icons */
+[data-icon]:before {
+	font-family: 'subicons';
+	content: attr(data-icon);
+	speak: none;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+/* Use the following CSS code if you want to have a class per icon */
+/*
+Instead of a list of all class selectors,
+you can use the generic selector below, but it's slower:
+[class*="subicon-"] {
+*/
+.subicon-web-resource_fg, .subicon-web-resource_bg, .subicon-video_fg, .subicon-video_bg, .subicon-unknown_fg, .subicon-unknown_bg, .subicon-ui-loupe_fg, .subicon-ui-loupe_bg, .subicon-ui-arrow-prev-page, .subicon-ui-arrow-next-page, .subicon-ui-arrow-go-to-result, .subicon-research-data_fg, .subicon-research-data_bg, .subicon-newspaper_fg, .subicon-newspaper_bg, .subicon-music_fg, .subicon-music_bg, .subicon-multivolume-work_fg, .subicon-multivolume-work_bg, .subicon-multiple-mediatypes_fg, .subicon-multiple-mediatypes_bg, .subicon-microfiche_fg, .subicon-microfiche_bg, .subicon-map_fg, .subicon-map_bg, .subicon-manuscript_fg, .subicon-manuscript_bg, .subicon-letter_fg, .subicon-letter_bg, .subicon-journal_fg, .subicon-journal_bg, .subicon-image_fg, .subicon-image_bg, .subicon-book_fg, .subicon-book_bg, .subicon-audio_fg, .subicon-audio_bg, .subicon-article_fg, .subicon-article_bg, .subicon-file_fg, .subicon-file_bg {
+	font-family: 'subicons';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+}
+.subicon-web-resource_fg:before {
+	content: "\e01f";
+}
+.subicon-web-resource_bg:before {
+	content: "\e01e";
+}
+.subicon-video_fg:before {
+	content: "\e011";
+}
+.subicon-video_bg:before {
+	content: "\e010";
+}
+.subicon-unknown_fg:before {
+	content: "\e023";
+}
+.subicon-unknown_bg:before {
+	content: "\e022";
+}
+.subicon-ui-loupe_fg:before {
+	content: "\e055";
+}
+.subicon-ui-loupe_bg:before {
+	content: "\e054";
+}
+.subicon-ui-arrow-prev-page:before {
+	content: "\e051";
+}
+.subicon-ui-arrow-next-page:before {
+	content: "\e053";
+}
+.subicon-ui-arrow-go-to-result:before {
+	content: "\e052";
+}
+.subicon-research-data_fg:before {
+	content: "\e00d";
+}
+.subicon-research-data_bg:before {
+	content: "\e00c";
+}
+.subicon-newspaper_fg:before {
+	content: "\e009";
+}
+.subicon-newspaper_bg:before {
+	content: "\e008";
+}
+.subicon-music_fg:before {
+	content: "\e015";
+}
+.subicon-music_bg:before {
+	content: "\e014";
+}
+.subicon-multivolume-work_fg:before {
+	content: "\e003";
+}
+.subicon-multivolume-work_bg:before {
+	content: "\e002";
+}
+.subicon-multiple-mediatypes_fg:before {
+	content: "\e021";
+}
+.subicon-multiple-mediatypes_bg:before {
+	content: "\e020";
+}
+.subicon-microfiche_fg:before {
+	content: "\e01b";
+}
+.subicon-microfiche_bg:before {
+	content: "\e01a";
+}
+.subicon-map_fg:before {
+	content: "\e00f";
+}
+.subicon-map_bg:before {
+	content: "\e00e";
+}
+.subicon-manuscript_fg:before {
+	content: "\e019";
+}
+.subicon-manuscript_bg:before {
+	content: "\e018";
+}
+.subicon-letter_fg:before {
+	content: "\e017";
+}
+.subicon-letter_bg:before {
+	content: "\e016";
+}
+.subicon-journal_fg:before {
+	content: "\e007";
+}
+.subicon-journal_bg:before {
+	content: "\e006";
+}
+.subicon-image_fg:before {
+	content: "\e01d";
+}
+.subicon-image_bg:before {
+	content: "\e01c";
+}
+.subicon-book_fg:before {
+	content: "\e001";
+}
+.subicon-book_bg:before {
+	content: "\e000";
+}
+.subicon-audio_fg:before {
+	content: "\e013";
+}
+.subicon-audio_bg:before {
+	content: "\e012";
+}
+.subicon-article_fg:before {
+	content: "\e005";
+}
+.subicon-article_bg:before {
+	content: "\e004";
+}
+.subicon-file_fg:before {
+	content: "\e00b";
+}
+.subicon-file_bg:before {
+	content: "\e00a";
+}

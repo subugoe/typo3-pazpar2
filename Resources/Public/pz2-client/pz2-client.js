@@ -3187,7 +3187,7 @@ function renderDetails(recordID) {
 
 		if (searchTerms.length > 0) {
 			// Query Google Books for the ISBN/OCLC numbers in question.
-			var googleBooksURL = 'http://books.google.com/books?bibkeys=' + searchTerms
+			var googleBooksURL = '//books.google.com/books?bibkeys=' + searchTerms
 						+ '&jscmd=viewapi&callback=?';
 			jQuery.getJSON(googleBooksURL,
 				function(data) {

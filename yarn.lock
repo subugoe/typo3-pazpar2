@@ -7,8 +7,8 @@ flot@0.8.0-alpha:
   resolved "https://registry.yarnpkg.com/flot/-/flot-0.8.0-alpha.tgz#9cbbc7147c10a47d2549db90bd2987ec1ba784ba"
 
 pazpar2-js-client@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/pazpar2-js-client/-/pazpar2-js-client-1.0.0.tgz#45ee8a10967504c441975216520f3356e32158a2"
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/pazpar2-js-client/-/pazpar2-js-client-1.0.1.tgz#a701788921673f98f2488051352a584d60442f67"
   dependencies:
     flot "0.8.0-alpha"
     sub-iconfont "^1.0.0"

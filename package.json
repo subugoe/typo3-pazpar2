@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "Pazpar2 TYPO3 client",
     "scripts": {
-        "build": "cp -R node_modules/pazpar2-js-client ./Resources/Public/pz2-client"
+        "build": "cp -R node_modules/pazpar2-js-client/* Resources/Public/pz2-client"
     },
     "repository": "https://github.com/subugoe/typo3-pazpar2.git",
     "author": "Ingo Pfennigstorf <i.pfennigstorf@gmail.com>",

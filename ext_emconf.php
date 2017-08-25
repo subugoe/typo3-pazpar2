@@ -21,7 +21,7 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => 'Göttingen State and University Library, Germany http://www.sub.uni-goettingen.de',
     'constraints' => [
         'depends' => [
-            'typo3' => '6.2.0-8.4.1',
+            'typo3' => '6.2.0-8.99.99',
         ],
         'conflicts' => [
         ],

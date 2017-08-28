@@ -3349,6 +3349,7 @@ function renderDetails(recordID) {
 			}
 
 			var viewer = new google.books.DefaultViewer(previewDiv);
+
 			viewer.load(this.href);
 
 			trackPiwik('googlebooks/open');

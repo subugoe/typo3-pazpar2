@@ -266,12 +266,12 @@ class Pazpar2Controller extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             /** @var TagBuilder $scriptTag */
             $scriptTag = new TagBuilder('script');
             $scriptTag->addAttribute('type', 'text/javascript');
-            $scriptTag->addAttribute('src', 'https://www.google.com/jsapi');
+            $scriptTag->addAttribute('src', 'https://www.google.com/books/jsapi.js');
             $scriptTag->forceClosingTag(true);
             $this->response->addAdditionalHeaderData($scriptTag->render());
 
             if ($this->conf['useGoogleBooks']) {
-                $jsCommand .= "google.load('books', '0');\n";
+                $jsCommand .= "google.books.load();\n";
             }
         }
 

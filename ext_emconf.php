@@ -14,14 +14,14 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'pazpar2',
     'description' => 'Interface for Index Data’s pazpar2 metasearch middleware',
     'category' => 'plugin',
-    'version' => '5.0.2',
+    'version' => '6.0.0',
     'state' => 'stable',
     'author' => 'SUB Göttingen',
     'author_email' => 'typo3-dev@sub.uni-goettingen.de',
     'author_company' => 'Göttingen State and University Library, Germany http://www.sub.uni-goettingen.de',
     'constraints' => [
         'depends' => [
-            'typo3' => '6.2.0-8.99.99',
+            'typo3' => '8.7.0-8.99.99',
         ],
         'conflicts' => [
         ],

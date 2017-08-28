@@ -81,7 +81,6 @@ class Pazpar2neuerwerbungen extends AbstractEntity
 
     /**
      * @param string $newRootPPN
-     * @return void
      */
     public function setRootPPN($newRootPPN)
     {
@@ -195,7 +194,6 @@ class Pazpar2neuerwerbungen extends AbstractEntity
      *
      * @param $month int reference to month number
      * @param $year int reference to year number
-     * @return void
      */
     private function reduceMonth(&$month, &$year)
     {
@@ -335,8 +333,6 @@ class Pazpar2neuerwerbungen extends AbstractEntity
      *  it. (If a subject group is not selected, do _not_ deselect all the
      *  children. Imperfect but probably the most reasonable thing to be done in
      *  a non-interactive setup like this one.)
-     *
-     * @return void
      */
     protected function setupSubjects()
     {
@@ -514,7 +510,8 @@ class Pazpar2neuerwerbungen extends AbstractEntity
                 "parent = '" . $parentPPN . "' AND statusID = 0",
                 '',
                 'notation ASC',
-                '');
+                ''
+        );
 
         return $queryResults;
     }
@@ -525,7 +522,6 @@ class Pazpar2neuerwerbungen extends AbstractEntity
      * potentially existant nested groups.
      *
      * @param array $group (passed by reference)
-     * @return void
      */
     protected function turnOnGroupSelectionIfNeeded(&$group)
     {
@@ -548,7 +544,6 @@ class Pazpar2neuerwerbungen extends AbstractEntity
      * the case.
      *
      * @param array $group (passed by reference)
-     * @return void
      */
     protected function turnOnChildSelectionIfNeeded(&$group)
     {
@@ -610,7 +605,6 @@ class Pazpar2neuerwerbungen extends AbstractEntity
 
     /**
      * @param array $newRequestArguments
-     * @return void
      */
     public function setRequestArguments($newRequestArguments)
     {

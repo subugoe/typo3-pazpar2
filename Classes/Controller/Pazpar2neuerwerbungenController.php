@@ -48,8 +48,6 @@ class Pazpar2neuerwerbungenController extends Pazpar2Controller
      * Initializer.
      *
      * Initializes parent class and sets up model object.
-     *
-     * @return void
      */
     public function initializeAction()
     {
@@ -66,8 +64,6 @@ class Pazpar2neuerwerbungenController extends Pazpar2Controller
      * Load subjects, set up the query string, run the superclass’ action
      *  (which does the relevant pazpar2 queries if necessary) and assign the
      *  results to the view.
-     *
-     * @return void
      */
     public function indexAction()
     {
@@ -82,8 +78,6 @@ class Pazpar2neuerwerbungenController extends Pazpar2Controller
     /**
      * Inserts headers into page: first general ones by the superclass,
      *    then our own.
-     *
-     * @return void
      */
     protected function addResourcesToHead()
     {

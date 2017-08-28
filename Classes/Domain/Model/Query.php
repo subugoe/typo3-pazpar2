@@ -206,7 +206,6 @@ class Query extends AbstractEntity
 
     /**
      * @param string $newInstitutionName
-     * @return void
      */
     protected function setInstitutionName($newInstitutionName)
     {
@@ -223,7 +222,6 @@ class Query extends AbstractEntity
 
     /**
      * @param Boolean $newDidRun
-     * @return void
      */
     protected function setDidRun($newDidRun)
     {
@@ -240,7 +238,6 @@ class Query extends AbstractEntity
 
     /**
      * @param Boolean $newAllTargetsActive
-     * @return void
      */
     protected function setAllTargetsActive($newAllTargetsActive)
     {
@@ -436,7 +433,6 @@ class Query extends AbstractEntity
      * Setter for pazpar2BaseURL variable.
      *
      * @param string|Null $newPazpar2BaseURL
-     * @return void
      */
     public function setPazpar2BaseURL($newPazpar2BaseURL)
     {
@@ -453,7 +449,6 @@ class Query extends AbstractEntity
 
     /**
      * @param string $newPazpar2Path
-     * @return void
      */
     public function setPazpar2Path($newPazpar2Path)
     {
@@ -617,7 +612,6 @@ class Query extends AbstractEntity
 
     /**
      * @param string $newSortOrder
-     * @return void
      */
     public function setSortOrder($newSortOrder)
     {
@@ -650,7 +644,6 @@ class Query extends AbstractEntity
 
     /**
      * @param string $newServiceName
-     * @return void
      */
     public function setServiceName($newServiceName)
     {
@@ -673,13 +666,14 @@ class Query extends AbstractEntity
 
         if (count($aDates) > 0 && count($bDates) > 0) {
             return $bDates[0] - $aDates[0];
-        } elseif (count($aDates) > 0 && count($bDates) === 0) {
-            return -1;
-        } elseif (count($aDates) === 0 && count($bDates) > 0) {
-            return 1;
-        } else {
-            return 0;
         }
+        if (count($aDates) > 0 && count($bDates) === 0) {
+            return -1;
+        }
+        if (count($aDates) === 0 && count($bDates) > 0) {
+            return 1;
+        }
+        return 0;
     }
 
     /**

@@ -125,6 +125,11 @@ for the relevant pages. Looking at the `illustrated setup
 example <https://github.com/subugoe/typo3-pazpar2/blob/master/Documentation/Setup.md>`__
 may make this easier.
 
+Extension Configuration
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Add your backend URL for the pazpar2 server in the extension setting in the extension manager.
+
 Flex Form
 ~~~~~~~~~
 

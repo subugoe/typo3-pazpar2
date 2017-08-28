@@ -398,7 +398,6 @@ class ResultViewHelper extends AbstractViewHelper
     }
 
     /**
-     *
      * @param array $result
      * @return \DOMElement
      */
@@ -603,7 +602,6 @@ class ResultViewHelper extends AbstractViewHelper
     }
 
     /**
-     *
      * @param string $fieldName
      * @param array $location
      * @return NULL|\DOMElement
@@ -677,11 +675,11 @@ class ResultViewHelper extends AbstractViewHelper
     {
         if ($a['attrs'] && !$b['attrs']) {
             return -1;
-        } elseif (!$a['attrs'] && $b['attrs']) {
-            return 1;
-        } else {
-            return $a['attrs']['originalPosition'] - $b['attrs']['originalPosition'];
         }
+        if (!$a['attrs'] && $b['attrs']) {
+            return 1;
+        }
+        return $a['attrs']['originalPosition'] - $b['attrs']['originalPosition'];
     }
 
     /**
@@ -938,7 +936,6 @@ class ResultViewHelper extends AbstractViewHelper
     }
 
     /**
-     *
      * @param array $result
      * @return array of DOM Elements
      */
@@ -975,17 +972,17 @@ class ResultViewHelper extends AbstractViewHelper
         return $this->detailLine('classification-msc', $infoElements);
     }
 
-// Not implemented in the PHP version.
+    // Not implemented in the PHP version.
     protected function mapDetailLine($result)
     {
     }
 
-// Not implemented in the PHP version.
+    // Not implemented in the PHP version.
     protected function appendGoogleBooksElementTo($container, $result)
     {
     }
 
-// Not implemented in the PHP version.
+    // Not implemented in the PHP version.
     protected function addZDBInfoIntoElement($container, $result)
     {
     }

@@ -65,7 +65,8 @@ class tx_Pazpar2_Service_Flexform
             "parent = '" . $parentGOK . "'",
             '',
             'notation ASC',
-            '');
+            ''
+        );
 
         return $queryResults;
     }

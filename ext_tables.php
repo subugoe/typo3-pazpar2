@@ -48,6 +48,12 @@ if (!defined('TYPO3_MODE')) {
         'pazpar2 Neuerwerbungen' // Name shown in the backend dropdown field.
 );
 
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+        'Subugoe.' . $_EXTKEY,
+        'pazpar2proxy', // Name used internally by TYPO3.
+        'Pazpar2 Proxy' // Name shown in the backend dropdown field.
+);
+
 // Add Flex Forms.
 $plugInFlexForms = [
         [

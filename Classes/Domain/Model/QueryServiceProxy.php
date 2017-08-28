@@ -145,7 +145,6 @@ class QueryServiceProxy extends Query
 
     /**
      * @param string $newPazpar2Path
-     * @return void
      */
     public function setServiceProxyAuthPath($newServiceProxyAuthPath)
     {

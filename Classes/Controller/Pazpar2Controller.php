@@ -74,8 +74,6 @@ class Pazpar2Controller extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 
     /**
      * Initialiser
-     *
-     * @return void
      */
     public function initializeAction()
     {
@@ -148,8 +146,6 @@ class Pazpar2Controller extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 
     /**
      * Helper: Inserts pazpar2 headers into page.
-     *
-     * @return void
      */
     protected function addResourcesToHead()
     {
@@ -312,8 +308,6 @@ class Pazpar2Controller extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     /**
      * Adds <script> element to <head> containing the configuration of the
      * pazpar2 Service to use.
-     *
-     * @return void
      */
     protected function addServiceConfigurationToHead()
     {

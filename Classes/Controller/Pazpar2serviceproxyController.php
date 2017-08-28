@@ -64,8 +64,6 @@ class Pazpar2serviceproxyController extends Pazpar2Controller
     /**
      * Adds <script> element to <head> containing the configuration for the
      * pazpar2 Service to use.
-     *
-     * @return void
      */
     protected function addServiceConfigurationToHead()
     {

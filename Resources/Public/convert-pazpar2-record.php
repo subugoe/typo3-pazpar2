@@ -56,12 +56,12 @@ function transform(&$errorMessage)
         $format = $formats[$parameters['format']];
         if ($format !== null) {
             $xslPath = '../Private/XSL/' . $format['xsl'];
-            $xsl = new DOMDocument();
+            $xsl = new \DOMDocument();
             $xsl->load($xslPath);
             $xsltproc = new XSLTProcessor();
             $xsltproc->importStylesheet($xsl);
 
-            $xml = new DOMDocument();
+            $xml = new \DOMDocument();
             if ($xml->loadXML($parameters['q'])) {
                 header('Content-Type: ' . $format['content-type'] . '; charset=utf-8');
                 if (array_key_exists('disposition', $format)) {

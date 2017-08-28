@@ -182,7 +182,7 @@ class ResultViewHelper extends AbstractViewHelper
      * @param string $append
      * @return \DOMElement
      */
-    protected function appendMarkupForFieldToContainer($fieldName, $result, $container, $prepend = '', $append = '')
+    protected function appendMarkupForFieldToContainer(string $fieldName, string $result, \DOMElement $container, string $prepend = '', string $append = ''): \DOMElement
     {
         $span = null;
         $fieldContent = $result['md-' . $fieldName][0]['values'][0];
@@ -211,7 +211,7 @@ class ResultViewHelper extends AbstractViewHelper
      * @param array $result
      * @return \DOMElement
      */
-    protected function titleInfo($result)
+    protected function titleInfo(array $result) : \DOMElement
     {
         $titleCompleteElement = $this->doc->createElement('span');
         $titleCompleteElement->setAttribute('class', 'pz2-title-complete');
@@ -237,7 +237,7 @@ class ResultViewHelper extends AbstractViewHelper
      * @param array $result
      * @return \DOMElement
      */
-    protected function authorInfo($result)
+    protected function authorInfo(array $result): \DOMElement
     {
         $outputElement = null;
 
@@ -273,7 +273,7 @@ class ResultViewHelper extends AbstractViewHelper
      * @param \DOMElement $result
      * @return \DOMElement
      */
-    protected function journalInfo($result)
+    protected function journalInfo(\DOMElement $result): \DOMElement
     {
         $outputElement = $this->doc->createElement('span');
         $outputElement->setAttribute('class', 'pz2-journal');
@@ -295,7 +295,7 @@ class ResultViewHelper extends AbstractViewHelper
      * @param array $data
      * @return string
      */
-    protected function COinSStringForObject($data)
+    protected function COinSStringForObject(array $data): string
     {
         $infoList = [];
         foreach ($data as $key => $info) {
@@ -313,7 +313,7 @@ class ResultViewHelper extends AbstractViewHelper
      * @param array $result
      * @param \DOMElement $container
      */
-    protected function appendCOinSSpansToContainer($result, $container)
+    protected function appendCOinSSpansToContainer(array $result, \DOMElement $container)
     {
         foreach ($result['location'] as $locationAll) {
             $location = $locationAll['ch'];
@@ -401,7 +401,7 @@ class ResultViewHelper extends AbstractViewHelper
      * @param array $result
      * @return \DOMElement
      */
-    protected function renderDetails($result)
+    protected function renderDetails(array $result) : \DOMElement
     {
         $detailsDiv = $this->doc->createElement('div');
         $detailsDiv->setAttribute('class', 'pz2-details');
@@ -478,7 +478,7 @@ class ResultViewHelper extends AbstractViewHelper
      * @param array $result
      * @return Null|array of DT/DD DOMElements
      */
-    protected function detailLineAuto($title, $result)
+    protected function detailLineAuto(string $title, array $result)
     {
         $line = null;
         $element = $this->DOMElementForTitle($title, $result);
@@ -495,7 +495,7 @@ class ResultViewHelper extends AbstractViewHelper
      * @param array $informationElements (DOM Elements)
      * @return Null|array of DT/DD DOMElements
      */
-    protected function detailLine($title, $informationElements)
+    protected function detailLine(string $title, array $informationElements)
     {
         $line = null;
 
@@ -545,7 +545,7 @@ class ResultViewHelper extends AbstractViewHelper
      * @param array $elements (DOM Elements)
      * @return array
      */
-    protected function markupInfoItems($infoItems)
+    protected function markupInfoItems(array $infoItems): array
     {
         $result = null;
 
@@ -568,7 +568,7 @@ class ResultViewHelper extends AbstractViewHelper
      * @param array $result
      * @return array of DOM elements
      */
-    protected function locationDetails($result)
+    protected function locationDetails(array $result): array
     {
         $locationDetails = [];
 
@@ -606,7 +606,7 @@ class ResultViewHelper extends AbstractViewHelper
      * @param array $location
      * @return NULL|\DOMElement
      */
-    protected function detailInfoItem($fieldName, $location)
+    protected function detailInfoItem(string $fieldName, array $location)
     {
         $infoItem = null;
         $value = $location['md-' . $fieldName];
@@ -1074,7 +1074,7 @@ class ResultViewHelper extends AbstractViewHelper
         if ($XMLString) {
             $form = $this->doc->createElement('form');
             $form->setAttribute('method', 'POST');
-            $scriptPath = 'typo3conf/ext/pazpar2/Resources/Public/pz2-client/converter/convert-pazpar2-record.php';
+            $scriptPath = '/typo3conf/ext/pazpar2/Resources/Public/pz2-client/converter/convert-pazpar2-record.php';
             $scriptGetParameters = ['format' => $exportFormat];
             if ($GLOBALS['TSFE']->lang) {
                 $scriptGetParameters['language'] = $GLOBALS['TSFE']->lang;
@@ -1270,7 +1270,7 @@ class ResultViewHelper extends AbstractViewHelper
      * @param string $DOI
      * @return \DOMElement
      */
-    protected function linkForDOI($DOI)
+    protected function linkForDOI(string $DOI): \DOMElement
     {
         $linkElement = $this->doc->createElement('a');
         $linkElement->setAttribute('href', 'http://dx.doi.org/' . $DOI);

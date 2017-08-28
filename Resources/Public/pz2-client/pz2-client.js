@@ -1,6 +1,6 @@
-/* 
+/*
  * pz2-client.js
- * 
+ *
  * Inspired by and mildly based on Index Data’s js-client.js.
  * 2010-2013 Sven-S. Porst, SUB Göttingen <porst@sub.uni-goettingen.de>
  *
@@ -414,7 +414,7 @@ function fieldContentsInRecord (fieldName, record) {
 					}
 				}
 			}
-		}		
+		}
 	}
 	else {
 		result = record['md-' + fieldName];
@@ -436,7 +436,7 @@ function fieldContentsInRecord (fieldName, record) {
 function displayLists (list) {
 
 	/*	filter
-		Returns filtered lists of pazpar2 records according to the current 
+		Returns filtered lists of pazpar2 records according to the current
 		filterArray. The first list are the results to display. The second list
 		are the results satisfying all filters except the date ones. It is used
 		for drawing the date histogram.
@@ -864,7 +864,7 @@ function display () {
 				var info = data[key];
 				if (info !== undefined) {
 					for (var infoIndex in info) {
-						infoList.push(key + '=' + encodeURIComponent(info[infoIndex]));				
+						infoList.push(key + '=' + encodeURIComponent(info[infoIndex]));
 					}
 				}
 			}
@@ -1767,7 +1767,7 @@ function facetListForType (type, preferOriginalFacets) {
 		}
 	}
 
-	return container;		
+	return container;
 }
 
 
@@ -2417,7 +2417,7 @@ function toggleStatus() {
 	Called when a list item is clicked.
 		Reveals/Hides the detail information for the record.
 		Detail information is created when it is first needed and then stored with the record.
-	input:	prefixRecId - string of the form rec_RECORDID coming from the DOM ID	
+	input:	prefixRecId - string of the form rec_RECORDID coming from the DOM ID
 */
 function toggleDetails (prefixRecId) {
 	var recordIDHTML = prefixRecId.replace('rec_', '');
@@ -2570,7 +2570,7 @@ function renderDetails(recordID) {
 	var detailLine = function (title, informationElements) {
 		var line;
 		if (title && informationElements) {
-			var headingText;	
+			var headingText;
 
 			if (informationElements.length === 1) {
 				headingText = localise('detail-label-'+title);
@@ -2636,7 +2636,7 @@ function renderDetails(recordID) {
 		linkElement.appendChild(document.createTextNode(DOI));
 
 		var DOISpan = document.createElement('span');
-		DOISpan.appendChild(linkElement);		
+		DOISpan.appendChild(linkElement);
 
 		return DOISpan;
 	};
@@ -3040,7 +3040,7 @@ function renderDetails(recordID) {
 						else {
 							statusElement = undefined;
 						}
-					}	
+					}
 					return statusElement;
 				};
 
@@ -3068,7 +3068,7 @@ function renderDetails(recordID) {
 						to DOM elements displaying their information.
 					input:	data - ElectronicData or PrintData element from ZDB XML
 					output:	DOM element containing the information from data
-				*/				
+				*/
 				var ZDBInfoElement = function (data) {
 					var results = jQuery('Result', data);
 
@@ -3630,7 +3630,7 @@ function renderDetails(recordID) {
 				if (!dontTerminate) {
 					infoSpan.appendChild(document.createTextNode('; '));
 				}
-			}			
+			}
 			return infoSpan;
 		};
 
@@ -3895,7 +3895,7 @@ function renderDetails(recordID) {
 				URLsContainer.appendChild(document.createTextNode('; '));
 			}
 
-			return URLsContainer;		
+			return URLsContainer;
 		};
 
 
@@ -4166,7 +4166,7 @@ function renderDetails(recordID) {
 			if (XMLString) {
 				form = document.createElement('form');
 				form.method = 'POST';
-				var scriptPath = 'typo3conf/ext/pazpar2/Resources/Public/pz2-client/converter/convert-pazpar2-record.php';
+				var scriptPath = '/typo3conf/ext/pazpar2/Resources/Public/pz2-client/converter/convert-pazpar2-record.php';
 				var scriptGetParameters = {'format': exportFormat};
 				if (pageLanguage !== undefined) {
 					scriptGetParameters.language = pageLanguage;

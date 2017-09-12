@@ -12,7 +12,14 @@ class Proxy
 {
     public function proxyAction()
     {
+        $method = 'GET';
         $arguments = GeneralUtility::_GET();
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $arguments = GeneralUtility::_POST();
+            $method = 'POST';
+        }
+
         unset($arguments['id']);
         unset($arguments['eID']);
         unset($arguments['type']);
@@ -30,7 +37,7 @@ class Proxy
         ];
 
         // Return a PSR-7 compliant response object
-        $response = $requestFactory->request($url, 'GET', $options);
+        $response = $requestFactory->request($url, $method, $options);
         // Get the content as a string on a successful request
         if ($response->getStatusCode() === 200) {
             return trim($response->getBody()->getContents());

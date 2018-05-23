@@ -1,4 +1,7 @@
 <?php
+
+namespace Subugoe\Pazpar2\Service;
+
 /*******************************************************************************
  * Copyright notice
  *
@@ -24,7 +27,7 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
-class tx_Pazpar2_Service_Flexform
+class Flexform
 {
 
     /**

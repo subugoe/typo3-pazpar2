@@ -6,7 +6,7 @@ use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Controller for handling the http stuff in proxying
+ * Controller for handling the http stuff in proxying.
  */
 class Proxy
 {
@@ -15,7 +15,7 @@ class Proxy
         $method = 'GET';
         $arguments = GeneralUtility::_GET();
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ('POST' === $_SERVER['REQUEST_METHOD']) {
             $arguments = GeneralUtility::_POST();
             $method = 'POST';
         }
@@ -32,16 +32,17 @@ class Proxy
 
         $options = [
             'headers' => [
-                'Accept' => 'application/xml'
-            ]
+                'Accept' => 'application/xml',
+            ],
         ];
 
         // Return a PSR-7 compliant response object
         $response = $requestFactory->request($url, $method, $options);
         // Get the content as a string on a successful request
-        if ($response->getStatusCode() === 200) {
+        if (200 === $response->getStatusCode()) {
             return trim($response->getBody()->getContents());
         }
+
         return '';
     }
 }

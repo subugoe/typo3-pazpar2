@@ -2,6 +2,9 @@
 
 namespace Subugoe\Pazpar2\Service;
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /*******************************************************************************
  * Copyright notice
  *
@@ -29,11 +32,11 @@ namespace Subugoe\Pazpar2\Service;
 
 class Flexform
 {
-
     /**
      * Called from Flexform to provide menu items with Neuerwerbungen subjects.
      *
      * @param array $config
+     *
      * @return array
      */
     public function buildMenu($config)
@@ -41,13 +44,14 @@ class Flexform
         $rootNodes = $this->queryForChildrenOf('NE');
 
         $options = [['', '']];
-        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($rootNodes)) {
+        foreach ($rootNodes as $row) {
             $optionTitle = $row['descr'];
             $optionValue = $row['ppn'];
-            $options[] = [$optionTitle , $optionValue];
+            $options[] = [$optionTitle, $optionValue];
         }
 
         $config['items'] = array_merge($config['items'], $options);
+
         return $config;
     }
 
@@ -58,19 +62,20 @@ class Flexform
      * This requires the GOK plug-in and its database table to work.
      *
      * @param string $parentGOK
+     *
      * @return array
      */
-    private function queryForChildrenOf($parentGOK)
+    private function queryForChildrenOf(string $parentGOK)
     {
-        $queryResults = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-            '*',
-            'tx_nkwgok_data',
-            "parent = '" . $parentGOK . "'",
-            '',
-            'notation ASC',
-            ''
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_nkwgok_data');
 
-        return $queryResults;
+        return $queryBuilder
+            ->select('*')
+            ->from('tx_nkwgok_data')
+            ->where($queryBuilder->expr()->eq('parent', '?'))
+            ->setParameter(0, $parentGOK)
+            ->orderBy('notation', 'ASC')
+            ->execute()
+            ->fetchAll();
     }
 }

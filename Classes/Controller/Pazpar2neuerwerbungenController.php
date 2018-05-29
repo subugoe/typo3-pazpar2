@@ -1,4 +1,5 @@
 <?php
+
 namespace Subugoe\Pazpar2\Controller;
 
 /*******************************************************************************
@@ -25,21 +26,21 @@ namespace Subugoe\Pazpar2\Controller;
  * THE SOFTWARE.
  ******************************************************************************/
 
-/**
+/*
  * Main controller for pazpar2 Neuerwerbungen plug-in,
  * of the pazpar2 Extension.
  */
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
+use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
  * Controller for the pazpar2 Neuerwerbungen package.
  */
 class Pazpar2neuerwerbungenController extends Pazpar2Controller
 {
-
     /**
      * Model object used for handling the parameters.
+     *
      * @var \Subugoe\Pazpar2\Domain\Model\Pazpar2neuerwerbungen
      */
     protected $pz2Neuerwerbungen;

@@ -7,29 +7,29 @@ if (!defined('TYPO3_MODE')) {
 // Configure Plug-Ins
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'Subugoe.' . $_EXTKEY,
+    'Subugoe.'.$_EXTKEY,
     'pazpar2',
     [
         'Pazpar2' => 'index',
     ],
     [
-        'Pazpar2' => 'index'
+        'Pazpar2' => 'index',
     ]
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'Subugoe.' . $_EXTKEY,
+    'Subugoe.'.$_EXTKEY,
     'pazpar2serviceproxy',
     [
         'Pazpar2serviceproxy' => 'index',
     ],
     [
-        'Pazpar2serviceproxy' => 'index'
+        'Pazpar2serviceproxy' => 'index',
     ]
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'Subugoe.' . $_EXTKEY,
+    'Subugoe.'.$_EXTKEY,
     'pazpar2proxy',
     [
         'Proxy' => 'proxy',
@@ -40,13 +40,13 @@ if (!defined('TYPO3_MODE')) {
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'Subugoe.' . $_EXTKEY,
+    'Subugoe.'.$_EXTKEY,
     'pazpar2neuerwerbungen',
     [
         'Pazpar2neuerwerbungen' => 'index',
     ],
     [
-        'Pazpar2neuerwerbungen' => 'index'
+        'Pazpar2neuerwerbungen' => 'index',
     ]
 );
 

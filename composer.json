@@ -2,7 +2,7 @@
     "name": "subugoe/pazpar2",
     "description": "Pazpar2 for TYPO3",
     "type": "typo3-cms-extension",
-    "license": "GPL-2.0+",
+    "license": "GPL-2.0-or-later",
     "authors": [
         {
             "name": "Ingo Pfennigstorf",

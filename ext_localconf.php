@@ -50,4 +50,4 @@ if (!defined('TYPO3_MODE')) {
     ]
 );
 
-$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['pazpar2_proxy'] = 'EXT:pazpar2/Classes/Ajax/Proxy.php';
+$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['pazpar2_proxy'] = \Subugoe\Pazpar2\Ajax\Proxy::class . '::proxyAction';

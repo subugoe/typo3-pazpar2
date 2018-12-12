@@ -2,22 +2,25 @@
 
 namespace Subugoe\Pazpar2\Ajax;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Controller for handling the http stuff in proxying.
  */
 class Proxy
 {
-    public function proxyAction()
+    public function proxyAction(ServerRequestInterface $request, ResponseInterface $response)
     {
         $method = 'GET';
-        $arguments = GeneralUtility::_GET();
+        $arguments = $request->getQueryParams();
 
-        if ('POST' === $_SERVER['REQUEST_METHOD']) {
-            $arguments = GeneralUtility::_POST();
-            $method = 'POST';
+        if ('POST' === $request->getMethod()) {
+            $arguments = $request->getQueryParams();
+            $method = $request->getMethod();
         }
 
         unset($arguments['id']);
@@ -25,10 +28,11 @@ class Proxy
         unset($arguments['type']);
         $arguments = http_build_query($arguments);
 
-        $configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['pazpar2']);
+        $configuration = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('pazpar2', 'backendUrl');
+
         // Initiate the Request Factory, which allows to run multiple requests
         $requestFactory = GeneralUtility::makeInstance(RequestFactory::class);
-        $url = sprintf('%s?%s', $configuration['backendUrl'], $arguments);
+        $url = sprintf('%s?%s', $configuration, $arguments);
 
         $options = [
             'headers' => [
@@ -37,16 +41,15 @@ class Proxy
         ];
 
         // Return a PSR-7 compliant response object
-        $response = $requestFactory->request($url, $method, $options);
+        $data = $requestFactory->request($url, $method, $options);
         // Get the content as a string on a successful request
-        if (200 === $response->getStatusCode()) {
-            return trim($response->getBody()->getContents());
+        if (200 === $data->getStatusCode()) {
+            $response->getBody()->write(trim($data->getBody()->getContents()));
+            return $response->withHeader('Content-Type', 'text/xml');
         }
 
-        return '';
+        $response->getBody()->write('');
+
+        return $response->withHeader('Content-Type', 'text/xml');
     }
 }
-
-header('Content-type: text/xml');
-
-echo (new Proxy())->proxyAction();

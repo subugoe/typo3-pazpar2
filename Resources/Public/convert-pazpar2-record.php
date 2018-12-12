@@ -14,7 +14,7 @@
 
 /*
  * The scripts expects to receive two parameters:
- *	* q - containing a UTF-8 encoded XML serialisation of a pazpar2 location record
+ *  * q - containing a UTF-8 encoded XML serialisation of a pazpar2 location record
  *  * format - containing the name of the format to convert the record to
  *
  * It returns the result of converting the pazpar2 record to the desired format.

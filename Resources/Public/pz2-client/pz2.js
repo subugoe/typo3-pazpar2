@@ -140,8 +140,7 @@ if (typeof window.pz2 == "undefined") {
 
           if (this.errorHandler) {
             this.errorHandler(err);
-          }
-          else {
+          } else {
             throw err;
           }
         },
@@ -187,7 +186,7 @@ if (typeof window.pz2 == "undefined") {
                 opts,
                 function (data) {
                   if (data.getElementsByTagName("status")[0]
-                          .childNodes[0].nodeValue == "OK") {
+                      .childNodes[0].nodeValue == "OK") {
                     if (data.getElementsByTagName("protocol")[0]
                             .childNodes[0].nodeValue
                         != context.suppProtoVer)
@@ -210,8 +209,7 @@ if (typeof window.pz2 == "undefined") {
                         );
                     if (context.initCallback)
                       context.initCallback(data);
-                  }
-                  else
+                  } else
                     context.throwError('Init failed. Malformed WS resonse.',
                         110);
                 }
@@ -237,7 +235,7 @@ if (typeof window.pz2 == "undefined") {
               {"command": "ping", "session": this.sessionID, "windowid": window.name},
               function (data) {
                 if (data.getElementsByTagName("status")[0]
-                        .childNodes[0].nodeValue == "OK") {
+                    .childNodes[0].nodeValue == "OK") {
                   context.pingStatusOK = true;
                   context.pingTimer =
                       setTimeout(
@@ -246,8 +244,7 @@ if (typeof window.pz2 == "undefined") {
                           },
                           context.keepAlive
                       );
-                }
-                else
+                } else
                   context.throwError('Ping failed. Malformed WS resonse.',
                       111);
               }
@@ -303,7 +300,7 @@ if (typeof window.pz2 == "undefined") {
               searchParams,
               function (data) {
                 if (data.getElementsByTagName("status")[0]
-                        .childNodes[0].nodeValue == "OK") {
+                    .childNodes[0].nodeValue == "OK") {
                   context.searchStatusOK = true;
                   //piggyback search
                   context.show(start, num, sort);
@@ -313,8 +310,7 @@ if (typeof window.pz2 == "undefined") {
                     context.termlist();
                   if (context.bytargetCallback)
                     context.bytarget();
-                }
-                else
+                } else
                   context.throwError('Search failed. Malformed WS resonse.',
                       112);
               }
@@ -353,8 +349,7 @@ if (typeof window.pz2 == "undefined") {
                             delay
                         );
                   context.statCallback(stat);
-                }
-                else
+                } else
                   context.throwError('Stat failed. Malformed WS resonse.',
                       113);
               }
@@ -409,7 +404,7 @@ if (typeof window.pz2 == "undefined") {
                   show.num = Number(data.num[0]);
                   show.hits = data.hit;
                 } else if (data.getElementsByTagName("status")[0]
-                        .childNodes[0].nodeValue == "OK") {
+                    .childNodes[0].nodeValue == "OK") {
                   // first parse the status data send along with records
                   // this is strictly bound to the format
                   activeClients =
@@ -512,7 +507,7 @@ if (typeof window.pz2 == "undefined") {
                   callback(record, args);
                   //pz2 record
                 } else if (recordNode =
-                        data.getElementsByTagName("record")[0]) {
+                    data.getElementsByTagName("record")[0]) {
                   // if stylesheet was fetched do not parse the response
                   if (context.xslDoc) {
                     record = new Array();
@@ -540,8 +535,7 @@ if (typeof window.pz2 == "undefined") {
                             delay
                         );
                   callback(record, args);
-                }
-                else
+                } else
                   context.throwError('Record failed. Malformed WS resonse.',
                       115);
               }
@@ -589,9 +583,9 @@ if (typeof window.pz2 == "undefined") {
                                     .childNodes[0].nodeValue
                                 : 'ERROR'),
                         "freq":
-                        terms[j]
-                            .getElementsByTagName("frequency")[0]
-                            .childNodes[0].nodeValue || 'ERROR'
+                            terms[j]
+                                .getElementsByTagName("frequency")[0]
+                                .childNodes[0].nodeValue || 'ERROR'
                       };
 
                       var termIdNode =
@@ -616,8 +610,7 @@ if (typeof window.pz2 == "undefined") {
                         );
 
                   context.termlistCallback(termList);
-                }
-                else
+                } else
                   context.throwError('Termlist failed. Malformed WS resonse.',
                       116);
               }
@@ -648,7 +641,7 @@ if (typeof window.pz2 == "undefined") {
               },
               function (data) {
                 if (data.getElementsByTagName("status")[0]
-                        .childNodes[0].nodeValue == "OK") {
+                    .childNodes[0].nodeValue == "OK") {
                   var targetNodes = data.getElementsByTagName("target");
                   var bytarget = new Array();
                   for (var i = 0; i < targetNodes.length; i++) {
@@ -662,8 +655,7 @@ if (typeof window.pz2 == "undefined") {
                           var nodeText = targetNodes[i].childNodes[j]
                               .firstChild.nodeValue;
                           bytarget[i][nodeName] = nodeText;
-                        }
-                        else {
+                        } else {
                           bytarget[i][nodeName] = "";
                         }
                       }
@@ -693,8 +685,7 @@ if (typeof window.pz2 == "undefined") {
                         );
 
                   context.bytargetCallback(bytarget);
-                }
-                else
+                } else
                   context.throwError('Bytarget failed. Malformed WS resonse.',
                       117);
               }
@@ -704,14 +695,14 @@ if (typeof window.pz2 == "undefined") {
         // just for testing, probably shouldn't be here
         showNext: function (page) {
           var step = page || 1;
-          this.show(( step * this.currentNum ) + this.currentStart);
+          this.show((step * this.currentNum) + this.currentStart);
         },
 
         showPrev: function (page) {
           if (this.currentStart == 0)
             return false;
           var step = page || 1;
-          var newStart = this.currentStart - (step * this.currentNum );
+          var newStart = this.currentStart - (step * this.currentNum);
           this.show(newStart > 0 ? newStart : 0);
         },
 
@@ -832,8 +823,7 @@ if (typeof window.pz2 == "undefined") {
                 if (errNode.childNodes.length) {
                   errorInformation = ': ' + errNode.childNodes[0].nodeValue;
                 }
-              }
-              else {
+              } else {
                 // The reply is not a pazpar2 error message (other server error? server down?).
                 errorMessage = "Did not receive pazpar2 answer."
                 errorCode = this.request.status;
@@ -843,24 +833,20 @@ if (typeof window.pz2 == "undefined") {
               err.code = errorCode;
               if (this.errorHandler) {
                 this.errorHandler(err);
-              }
-              else {
+              } else {
                 throw err;
               }
-            }
-            else if (this.request.status == 200 && this.request.responseXML == null) {
+            } else if (this.request.status == 200 && this.request.responseXML == null) {
               if (this.request.responseText != null) {
                 //assume JSON
                 var json = null;
                 var text = this.request.responseText;
                 if (typeof window.JSON == "undefined") {
                   json = eval("(" + text + ")");
-                }
-                else {
+                } else {
                   try {
                     json = JSON.parse(text);
-                  }
-                  catch (e) {
+                  } catch (e) {
                     // Safari: eval will fail as well. Considering trying JSON2 (non-native implementation) instead
                     /* DEBUG only works in mk2-mobile
                     if (document.getElementById("log"))
@@ -868,8 +854,7 @@ if (typeof window.pz2 == "undefined") {
                     */
                     try {
                       json = eval("(" + text + ")");
-                    }
-                    catch (e) {
+                    } catch (e) {
                       /* DEBUG only works in mk2-mobile
                       if (document.getElementById("log"))
                       document.getElementById("log").innerHTML = "" + e + " " + length + ": " + text;
@@ -879,31 +864,26 @@ if (typeof window.pz2 == "undefined") {
                 }
 
                 this.callback(json, "json");
-              }
-              else {
+              } else {
                 var err = new Error("XML response is empty but no error " +
                     "for " + savedUrlForErrorReporting);
                 err.code = -1;
                 if (this.errorHandler) {
                   this.errorHandler(err);
-                }
-                else {
+                } else {
                   throw err;
                 }
               }
-            }
-            else if (this.request.status == 200) {
+            } else if (this.request.status == 200) {
               this.callback(this.request.responseXML);
-            }
-            else {
+            } else {
               var err = new Error("HTTP response not OK: "
                   + this.request.status + " - "
                   + this.request.statusText);
               err.code = '00' + this.request.status;
               if (this.errorHandler) {
                 this.errorHandler(err);
-              }
-              else {
+              } else {
                 throw err;
               }
             }

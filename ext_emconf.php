@@ -1,6 +1,6 @@
 <?php
 
-$EM_CONF[$_EXTKEY] = [
+$EM_CONF['pazpar2'] = [
     'title' => 'pazpar2',
     'description' => 'Interface for Index Data’s pazpar2 metasearch middleware',
     'category' => 'plugin',
@@ -11,7 +11,7 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => 'Göttingen State and University Library, Germany http://www.sub.uni-goettingen.de',
     'constraints' => [
         'depends' => [
-            'typo3' => '9.5.0-9.5.99',
+            'typo3' => '9.5.0-10.4.99',
         ],
         'conflicts' => [
         ],

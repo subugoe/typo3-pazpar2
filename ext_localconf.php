@@ -1,13 +1,9 @@
 <?php
 
-if (!defined('TYPO3_MODE')) {
-    die('Access denied.');
-}
-
 // Configure Plug-Ins
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'Subugoe.'.$_EXTKEY,
+    'Subugoe.pazpar2',
     'pazpar2',
     [
         'Pazpar2' => 'index',
@@ -18,7 +14,7 @@ if (!defined('TYPO3_MODE')) {
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'Subugoe.'.$_EXTKEY,
+    'Subugoe.pazpar2',
     'pazpar2serviceproxy',
     [
         'Pazpar2serviceproxy' => 'index',
@@ -29,7 +25,7 @@ if (!defined('TYPO3_MODE')) {
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'Subugoe.'.$_EXTKEY,
+    'Subugoe.pazpar2',
     'pazpar2proxy',
     [
         'Proxy' => 'proxy',
@@ -40,7 +36,7 @@ if (!defined('TYPO3_MODE')) {
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'Subugoe.'.$_EXTKEY,
+    'Subugoe.pazpar2',
     'pazpar2neuerwerbungen',
     [
         'Pazpar2neuerwerbungen' => 'index',

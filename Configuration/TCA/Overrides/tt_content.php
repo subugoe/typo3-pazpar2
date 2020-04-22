@@ -3,27 +3,27 @@
 // Register plug-in to be listed in the backend.
 // The dispatcher is configured in ext_localconf.php.
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-        'Subugoe.pazpar2',
-        'pazpar2',
-        'pazpar2'
+    'Subugoe.pazpar2',
+    'pazpar2',
+    'pazpar2'
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-        'Subugoe.pazpar2',
-        'pazpar2serviceproxy',
-        'pazpar2 Service Proxy'
+    'Subugoe.pazpar2',
+    'pazpar2serviceproxy',
+    'pazpar2 Service Proxy'
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-        'Subugoe.pazpar2',
-        'pazpar2neuerwerbungen',
-        'pazpar2 Neuerwerbungen'
+    'Subugoe.pazpar2',
+    'pazpar2neuerwerbungen',
+    'pazpar2 Neuerwerbungen'
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-        'Subugoe.pazpar2',
-        'pazpar2proxy',
-        'Pazpar2 Proxy'
+    'Subugoe.pazpar2',
+    'pazpar2proxy',
+    'Pazpar2 Proxy'
 );
 
 // Add Flex Forms.

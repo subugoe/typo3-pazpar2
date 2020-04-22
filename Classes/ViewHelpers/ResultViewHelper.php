@@ -31,7 +31,7 @@ namespace Subugoe\Pazpar2\ViewHelpers;
 // to begin with, but is included to match the output given by the JavaScript
 // generated markup.)
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ResultViewHelper.php.

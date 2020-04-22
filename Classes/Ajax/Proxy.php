@@ -5,27 +5,29 @@ namespace Subugoe\Pazpar2\Ajax;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\RequestFactory;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Psr\Http\Message\ResponseInterface;
 
 /**
  * Controller for handling the http stuff in proxying.
  */
 class Proxy
 {
-    public function proxyAction(ServerRequestInterface $request, ResponseInterface $response)
+    public function proxyAction(ServerRequestInterface $request, Response $response = null)
     {
         $method = 'GET';
         $arguments = $request->getQueryParams();
+
+        if (!$response) {
+            $response = GeneralUtility::makeInstance(Response::class);
+        }
 
         if ('POST' === $request->getMethod()) {
             $arguments = $request->getQueryParams();
             $method = $request->getMethod();
         }
 
-        unset($arguments['id']);
-        unset($arguments['eID']);
-        unset($arguments['type']);
+        unset($arguments['id'], $arguments['eID'], $arguments['type']);
         $arguments = http_build_query($arguments);
 
         $configuration = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('pazpar2', 'backendUrl');

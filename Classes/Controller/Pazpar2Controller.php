@@ -30,7 +30,10 @@ namespace Subugoe\Pazpar2\Controller;
  * Provides the main controller for pazpar2 plug-in.
  */
 use Subugoe\Pazpar2\Domain\Model\QueryPazpar2;
+use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 use \TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
@@ -50,6 +53,8 @@ class Pazpar2Controller extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     protected $conf;
 
+    private $filePathSanitizer;
+
     /**
      * Returns the path of the pazpar2 service on the server or NULL.
      *
@@ -58,6 +63,11 @@ class Pazpar2Controller extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     protected function getPazpar2Path()
     {
         return $this->conf['pazpar2Path'];
+    }
+
+    public function __construct(FilePathSanitizer $filePathSanitizer)
+    {
+        $this->filePathSanitizer = $filePathSanitizer;
     }
 
     /**
@@ -85,7 +95,12 @@ class Pazpar2Controller extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             if (false !== strpos($key, 'Path')) {
                 // Let TYPO3 try to process path settings as a path, so we can
                 // use EXT: in the paths.
-                $processedPath = $GLOBALS['TSFE']->tmpl->getFileName($value);
+
+                try {
+                    $processedPath = $this->filePathSanitizer->sanitize($value);
+                } catch (FileDoesNotExistException $doesNotExistException) {
+                    $processedPath = $value;
+                }
                 if ($processedPath) {
                     $this->conf[$key] = $processedPath;
                 }

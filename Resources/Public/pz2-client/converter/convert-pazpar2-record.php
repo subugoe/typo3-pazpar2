@@ -14,7 +14,7 @@
 
 /*
  * The scripts expects to receive two parameters:
- *  * q - containing a UTF-8 encoded XML serialisation of a pazpar2 location record
+ *	* q - containing a UTF-8 encoded XML serialisation of a pazpar2 location record
  *  * format - containing the name of the format to convert the record to
  *
  * It returns the result of converting the pazpar2 record to the desired format.
@@ -22,32 +22,32 @@
 
 function transform(&$errorMessage)
 {
-    $formats = [
-        'ris' => [
+    $formats = array(
+        'ris' => array(
             'xsl' => 'pz2-to-ris.xsl',
             'content-type' => 'application/x-research-info-systems',
             'filename' => 'export.ris',
             'disposition' => 'attachment'
-        ],
-        'ris-inline' => [
+        ),
+        'ris-inline' => array(
             'xsl' => 'pz2-to-ris.xsl',
             'content-type' => 'application/x-research-info-systems',
             'filename' => 'export.ris',
             'disposition' => 'inline'
-        ],
-        'bibtex' => [
+        ),
+        'bibtex' => array(
             'xsl' => 'pz2-to-bibtex.xsl',
             'content-type' => 'application/x-bibtex',
             'filename' => 'export.bib',
             'disposition' => 'attachment'
-        ],
-        'bibtex-inline' => [
+        ),
+        'bibtex-inline' => array(
             'xsl' => 'pz2-to-bibtex.xsl',
             'content-type' => 'application/x-bibtex',
             'filename' => 'export.bib',
             'disposition' => 'inline'
-        ]
-    ];
+        )
+    );
 
     $parameters = array_merge($_GET, $_POST);
 
@@ -68,8 +68,10 @@ function transform(&$errorMessage)
                     $headerString = 'Content-Disposition: ' . $format['disposition'];
                     if (array_key_exists('filename', $parameters)) {
                         $headerString .= '; filename=' . $parameters['filename'];
-                    } elseif (array_key_exists('filename', $format)) {
-                        $headerString .= '; filename=' . $format['filename'];
+                    } else {
+                        if (array_key_exists('filename', $format)) {
+                            $headerString .= '; filename=' . $format['filename'];
+                        }
                     }
                     header($headerString);
                 }

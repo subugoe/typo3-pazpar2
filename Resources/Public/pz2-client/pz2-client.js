@@ -60,6 +60,12 @@ function localise(term, externalDictionary) {
   }
 
   var languageCode = pageLanguage;
+
+  // handle languageCodes such as 'de-DE'
+  if (languageCode.indexOf('-') !== -1) {
+    languageCode = languageCode.split('-')[0].toLowerCase();
+  }
+
   if (dictionary[pageLanguage] === null) {
     languageCode = 'en';
   }

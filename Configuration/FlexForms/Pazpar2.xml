@@ -81,6 +81,7 @@
                     </label>
                     <config>
                         <type>select</type>
+                        <renderType>selectSingle</renderType>
                         <itemsProcFunc>Subugoe\Pazpar2\Service\Flexform->buildMenu</itemsProcFunc>
                     </config>
                 </TCEforms>

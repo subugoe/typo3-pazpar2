@@ -1,4 +1,5 @@
 <?php
+
 namespace Subugoe\Pazpar2\Controller;
 
 /*******************************************************************************
@@ -25,22 +26,24 @@ namespace Subugoe\Pazpar2\Controller;
  * THE SOFTWARE.
  ******************************************************************************/
 
-/**
+/*
  * Provides the main controller for pazpar2 plug-in.
  */
 use Subugoe\Pazpar2\Domain\Model\QueryPazpar2;
+use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
+use \TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
  * pazpar2 controller for the pazpar2 extension.
  */
 class Pazpar2Controller extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
-
     /**
      * Query object handling the pazpar2 logic.
+     *
      * @var \Subugoe\Pazpar2\Domain\Model\Query
      */
     protected $query;
@@ -50,14 +53,21 @@ class Pazpar2Controller extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     protected $conf;
 
+    private $filePathSanitizer;
+
     /**
      * Returns the path of the pazpar2 service on the server or NULL.
      *
-     * @return String|NULL
+     * @return string|null
      */
     protected function getPazpar2Path()
     {
         return $this->conf['pazpar2Path'];
+    }
+
+    public function __construct(FilePathSanitizer $filePathSanitizer)
+    {
+        $this->filePathSanitizer = $filePathSanitizer;
     }
 
     /**
@@ -69,13 +79,12 @@ class Pazpar2Controller extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $query = GeneralUtility::makeInstance(\Subugoe\Pazpar2\Domain\Model\QueryPazpar2::class);
         $query->setPazpar2Path($this->getPazpar2Path());
         $query->setServiceName($this->conf['serviceID']);
+
         return $query;
     }
 
     /**
-     * Initialiser
-     *
-     * @return void
+     * Initialiser.
      */
     public function initializeAction()
     {
@@ -83,10 +92,15 @@ class Pazpar2Controller extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             // Transfer settings to conf
             $this->conf[$key] = $value;
 
-            if (strpos($key, 'Path') !== false) {
+            if (false !== strpos($key, 'Path')) {
                 // Let TYPO3 try to process path settings as a path, so we can
                 // use EXT: in the paths.
-                $processedPath = $GLOBALS['TSFE']->tmpl->getFileName($value);
+
+                try {
+                    $processedPath = $this->filePathSanitizer->sanitize($value);
+                } catch (FileDoesNotExistException $doesNotExistException) {
+                    $processedPath = $value;
+                }
                 if ($processedPath) {
                     $this->conf[$key] = $processedPath;
                 }
@@ -109,7 +123,7 @@ class Pazpar2Controller extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $arguments = $this->request->getArguments();
         $this->view->assign('extended', $arguments['extended']);
         $this->view->assign('query', $this->query);
-        if (array_key_exists('useJS', $arguments) && $arguments['useJS'] !== 'yes') {
+        if (array_key_exists('useJS', $arguments) && 'yes' !== $arguments['useJS']) {
             $this->query->setSortOrder($this->determineSortCriteria($arguments));
             $this->query->run();
         }
@@ -119,7 +133,9 @@ class Pazpar2Controller extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     /**
      * Determine which sort criteria to use and return them as an array whose
      *    elements are arrays with two elements: 'fieldName' and 'direction'.
+     *
      * @param array $arguments
+     *
      * @return array
      */
     private function determineSortCriteria($arguments)
@@ -131,10 +147,10 @@ class Pazpar2Controller extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             $criteria = explode('--', $arguments['sort']);
             foreach ($criteria as $criterion) {
                 $parts = explode('-', $criterion);
-                if (count($parts) == 2) {
+                if (2 == count($parts)) {
                     $sortCriteria[] = [
                             'fieldName' => $parts[0],
-                            'direction' => ($parts[1] == 'd') ? 'descending' : 'ascending'
+                            'direction' => ('d' == $parts[1]) ? 'descending' : 'ascending',
                     ];
                 }
             }
@@ -148,8 +164,6 @@ class Pazpar2Controller extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 
     /**
      * Helper: Inserts pazpar2 headers into page.
-     *
-     * @return void
      */
     protected function addResourcesToHead()
     {
@@ -189,11 +203,11 @@ class Pazpar2Controller extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
                 'useMaps' => (($this->conf['useMaps']) ? 'true' : 'false'),
                 'useZDB' => (($this->conf['useZDB']) ? 'true' : 'false'),
                 'ZDBUseClientIP' => ((!$this->conf['ZDBIP']) ? 'true' : 'false'),
-                'useHistogramForYearFacets' => (($this->conf['useHistogramForYearFacets'] == '1') ? 'true' : 'false'),
+                'useHistogramForYearFacets' => (('1' == $this->conf['useHistogramForYearFacets']) ? 'true' : 'false'),
                 'provideCOinSExport' => (($this->conf['provideCOinSExport']) ? 'true' : 'false'),
                 'showExportLinksForEachLocation' => (($this->conf['showExportLinksForEachLocation']) ? 'true' : 'false'),
                 'showKVKLink' => (($this->conf['showKVKLink']) ? 'true' : 'false'),
-                'useKeywords' => (($this->conf['useKeywords']) ? 'true' : 'false')
+                'useKeywords' => (($this->conf['useKeywords']) ? 'true' : 'false'),
         ];
         if (array_key_exists('exportFormats', $this->conf)) {
             $exportFormats = [];
@@ -222,7 +236,7 @@ class Pazpar2Controller extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 
         $jsCommand = "\n";
         foreach ($jsVariables as $name => $value) {
-            $jsCommand .= $name . ' = ' . $value . ";\n";
+            $jsCommand .= $name.' = '.$value.";\n";
         }
 
         // Set up JavaScript function that is called by nkwgok if asked to do so.
@@ -270,33 +284,29 @@ class Pazpar2Controller extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             /** @var TagBuilder $scriptTag */
             $scriptTag = new TagBuilder('script');
             $scriptTag->addAttribute('type', 'text/javascript');
-            $scriptTag->addAttribute('src', 'https://www.google.com/jsapi');
+            $scriptTag->addAttribute('src', 'https://www.google.com/books/jsapi.js');
             $scriptTag->forceClosingTag(true);
             $this->response->addAdditionalHeaderData($scriptTag->render());
 
             if ($this->conf['useGoogleBooks']) {
-                $jsCommand .= "google.load('books', '0');\n";
+                $jsCommand .= "google.books.load();\n";
             }
         }
 
         // Write custom localisations to pz2-client.js’ localisation array $localisationOverrides;
-        if (VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) < 6000000) {
-            // TYPO3 4: read from TSFE (ugly)
-            $localisationOverrides = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_pazpar2.']['_LOCAL_LANG.'];
-        } else {
-            // TYPO3 6+: use configuration manager
-            $configFramework = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'pazpar2');
-            $localisationOverrides = $configFramework['_LOCAL_LANG'];
-        }
+
+        $configFramework = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'pazpar2');
+        $localisationOverrides = $configFramework['_LOCAL_LANG'];
+
         if ($localisationOverrides) {
             foreach ($localisationOverrides as $languageCode => $dictionary) {
                 // remove '.' from language codes (only appear when using TYPO3 4)
                 $cleanLanguageCode = str_replace('.', '', $languageCode);
 
                 foreach ($dictionary as $key => $localisedString) {
-                    $jsCommand .= 'overrideLocalisation(' . json_encode($cleanLanguageCode) . ', '
-                            . json_encode($key) . ', '
-                            . json_encode($localisedString) . ");\n";
+                    $jsCommand .= 'overrideLocalisation('.json_encode($cleanLanguageCode).', '
+                            .json_encode($key).', '
+                            .json_encode($localisedString).");\n";
                 }
             }
         }
@@ -312,14 +322,12 @@ class Pazpar2Controller extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     /**
      * Adds <script> element to <head> containing the configuration of the
      * pazpar2 Service to use.
-     *
-     * @return void
      */
     protected function addServiceConfigurationToHead()
     {
-        $jsCommand = PHP_EOL . 'my_serviceID = ' . json_encode($this->conf['serviceID']) . ';' . PHP_EOL;
+        $jsCommand = PHP_EOL.'my_serviceID = '.json_encode($this->conf['serviceID']).';'.PHP_EOL;
         if ($this->getPazpar2Path()) {
-            $jsCommand .= 'pazpar2Path = ' . json_encode($this->getPazpar2Path()) . ';' . PHP_EOL;
+            $jsCommand .= 'pazpar2Path = '.json_encode($this->getPazpar2Path()).';'.PHP_EOL;
         }
 
         /** @var TagBuilder $scriptTag */

@@ -1,0 +1,2 @@
+# cat=basic/enable; type=string; label=Pazpar2 Backend server
+backendUrl = https://example.com/pazpar2/search.pz2

@@ -1,4 +1,5 @@
 <?php
+
 namespace Subugoe\Pazpar2\ViewHelpers;
 
 /*******************************************************************************
@@ -30,10 +31,10 @@ namespace Subugoe\Pazpar2\ViewHelpers;
 // to begin with, but is included to match the output given by the JavaScript
 // generated markup.)
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * ResultViewHelper.php
+ * ResultViewHelper.php.
  *
  * View Helper for a single pazpar2 result as downloaded and parsed by
  * Query Model.
@@ -59,7 +60,7 @@ class ResultViewHelper extends AbstractViewHelper
      * Configuration array containing rendering options, in particular:
      * * preferSUBOpac (int)
      * * provideCOinSExport (int)
-     * * exportFormats (array of strings)
+     * * exportFormats (array of strings).
      *
      * @var array
      */
@@ -95,14 +96,14 @@ class ResultViewHelper extends AbstractViewHelper
         $iconElement = $this->doc->createElement('span');
         $li->appendChild($iconElement);
         $mediaClass = 'other';
-        if (count($result['md-medium']) == 1) {
+        if (1 == count($result['md-medium'])) {
             $mediaClass = $result['md-medium'][0]['values'][0];
         } elseif (count($result['md-medium']) > 1) {
             $mediaClass = 'multiple';
         }
 
-        $iconElement->setAttribute('class', 'pz2-mediaIcon ' . $mediaClass);
-        $iconElement->setAttribute('title', LocalizationUtility::translate('media-type-' . $mediaClass, 'Pazpar2'));
+        $iconElement->setAttribute('class', 'pz2-mediaIcon '.$mediaClass);
+        $iconElement->setAttribute('title', LocalizationUtility::translate('media-type-'.$mediaClass, 'Pazpar2'));
 
         // basic title/author information
         $this->appendInfoToContainer($this->titleInfo($result), $li);
@@ -121,7 +122,7 @@ class ResultViewHelper extends AbstractViewHelper
             $this->appendMarkupForFieldToContainer('date', $result, $li, $spaceBefore, '.');
         }
 
-        if ($this->conf['provideCOinSExport'] == 1) {
+        if (1 == $this->conf['provideCOinSExport']) {
             // Insert COinS information
             $this->appendCOinSSpansToContainer($result, $li);
         }
@@ -134,13 +135,14 @@ class ResultViewHelper extends AbstractViewHelper
 
     /**
      * Convenince method to append an item to another one, even if undefineds and arrays are involved.
+     *
      * @param $info - the DOM element(s) to insert
      * @param \DOMElement $container - the DOM element to insert info to
      */
     protected function appendInfoToContainer($info, $container)
     {
         if ($info && $container) {
-            if (is_array($info) == false) {
+            if (false == is_array($info)) {
                 $container->appendChild($info);
             } else {
                 foreach ($info as $infoItem) {
@@ -154,6 +156,7 @@ class ResultViewHelper extends AbstractViewHelper
      * Add a target attribute to open in our target window and add a note
      * to the title as well as class about this fact.
      * The link’s title and class elements should be set before calling this method.
+     *
      * @param \DOMElement $link
      */
     protected function turnIntoNewWindowLink($link)
@@ -161,13 +164,13 @@ class ResultViewHelper extends AbstractViewHelper
         if ($link) {
             $link->setAttribute('target', 'pz2-linkTarget');
             $oldClass = $link->getAttribute('class');
-            $newClass = trim($oldClass . ' pz2-newWindowLink');
+            $newClass = trim($oldClass.' pz2-newWindowLink');
             $link->setAttribute('class', $newClass);
 
             $newTitle = LocalizationUtility::translate('Erscheint in separatem Fenster.', 'Pazpar2');
             if ($link->hasAttribute('title')) {
                 $oldTitle = $link->getAttribute('title');
-                $newTitle = $oldTitle . ' (' . $newTitle . ')';
+                $newTitle = $oldTitle.' ('.$newTitle.')';
             }
             $link->setAttribute('title', $newTitle);
         }
@@ -175,30 +178,32 @@ class ResultViewHelper extends AbstractViewHelper
 
     /**
      * Creates span DOM element and content for a field name; Appends it to the given container.
-     * @param string $fieldName
-     * @param string $result result array to look the fieldName up in
+     *
+     * @param string      $fieldName
+     * @param string      $result    result array to look the fieldName up in
      * @param \DOMElement $container
-     * @param string $prepend
-     * @param string $append
+     * @param string      $prepend
+     * @param string      $append
+     *
      * @return \DOMElement
      */
-    protected function appendMarkupForFieldToContainer($fieldName, $result, $container, $prepend = '', $append = '')
+    protected function appendMarkupForFieldToContainer(string $fieldName, string $result, \DOMElement $container, string $prepend = '', string $append = ''): \DOMElement
     {
         $span = null;
-        $fieldContent = $result['md-' . $fieldName][0]['values'][0];
+        $fieldContent = $result['md-'.$fieldName][0]['values'][0];
 
         if ($fieldContent && $container) {
             $span = $this->doc->createElement('span');
-            $span->setAttribute('class', 'pz2-' . $fieldName);
+            $span->setAttribute('class', 'pz2-'.$fieldName);
             $span->appendChild($this->doc->createTextNode($fieldContent));
 
-            if ($prepend != '') {
+            if ('' != $prepend) {
                 $container->appendChild($this->doc->createTextNode($prepend));
             }
 
             $container->appendChild($span);
 
-            if ($append != '') {
+            if ('' != $append) {
                 $container->appendChild($this->doc->createTextNode($append));
             }
         }
@@ -208,10 +213,12 @@ class ResultViewHelper extends AbstractViewHelper
 
     /**
      * Returns DOM SPAN element with markup for the current hit's title.
+     *
      * @param array $result
+     *
      * @return \DOMElement
      */
-    protected function titleInfo($result)
+    protected function titleInfo(array $result): \DOMElement
     {
         $titleCompleteElement = $this->doc->createElement('span');
         $titleCompleteElement->setAttribute('class', 'pz2-title-complete');
@@ -234,10 +241,12 @@ class ResultViewHelper extends AbstractViewHelper
      * Returns DOM SPAN element with markup for the current hit's author information.
      * The pre-formatted title-responsibility field is preferred and a list of author
      *    names is used as a fallback.
+     *
      * @param array $result
+     *
      * @return \DOMElement
      */
-    protected function authorInfo($result)
+    protected function authorInfo(array $result): \DOMElement
     {
         $outputElement = null;
 
@@ -270,15 +279,17 @@ class ResultViewHelper extends AbstractViewHelper
 
     /**
      * Returns DOM SPAN element with the current hit’s journal information.
+     *
      * @param \DOMElement $result
+     *
      * @return \DOMElement
      */
-    protected function journalInfo($result)
+    protected function journalInfo(\DOMElement $result): \DOMElement
     {
         $outputElement = $this->doc->createElement('span');
         $outputElement->setAttribute('class', 'pz2-journal');
 
-        $journalTitle = $this->appendMarkupForFieldToContainer('journal-title', $result, $outputElement, ' – ' . LocalizationUtility::translate('In', 'Pazpar2') . ': ');
+        $journalTitle = $this->appendMarkupForFieldToContainer('journal-title', $result, $outputElement, ' – '.LocalizationUtility::translate('In', 'Pazpar2').': ');
         if ($journalTitle) {
             $this->appendMarkupForFieldToContainer('journal-subpart', $result, $journalTitle, ', ');
             $journalTitle->appendChild($this->doc->createTextNode('.'));
@@ -292,28 +303,32 @@ class ResultViewHelper extends AbstractViewHelper
     /**
      * Turns the array $data, containing arrays of strings for its keys into a
      * string suitable for the title attribute of a COinS style element.
+     *
      * @param array $data
+     *
      * @return string
      */
-    protected function COinSStringForObject($data)
+    protected function COinSStringForObject(array $data): string
     {
         $infoList = [];
         foreach ($data as $key => $info) {
             if ($info) {
                 foreach ($info as $infoItem) {
-                    $infoList[] = $key . '=' . rawurlencode($infoItem[0]['values'][0]);
+                    $infoList[] = $key.'='.rawurlencode($infoItem[0]['values'][0]);
                 }
             }
         }
+
         return implode('&', $infoList);
     }
 
     /**
      * Appends DOM SPAN elements with COinS information for $result to $container.
-     * @param array $result
+     *
+     * @param array       $result
      * @param \DOMElement $container
      */
-    protected function appendCOinSSpansToContainer($result, $container)
+    protected function appendCOinSSpansToContainer(array $result, \DOMElement $container)
     {
         foreach ($result['location'] as $locationAll) {
             $location = $locationAll['ch'];
@@ -325,10 +340,10 @@ class ResultViewHelper extends AbstractViewHelper
                 $title .= $location['md-title'][0]['values'][0];
             }
             if ($location['md-multivolume-title']) {
-                $title .= ' ' . $location['md-multivolume-title'][0]['values'][0];
+                $title .= ' '.$location['md-multivolume-title'][0]['values'][0];
             }
             if ($location['md-title-remainder']) {
-                $title .= ' ' . $location['md-title-remainder'][0]['values'][0];
+                $title .= ' '.$location['md-title-remainder'][0]['values'][0];
             }
 
             // format info
@@ -382,7 +397,7 @@ class ResultViewHelper extends AbstractViewHelper
             $coinsData['rft.description'] = $location['md-description'];
             $URLs = [];
             if ($location['md-doi']) {
-                $URLs[] = [['values' => ['info:doi/' . $location['md-doi'][0]['values'][0]]]];
+                $URLs[] = [['values' => ['info:doi/'.$location['md-doi'][0]['values'][0]]]];
             }
             if ($location['md-electronic-url']) {
                 $URLs = array_merge($URLs, $location['md-electronic-url']);
@@ -398,11 +413,11 @@ class ResultViewHelper extends AbstractViewHelper
     }
 
     /**
-     *
      * @param array $result
+     *
      * @return \DOMElement
      */
-    protected function renderDetails($result)
+    protected function renderDetails(array $result): \DOMElement
     {
         $detailsDiv = $this->doc->createElement('div');
         $detailsDiv->setAttribute('class', 'pz2-details');
@@ -424,7 +439,7 @@ class ResultViewHelper extends AbstractViewHelper
 
         if ($result['md-title-responsibility']) {
             foreach ($result['md-title-responsibility'] as $responsibility) {
-                $allResponsibility .= $responsibility['values'][0] . '; ';
+                $allResponsibility .= $responsibility['values'][0].'; ';
             }
             $authors = $result['md-author'];
             if ($authors) {
@@ -432,7 +447,7 @@ class ResultViewHelper extends AbstractViewHelper
                 foreach ($authors as $author) {
                     $nameParts = explode(',', $author['values'][0]);
                     $authorSurname = trim($nameParts[0]);
-                    if (strpos($allResponsibility, $authorSurname) === false) {
+                    if (false === strpos($allResponsibility, $authorSurname)) {
                         $result['md-author-clean'][] = $author;
                     }
                 }
@@ -447,7 +462,7 @@ class ResultViewHelper extends AbstractViewHelper
             foreach ($otherPeople as $otherPerson) {
                 $nameParts = explode(',', $otherPerson['values'][0]);
                 $personSurname = trim($nameParts[0]);
-                if (strpos($allResponsibility, $personSurname) === false) {
+                if (false === strpos($allResponsibility, $personSurname)) {
                     $result['md-other-person-clean'][] = $otherPerson;
                 }
             }
@@ -476,10 +491,11 @@ class ResultViewHelper extends AbstractViewHelper
 
     /**
      * @param string $title
-     * @param array $result
-     * @return Null|array of DT/DD DOMElements
+     * @param array  $result
+     *
+     * @return null|array of DT/DD DOMElements
      */
-    protected function detailLineAuto($title, $result)
+    protected function detailLineAuto(string $title, array $result)
     {
         $line = null;
         $element = $this->DOMElementForTitle($title, $result);
@@ -493,23 +509,24 @@ class ResultViewHelper extends AbstractViewHelper
 
     /**
      * @param string $title
-     * @param array $informationElements (DOM Elements)
-     * @return Null|array of DT/DD DOMElements
+     * @param array  $informationElements (DOM Elements)
+     *
+     * @return null|array of DT/DD DOMElements
      */
-    protected function detailLine($title, $informationElements)
+    protected function detailLine(string $title, array $informationElements)
     {
         $line = null;
 
         if ($informationElements && $title) {
             $headingText = null;
 
-            if (count($informationElements) == 1) {
-                $headingText = LocalizationUtility::translate('detail-label-' . $title, 'Pazpar2');
+            if (1 == count($informationElements)) {
+                $headingText = LocalizationUtility::translate('detail-label-'.$title, 'Pazpar2');
             } else {
-                $labelKey = 'detail-label-' . $title . '-plural';
+                $labelKey = 'detail-label-'.$title.'-plural';
                 $labelLocalisation = LocalizationUtility::translate($labelKey, 'Pazpar2');
-                if ($labelLocalisation == '') {
-                    $labelKey = 'detail-label-' . $title;
+                if ('' == $labelLocalisation) {
+                    $labelKey = 'detail-label-'.$title;
                     $labelLocalisation = LocalizationUtility::translate($labelKey, 'Pazpar2');
                 }
                 $headingText = $labelLocalisation;
@@ -522,8 +539,8 @@ class ResultViewHelper extends AbstractViewHelper
 
                 $rowTitle = $this->doc->createElement('dt');
                 $line[] = $rowTitle;
-                $labelNode = $this->doc->createTextNode($headingText . ':');
-                $acronym = LocalizationUtility::translate('detail-label-acronym-' . $title, 'Pazpar2');
+                $labelNode = $this->doc->createTextNode($headingText.':');
+                $acronym = LocalizationUtility::translate('detail-label-acronym-'.$title, 'Pazpar2');
                 if ($acronym) {
                     $acronymElement = $this->doc->createElement('abbr');
                     $acronymElement->setAttribute('title', $acronym);
@@ -543,14 +560,16 @@ class ResultViewHelper extends AbstractViewHelper
 
     /**
      * Returns marked up version of the DOM items passed, putting them into a list if necessary.
+     *
      * @param array $elements (DOM Elements)
+     *
      * @return array
      */
-    protected function markupInfoItems($infoItems)
+    protected function markupInfoItems(array $infoItems): array
     {
         $result = null;
 
-        if (count($infoItems) == 1) {
+        if (1 == count($infoItems)) {
             $result = $infoItems[0];
         } else {
             $result = $this->doc->createElement('ul');
@@ -566,10 +585,12 @@ class ResultViewHelper extends AbstractViewHelper
 
     /**
      * Returns markup for each location of the item found from the current data.
+     *
      * @param array $result
+     *
      * @return array of DOM elements
      */
-    protected function locationDetails($result)
+    protected function locationDetails(array $result): array
     {
         $locationDetails = [];
 
@@ -594,7 +615,7 @@ class ResultViewHelper extends AbstractViewHelper
             if ($detailsData->hasChildNodes()) {
                 $detailsHeading = $this->doc->createElement('dt');
                 $locationDetails[] = $detailsHeading;
-                $detailsHeading->appendChild($this->doc->createTextNode(LocalizationUtility::translate('Ausgabe', 'Pazpar2') . ':'));
+                $detailsHeading->appendChild($this->doc->createTextNode(LocalizationUtility::translate('Ausgabe', 'Pazpar2').':'));
                 $locationDetails[] = $detailsData;
             }
         }
@@ -603,22 +624,22 @@ class ResultViewHelper extends AbstractViewHelper
     }
 
     /**
-     *
      * @param string $fieldName
-     * @param array $location
-     * @return NULL|\DOMElement
+     * @param array  $location
+     *
+     * @return null|\DOMElement
      */
-    protected function detailInfoItem($fieldName, $location)
+    protected function detailInfoItem(string $fieldName, array $location)
     {
         $infoItem = null;
-        $value = $location['md-' . $fieldName];
+        $value = $location['md-'.$fieldName];
 
         if ($value) {
             $label = null;
-            $labelID = 'detail-label-' . $fieldName;
+            $labelID = 'detail-label-'.$fieldName;
             $localisedLabelString = LocalizationUtility::translate($labelID, 'Pazpar2');
 
-            if ($localisedLabelString != '') {
+            if ('' != $localisedLabelString) {
                 $label = $localisedLabelString;
             }
 
@@ -641,8 +662,9 @@ class ResultViewHelper extends AbstractViewHelper
     /**
      * @param string $fieldContent
      * @param string $labelName
-     * @param bool $dontTerminate
-     * @return Null|\DOMElement
+     * @param bool   $dontTerminate
+     *
+     * @return null|\DOMElement
      */
     protected function detailInfoItemWithLabel($fieldContent, $labelName, $dontTerminate = false)
     {
@@ -669,25 +691,30 @@ class ResultViewHelper extends AbstractViewHelper
 
     /**
      * Comparison function for sorting URLs. Put URLs with attributes to the front.
+     *
      * @param string|array $a
      * @param string|array $b
+     *
      * @return int
      */
     protected function URLSort($a, $b)
     {
         if ($a['attrs'] && !$b['attrs']) {
             return -1;
-        } elseif (!$a['attrs'] && $b['attrs']) {
-            return 1;
-        } else {
-            return $a['attrs']['originalPosition'] - $b['attrs']['originalPosition'];
         }
+        if (!$a['attrs'] && $b['attrs']) {
+            return 1;
+        }
+
+        return $a['attrs']['originalPosition'] - $b['attrs']['originalPosition'];
     }
 
     /**
      * Returns a cleaned and sorted list of the URLs in the md-electronic-url fields.
+     *
      * @param array $location
-     * @param array $result the result containing $location
+     * @param array $result   the result containing $location
+     *
      * @return array subarray of $location without duplicates and sorted
      */
     protected function cleanURLList($location, $result)
@@ -702,7 +729,7 @@ class ResultViewHelper extends AbstractViewHelper
                 $URL = $URLInfo['values'][0];
 
                 // Check for duplicates in the electronic-urls field.
-                for ($remainingURLIndex = $URLIndex + 1; $remainingURLIndex < count($URLs); $remainingURLIndex++) {
+                for ($remainingURLIndex = $URLIndex + 1; $remainingURLIndex < count($URLs); ++$remainingURLIndex) {
                     $remainingURLInfo = $URLs[$remainingURLIndex];
                     $remainingURL = $remainingURLInfo['values'][0];
                     if ($URL == $remainingURL) {
@@ -720,7 +747,7 @@ class ResultViewHelper extends AbstractViewHelper
                 $DOIs = $result['md-doi'];
                 if ($DOIs) {
                     foreach ($DOIs as $DOI) {
-                        if (strpos($DOI['values'][0], $URL) !== false) {
+                        if (false !== strpos($DOI['values'][0], $URL)) {
                             $indexesToRemove[$URLIndexToRemove] = true;
                             break;
                         }
@@ -743,8 +770,10 @@ class ResultViewHelper extends AbstractViewHelper
 
     /**
      * Create markup for URLs in current location data.
+     *
      * @param array $location
-     * @param array $result the result containing $location
+     * @param array $result   the result containing $location
+     *
      * @return \DOMElement
      */
     protected function electronicURLs($location, $result)
@@ -752,7 +781,7 @@ class ResultViewHelper extends AbstractViewHelper
         $electronicURLs = $this->cleanURLList($location, $result);
         $URLsContainer = null;
 
-        if ($electronicURLs && count($electronicURLs) != 0) {
+        if ($electronicURLs && 0 != count($electronicURLs)) {
             $URLsContainer = $this->doc->createElement('span');
 
             foreach ($electronicURLs as $URLInfo) {
@@ -774,13 +803,13 @@ class ResultViewHelper extends AbstractViewHelper
 
                 $localisedLinkTexts = [];
                 foreach ($linkTexts as $linkText) {
-                    $localisedLinkText = LocalizationUtility::translate('link-description-' . $linkText, 'Pazpar2');
+                    $localisedLinkText = LocalizationUtility::translate('link-description-'.$linkText, 'Pazpar2');
                     if (!$localisedLinkText) {
                         $localisedLinkText = $linkText;
                     }
                     $localisedLinkTexts[] = $localisedLinkText;
                 }
-                $linkText = '[' . implode(', ', $localisedLinkTexts) . ']';
+                $linkText = '['.implode(', ', $localisedLinkTexts).']';
 
                 if ($URLsContainer->hasChildNodes()) {
                     $URLsContainer->appendChild($this->doc->createTextNode(', '));
@@ -802,8 +831,10 @@ class ResultViewHelper extends AbstractViewHelper
     /**
      * Returns DOM nodes linking to the catalogue page of the current
      * record’s parent record, plus spacing.
+     *
      * @param array $locationAll
      * @param array $result
+     *
      * @return null|array of DOMNodes
      */
     protected function parentLink($locationAll, $result)
@@ -829,7 +860,9 @@ class ResultViewHelper extends AbstractViewHelper
 
     /**
      * Returns a link for the current record that points to the catalogue page for that item.
+     *
      * @param array $locationAll
+     *
      * @return \DOMElement
      */
     protected function catalogueLink($locationAll)
@@ -848,8 +881,8 @@ class ResultViewHelper extends AbstractViewHelper
 
             /* Try to localise catalogue name, fall back to original target name
                 if no localisation is available */
-            $linkText = LocalizationUtility::translate('catalogue-name-' . $targetName, 'Pazpar2');
-            if ($linkText === null) {
+            $linkText = LocalizationUtility::translate('catalogue-name-'.$targetName, 'Pazpar2');
+            if (null === $linkText) {
                 $linkText = $targetName;
             }
             $linkElement->appendChild($this->doc->createTextNode($linkText));
@@ -860,6 +893,7 @@ class ResultViewHelper extends AbstractViewHelper
 
     /**
      * @param array $result
+     *
      * @return array of DOM Elements
      */
     protected function ISSNsDetailLine($result)
@@ -867,13 +901,13 @@ class ResultViewHelper extends AbstractViewHelper
         $ISSNTypes = ['issn' => '', 'pissn' => 'gedruckt', 'eissn' => 'elektronisch'];
         $ISSNList = [];
         foreach ($ISSNTypes as $ISSNTypeIndex => $ISSNType) {
-            $fieldName = 'md-' . $ISSNTypeIndex;
+            $fieldName = 'md-'.$ISSNTypeIndex;
             if ($result[$fieldName]) {
                 foreach ($result[$fieldName][0]['values'] as $ISSNString) {
                     $ISSN = substr($ISSNString, 0, 9);
                     if (!in_array($ISSN, $ISSNList)) {
-                        if ($ISSNType != '') {
-                            $ISSN .= ' (' . LocalizationUtility::translate($ISSNType, 'Pazpar2') . ')';
+                        if ('' != $ISSNType) {
+                            $ISSN .= ' ('.LocalizationUtility::translate($ISSNType, 'Pazpar2').')';
                         }
                         $ISSNList[] = $ISSN;
                     }
@@ -891,6 +925,7 @@ class ResultViewHelper extends AbstractViewHelper
 
     /**
      * @param array $result
+     *
      * @return array of DOM Elements
      */
     protected function keywordsDetailLine($result)
@@ -907,13 +942,13 @@ class ResultViewHelper extends AbstractViewHelper
                 $URIBuilder = $this->controllerContext->getUriBuilder();
 
                 $parameters = ['useJS' => 'no'];
-                if ($this->conf['extendedSearch'] == 1) {
+                if (1 == $this->conf['extendedSearch']) {
                     // The subject field is available: switch to extended search and use it.
-                    $parameters['queryStringKeyword'] = '"' . $keyword . '"';
+                    $parameters['queryStringKeyword'] = '"'.$keyword.'"';
                     $parameters['extended'] = 1;
                 } else {
                     // The subject field is not available: use "subject=XXX" in the general search field.
-                    $parameters['queryString'] = 'subject="' . $keyword . '"';
+                    $parameters['queryString'] = 'subject="'.$keyword.'"';
                 }
 
                 $linkURI = $URIBuilder->uriFor('index', $parameters, 'Pazpar2', 'Pazpar2');
@@ -938,8 +973,8 @@ class ResultViewHelper extends AbstractViewHelper
     }
 
     /**
-     *
      * @param array $result
+     *
      * @return array of DOM Elements
      */
     protected function MSCDetailLine($result)
@@ -966,7 +1001,7 @@ class ResultViewHelper extends AbstractViewHelper
 
             $MSCNotes = array_keys($notes);
             if (count($MSCNotes) > 0) {
-                $MSCString .= ' (' . LocalizationUtility::translate('gemäß', 'Pazpar2') . ' ' . implode(', ', $MSCNotes) . ')';
+                $MSCString .= ' ('.LocalizationUtility::translate('gemäß', 'Pazpar2').' '.implode(', ', $MSCNotes).')';
             }
 
             $infoElements = [$this->doc->createTextNode($MSCString)];
@@ -975,17 +1010,17 @@ class ResultViewHelper extends AbstractViewHelper
         return $this->detailLine('classification-msc', $infoElements);
     }
 
-// Not implemented in the PHP version.
+    // Not implemented in the PHP version.
     protected function mapDetailLine($result)
     {
     }
 
-// Not implemented in the PHP version.
+    // Not implemented in the PHP version.
     protected function appendGoogleBooksElementTo($container, $result)
     {
     }
 
-// Not implemented in the PHP version.
+    // Not implemented in the PHP version.
     protected function addZDBInfoIntoElement($container, $result)
     {
     }
@@ -994,6 +1029,7 @@ class ResultViewHelper extends AbstractViewHelper
      * Returns markup for links to each active export format.
      *
      * @param array $result
+     *
      * @return \DOMElement
      */
     protected function exportLinks($result)
@@ -1004,7 +1040,7 @@ class ResultViewHelper extends AbstractViewHelper
             $labelFormat = LocalizationUtility::translate('download-label-format-all', 'Pazpar2');
         }
 
-        if ($this->conf['showKVKLink'] == 1) {
+        if (1 == $this->conf['showKVKLink']) {
             $this->appendInfoToContainer($this->KVKItem($result), $extraLinkList);
         }
         $this->appendExportItemsTo($result['location'], $labelFormat, $extraLinkList);
@@ -1027,8 +1063,8 @@ class ResultViewHelper extends AbstractViewHelper
     /**
      * Appends list items with an export form for each exportFormat to the container.
      *
-     * @param array $locations
-     * @param string $labelFormat
+     * @param array       $locations
+     * @param string      $labelFormat
      * @param \DOMElement $container
      */
     protected function appendExportItemsTo($locations, $labelFormat, $container)
@@ -1044,9 +1080,10 @@ class ResultViewHelper extends AbstractViewHelper
      * Returns a list item containing the form for export data conversion.
      * The parameters are passed to dataConversionForm.
      *
-     * @param array $locations
+     * @param array  $locations
      * @param string $exportFormat
      * @param string $labelFormat
+     *
      * @return \DOMElement
      */
     protected function exportItem($locations, $exportFormat, $labelFormat)
@@ -1063,9 +1100,11 @@ class ResultViewHelper extends AbstractViewHelper
 
     /**
      * Returns form Element containing the record information to initiate data conversion.
-     * @param array $locations
+     *
+     * @param array  $locations
      * @param string $exportFormat
      * @param string $labelFormat
+     *
      * @return \DOMElement
      */
     protected function dataConversionForm($locations, $exportFormat, $labelFormat)
@@ -1077,7 +1116,7 @@ class ResultViewHelper extends AbstractViewHelper
         if ($XMLString) {
             $form = $this->doc->createElement('form');
             $form->setAttribute('method', 'POST');
-            $scriptPath = 'typo3conf/ext/pazpar2/Resources/Public/pz2-client/converter/convert-pazpar2-record.php';
+            $scriptPath = '/typo3conf/ext/pazpar2/Resources/Public/pz2-client/converter/convert-pazpar2-record.php';
             $scriptGetParameters = ['format' => $exportFormat];
             if ($GLOBALS['TSFE']->lang) {
                 $scriptGetParameters['language'] = $GLOBALS['TSFE']->lang;
@@ -1085,7 +1124,7 @@ class ResultViewHelper extends AbstractViewHelper
             if ($this->conf['siteName']) {
                 $scriptGetParameters['filename'] = $this->conf['siteName'];
             }
-            $form->setAttribute('action', $scriptPath . '?' . http_build_query($scriptGetParameters));
+            $form->setAttribute('action', $scriptPath.'?'.http_build_query($scriptGetParameters));
 
             $qInput = $this->doc->createElement('input');
             $qInput->setAttribute('name', 'q');
@@ -1096,7 +1135,7 @@ class ResultViewHelper extends AbstractViewHelper
             $submitButton = $this->doc->createElement('input');
             $form->appendChild($submitButton);
             $submitButton->setAttribute('type', 'submit');
-            $buttonText = LocalizationUtility::translate('download-label-' . $exportFormat, 'Pazpar2');
+            $buttonText = LocalizationUtility::translate('download-label-'.$exportFormat, 'Pazpar2');
             $submitButton->setAttribute('value', $buttonText);
             if ($labelFormat) {
                 $labelText = str_replace('*', $buttonText, $labelFormat);
@@ -1109,7 +1148,9 @@ class ResultViewHelper extends AbstractViewHelper
 
     /**
      * Returns XML representing the passed locations.
+     *
      * @param array $locations
+     *
      * @return \DOMDocument
      */
     protected function XMLForLocations($locations)
@@ -1154,7 +1195,9 @@ class ResultViewHelper extends AbstractViewHelper
     /**
      * Returns a list item containing a link to a KVK catalogue search for data.
      * Uses ISBN or title/author data for the search.
+     *
      * @param array $result
+     *
      * @return \DOMElement
      */
     protected function KVKItem($result)
@@ -1177,7 +1220,7 @@ class ResultViewHelper extends AbstractViewHelper
         $query = '';
         if ($ISBN) {
             // Search for ISBN if we found one.
-            $query .= '&SB=' . $ISBN;
+            $query .= '&SB='.$ISBN;
         } else {
             // If there is no ISBN only proceed when we are dealing with a book
             // and create a search for the title and author.
@@ -1191,24 +1234,24 @@ class ResultViewHelper extends AbstractViewHelper
 
             if ($wantKVKLink) {
                 if (array_key_exists('md-title', $result)) {
-                    $query .= '&TI=' . rawurlencode($result['md-title'][0]['values'][0]);
+                    $query .= '&TI='.rawurlencode($result['md-title'][0]['values'][0]);
                 }
                 if (array_key_exists('md-author', $result)) {
                     $authors = [];
                     foreach ($result['md-author'] as $author) {
                         $authors[] = $author['values'][0];
                     }
-                    $query .= '&AU=' . implode(' ', $authors);
+                    $query .= '&AU='.implode(' ', $authors);
                 }
             }
         }
 
-        if ($query !== '') {
+        if ('' !== $query) {
             $KVKLink = $this->doc->createElement('a');
             $KVKLinkURL = 'http://kvk.ubka.uni-karlsruhe.de/hylib-bin/kvk/nph-kvk2.cgi?maske=kvk-last&input-charset=utf-8&Timeout=120';
             $KVKLinkURL .= LocalizationUtility::translate('&lang=de', 'Pazpar2');
             $KVKLinkURL .= '&kataloge=SWB&kataloge=BVB&kataloge=NRW&kataloge=HEBIS&kataloge=KOBV_SOLR&kataloge=GBV';
-            $KVKLink->setAttribute('href', $KVKLinkURL . $query);
+            $KVKLink->setAttribute('href', $KVKLinkURL.$query);
             $label = LocalizationUtility::translate('KVK', 'Pazpar2');
             $KVKLink->appendChild($this->doc->createTextNode($label));
             $title = LocalizationUtility::translate('deutschlandweit im KVK suchen', 'Pazpar2');
@@ -1226,6 +1269,7 @@ class ResultViewHelper extends AbstractViewHelper
      * Removes duplicate entries from an array of pazpar2 result values.
      *
      * @param array $array of pazpar2 result values (each being an array with the element 'values' containing a 1-element array with the actual string
+     *
      * @return array $array
      */
     protected function pz2ValuesUnique($array)
@@ -1239,8 +1283,9 @@ class ResultViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param string $title name of the data field
-     * @param array $result
+     * @param string $title  name of the data field
+     * @param array  $result
+     *
      * @return array of DOM elements
      */
     protected function DOMElementForTitle($title, $result)
@@ -1248,8 +1293,8 @@ class ResultViewHelper extends AbstractViewHelper
         $elements = [];
         $theData = null;
 
-        if ($result['md-' . $title]) {
-            $theData = $this->pz2ValuesUnique($result['md-' . $title]);
+        if ($result['md-'.$title]) {
+            $theData = $this->pz2ValuesUnique($result['md-'.$title]);
             foreach ($theData as $value) {
                 $rawDatum = $value;
                 $wrappedDatum = null;
@@ -1271,12 +1316,13 @@ class ResultViewHelper extends AbstractViewHelper
 
     /**
      * @param string $DOI
+     *
      * @return \DOMElement
      */
-    protected function linkForDOI($DOI)
+    protected function linkForDOI(string $DOI): \DOMElement
     {
         $linkElement = $this->doc->createElement('a');
-        $linkElement->setAttribute('href', 'http://dx.doi.org/' . $DOI);
+        $linkElement->setAttribute('href', 'http://dx.doi.org/'.$DOI);
         $this->turnIntoNewWindowLink($linkElement);
         $linkElement->appendChild($this->doc->createTextNode($DOI));
 

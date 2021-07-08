@@ -1,4 +1,5 @@
 <?php
+
 namespace Subugoe\Pazpar2\Domain\Model;
 
 /*******************************************************************************
@@ -25,7 +26,7 @@ namespace Subugoe\Pazpar2\Domain\Model;
  * THE SOFTWARE.
  ******************************************************************************/
 
-/**
+/*
  * Service Proxy specific aspects of the Query class.
  */
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -35,13 +36,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class QueryServiceProxy extends Query
 {
-
     /**
-     * VARIABLES FOR INTERNAL USE
+     * VARIABLES FOR INTERNAL USE.
      */
 
     /**
      * Stores the cookie provided by Service Proxy.
+     *
      * @var string
      */
     protected $cookie;
@@ -56,7 +57,7 @@ class QueryServiceProxy extends Query
     /**
      * TODO: Query Service Proxy auth URL and store the cookie received.
      *
-     * @return bool TRUE when initialisation was successful.
+     * @return bool TRUE when initialisation was successful
      */
     protected function initialiseSession()
     {
@@ -67,16 +68,16 @@ class QueryServiceProxy extends Query
         $success = false;
         if ($authReply) {
             $status = $authReply['status'];
-            if ($status === 'OK') {
+            if ('OK' === $status) {
                 $success = true;
             } else {
-                GeneralUtility::devLog('Service Proxy init status is not "OK" but "' . $status . '"', 'pazpar2', 3);
+                GeneralUtility::devLog('Service Proxy init status is not "OK" but "'.$status.'"', 'pazpar2', 3);
             }
         } else {
             GeneralUtility::devLog('could not parse Service Proxy init reply', 'pazpar2', 3);
         }
 
-        return ($this->cookie !== null) && $success;
+        return (null !== $this->cookie) && $success;
     }
 
     /**
@@ -85,13 +86,14 @@ class QueryServiceProxy extends Query
      * requests, if available.
      *
      * @param string $URL to fetch
+     *
      * @return string
      */
     protected function fetchURL($URL)
     {
         $cookieHeader = [];
         if ($this->cookie) {
-            $cookieHeader[] = 'Cookie: ' . $this->cookie . ';';
+            $cookieHeader[] = 'Cookie: '.$this->cookie.';';
         }
 
         $curl = curl_init();
@@ -108,7 +110,7 @@ class QueryServiceProxy extends Query
             if (!$this->cookie) {
                 $setCookieString = 'Set-Cookie: ';
                 foreach ($headers as $header) {
-                    if (strpos($header, $setCookieString) === 0) {
+                    if (0 === strpos($header, $setCookieString)) {
                         $cookieString = substr($header, strlen($setCookieString));
                         $cookieStringParts = explode(';', $cookieString);
                         $this->cookie = $cookieStringParts[0];
@@ -131,7 +133,8 @@ class QueryServiceProxy extends Query
      */
     public function getServiceProxyAuthURL()
     {
-        $URL = 'http://' . GeneralUtility::getIndpEnv('HTTP_HOST') . $this->getServiceProxyAuthPath();
+        $URL = 'http://'.GeneralUtility::getIndpEnv('HTTP_HOST').$this->getServiceProxyAuthPath();
+
         return $URL;
     }
 
@@ -145,7 +148,6 @@ class QueryServiceProxy extends Query
 
     /**
      * @param string $newPazpar2Path
-     * @return void
      */
     public function setServiceProxyAuthPath($newServiceProxyAuthPath)
     {

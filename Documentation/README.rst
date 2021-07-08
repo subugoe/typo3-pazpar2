@@ -49,7 +49,7 @@ To use this extension successfully you need:
 TYPO3
 ~~~~~
 
--  TYPO3 ≥ 6.2.0
+-  TYPO3 ≥ 9.5.0
 -  at least jQuery 1.7.1 (compatible with jQuery ≥ 1.9) on your pages;
    use the t3jquery extension for that
 
@@ -125,6 +125,11 @@ you need it and make sure the pazpar2 Settings static include is added
 for the relevant pages. Looking at the `illustrated setup
 example <https://github.com/subugoe/typo3-pazpar2/blob/master/Documentation/Setup.md>`__
 may make this easier.
+
+Extension Configuration
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Add your backend URL for the pazpar2 server in the extension setting in the extension manager.
 
 Flex Form
 ~~~~~~~~~

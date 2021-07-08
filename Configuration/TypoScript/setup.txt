@@ -1,8 +1,8 @@
 pazpar2searchplugin = PAGE
 pazpar2searchplugin {
-	typeNum = 9004
-	10 = TEXT
-	10.value (
+    typeNum = 9004
+    10 = TEXT
+    10.value (
 <?xml version="1.0" encoding="UTF-8" ?>
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
 	<ShortName>{$plugin.tx_pazpar2_pazpar2.searchplugin.shortname}</ShortName>
@@ -11,106 +11,109 @@ pazpar2searchplugin {
 	<Url type="text/html" method="GET" template="{$plugin.tx_pazpar2_pazpar2.searchplugin.pageURL}?tx_pazpar2_pazpar2[controller]=Pazpar2&amp;tx_pazpar2_pazpar2[useJS]=yes&amp;tx_pazpar2_pazpar2[queryString]={searchTerms}"/>
 	<InputEncoding>UTF-8</InputEncoding>
 </OpenSearchDescription>
-)
-	config {
-		disableAllHeaderCode = 1
-		additionalHeaders = Content-type:text/xml;charset=utf-8
-		xhtml_cleaning = 0
-		admPanel = 0
-		charset = utf-8
-	}
+    )
+    config {
+        disableAllHeaderCode = 1
+        additionalHeaders = Content-type:text/xml;charset=utf-8
+        xhtml_cleaning = 0
+        admPanel = 0
+        charset = utf-8
+    }
 }
 
-
 plugin.tx_pazpar2 {
-	settings {
-		# exposed through flexform
-		serviceID =
-		useHistogramForYearFacets = 1
-		useGoogleBooks = 1
-		useMaps = 1
-		useZDB = 1
-		ZDBIP = 0
+    settings {
+        # exposed through flexform
+        serviceID =
+        useHistogramForYearFacets = 1
+        useGoogleBooks = 1
+        useMaps = 1
+        useZDB = 1
+        ZDBIP = 0
 
-		# only settable via TypoScript
-		pazpar2Path = /pazpar2/search.pz2
+        # only settable via TypoScript
+        pazpar2Path = /?eID=pazpar2_proxy
+        siteName =
+        provideCOinSExport = 1
+        showExportLinksForEachLocation = 0
+        exportFormats {
+            ris = 0
+            bibtex = 0
+        }
 
-		siteName =
-		provideCOinSExport = 1
-		showExportLinksForEachLocation = 0
-		exportFormats {
-			ris = 0
-			bibtex = 0
-		}
-		showKVKLink = 0
+        showKVKLink = 0
 
-		CSSPath = EXT:pazpar2/Resources/Public/pz2-client/pz2.css
-		pz2JSPath = EXT:pazpar2/Resources/Public/pz2-client/pz2.js
-		pz2-clientJSPath = EXT:pazpar2/Resources/Public/pz2-client/pz2-client.js
-		flotJSPath = EXT:pazpar2/Resources/Public/pz2-client/flot/jquery.flot.js
-		flotSelectionJSPath = EXT:pazpar2/Resources/Public/pz2-client/flot/jquery.flot.selection.js
+        CSSPath = EXT:pazpar2/Resources/Public/pz2-client/pz2.css
+        pz2JSPath = EXT:pazpar2/Resources/Public/pz2-client/pz2.js
+        pz2-clientJSPath = EXT:pazpar2/Resources/Public/pz2-client/pz2-client.js
+        flotJSPath = EXT:pazpar2/Resources/Public/pz2-client/flot/jquery.flot.js
+        flotSelectionJSPath = EXT:pazpar2/Resources/Public/pz2-client/flot/jquery.flot.selection.js
 
-		useSortMenu = 0
-		sortOrder {
-			1.fieldName = date
-			1.direction = descending
-			# 2.fieldName = author
-			# 2.direction = ascending
-			# 3.fieldName = title
-			# 3.direction = ascending
-			# 4.fieldName = title-number-section
-			# 4.direction = ascending
-		}
+        useSortMenu = 0
+        sortOrder {
+            1.fieldName = date
+            1.direction = descending
+            # 2.fieldName = author
+            # 2.direction = ascending
+            # 3.fieldName = title
+            # 3.direction = ascending
+            # 4.fieldName = title-number-section
+            # 4.direction = ascending
+        }
 
-		termLists {
-			xtargets {
-				maxFetch = 25
-				minDisplay = 1
-			}
-			medium {
-				maxFetch = 12
-				minDisplay = 1
-			}
-			language {
-				maxFetch = 5
-				minDisplay = 1
-			}
-			filterDate {
-				maxFetch = 10
-				minDisplay = 5
-			}
-		}
+        termLists {
+            xtargets {
+                maxFetch = 25
+                minDisplay = 1
+            }
 
-		triggeredByNKWGOK = 0
-		showSearchForm = 1
-		allowExtendedSearch = 1
-		fulltextSearch = 0
-		journalTitleOnlySearch = 0
-		dateSearch = 1
-		useKeywords = 0
+            medium {
+                maxFetch = 12
+                minDisplay = 1
+            }
 
-		resultsPerPage = 100
+            language {
+                maxFetch = 5
+                minDisplay = 1
+            }
 
-		autocompleteURLs {
-			# all = /api/autocomplete/all?query=
-			# title = /api/autocomplete/title?query=
-			# person = /api/autocomplete/person?query=
-			# subject = /api/autocomplete/subject?query=
-		}
-		autocompleteSetupFunction =
-	}
+            filterDate {
+                maxFetch = 10
+                minDisplay = 5
+            }
+        }
+
+        triggeredByNKWGOK = 0
+        showSearchForm = 1
+        allowExtendedSearch = 1
+        fulltextSearch = 0
+        journalTitleOnlySearch = 0
+        dateSearch = 1
+        useKeywords = 0
+
+        resultsPerPage = 100
+
+        autocompleteURLs {
+            # all = /api/autocomplete/all?query=
+            # title = /api/autocomplete/title?query=
+            # person = /api/autocomplete/person?query=
+            # subject = /api/autocomplete/subject?query=
+        }
+
+        autocompleteSetupFunction =
+    }
 }
 
 plugin.tx_pazpar2_pazpar2serviceproxy.settings {
-	serviceProxyAuthPath = /service-proxy-auth
-	serviceProxyPath = /service-proxy/
-	pz2urlrecipeJSPath = EXT:pazpar2/Resources/Public/pz2-client/mk2.js
+    serviceProxyAuthPath = /service-proxy-auth
+    serviceProxyPath = /service-proxy/
+    pz2urlrecipeJSPath = EXT:pazpar2/Resources/Public/pz2-client/mk2.js
 }
 
 plugin.tx_pazpar2_pazpar2neuerwerbungen.settings {
-	pz2-neuerwerbungenJSPath = EXT:pazpar2/Resources/Public/pz2-client/pz2-neuerwerbungen.js
-	pz2-neuerwerbungenCSSPath = EXT:pazpar2/Resources/Public/pz2-client/pz2-neuerwerbungen.css
-	neuerwerbungen-subjects =
-	useAtomFeed = 1
-	numberOfMonths = 13
+    pz2-neuerwerbungenJSPath = EXT:pazpar2/Resources/Public/pz2-client/pz2-neuerwerbungen.js
+    pz2-neuerwerbungenCSSPath = EXT:pazpar2/Resources/Public/pz2-client/pz2-neuerwerbungen.css
+    neuerwerbungen-subjects =
+    useAtomFeed = 1
+    numberOfMonths = 13
 }

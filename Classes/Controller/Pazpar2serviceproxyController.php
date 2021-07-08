@@ -1,4 +1,5 @@
 <?php
+
 namespace Subugoe\Pazpar2\Controller;
 
 /*******************************************************************************
@@ -25,25 +26,24 @@ namespace Subugoe\Pazpar2\Controller;
  * THE SOFTWARE.
  ******************************************************************************/
 
-/**
+/*
  * Pazpar2serviceproxyController.php
  *
  * Main controller for pazpar2 Service Proxy plug-in,
  * of the pazpar2 Extension.
  */
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
+use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
  * Controller for the pazpar2 Service Proxy package.
  */
 class Pazpar2serviceproxyController extends Pazpar2Controller
 {
-
     /**
      * Returns the path of the pazpar2 service on the server or NULL.
      *
-     * @return String|NULL
+     * @return string|null
      */
     protected function getPazpar2Path()
     {
@@ -58,14 +58,13 @@ class Pazpar2serviceproxyController extends Pazpar2Controller
         $query = GeneralUtility::makeInstance(\Subugoe\Pazpar2\Domain\Model\QueryServiceProxy::class);
         $query->setServiceProxyAuthPath($this->conf['serviceProxyAuthPath']);
         $query->setPazpar2Path($this->getPazpar2Path());
+
         return $query;
     }
 
     /**
      * Adds <script> element to <head> containing the configuration for the
      * pazpar2 Service to use.
-     *
-     * @return void
      */
     protected function addServiceConfigurationToHead()
     {
@@ -80,12 +79,12 @@ class Pazpar2serviceproxyController extends Pazpar2Controller
         $jsVariables = [
                 'useServiceProxy' => 'true',
                 'serviceProxyAuthPath' => json_encode($this->conf['serviceProxyAuthPath']),
-                'pazpar2Path' => json_encode($this->conf['serviceProxyPath'])
+                'pazpar2Path' => json_encode($this->conf['serviceProxyPath']),
         ];
 
-        $jsCommand = "\n";
+        $jsCommand = PHP_EOL;
         foreach ($jsVariables as $name => $value) {
-            $jsCommand .= $name . ' = ' . $value . ";\n";
+            $jsCommand .= $name.' = '.$value.";\n";
         }
 
         $scriptTag = new TagBuilder('script');

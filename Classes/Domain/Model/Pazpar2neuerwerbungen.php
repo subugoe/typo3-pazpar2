@@ -1,4 +1,5 @@
 <?php
+
 namespace Subugoe\Pazpar2\Domain\Model;
 
 /*******************************************************************************
@@ -25,9 +26,10 @@ namespace Subugoe\Pazpar2\Domain\Model;
  * THE SOFTWARE.
  ******************************************************************************/
 
-/**
+/*
  * Pazpar2neuerwerbungen model class.
  */
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -37,26 +39,29 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  */
 class Pazpar2neuerwerbungen extends AbstractEntity
 {
-
     /**
      * PPN (i.e. an ID) of the root element used for the Neuerwerbungen subject list.
      * A record with this value in the »ppn« field should be in the tx_nkwgok_data table.
+     *
      * @var string
      */
     protected $rootPPN;
 
     /**
      * Stores the request’s arguments needed to determine the parameters submitted by the user.
+     *
      * @var array
      */
     protected $requestArguments;
     /**
      * Array with subject tree.
+     *
      * @var array
      */
     protected $subjects;
     /**
      * Number of months to display, defaults to 13.
+     *
      * @var int
      */
     protected $monthCount;
@@ -81,7 +86,6 @@ class Pazpar2neuerwerbungen extends AbstractEntity
 
     /**
      * @param string $newRootPPN
-     * @return void
      */
     public function setRootPPN($newRootPPN)
     {
@@ -100,7 +104,7 @@ class Pazpar2neuerwerbungen extends AbstractEntity
 
         $keys = array_keys($this->getMonths());
         if (count($keys) >= 2) {
-            $result = (string)$keys[1];
+            $result = (string) $keys[1];
         }
 
         return $result;
@@ -111,9 +115,10 @@ class Pazpar2neuerwerbungen extends AbstractEntity
      */
     public function getMonths()
     {
-        if ($this->months == null) {
+        if (null == $this->months) {
             $this->months = $this->monthsArray();
         }
+
         return $this->months;
     }
 
@@ -131,16 +136,16 @@ class Pazpar2neuerwerbungen extends AbstractEntity
         $year = date('Y');
         $month = date('n');
 
-        for ($i = 1; $i <= $this->getMonthCount(); $i++) {
+        for ($i = 1; $i <= $this->getMonthCount(); ++$i) {
             $searchString = $this->picaSearchStringForMonth($month, $year);
 
             /* make sure the text encoding in the locale_all setting matches the encoding
                     of the page, otherwise umlauts in month names may appear broken */
             $monthName = strftime('%B', mktime(0, 0, 0, $month, 1, 2010));
-            $displayString = $monthName . ' ' . $year;
+            $displayString = $monthName.' '.$year;
 
-            if ($i == 1) {
-                $displayString .= ' (' . LocalizationUtility::translate('unvollständig', 'pazpar2') . ')';
+            if (1 == $i) {
+                $displayString .= ' ('.LocalizationUtility::translate('unvollständig', 'pazpar2').')';
             }
 
             $months[$searchString] = $displayString;
@@ -156,7 +161,7 @@ class Pazpar2neuerwerbungen extends AbstractEntity
      */
     public function getMonthCount()
     {
-        if ($this->monthCount === null) {
+        if (null === $this->monthCount) {
             return 13;
         }
 
@@ -172,10 +177,11 @@ class Pazpar2neuerwerbungen extends AbstractEntity
     }
 
     /**
-     * Return search string for Pica format of the given month: YYYYMM
+     * Return search string for Pica format of the given month: YYYYMM.
      *
      * @param $month int month number
      * @param $year int year number
+     *
      * @return string the given month in YYYYMM format
      */
     private function picaSearchStringForMonth($month, $year)
@@ -186,7 +192,7 @@ class Pazpar2neuerwerbungen extends AbstractEntity
             $leadingZero = '0';
         }
 
-        return $year . ' ' . $leadingZero . $month;
+        return $year.' '.$leadingZero.$month;
     }
 
     /**
@@ -195,15 +201,14 @@ class Pazpar2neuerwerbungen extends AbstractEntity
      *
      * @param $month int reference to month number
      * @param $year int reference to year number
-     * @return void
      */
     private function reduceMonth(&$month, &$year)
     {
-        if ($month == 1) {
+        if (1 == $month) {
             $month = 12;
-            $year--;
+            --$year;
         } else {
-            $month--;
+            --$month;
         }
     }
 
@@ -220,8 +225,8 @@ class Pazpar2neuerwerbungen extends AbstractEntity
         if ($searchQuery) {
             $searchQuery = urlencode($searchQuery);
 
-            $atomBaseURL = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'opac.atom?q=';
-            $atomURL = $atomBaseURL . $searchQuery;
+            $atomBaseURL = GeneralUtility::getIndpEnv('TYPO3_SITE_URL').'opac.atom?q=';
+            $atomURL = $atomBaseURL.$searchQuery;
         }
 
         return $atomURL;
@@ -233,9 +238,10 @@ class Pazpar2neuerwerbungen extends AbstractEntity
      *  to yield string that can be used for both Pica- and CCL-style queries.
      * Null is returned when no search queries are selected.
      *
-     * @param string $equals [defaults to '=']
-     * @param string $wildcard [defaults to '']
-     * @param bool $ignoreSelectedDate [defaults to False]
+     * @param string $equals             [defaults to '=']
+     * @param string $wildcard           [defaults to '']
+     * @param bool   $ignoreSelectedDate [defaults to False]
+     *
      * @return string
      */
     public function searchQueryWithEqualsAndWildcard($equals = '=', $wildcard = '', $ignoreSelectedDate = false)
@@ -250,7 +256,7 @@ class Pazpar2neuerwerbungen extends AbstractEntity
             if (!$ignoreSelectedDate) {
                 $dates = $this->selectedMonthInFormWithWildcard($wildcard);
                 $NELQueryString = $this->oredSearchQueries($dates, 'nel', $equals);
-                $queryString .= ' and ' . $NELQueryString;
+                $queryString .= ' and '.$NELQueryString;
             }
         }
 
@@ -262,6 +268,7 @@ class Pazpar2neuerwerbungen extends AbstractEntity
      *  group checkboxes.
      *
      * @param string $wildcard replace a final (?) in each term with this string
+     *
      * @return array of query strings
      */
     private function selectedQueriesInFormWithWildcard($wildcard)
@@ -273,8 +280,9 @@ class Pazpar2neuerwerbungen extends AbstractEntity
      * Return the array of all queries selected in a subject group, taking into account
      *  group checkboxes.
      *
-     * @param array $subjects
+     * @param array  $subjects
      * @param string $wildcard replace a final (?) in each term with this string
+     *
      * @return array of query strings
      */
     private function selectedQueriesInGroupWithWildcard($subjects, $wildcard)
@@ -289,6 +297,7 @@ class Pazpar2neuerwerbungen extends AbstractEntity
                 $queries = array_merge($queries, $subsubjects);
             }
         }
+
         return $queries;
     }
 
@@ -296,16 +305,16 @@ class Pazpar2neuerwerbungen extends AbstractEntity
      * Helper function adding the elements of an array to a given array,
      *  potentially appending a wildcard to each of them in the process.
      *
-     * @param array $searchTerms strings to be added to the list
-     * @param array $list the terms are added to
-     * @param string $wildcard replace a final (?) in each term with this string
+     * @param array  $searchTerms strings to be added to the list
+     * @param array  $list        the terms are added to
+     * @param string $wildcard    replace a final (?) in each term with this string
      */
     private function addSearchTermsToList($searchTerms, &$list, $wildcard)
     {
         foreach ($searchTerms as $term) {
-            if ($term != '') {
-                if ($wildcard && substr($term, -1) === '?') {
-                    $term = substr($term, 0, -1) . $wildcard;
+            if ('' != $term) {
+                if ($wildcard && '?' === substr($term, -1)) {
+                    $term = substr($term, 0, -1).$wildcard;
                 }
                 $list[] = $term;
             }
@@ -317,7 +326,7 @@ class Pazpar2neuerwerbungen extends AbstractEntity
      */
     public function getSubjects()
     {
-        if ($this->subjects == null) {
+        if (null == $this->subjects) {
             $this->setupSubjects();
         }
 
@@ -335,8 +344,6 @@ class Pazpar2neuerwerbungen extends AbstractEntity
      *  it. (If a subject group is not selected, do _not_ deselect all the
      *  children. Imperfect but probably the most reasonable thing to be done in
      *  a non-interactive setup like this one.)
-     *
-     * @return void
      */
     protected function setupSubjects()
     {
@@ -350,17 +357,17 @@ class Pazpar2neuerwerbungen extends AbstractEntity
             // Our form was submitted: use form values only.
             foreach ($this->requestArguments as $argumentName => $argument) {
                 $fieldNameStart = 'pz2subject-';
-                if (($argument != '') && (strpos($argumentName, $fieldNameStart) === 0)) {
+                if (('' != $argument) && (0 === strpos($argumentName, $fieldNameStart))) {
                     $nameParts = explode('-', substr($argumentName, strlen($fieldNameStart)));
                     if (count($nameParts) > 0) {
-                        $mySubjects =& $subjects;
+                        $mySubjects = &$subjects;
                         while (count($nameParts) > 1) {
                             $subjectIndex = intval(array_shift($nameParts));
-                            $mySubjects =& $mySubjects[$subjectIndex]['subjects'];
+                            $mySubjects = &$mySubjects[$subjectIndex]['subjects'];
                         }
 
                         $subjectIndex = intval(array_shift($nameParts));
-                        $subject =& $mySubjects[$subjectIndex];
+                        $subject = &$mySubjects[$subjectIndex];
                         $subject['selected'] = true;
                         $selectedCheckboxes[] = implode(',', $subject['queries']);
                     }
@@ -394,7 +401,7 @@ class Pazpar2neuerwerbungen extends AbstractEntity
         }
 
         // Turn on the checkbox if there only is a single one.
-        if (count($subjects) === 1 && count($subjects[0]['subjects'] === 1)) {
+        if (1 === count($subjects) && count($subjects[0]['subjects'] === 1)) {
             $subjects[0]['subjects'][0]['selected'] = true;
         }
 
@@ -439,6 +446,7 @@ class Pazpar2neuerwerbungen extends AbstractEntity
      *    taking the union of the »queries« arrays of all its »subjects«.
      *
      * @param string $parentPPN
+     *
      * @return array subjects to be displayed
      */
     protected function makeSubjectsArrayForPPN($parentPPN)
@@ -446,7 +454,7 @@ class Pazpar2neuerwerbungen extends AbstractEntity
         $rootNodes = $this->queryForChildrenOf($parentPPN);
         $subjects = [];
 
-        while ($nodeRecord = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($rootNodes)) {
+        foreach ($rootNodes as $nodeRecord) {
             $subject = [];
 
             // Add PPN for separating distinct subject fieldsets
@@ -454,7 +462,7 @@ class Pazpar2neuerwerbungen extends AbstractEntity
 
             // Use English subject name if it exists and the language is English
             // and the German subject name otherwise.
-            if ($GLOBALS['TSFE']->lang == 'en' && $nodeRecord['descr_en']) {
+            if ('en' == $GLOBALS['TSFE']->lang && $nodeRecord['descr_en']) {
                 $subject['name'] = $nodeRecord['descr_en'];
             } else {
                 $subject['name'] = $nodeRecord['descr'];
@@ -466,7 +474,7 @@ class Pazpar2neuerwerbungen extends AbstractEntity
             }
 
             // Extract each search term from the 'search' field and add an array with all of them.
-            if ($nodeRecord['search'] != '') {
+            if ('' != $nodeRecord['search']) {
                 $searchComponents = [];
                 foreach (explode(' or ', urldecode($nodeRecord['search'])) as $searchComponent) {
                     $component = trim($searchComponent, ' *');
@@ -486,7 +494,7 @@ class Pazpar2neuerwerbungen extends AbstractEntity
 
             // Add tag fields to subject (inline and break).
             foreach (explode(',', $nodeRecord['tags']) as $tag) {
-                if ($tag != '') {
+                if ('' != $tag) {
                     $subject[$tag] = true;
                 }
             }
@@ -504,19 +512,22 @@ class Pazpar2neuerwerbungen extends AbstractEntity
      * Uses table tx_nkwgok_data from the GOK extension.
      *
      * @param string $parentPPN
+     *
      * @return array
      */
-    protected function queryForChildrenOf($parentPPN)
+    protected function queryForChildrenOf(string $parentPPN)
     {
-        $queryResults = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-                '*',
-                'tx_nkwgok_data',
-                "parent = '" . $parentPPN . "' AND statusID = 0",
-                '',
-                'notation ASC',
-                '');
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_nkwgok_data');
 
-        return $queryResults;
+        return $queryBuilder
+            ->select('*')
+            ->from('tx_nkwgok_data')
+            ->where($queryBuilder->expr()->eq('parent', '?'))
+            ->setParameter(0, $parentPPN)
+            ->andWhere($queryBuilder->expr()->eq('statusID', 0))
+            ->orderBy('notation', 'ASC')
+            ->execute()
+            ->fetchAll();
     }
 
     /**
@@ -525,7 +536,6 @@ class Pazpar2neuerwerbungen extends AbstractEntity
      * potentially existant nested groups.
      *
      * @param array $group (passed by reference)
-     * @return void
      */
     protected function turnOnGroupSelectionIfNeeded(&$group)
     {
@@ -548,11 +558,10 @@ class Pazpar2neuerwerbungen extends AbstractEntity
      * the case.
      *
      * @param array $group (passed by reference)
-     * @return void
      */
     protected function turnOnChildSelectionIfNeeded(&$group)
     {
-        if ($group['selected'] == true) {
+        if (true == $group['selected']) {
             foreach ($group['subjects'] as &$subject) {
                 $subject['selected'] = true;
                 if ($subject['subjects']) {
@@ -565,14 +574,16 @@ class Pazpar2neuerwerbungen extends AbstractEntity
     /**
      * Helper function for preparing search queries.
      *
-     * @param array $queryTerms strings, each of which will be a sub-query
-     * @param string $key search key the query is made for
-     * @param string $equals string used to separate the key and the query term
+     * @param array  $queryTerms strings, each of which will be a sub-query
+     * @param string $key        search key the query is made for
+     * @param string $equals     string used to separate the key and the query term
+     *
      * @return string query
      */
     private function oredSearchQueries($queryTerms, $key, $equals)
     {
-        $query = '(' . $key . $equals . implode(' or ' . $key . $equals, $queryTerms) . ')';
+        $query = '('.$key.$equals.implode(' or '.$key.$equals, $queryTerms).')';
+
         return $query;
     }
 
@@ -581,6 +592,7 @@ class Pazpar2neuerwerbungen extends AbstractEntity
      *  use the previous month.
      *
      * @param string $wildcard
+     *
      * @return array
      */
     private function selectedMonthInFormWithWildcard($wildcard)
@@ -589,7 +601,7 @@ class Pazpar2neuerwerbungen extends AbstractEntity
         $months = explode(',', $arguments['months']);
         // If there is no selection, use the previous month (i.e. the item at
         // index 0 of the monthsArray() result).
-        if ($months[0] == '') {
+        if ('' == $months[0]) {
             $monthKeysArray = array_keys($this->monthsArray());
             $months = [$monthKeysArray[1]];
         }
@@ -610,7 +622,6 @@ class Pazpar2neuerwerbungen extends AbstractEntity
 
     /**
      * @param array $newRequestArguments
-     * @return void
      */
     public function setRequestArguments($newRequestArguments)
     {

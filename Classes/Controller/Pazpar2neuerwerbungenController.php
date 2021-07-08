@@ -1,4 +1,5 @@
 <?php
+
 namespace Subugoe\Pazpar2\Controller;
 
 /*******************************************************************************
@@ -25,21 +26,21 @@ namespace Subugoe\Pazpar2\Controller;
  * THE SOFTWARE.
  ******************************************************************************/
 
-/**
+/*
  * Main controller for pazpar2 Neuerwerbungen plug-in,
  * of the pazpar2 Extension.
  */
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
+use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
  * Controller for the pazpar2 Neuerwerbungen package.
  */
 class Pazpar2neuerwerbungenController extends Pazpar2Controller
 {
-
     /**
      * Model object used for handling the parameters.
+     *
      * @var \Subugoe\Pazpar2\Domain\Model\Pazpar2neuerwerbungen
      */
     protected $pz2Neuerwerbungen;
@@ -48,8 +49,6 @@ class Pazpar2neuerwerbungenController extends Pazpar2Controller
      * Initializer.
      *
      * Initializes parent class and sets up model object.
-     *
-     * @return void
      */
     public function initializeAction()
     {
@@ -66,8 +65,6 @@ class Pazpar2neuerwerbungenController extends Pazpar2Controller
      * Load subjects, set up the query string, run the superclass’ action
      *  (which does the relevant pazpar2 queries if necessary) and assign the
      *  results to the view.
-     *
-     * @return void
      */
     public function indexAction()
     {
@@ -82,8 +79,6 @@ class Pazpar2neuerwerbungenController extends Pazpar2Controller
     /**
      * Inserts headers into page: first general ones by the superclass,
      *    then our own.
-     *
-     * @return void
      */
     protected function addResourcesToHead()
     {

@@ -1,4 +1,5 @@
 <?php
+
 namespace Subugoe\Pazpar2\Domain\Model;
 
 /*******************************************************************************
@@ -25,7 +26,7 @@ namespace Subugoe\Pazpar2\Domain\Model;
  * THE SOFTWARE.
  ******************************************************************************/
 
-/**
+/*
  * Query model class.
  */
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -36,11 +37,10 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  */
 class Query extends AbstractEntity
 {
-
     /**
      * Search query parts.
      *
-     * @var string|Null
+     * @var string|null
      */
     protected $queryString = null;
     protected $querySwitchFulltext = null;
@@ -54,7 +54,7 @@ class Query extends AbstractEntity
      * Array containing the sort conditions to use. Each of its elements
      *    is an array with the fields:
      *  'fieldName' - a string containing the name of the pazpar2 field to sort by
-     *  'direction' - the string 'ascending' or 'descending'
+     *  'direction' - the string 'ascending' or 'descending'.
      *
      * @var array
      */
@@ -70,14 +70,14 @@ class Query extends AbstractEntity
     /**
      * Service name to run the query on.
      *
-     * @var string|Null
+     * @var string|null
      */
     protected $serviceName = null;
 
     /**
      * False by default, True when the Query finished running.
      *
-     * @var Boolean
+     * @var bool
      */
     protected $didRun = false;
 
@@ -85,7 +85,7 @@ class Query extends AbstractEntity
      * Indicates whether all targets in the service are active (as determined
      * by the pazpar2-access.php proxy service).
      *
-     * @var Boolean|Null
+     * @var bool|null
      */
     protected $allTargetsActive;
 
@@ -93,29 +93,31 @@ class Query extends AbstractEntity
      * Name of the institution proving database access (as determined by
      * the pazpar2-access.php proxy service).
      *
-     * @var string|Null $institutionName
+     * @var string|null
      */
     protected $institutionName = null;
 
     /**
      * URL of the pazpar2 service used.
      *
-     * @var string|Null
+     * @var string|null
      */
     protected $pazpar2BaseURL;
     /**
      * Stores state of query.
-     * @var Boolean
+     *
+     * @var bool
      */
     protected $queryIsRunning;
     /**
      * Stores time the current query was started.
+     *
      * @var int
      */
     protected $queryStartTime;
 
     /**
-     * VARIABLES FOR INTERNAL USE
+     * VARIABLES FOR INTERNAL USE.
      */
     /**
      * Array holding the search results after they are downloaded.
@@ -133,7 +135,7 @@ class Query extends AbstractEntity
     private $totalResultCount;
 
     /**
-     * @return string|Null
+     * @return string|null
      */
     public function getQueryString()
     {
@@ -188,16 +190,16 @@ class Query extends AbstractEntity
     public function setQueryFromArguments($newArguments)
     {
         $this->setQueryString(trim($newArguments['queryString']));
-        $this->querySwitchFulltext = ($newArguments['querySwitchFulltext'] != '');
+        $this->querySwitchFulltext = ('' != $newArguments['querySwitchFulltext']);
         $this->queryStringTitle = trim($newArguments['queryStringTitle']);
-        $this->querySwitchJournalOnly = ($newArguments['querySwitchJournalOnly'] != '');
+        $this->querySwitchJournalOnly = ('' != $newArguments['querySwitchJournalOnly']);
         $this->queryStringPerson = trim($newArguments['queryStringPerson']);
         $this->queryStringKeyword = trim($newArguments['queryStringKeyword']);
         $this->queryStringDate = trim($newArguments['queryStringDate']);
     }
 
     /**
-     * @return string|Null
+     * @return string|null
      */
     public function getInstitutionName()
     {
@@ -206,7 +208,6 @@ class Query extends AbstractEntity
 
     /**
      * @param string $newInstitutionName
-     * @return void
      */
     protected function setInstitutionName($newInstitutionName)
     {
@@ -214,7 +215,7 @@ class Query extends AbstractEntity
     }
 
     /**
-     * @return Boolean
+     * @return bool
      */
     public function getDidRun()
     {
@@ -222,8 +223,7 @@ class Query extends AbstractEntity
     }
 
     /**
-     * @param Boolean $newDidRun
-     * @return void
+     * @param bool $newDidRun
      */
     protected function setDidRun($newDidRun)
     {
@@ -231,7 +231,7 @@ class Query extends AbstractEntity
     }
 
     /**
-     * @return Boolean|Null
+     * @return bool|null
      */
     public function getAllTargetsActive()
     {
@@ -239,8 +239,7 @@ class Query extends AbstractEntity
     }
 
     /**
-     * @param Boolean $newAllTargetsActive
-     * @return void
+     * @param bool $newAllTargetsActive
      */
     protected function setAllTargetsActive($newAllTargetsActive)
     {
@@ -279,7 +278,7 @@ class Query extends AbstractEntity
      */
     public function run()
     {
-        if ($this->fullQueryString() !== '') {
+        if ('' !== $this->fullQueryString()) {
             $this->startQuery();
             // Fetching results can take a while. Increase our time limit.
             $maximumTime = 60;
@@ -325,7 +324,7 @@ class Query extends AbstractEntity
         if ($this->queryStringPerson) {
             $myQueryStringPerson = preg_replace('/^[\s"]*/', '', $this->queryStringPerson);
             $myQueryStringPerson = preg_replace('/[\s"]*$/', '', $myQueryStringPerson);
-            $queryParts[] = $this->createSearchString('person', '"' . $myQueryStringPerson . '"');
+            $queryParts[] = $this->createSearchString('person', '"'.$myQueryStringPerson.'"');
         }
         if ($this->queryStringKeyword) {
             $queryParts[] = $this->createSearchString('subject', $this->queryStringKeyword);
@@ -336,6 +335,7 @@ class Query extends AbstractEntity
 
         $query = implode(' and ', $queryParts);
         $query = str_replace('*', '?', $query);
+
         return $query;
     }
 
@@ -346,14 +346,15 @@ class Query extends AbstractEntity
      *
      * @param string $indexName
      * @param string $searchString
+     *
      * @return string
      */
     protected function createSearchString($indexName, $searchString)
     {
-        $search = '(' . $indexName . '=' . $searchString . ')';
-        $search = str_replace(' and ', ' and ' . $indexName . '=', $search);
-        $search = str_replace(' not ', ' not ' . $indexName . '=', $search);
-        $search = str_replace(' or ', ' or ' . $indexName . '=', $search);
+        $search = '('.$indexName.'='.$searchString.')';
+        $search = str_replace(' and ', ' and '.$indexName.'=', $search);
+        $search = str_replace(' not ', ' not '.$indexName.'=', $search);
+        $search = str_replace(' or ', ' or '.$indexName.'=', $search);
 
         return $search;
     }
@@ -371,10 +372,10 @@ class Query extends AbstractEntity
 
             if ($searchReply) {
                 $status = $searchReply['status'];
-                if ($status === 'OK') {
+                if ('OK' === $status) {
                     $this->queryIsRunning = true;
                 } else {
-                    GeneralUtility::devLog('pazpar2 search command status is not "OK" but "' . $status . '"', 'pazpar2', 3);
+                    GeneralUtility::devLog('pazpar2 search command status is not "OK" but "'.$status.'"', 'pazpar2', 3);
                 }
             } else {
                 GeneralUtility::devLog('could not parse pazpar2 search reply', 'pazpar2', 3);
@@ -386,7 +387,7 @@ class Query extends AbstractEntity
      * Initialise pazpar2/Service Proxy.
      * To be implemented in subclasses.
      *
-     * @return bool TRUE when initialisation was successful.
+     * @return bool TRUE when initialisation was successful
      */
     protected function initialiseSession()
     {
@@ -397,6 +398,7 @@ class Query extends AbstractEntity
      * Returns the content loaded from the given URL.
      *
      * @param string $URL to fetch
+     *
      * @return string
      */
     protected function fetchURL($URL)
@@ -411,8 +413,8 @@ class Query extends AbstractEntity
      */
     protected function pazpar2SearchURL()
     {
-        $URL = $this->getPazpar2BaseURL() . '?command=search';
-        $URL .= '&query=' . urlencode($this->fullQueryString());
+        $URL = $this->getPazpar2BaseURL().'?command=search';
+        $URL .= '&query='.urlencode($this->fullQueryString());
 
         return $URL;
     }
@@ -425,18 +427,18 @@ class Query extends AbstractEntity
      */
     public function getPazpar2BaseURL()
     {
-        $URL = 'http://' . GeneralUtility::getIndpEnv('HTTP_HOST') . $this->getPazpar2Path();
+        $URL = 'http://'.GeneralUtility::getIndpEnv('HTTP_HOST').$this->getPazpar2Path();
         if ($this->pazpar2BaseURL) {
             $URL = $this->pazpar2BaseURL;
         }
+
         return $URL;
     }
 
     /**
      * Setter for pazpar2BaseURL variable.
      *
-     * @param string|Null $newPazpar2BaseURL
-     * @return void
+     * @param string|null $newPazpar2BaseURL
      */
     public function setPazpar2BaseURL($newPazpar2BaseURL)
     {
@@ -453,7 +455,6 @@ class Query extends AbstractEntity
 
     /**
      * @param string $newPazpar2Path
-     * @return void
      */
     public function setPazpar2Path($newPazpar2Path)
     {
@@ -465,6 +466,7 @@ class Query extends AbstractEntity
      * Requires a session to be established.
      *
      * @param int $count return by reference the current number of results
+     *
      * @return bool True when query has finished, False otherwise
      */
     protected function queryIsDone()
@@ -478,9 +480,9 @@ class Query extends AbstractEntity
             // The progress variable is a string representing a number between
             // 0.00 and 1.00.
             // Casting it to int gives 0 as long as the value is < 1.
-            $progress = (int)$statReply['progress'];
-            $result = ($progress === 1);
-            if ($result === true) {
+            $progress = (int) $statReply['progress'];
+            $result = (1 === $progress);
+            if (true === $result) {
                 // We are done: note that and get the record count.
                 $this->setDidRun(true);
                 $this->setTotalResultCount($statReply['hits']);
@@ -499,7 +501,7 @@ class Query extends AbstractEntity
      */
     protected function pazpar2StatURL()
     {
-        return $this->getPazpar2BaseURL() . '?command=stat';
+        return $this->getPazpar2BaseURL().'?command=stat';
     }
 
     /**
@@ -531,7 +533,7 @@ class Query extends AbstractEntity
 
             if ($showReply) {
                 $status = $showReply['status'][0]['values'][0];
-                if ($status == 'OK') {
+                if ('OK' == $status) {
                     $this->queryIsRunning = false;
                     $hits = $showReply['hit'];
 
@@ -560,7 +562,7 @@ class Query extends AbstractEntity
                         }
                     }
                 } else {
-                    GeneralUtility::devLog('pazpar2 show reply status is not "OK" but "' . $status . '"', 'pazpar2', 3);
+                    GeneralUtility::devLog('pazpar2 show reply status is not "OK" but "'.$status.'"', 'pazpar2', 3);
                 }
             } else {
                 GeneralUtility::devLog('could not parse pazpar2 show reply', 'pazpar2', 3);
@@ -577,15 +579,16 @@ class Query extends AbstractEntity
      * around 1000 records in one go with a 128MB memory limit for PHP.
      *
      * @param int $start index of first record to retrieve (optional, default: 0)
-     * @param int $num number of records to retrieve (optional, default: 500)
+     * @param int $num   number of records to retrieve (optional, default: 500)
+     *
      * @return string
      */
     protected function pazpar2ShowURL($start = 0, $num = 500)
     {
-        $URL = $this->getPazpar2BaseURL() . '?command=show';
-        $URL .= '&query=' . urlencode($this->fullQueryString());
-        $URL .= '&start=' . $start . '&num=' . $num;
-        $URL .= '&sort=' . urlencode($this->sortOrderString());
+        $URL = $this->getPazpar2BaseURL().'?command=show';
+        $URL .= '&query='.urlencode($this->fullQueryString());
+        $URL .= '&start='.$start.'&num='.$num;
+        $URL .= '&sort='.urlencode($this->sortOrderString());
         $URL .= '&block=1'; // unclear how this is advantagous but the JS client adds it
         return $URL;
     }
@@ -599,8 +602,8 @@ class Query extends AbstractEntity
     {
         $sortOrderComponents = [];
         foreach ($this->getSortOrder() as $sortCriterion) {
-            $sortOrderComponents[] = $sortCriterion['fieldName'] . ':'
-                    . (($sortCriterion['direction'] === 'descending') ? '0' : '1');
+            $sortOrderComponents[] = $sortCriterion['fieldName'].':'
+                    .(('descending' === $sortCriterion['direction']) ? '0' : '1');
         }
         $sortOrderString = implode(',', $sortOrderComponents);
 
@@ -616,8 +619,7 @@ class Query extends AbstractEntity
     }
 
     /**
-     * @param string $newSortOrder
-     * @return void
+     * @param array $newSortOrder
      */
     public function setSortOrder($newSortOrder)
     {
@@ -632,9 +634,9 @@ class Query extends AbstractEntity
      */
     protected function pazpar2InitURL()
     {
-        $URL = $this->getPazpar2BaseURL() . '?command=init';
-        if ($this->getServiceName() != null) {
-            $URL .= '&service=' . urlencode($this->getServiceName());
+        $URL = $this->getPazpar2BaseURL().'?command=init';
+        if (null != $this->getServiceName()) {
+            $URL .= '&service='.urlencode($this->getServiceName());
         }
 
         return $URL;
@@ -650,7 +652,6 @@ class Query extends AbstractEntity
 
     /**
      * @param string $newServiceName
-     * @return void
      */
     public function setServiceName($newServiceName)
     {
@@ -664,6 +665,7 @@ class Query extends AbstractEntity
      *
      * @param array $a location or full pazpar2 record
      * @param array $b location or full pazpar2 record
+     *
      * @return int
      */
     protected function yearSort($a, $b)
@@ -673,13 +675,15 @@ class Query extends AbstractEntity
 
         if (count($aDates) > 0 && count($bDates) > 0) {
             return $bDates[0] - $aDates[0];
-        } elseif (count($aDates) > 0 && count($bDates) === 0) {
-            return -1;
-        } elseif (count($aDates) === 0 && count($bDates) > 0) {
-            return 1;
-        } else {
-            return 0;
         }
+        if (count($aDates) > 0 && 0 === count($bDates)) {
+            return -1;
+        }
+        if (0 === count($aDates) && count($bDates) > 0) {
+            return 1;
+        }
+
+        return 0;
     }
 
     /**
@@ -687,6 +691,7 @@ class Query extends AbstractEntity
      * containing numbers from the 'date' fields as integers.
      *
      * @param array $record location or full pazpar2 record
+     *
      * @return array of integers
      */
     protected function extractNewestDates($record)
@@ -699,11 +704,12 @@ class Query extends AbstractEntity
                 if ($matches && count($matches) > 0) {
                     $parsedDate = $matches[count($matches) - 1][0];
                     if (is_numeric($parsedDate)) {
-                        $result[] = (int)$parsedDate;
+                        $result[] = (int) $parsedDate;
                     }
                 }
             }
         }
+
         return $result;
     }
 }

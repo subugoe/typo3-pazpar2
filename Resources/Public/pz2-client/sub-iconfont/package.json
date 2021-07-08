@@ -1,0 +1,9 @@
+{
+  "name": "sub-iconfont",
+  "version": "1.0.0",
+  "description": "Icon font with media types for SUB Göttingen",
+  "main": "index.js",
+  "repository": "https://github.com/subugoe/sub-iconfont.git",
+  "author": "SUB Göttingen <info@sub.uni-goettingen.de>",
+  "license": "MIT"
+}

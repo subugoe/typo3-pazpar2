@@ -1,0 +1,35 @@
+.pz2-fieldsets {
+	margin-top: 1em;
+}
+
+.pz2-fieldsets fieldset {
+	position: relative;
+}
+
+.pz2-fieldsets ul {
+	list-style-type: none;
+	margin: 0 0 0 0.5em;
+	padding: 0;
+}
+
+.pz2-fieldsets li.inline {
+	display: inline;
+}
+
+.pz2-fieldsets li.indent input {
+	margin-left: 1em;
+}
+
+.pz2-fieldsets legend {
+	font-weight: bold;
+}
+
+.pz2-fieldsets label {
+	margin-right: 0.5em;
+	display: inline;
+}
+
+
+.pz2-months {
+	font-size: 133%;
+}

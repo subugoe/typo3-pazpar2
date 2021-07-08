@@ -1,4 +1,5 @@
 <?php
+
 namespace Subugoe\Pazpar2\Domain\Model;
 
 /*******************************************************************************
@@ -25,7 +26,7 @@ namespace Subugoe\Pazpar2\Domain\Model;
  * THE SOFTWARE.
  ******************************************************************************/
 
-/**
+/*
  * Pazpar2 specific aspects of the Query class.
  */
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -35,13 +36,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class QueryPazpar2 extends Query
 {
-
     /**
-     * VARIABLES FOR INTERNAL USE
+     * VARIABLES FOR INTERNAL USE.
      */
 
     /**
      * Stores session ID while pazpar2 is running.
+     *
      * @var string
      */
     protected $pazpar2SessionID;
@@ -60,11 +61,12 @@ class QueryPazpar2 extends Query
      * Appends the session ID to $URL.
      *
      * @param string $URL
+     *
      * @return string
      */
     protected function appendSessionID($URL)
     {
-        return $URL . '&session=' . $this->pazpar2SessionID;
+        return $URL.'&session='.$this->pazpar2SessionID;
     }
 
     /**
@@ -86,10 +88,11 @@ class QueryPazpar2 extends Query
      * around 1000 records in one go with a 128MB memory limit for PHP.
      *
      * @param int $start index of first record to retrieve (optional, default: 0)
-     * @param int $num number of records to retrieve (optional, default: 500)
+     * @param int $num   number of records to retrieve (optional, default: 500)
+     *
      * @return string
      */
-    protected function pazpar2ShowURL($start=0, $num=500)
+    protected function pazpar2ShowURL($start = 0, $num = 500)
     {
         return $this->appendSessionID(parent::pazpar2ShowURL($start, $num));
     }
@@ -107,7 +110,7 @@ class QueryPazpar2 extends Query
 
         if ($initReply) {
             $status = $initReply['status'];
-            if ($status === 'OK') {
+            if ('OK' === $status) {
                 $sessionID = $initReply['session'];
                 if ($sessionID) {
                     $this->pazpar2SessionID = $sessionID;
@@ -119,15 +122,15 @@ class QueryPazpar2 extends Query
                 if (array_key_exists('accessRights', $initReply)) {
                     $accessRights = $initReply['accessRights'];
                     $this->setInstitutionName($accessRights['institutionName']);
-                    $this->setAllTargetsActive($accessRights['allTargetsActive'] === '1');
+                    $this->setAllTargetsActive('1' === $accessRights['allTargetsActive']);
                 }
             } else {
-                GeneralUtility::devLog('pazpar2 init status is not "OK" but "' . $status . '"', 'pazpar2', 3);
+                GeneralUtility::devLog('pazpar2 init status is not "OK" but "'.$status.'"', 'pazpar2', 3);
             }
         } else {
             GeneralUtility::devLog('could not parse pazpar2 init reply', 'pazpar2', 3);
         }
 
-        return $this->pazpar2SessionID !== null;
+        return null !== $this->pazpar2SessionID;
     }
 }

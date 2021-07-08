@@ -1,82 +1,92 @@
 <T3DataStructure>
-	<meta>
-		<langDisable>1</langDisable>
-	</meta>
+    <meta>
+        <langDisable>1</langDisable>
+    </meta>
 
-	<ROOT>
-		<type>array</type>
-		<el>
+    <ROOT>
+        <type>array</type>
+        <el>
 
-			<settings.serviceID>
-				<TCEforms>
-					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang-flexform.xml:settings.serviceID</label>
-					<config>
-						<type>input</type>
-						<size>40</size>
-					</config>
-				</TCEforms>
-			</settings.serviceID>
+            <settings.serviceID>
+                <TCEforms>
+                    <label>LLL:EXT:pazpar2/Resources/Private/Language/locallang-flexform.xml:settings.serviceID</label>
+                    <config>
+                        <type>input</type>
+                        <size>40</size>
+                    </config>
+                </TCEforms>
+            </settings.serviceID>
 
-			<settings.useGoogleBooks>
-				<TCEforms>
-					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang-flexform.xml:settings.useGoogleBooks</label>
-					<config>
-						<type>check</type>
-						<default>1</default>
-					</config>
-				</TCEforms>
-			</settings.useGoogleBooks>
+            <settings.useGoogleBooks>
+                <TCEforms>
+                    <label>LLL:EXT:pazpar2/Resources/Private/Language/locallang-flexform.xml:settings.useGoogleBooks
+                    </label>
+                    <config>
+                        <type>check</type>
+                        <default>1</default>
+                    </config>
+                </TCEforms>
+            </settings.useGoogleBooks>
 
-			<settings.useZDB>
-				<TCEforms>
-					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang-flexform.xml:settings.useZDB</label>
-					<config>
-						<type>check</type>
-						<default>1</default>
-					</config>
-				</TCEforms>
-			</settings.useZDB>
+            <settings.useZDB>
+                <TCEforms>
+                    <label>LLL:EXT:pazpar2/Resources/Private/Language/locallang-flexform.xml:settings.useZDB</label>
+                    <config>
+                        <type>check</type>
+                        <default>1</default>
+                    </config>
+                </TCEforms>
+            </settings.useZDB>
 
-			<settings.ZDBIP>
-				<TCEforms>
-					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang-flexform.xml:settings.ZDBIP</label>
-					<config>
-						<type>radio</type>
-						<default>0</default>
-						<items type="array">
-							<numIndex index="0" type="array">
-								<numIndex index="0">LLL:EXT:pazpar2/Resources/Private/Language/locallang-flexform.xml:settings.ZDBIPUser</numIndex>
-								<numIndex index="1">0</numIndex>
-							</numIndex>
-							<numIndex index="1" type="array">
-								<numIndex index="0">LLL:EXT:pazpar2/Resources/Private/Language/locallang-flexform.xml:settings.ZDBIPLocal</numIndex>
-								<numIndex index="1">1</numIndex>
-							</numIndex>
-						</items>
-					</config>
-				</TCEforms>
-			</settings.ZDBIP>
+            <settings.ZDBIP>
+                <TCEforms>
+                    <label>LLL:EXT:pazpar2/Resources/Private/Language/locallang-flexform.xml:settings.ZDBIP</label>
+                    <config>
+                        <type>radio</type>
+                        <default>0</default>
+                        <items type="array">
+                            <numIndex index="0" type="array">
+                                <numIndex index="0">
+                                    LLL:EXT:pazpar2/Resources/Private/Language/locallang-flexform.xml:settings.ZDBIPUser
+                                </numIndex>
+                                <numIndex index="1">0</numIndex>
+                            </numIndex>
+                            <numIndex index="1" type="array">
+                                <numIndex index="0">
+                                    LLL:EXT:pazpar2/Resources/Private/Language/locallang-flexform.xml:settings.ZDBIPLocal
+                                </numIndex>
+                                <numIndex index="1">1</numIndex>
+                            </numIndex>
+                        </items>
+                    </config>
+                </TCEforms>
+            </settings.ZDBIP>
 
-			<settings.useHistogramForYearFacets>
-				<TCEforms>
-					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang-flexform.xml:settings.useHistogramForYearFacets</label>
-					<config>
-						<type>check</type>
-						<default>1</default>
-					</config>
-				</TCEforms>
-			</settings.useHistogramForYearFacets>
+            <settings.useHistogramForYearFacets>
+                <TCEforms>
+                    <label>
+                        LLL:EXT:pazpar2/Resources/Private/Language/locallang-flexform.xml:settings.useHistogramForYearFacets
+                    </label>
+                    <config>
+                        <type>check</type>
+                        <default>1</default>
+                    </config>
+                </TCEforms>
+            </settings.useHistogramForYearFacets>
 
-			<settings.neuerwerbungen-subjects>
-				<TCEforms>
-					<label>LLL:EXT:pazpar2/Resources/Private/Language/locallang-flexform.xml:settings.neuerwerbungen-subjects</label>
-					<config>
-						<type>select</type>
-						<itemsProcFunc>tx_Pazpar2_Service_Flexform->buildMenu</itemsProcFunc>
-					</config>
-				</TCEforms>
-			</settings.neuerwerbungen-subjects>
+            <settings.neuerwerbungen-subjects>
+                <TCEforms>
+                    <label>
+                        LLL:EXT:pazpar2/Resources/Private/Language/locallang-flexform.xml:settings.neuerwerbungen-subjects
+                    </label>
+                    <config>
+                        <type>select</type>
+                        <renderType>selectSingle</renderType>
+                        <itemsProcFunc>Subugoe\Pazpar2\Service\Flexform->buildMenu</itemsProcFunc>
+                    </config>
+                </TCEforms>
+            </settings.neuerwerbungen-subjects>
 
-		</el>
-	</ROOT>
+        </el>
+    </ROOT>
 </T3DataStructure>

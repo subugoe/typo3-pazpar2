@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<location id="sru.gbv.de/opac-de-7" name="SUB Göttingen">
+<md-language>ger</md-language>
+<md-id>581166205</md-id>
+<md-isbn>978-3-05-004174-2</md-isbn>
+<md-author>Marx, Karl</md-author>
+<md-author>Engels, Friedrich</md-author>
+<md-other-person>Ōmura, Izumi</md-other-person>
+<md-date>2008</md-date>
+<md-title>Gesamtausgabe</md-title>
+<md-title-remainder>: (MEGA)</md-title-remainder>
+<md-title-responsibility>Karl Marx; Friedrich Engels. Hrsg. von der Internationalen Marx-Engels-Stiftung Amsterdam</md-title-responsibility>
+<md-title-number-section>Abt. 2: &quot;Das @Kapital&quot; und Vorarbeiten. Bd. 13: Das @Kapital, Kritik der politischen Ökonomie, Zweiter Band, Hamburg 1885. Apparat: [...]</md-title-number-section>
+<md-medium>book</md-medium>
+<md-publication-place>Berlin</md-publication-place>
+<md-publication-name>Akad.-Verl</md-publication-name>
+<md-physical-extent>S. 493 - 795</md-physical-extent>
+<md-description>Internationale Marx-Engels-Stiftung</md-description>
+<md-electronic-url name="Inhaltsverzeichnis">http://www.gbv.de/dms/weimar/toc/581166205_toc.pdf</md-electronic-url>
+<md-electronic-url name="Rezension">http://www.gbv.de/dms/faz-rez/FD1200807021799467_1.pdf</md-electronic-url>
+<md-catalogue-url>http://opac.sub.uni-goettingen.de/DB=1/PPNSET?PPN=581166205</md-catalogue-url>
+</location>

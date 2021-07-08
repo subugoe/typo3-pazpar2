@@ -2,7 +2,7 @@
     "name": "subugoe/pazpar2",
     "description": "Pazpar2 for TYPO3",
     "type": "typo3-cms-extension",
-    "license": "GPL-2.0+",
+    "license": "GPL-2.0-or-later",
     "authors": [
         {
             "name": "Ingo Pfennigstorf",
@@ -13,5 +13,11 @@
         "psr-4": {
             "Subugoe\\Pazpar2\\": "Classes/"
         }
+    },
+    "require": {
+      "typo3/cms-core": "^9.5 || ^10.4"
+    },
+    "require-dev": {
+      "friendsofphp/php-cs-fixer": "^2.0"
     }
 }
